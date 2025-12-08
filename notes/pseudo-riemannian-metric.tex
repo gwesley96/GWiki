@@ -1,0 +1,32 @@
+\documentclass{gwiki}
+
+\Title{(pseudo-)Riemannian metric}
+\Tags{}
+
+\begin{document}
+
+\NoteHeader
+
+For a vector space $V$, a \textbf{pseudo-inner product} (resp. \textbf{inner product}) on $V$ is a \wref{positive-definite-form} (resp. \wref{positive-definite-form}) symmetric bilinear form $\braket{-|-}\colon V\times V\to\mathbb{R}$.
+
+\textbf{Definition ((Pseudo-)Euclidean vector spaces).} A \textbf{pseudo-Euclidean vector space} (resp. \textbf{Euclidean vector space}) is a finite-dimensional $\mathbb{R}$-vector space $V$ equipped with a positive-semidefinite (resp. positive-definite) \wref{quadratic-form} $Q\colon V\to\mathbb{R}$.
+
+\textbf{Remark ((Pseudo-)norms from quadratic forms).} A (pseudo-)Euclidean vector space $(V,Q)$ has \textbf{(pseudo-)norm} $\|-\|\coloneqq \sqrt{Q(-)}$.
+
+\section{(Pseudo-)Riemannian metrics}
+A \textbf{pseudo-Riemannian metric} is a $(0,2)$-\wref{tensor-field} $\mathrm{g}$ on $M$ such that for each $p\in M$, the bilinear form $\mathrm{g}_p\coloneqq \braket{-|-}_p$ bilinear form $T^*M\times T^*M\cong (TM\times TM)^*\to \mathbb{R}$, is symmetric and nondegenerate. If in addition $\mathrm{g}$ is positive-definite, $\mathrm{g}$ is called a \textbf{Riemannian metric}. 
+
+A \textbf{(pseudo-)Riemannian manifold} is a \wref{smooth-manifold} $M$ equipped with a (psuedo-)Riemannian metric $\mathrm{g} \coloneqq \braket{-|-}$.
+
+\textbf{Example (Euclidean metric).} For $M = \mathbb{R}^n$ and local (and so, in fact, global) coordinates $x^i$, the \textbf{Euclidean metric} $\overline{\mathrm{g}} \coloneqq (\mathrm{d} x^1)^2 + \cdots + (\mathrm{d} x^n)^2$ makes $\mathbb{R}^n$ into a Riemannian manifold, called the \textbf{Euclidean vector space} of dimension $n$. (Here $(\mathrm{d} x^i)^2 \coloneqq \mathrm{d} x^i \otimes \mathrm{d} x^i$.)
+
+\textbf{Example.} For $M = \overset\circ D{}^n$, the interior of the open disk in $\mathbb{R}^n$, the \textbf{Poincaré metric} $\mathrm{g}_{\small\mathbb{H}}\coloneqq 4\overline {\mathrm{g}}/(1-\overline{\mathrm{g}})$ gives the \textbf{Poincaré disk model} of $n$-dimensional \textbf{hyperbolic space} $\mathbb{H}^n$.
+
+One uses a \wref{partition-of-unity} to prove the following result.
+
+\textbf{Proposition (((Lee18, Prop. 2.4))).} Every smooth manifold admits a Riemannian metric.
+
+\Footer
+
+\end{document}
+
