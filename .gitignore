@@ -50,8 +50,13 @@ Thumbs.db
 
 # IDE directories
 .idea/
-.vscode/
 *.sublime-*
+
+# VS Code - ignore user settings but keep GWiki extension
+.vscode/*
+!.vscode/settings.json
+!.vscode/gwiki-extension/
+!.vscode/gwiki.code-snippets
 
 # Python
 __pycache__/

@@ -1,0 +1,28 @@
+{
+  "name": "gwiki-autocomplete",
+  "displayName": "GWiki Autocomplete",
+  "description": "Autocomplete for \\wref{} links in GWiki LaTeX notes",
+  "version": "1.0.0",
+  "publisher": "gwiki",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": [
+    "onLanguage:latex",
+    "onLanguage:tex"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "gwiki.refreshCompletions",
+        "title": "GWiki: Refresh Completions"
+      },
+      {
+        "command": "gwiki.newNote",
+        "title": "GWiki: New Note"
+      }
+    ]
+  }
+}

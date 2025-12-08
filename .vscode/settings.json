@@ -1,0 +1,54 @@
+{
+  // GWiki VS Code Settings
+
+  // LaTeX Workshop settings
+  "latex-workshop.latex.autoBuild.run": "onSave",
+  "latex-workshop.latex.outDir": "%DIR%/../build/pdf",
+  "latex-workshop.latex.recipes": [
+    {
+      "name": "GWiki Build",
+      "tools": ["pdflatex", "pdflatex"]
+    }
+  ],
+  "latex-workshop.latex.tools": [
+    {
+      "name": "pdflatex",
+      "command": "pdflatex",
+      "args": [
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "-output-directory=%OUTDIR%",
+        "%DOC%"
+      ],
+      "env": {
+        "TEXINPUTS": "%DIR%/../lib:"
+      }
+    }
+  ],
+
+  // Enable custom completions
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": false,
+    "strings": true
+  },
+  "editor.suggestOnTriggerCharacters": true,
+
+  // File associations
+  "files.associations": {
+    "*.tex": "latex"
+  },
+
+  // Auto-save for smooth workflow
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 1000,
+
+  // Search settings
+  "search.exclude": {
+    "**/build/**": true,
+    "**/*.aux": true,
+    "**/*.log": true,
+    "**/*.out": true
+  }
+}

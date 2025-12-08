@@ -1,195 +1,100 @@
-# GWiki Build System
-# Automated compilation of interconnected LaTeX notes
-#
-# Usage:
-#   make              - Build all PDFs
-#   make html         - Build all HTML (via lwarp)
-#   make all          - Build both PDF and HTML
-#   make article ID=xxx - Build single article
-#   make wiki ID=xxx  - Build single wiki note
-#   make new-article ID=xxx TITLE="Title" - Create new article
-#   make new-wiki ID=xxx TITLE="Title" - Create new wiki note
-#   make clean        - Remove build artifacts
-#   make index        - Regenerate index files
-#   make graph        - Generate dependency graph
+# GWiki Build System - Simplified
+# Just create .tex files in notes/ and run make
 
 SHELL := /bin/bash
 
 # Directories
-ARTICLES_DIR := articles
-WIKI_DIR := wiki
+NOTES_DIR := notes
 LIB_DIR := lib
-BUILD_DIR := build
-PDF_DIR := $(BUILD_DIR)/pdf
-HTML_DIR := $(BUILD_DIR)/html
-SCRIPTS_DIR := scripts
-INDEX_DIR := index
-TEMPLATES_DIR := templates
+BUILD_DIR := build/pdf
 
-# LaTeX settings
+# LaTeX
 LATEX := pdflatex
-LATEXFLAGS := -interaction=nonstopmode -halt-on-error -output-directory=$(PDF_DIR)
-TEXINPUTS := .:$(LIB_DIR):
+LATEXFLAGS := -interaction=nonstopmode -halt-on-error
 
-# lwarp settings for HTML
-LWARPMK := lwarpmk
+# Find all notes
+SOURCES := $(wildcard $(NOTES_DIR)/*.tex)
+PDFS := $(patsubst $(NOTES_DIR)/%.tex,$(BUILD_DIR)/%.pdf,$(SOURCES))
 
-# Find all source files
-ARTICLE_SOURCES := $(wildcard $(ARTICLES_DIR)/*.tex)
-WIKI_SOURCES := $(wildcard $(WIKI_DIR)/*.tex)
-ALL_SOURCES := $(ARTICLE_SOURCES) $(WIKI_SOURCES)
+# Default: build all
+.PHONY: all clean new watch help completions
 
-# Generate PDF targets
-ARTICLE_PDFS := $(patsubst $(ARTICLES_DIR)/%.tex,$(PDF_DIR)/articles/%.pdf,$(ARTICLE_SOURCES))
-WIKI_PDFS := $(patsubst $(WIKI_DIR)/%.tex,$(PDF_DIR)/wiki/%.pdf,$(WIKI_SOURCES))
-ALL_PDFS := $(ARTICLE_PDFS) $(WIKI_PDFS)
+all: $(PDFS)
+	@echo "✓ Built $(words $(PDFS)) notes"
 
-# Generate HTML targets
-ARTICLE_HTMLS := $(patsubst $(ARTICLES_DIR)/%.tex,$(HTML_DIR)/articles/%/index.html,$(ARTICLE_SOURCES))
-WIKI_HTMLS := $(patsubst $(WIKI_DIR)/%.tex,$(HTML_DIR)/wiki/%/index.html,$(WIKI_SOURCES))
-ALL_HTMLS := $(ARTICLE_HTMLS) $(WIKI_HTMLS)
-
-# Default target
-.PHONY: all pdf html clean index graph help watch new-article new-wiki
-
-all: pdf html index
-
-pdf: $(ALL_PDFS)
-	@echo "✓ All PDFs built successfully"
-
-html: $(ALL_HTMLS)
-	@echo "✓ All HTML built successfully"
-
-# Create output directories
-$(PDF_DIR)/articles $(PDF_DIR)/wiki $(HTML_DIR)/articles $(HTML_DIR)/wiki:
+# Build output directory
+$(BUILD_DIR):
 	@mkdir -p $@
 
-# Build article PDFs
-$(PDF_DIR)/articles/%.pdf: $(ARTICLES_DIR)/%.tex $(LIB_DIR)/*.sty $(LIB_DIR)/*.cls | $(PDF_DIR)/articles
-	@echo "Building article: $<"
-	@cd $(ARTICLES_DIR) && TEXINPUTS=../$(LIB_DIR): $(LATEX) $(LATEXFLAGS) -output-directory=../$(PDF_DIR)/articles $(<F)
-	@cd $(ARTICLES_DIR) && TEXINPUTS=../$(LIB_DIR): $(LATEX) $(LATEXFLAGS) -output-directory=../$(PDF_DIR)/articles $(<F)
-	@echo "  → $(PDF_DIR)/articles/$*.pdf"
+# Build any note
+$(BUILD_DIR)/%.pdf: $(NOTES_DIR)/%.tex $(LIB_DIR)/*.sty $(LIB_DIR)/*.cls | $(BUILD_DIR)
+	@echo "Building: $*"
+	@cd $(NOTES_DIR) && TEXINPUTS=../$(LIB_DIR): $(LATEX) $(LATEXFLAGS) -output-directory=../$(BUILD_DIR) $(<F) > /dev/null 2>&1
+	@cd $(NOTES_DIR) && TEXINPUTS=../$(LIB_DIR): $(LATEX) $(LATEXFLAGS) -output-directory=../$(BUILD_DIR) $(<F) > /dev/null 2>&1
+	@echo "  → $(BUILD_DIR)/$*.pdf"
 
-# Build wiki PDFs
-$(PDF_DIR)/wiki/%.pdf: $(WIKI_DIR)/%.tex $(LIB_DIR)/*.sty $(LIB_DIR)/*.cls | $(PDF_DIR)/wiki
-	@echo "Building wiki note: $<"
-	@cd $(WIKI_DIR) && TEXINPUTS=../$(LIB_DIR): $(LATEX) $(LATEXFLAGS) -output-directory=../$(PDF_DIR)/wiki $(<F)
-	@cd $(WIKI_DIR) && TEXINPUTS=../$(LIB_DIR): $(LATEX) $(LATEXFLAGS) -output-directory=../$(PDF_DIR)/wiki $(<F)
-	@echo "  → $(PDF_DIR)/wiki/$*.pdf"
+# Build single note by name
+%: $(NOTES_DIR)/%.tex
+	@$(MAKE) $(BUILD_DIR)/$*.pdf
 
-# Build article HTML (via lwarp)
-$(HTML_DIR)/articles/%/index.html: $(ARTICLES_DIR)/%.tex $(LIB_DIR)/*.sty $(LIB_DIR)/*.cls | $(HTML_DIR)/articles
-	@echo "Building HTML for article: $<"
-	@mkdir -p $(HTML_DIR)/articles/$*
-	@cd $(ARTICLES_DIR) && TEXINPUTS=../$(LIB_DIR): $(LATEX) -jobname=$*_html "\def\uselwarp{1}\input{$(<F)}"
-	@cd $(ARTICLES_DIR) && $(LWARPMK) html
-	@cd $(ARTICLES_DIR) && $(LWARPMK) limages
-	@mv $(ARTICLES_DIR)/$*_html*.html $(HTML_DIR)/articles/$*/
-	@mv $(ARTICLES_DIR)/$*_html*.svg $(HTML_DIR)/articles/$*/ 2>/dev/null || true
-	@echo "  → $(HTML_DIR)/articles/$*/"
-
-# Build wiki HTML (via lwarp)
-$(HTML_DIR)/wiki/%/index.html: $(WIKI_DIR)/%.tex $(LIB_DIR)/*.sty $(LIB_DIR)/*.cls | $(HTML_DIR)/wiki
-	@echo "Building HTML for wiki note: $<"
-	@mkdir -p $(HTML_DIR)/wiki/$*
-	@cd $(WIKI_DIR) && TEXINPUTS=../$(LIB_DIR): $(LATEX) -jobname=$*_html "\def\uselwarp{1}\input{$(<F)}"
-	@cd $(WIKI_DIR) && $(LWARPMK) html
-	@cd $(WIKI_DIR) && $(LWARPMK) limages
-	@mv $(WIKI_DIR)/$*_html*.html $(HTML_DIR)/wiki/$*/
-	@mv $(WIKI_DIR)/$*_html*.svg $(HTML_DIR)/wiki/$*/ 2>/dev/null || true
-	@echo "  → $(HTML_DIR)/wiki/$*/"
-
-# Build single article by ID
-article:
-ifndef ID
-	$(error Usage: make article ID=article-id)
+# Create new note (simplest possible)
+new:
+ifndef NAME
+	@echo "Usage: make new NAME=my-note"
+	@echo "       make new NAME=my-note TITLE=\"My Note Title\""
+else
+	@mkdir -p $(NOTES_DIR)
+	@if [ -f "$(NOTES_DIR)/$(NAME).tex" ]; then \
+		echo "Error: $(NOTES_DIR)/$(NAME).tex already exists"; \
+	else \
+		echo '\\documentclass{gwiki}' > $(NOTES_DIR)/$(NAME).tex; \
+		echo '' >> $(NOTES_DIR)/$(NAME).tex; \
+		echo '\\Title{$(or $(TITLE),$(NAME))}' >> $(NOTES_DIR)/$(NAME).tex; \
+		echo '\\Tags{}' >> $(NOTES_DIR)/$(NAME).tex; \
+		echo '' >> $(NOTES_DIR)/$(NAME).tex; \
+		echo '\\begin{document}' >> $(NOTES_DIR)/$(NAME).tex; \
+		echo '' >> $(NOTES_DIR)/$(NAME).tex; \
+		echo '\\NoteHeader' >> $(NOTES_DIR)/$(NAME).tex; \
+		echo '' >> $(NOTES_DIR)/$(NAME).tex; \
+		echo '%% Your content here...' >> $(NOTES_DIR)/$(NAME).tex; \
+		echo '' >> $(NOTES_DIR)/$(NAME).tex; \
+		echo '\\end{document}' >> $(NOTES_DIR)/$(NAME).tex; \
+		echo "✓ Created: $(NOTES_DIR)/$(NAME).tex"; \
+		$(MAKE) completions 2>/dev/null || true; \
+	fi
 endif
-	@$(MAKE) $(PDF_DIR)/articles/$(ID).pdf
 
-# Build single wiki note by ID
-wiki:
-ifndef ID
-	$(error Usage: make wiki ID=wiki-id)
-endif
-	@$(MAKE) $(PDF_DIR)/wiki/$(ID).pdf
+# Update VS Code completions
+completions:
+	@python3 scripts/generate-completions.py 2>/dev/null || echo "(completions script not found)"
 
-# Create new article from template
-new-article:
-ifndef ID
-	$(error Usage: make new-article ID=article-id TITLE="Article Title")
-endif
-ifndef TITLE
-	$(error Usage: make new-article ID=article-id TITLE="Article Title")
-endif
-	@$(SCRIPTS_DIR)/new-article.sh "$(ID)" "$(TITLE)"
-	@echo "✓ Created new article: $(ARTICLES_DIR)/$(ID).tex"
-
-# Create new wiki note from template
-new-wiki:
-ifndef ID
-	$(error Usage: make new-wiki ID=wiki-id TITLE="Note Title")
-endif
-ifndef TITLE
-	$(error Usage: make new-wiki ID=wiki-id TITLE="Note Title")
-endif
-	@$(SCRIPTS_DIR)/new-wiki.sh "$(ID)" "$(TITLE)"
-	@echo "✓ Created new wiki note: $(WIKI_DIR)/$(ID).tex"
-
-# Generate index files
-index:
-	@echo "Generating index..."
-	@python3 $(SCRIPTS_DIR)/generate-index.py
-	@echo "✓ Index generated"
-
-# Generate dependency graph
-graph:
-	@echo "Generating dependency graph..."
-	@python3 $(SCRIPTS_DIR)/generate-graph.py
-	@echo "✓ Graph generated: $(BUILD_DIR)/graph.svg"
-
-# Watch for changes and rebuild
+# Watch and rebuild on changes
 watch:
-	@echo "Watching for changes... (Ctrl+C to stop)"
+	@echo "Watching $(NOTES_DIR)/ for changes... (Ctrl+C to stop)"
 	@while true; do \
-		inotifywait -q -e modify -r $(ARTICLES_DIR) $(WIKI_DIR) $(LIB_DIR); \
-		$(MAKE) pdf; \
+		inotifywait -q -e modify,create,delete -r $(NOTES_DIR) $(LIB_DIR) 2>/dev/null || sleep 2; \
+		$(MAKE) all; \
+		$(MAKE) completions 2>/dev/null || true; \
 	done
 
-# Clean build artifacts
+# Clean
 clean:
-	@echo "Cleaning build artifacts..."
-	@rm -rf $(BUILD_DIR)
-	@rm -f $(ARTICLES_DIR)/*.aux $(ARTICLES_DIR)/*.log $(ARTICLES_DIR)/*.out
-	@rm -f $(WIKI_DIR)/*.aux $(WIKI_DIR)/*.log $(WIKI_DIR)/*.out
-	@rm -f $(ARTICLES_DIR)/*_html* $(WIKI_DIR)/*_html*
-	@echo "✓ Clean complete"
-
-# Deep clean (also removes generated index)
-distclean: clean
-	@rm -f $(INDEX_DIR)/*.json
-	@echo "✓ Distribution clean complete"
+	@rm -rf build
+	@rm -f $(NOTES_DIR)/*.aux $(NOTES_DIR)/*.log $(NOTES_DIR)/*.out $(NOTES_DIR)/*.toc
+	@echo "✓ Cleaned"
 
 # Help
 help:
-	@echo "GWiki Build System"
-	@echo "=================="
+	@echo "GWiki - LaTeX Note System"
+	@echo "========================="
 	@echo ""
-	@echo "Targets:"
-	@echo "  make              - Build all PDFs (default)"
-	@echo "  make html         - Build all HTML via lwarp"
-	@echo "  make all          - Build both PDF and HTML"
-	@echo "  make article ID=x - Build single article PDF"
-	@echo "  make wiki ID=x    - Build single wiki note PDF"
-	@echo "  make new-article ID=x TITLE=\"...\" - Create new article"
-	@echo "  make new-wiki ID=x TITLE=\"...\"    - Create new wiki note"
-	@echo "  make index        - Regenerate index files"
-	@echo "  make graph        - Generate dependency graph"
-	@echo "  make watch        - Watch and auto-rebuild on changes"
-	@echo "  make clean        - Remove build artifacts"
-	@echo "  make distclean    - Remove all generated files"
+	@echo "  make                    Build all notes"
+	@echo "  make <name>             Build single note (e.g., make functor)"
+	@echo "  make new NAME=xyz       Create new note"
+	@echo "  make watch              Auto-rebuild on changes"
+	@echo "  make clean              Remove build files"
 	@echo ""
-	@echo "Examples:"
-	@echo "  make new-article ID=cat-theory-intro TITLE=\"Introduction to Category Theory\""
-	@echo "  make article ID=cat-theory-intro"
-	@echo "  make new-wiki ID=functor TITLE=\"Functor\""
+	@echo "Example workflow:"
+	@echo "  make new NAME=category TITLE=\"Category\""
+	@echo "  # edit notes/category.tex"
+	@echo "  make category"
