@@ -138,7 +138,7 @@
 \RequirePackage[
   colorlinks=true,
   linkcolor=purple,
-  filecolor=black,
+  filecolor=purple,
   urlcolor=blue,
   citecolor=blue,
   pdfpagemode=FullScreen,
