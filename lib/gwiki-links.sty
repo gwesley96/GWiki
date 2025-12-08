@@ -1,0 +1,373 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{gwiki-links}[2025/12/08 v1.0 GWiki Linking System]
+
+%% ============================================================================
+%% GWIKI LINKING SYSTEM
+%% Provides interconnected note functionality similar to Obsidian/Roam
+%% with unique IDs, cross-references, and backlink tracking
+%% ============================================================================
+
+\RequirePackage{xparse}
+\RequirePackage{etoolbox}
+\RequirePackage{hyperref}
+\RequirePackage{xstring}
+\RequirePackage{pgffor}
+
+%% ----------------------------------------------------------------------------
+%% CONFIGURATION
+%% ----------------------------------------------------------------------------
+%% Base paths for different document types
+\newcommand{\gwiki@articlepath}{../articles/}
+\newcommand{\gwiki@wikipath}{../wiki/}
+\newcommand{\gwiki@buildpath}{../build/}
+
+%% Set custom paths
+\newcommand{\SetArticlePath}[1]{\renewcommand{\gwiki@articlepath}{#1}}
+\newcommand{\SetWikiPath}[1]{\renewcommand{\gwiki@wikipath}{#1}}
+\newcommand{\SetBuildPath}[1]{\renewcommand{\gwiki@buildpath}{#1}}
+
+%% ----------------------------------------------------------------------------
+%% DOCUMENT METADATA
+%% ----------------------------------------------------------------------------
+%% Store document metadata
+\newcommand{\gwiki@id}{}
+\newcommand{\gwiki@title}{}
+\newcommand{\gwiki@type}{}
+\newcommand{\gwiki@tags}{}
+\newcommand{\gwiki@date}{}
+\newcommand{\gwiki@author}{}
+\newcommand{\gwiki@prereqs}{}
+\newcommand{\gwiki@summary}{}
+
+%% Set document metadata
+\newcommand{\GWikiID}[1]{\renewcommand{\gwiki@id}{#1}\label{gwiki:#1}}
+\newcommand{\GWikiTitle}[1]{\renewcommand{\gwiki@title}{#1}\title{#1}}
+\newcommand{\GWikiType}[1]{\renewcommand{\gwiki@type}{#1}}
+\newcommand{\GWikiTags}[1]{\renewcommand{\gwiki@tags}{#1}}
+\newcommand{\GWikiDate}[1]{\renewcommand{\gwiki@date}{#1}\date{#1}}
+\newcommand{\GWikiAuthor}[1]{\renewcommand{\gwiki@author}{#1}\author{#1}}
+\newcommand{\GWikiPrereqs}[1]{\renewcommand{\gwiki@prereqs}{#1}}
+\newcommand{\GWikiSummary}[1]{\renewcommand{\gwiki@summary}{#1}}
+
+%% Convenient combined metadata command
+%% Usage: \GWikiMeta{id}{title}{type}{tags}
+\NewDocumentCommand{\GWikiMeta}{m m m O{}}{%
+  \GWikiID{#1}%
+  \GWikiTitle{#2}%
+  \GWikiType{#3}%
+  \GWikiTags{#4}%
+}
+
+%% ----------------------------------------------------------------------------
+%% CROSS-REFERENCING COMMANDS
+%% ----------------------------------------------------------------------------
+
+%% Reference to another GWiki document by ID
+%% Usage: \wref{document-id} or \wref{document-id}[display text]
+\NewDocumentCommand{\wref}{m O{}}{%
+  \IfStrEq{#2}{}{%
+    \hyperref[gwiki:#1]{\texttt{#1}}%
+  }{%
+    \hyperref[gwiki:#1]{#2}%
+  }%
+  % Record this reference for backlink generation
+  \immediate\write\@auxout{\string\gwiki@recordref{\gwiki@id}{#1}}%
+}
+
+%% Reference to a wiki note
+%% Usage: \wikiref{note-id} or \wikiref{note-id}[display text]
+\NewDocumentCommand{\wikiref}{m O{}}{%
+  \IfStrEq{#2}{}{%
+    \href{\gwiki@wikipath#1.pdf}{\texttt{#1}}%
+  }{%
+    \href{\gwiki@wikipath#1.pdf}{#2}%
+  }%
+  \immediate\write\@auxout{\string\gwiki@recordref{\gwiki@id}{#1}}%
+}
+
+%% Reference to an article
+%% Usage: \articleref{article-id} or \articleref{article-id}[display text]
+\NewDocumentCommand{\articleref}{m O{}}{%
+  \IfStrEq{#2}{}{%
+    \href{\gwiki@articlepath#1.pdf}{\texttt{#1}}%
+  }{%
+    \href{\gwiki@articlepath#1.pdf}{#2}%
+  }%
+  \immediate\write\@auxout{\string\gwiki@recordref{\gwiki@id}{#1}}%
+}
+
+%% External reference (URL with display text)
+%% Usage: \extref{url}{display text}
+\NewDocumentCommand{\extref}{m m}{%
+  \href{#1}{#2}%
+}
+
+%% ----------------------------------------------------------------------------
+%% WIKI-STYLE LINKING (Double brackets)
+%% Similar to [[link]] or [[link|display]] in Obsidian
+%% ----------------------------------------------------------------------------
+
+%% Define active character for wiki links in text
+%% Usage: [[id]] or [[id|display text]]
+\makeatletter
+\newcommand{\wikilink}[1]{%
+  \IfSubStr{#1}{|}{% Has display text
+    \StrBefore{#1}{|}[\gwiki@linkid]%
+    \StrBehind{#1}{|}[\gwiki@linktext]%
+    \wref{\gwiki@linkid}[\gwiki@linktext]%
+  }{% No display text
+    \wref{#1}[\texttt{#1}]%
+  }%
+}
+\makeatother
+
+%% Shorthand for wiki-style links
+\newcommand{\W}[1]{\wikilink{#1}}
+
+%% ----------------------------------------------------------------------------
+%% CONCEPT DEFINITIONS WITH AUTOMATIC INDEXING
+%% ----------------------------------------------------------------------------
+
+%% Define a concept (bold, indexed, creates anchor)
+%% Usage: \concept{term} or \concept[index entry]{term}
+\NewDocumentCommand{\concept}{O{} m}{%
+  \IfStrEq{#1}{}{%
+    \textbf{#2}\index{#2}\label{concept:#2}%
+  }{%
+    \textbf{#2}\index{#1}\label{concept:#2}%
+  }%
+}
+
+%% Define a term (italic, indexed)
+%% Usage: \term{term}
+\newcommand{\term}[1]{\textit{#1}\index{#1}}
+
+%% Reference a concept
+%% Usage: \cref{concept-name}
+\newcommand{\conceptref}[1]{\hyperref[concept:#1]{\textit{#1}}}
+
+%% ----------------------------------------------------------------------------
+%% PREREQUISITES AND DEPENDENCIES
+%% ----------------------------------------------------------------------------
+
+%% List prerequisites at the start of a document
+%% Usage: \prerequisites{id1, id2, id3}
+\newcommand{\prerequisites}[1]{%
+  \GWikiPrereqs{#1}%
+  \noindent\textbf{Prerequisites:}~%
+  \foreach \prereq in {#1} {%
+    \wref{\prereq}\space
+  }%
+  \par\medskip
+}
+
+%% List related topics
+%% Usage: \related{id1, id2, id3}
+\newcommand{\related}[1]{%
+  \par\medskip\noindent\textbf{Related:}~%
+  \foreach \rel in {#1} {%
+    \wref{\rel}\space
+  }%
+  \par
+}
+
+%% See also (typically at end)
+%% Usage: \seealso{id1, id2, id3}
+\newcommand{\seealso}[1]{%
+  \par\medskip\noindent\textbf{See also:}~%
+  \foreach \item in {#1} {%
+    \wref{\item}\space
+  }%
+  \par
+}
+
+%% ----------------------------------------------------------------------------
+%% BACKLINKS TRACKING
+%% ----------------------------------------------------------------------------
+
+%% Storage for backlinks (populated by build scripts)
+\newcommand{\gwiki@backlinks}{}
+
+%% Command to record a reference (written to aux file)
+\makeatletter
+\newcommand{\gwiki@recordref}[2]{%
+  % This is a no-op in LaTeX; processed by build scripts
+}
+\makeatother
+
+%% Display backlinks (if available)
+%% Usage: \showbacklinks
+\newcommand{\showbacklinks}{%
+  \ifx\gwiki@backlinks\empty
+  \else
+    \par\bigskip
+    \noindent\textbf{Pages that link here:}
+    \gwiki@backlinks
+  \fi
+}
+
+%% Set backlinks (called by build system)
+%% Usage: \setbacklinks{id1, id2, id3}
+\newcommand{\setbacklinks}[1]{%
+  \renewcommand{\gwiki@backlinks}{%
+    \foreach \bl in {#1} {%
+      \wref{\bl}\space
+    }%
+  }%
+}
+
+%% ----------------------------------------------------------------------------
+%% DOCUMENT HEADER/FOOTER GENERATION
+%% ----------------------------------------------------------------------------
+
+%% Generate standard article header
+\newcommand{\gwikiarticleheader}{%
+  \maketitle
+  \ifx\gwiki@summary\empty\else
+    \begin{abstract}
+      \gwiki@summary
+    \end{abstract}
+  \fi
+  \ifx\gwiki@prereqs\empty\else
+    \prerequisites{\gwiki@prereqs}
+  \fi
+}
+
+%% Generate standard wiki note header (minimal)
+\newcommand{\gwikinoteheader}{%
+  \noindent{\Large\textbf{\gwiki@title}}\label{gwiki:\gwiki@id}
+  \par\smallskip
+  \ifx\gwiki@summary\empty\else
+    \noindent\textit{\gwiki@summary}
+    \par\smallskip
+  \fi
+}
+
+%% Generate standard footer with backlinks
+\newcommand{\gwikifooter}{%
+  \showbacklinks
+  \ifx\gwiki@tags\empty\else
+    \par\smallskip
+    \noindent\textbf{Tags:} \gwiki@tags
+  \fi
+}
+
+%% ----------------------------------------------------------------------------
+%% NAVIGATION
+%% ----------------------------------------------------------------------------
+
+%% Create a navigation bar
+%% Usage: \navbar{prev-id}{next-id}
+\newcommand{\navbar}[2]{%
+  \par\medskip
+  \noindent
+  \ifx#1\empty\else
+    $\leftarrow$ \wref{#1}[Previous]
+  \fi
+  \hfill
+  \ifx#2\empty\else
+    \wref{#2}[Next] $\rightarrow$
+  \fi
+  \par
+}
+
+%% ----------------------------------------------------------------------------
+%% TAGS AND CATEGORIES
+%% ----------------------------------------------------------------------------
+
+%% Add a tag (for build system to process)
+\newcommand{\addtag}[1]{%
+  \immediate\write\@auxout{\string\gwiki@addtag{\gwiki@id}{#1}}%
+}
+
+%% Display tags inline
+\newcommand{\showtags}[1]{%
+  \texttt{[#1]}%
+}
+
+%% ----------------------------------------------------------------------------
+%% SECTION LINKS
+%% ----------------------------------------------------------------------------
+
+%% Create a labeled section that can be linked to
+%% Usage: \wsection{Section Title}{section-id}
+\newcommand{\wsection}[2]{%
+  \section{#1}\label{gwiki:\gwiki@id:#2}%
+}
+
+%% Reference a section in another document
+%% Usage: \wsecref{doc-id}{section-id}[display]
+\NewDocumentCommand{\wsecref}{m m O{}}{%
+  \IfStrEq{#3}{}{%
+    \hyperref[gwiki:#1:#2]{\texttt{#1\##2}}%
+  }{%
+    \hyperref[gwiki:#1:#2]{#3}%
+  }%
+}
+
+%% ----------------------------------------------------------------------------
+%% CITATIONS AND BIBLIOGRAPHY INTEGRATION
+%% ----------------------------------------------------------------------------
+
+%% Cite with wiki link
+\newcommand{\wcite}[1]{\cite{#1}}
+
+%% ----------------------------------------------------------------------------
+%% MATH ENVIRONMENT LINKING
+%% ----------------------------------------------------------------------------
+
+%% Create a linkable theorem/definition/etc.
+%% Usage: \linkedtheorem{thm-id}{Theorem statement}
+\NewDocumentEnvironment{linkedtheorem}{m O{}}
+  {\begin{theorem}[#2]\label{gwiki:\gwiki@id:thm:#1}}
+  {\end{theorem}}
+
+\NewDocumentEnvironment{linkedlemma}{m O{}}
+  {\begin{lemma}[#2]\label{gwiki:\gwiki@id:lem:#1}}
+  {\end{lemma}}
+
+\NewDocumentEnvironment{linkeddefinition}{m O{}}
+  {\begin{definition}[#2]\label{gwiki:\gwiki@id:def:#1}}
+  {\end{definition}}
+
+\NewDocumentEnvironment{linkedproposition}{m O{}}
+  {\begin{proposition}[#2]\label{gwiki:\gwiki@id:prop:#1}}
+  {\end{proposition}}
+
+\NewDocumentEnvironment{linkedcorollary}{m O{}}
+  {\begin{corollary}[#2]\label{gwiki:\gwiki@id:cor:#1}}
+  {\end{corollary}}
+
+%% Reference a theorem in another document
+%% Usage: \thmref{doc-id}{thm-id}[display]
+\NewDocumentCommand{\thmref}{m m O{}}{%
+  \IfStrEq{#3}{}{%
+    \hyperref[gwiki:#1:thm:#2]{Theorem~\ref*{gwiki:#1:thm:#2}}%
+  }{%
+    \hyperref[gwiki:#1:thm:#2]{#3}%
+  }%
+}
+
+%% ----------------------------------------------------------------------------
+%% UTILITY MACROS
+%% ----------------------------------------------------------------------------
+
+%% Get current document ID
+\newcommand{\currentid}{\gwiki@id}
+
+%% Get current document title
+\newcommand{\currenttitle}{\gwiki@title}
+
+%% Include a wiki note inline
+%% Usage: \includenote{note-id}
+\newcommand{\includenote}[1]{%
+  \input{\gwiki@wikipath#1}%
+}
+
+%% Include an article section inline
+%% Usage: \includearticle{article-id}
+\newcommand{\includearticle}[1]{%
+  \input{\gwiki@articlepath#1}%
+}
+
+\endinput

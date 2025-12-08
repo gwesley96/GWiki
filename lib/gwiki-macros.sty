@@ -1,0 +1,497 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{gwiki-macros}[2025/12/08 v1.0 GWiki Math Macros]
+
+%% ============================================================================
+%% GWIKI MACROS PACKAGE
+%% Mathematical notation and convenience macros for GWiki
+%% Based on user's docmacros with GWiki enhancements
+%% ============================================================================
+
+%% ----------------------------------------------------------------------------
+%% COMMAND DECLARATION HELPERS
+%% ----------------------------------------------------------------------------
+\newcommand{\declarecommand}[2]{%
+  \expandafter\providecommand\csname #1\endcsname{#2}%
+  \expandafter\renewcommand\csname #1\endcsname{#2}%
+}
+
+\newcommand{\cmdNewCommand}[4][]{%
+  \expandafter\declarecommand{#1#4}{\csname #2\endcsname{\csname #3\endcsname{#4}}}%
+}
+
+%% ----------------------------------------------------------------------------
+%% MATH ALPHABET SHORTCUTS
+%% ----------------------------------------------------------------------------
+%% Blackboard bold (\bA, \bB, etc.)
+\forcsvlist{\cmdNewCommand[b]{}{mathbb}}{A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z}
+
+%% Calligraphic (\cA, \cB, etc.)
+\forcsvlist{\cmdNewCommand[c]{}{mathcal}}{A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z}
+
+%% Sans-serif (\lA, \lB, etc.)
+\forcsvlist{\cmdNewCommand[l]{}{mathsf}}{A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,d,f,h,i,j,k,m,o,r,s,t,u,v,w,x,y,z}
+
+%% Euler script (\eA, \eB, etc.)
+\DeclareMathAlphabet{\matheulscr}{U}{eus}{m}{n}
+\forcsvlist{\cmdNewCommand[e]{}{matheulscr}}{A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z}
+
+%% Fraktur (\fA, \fB, \fa, \fb, etc.)
+\forcsvlist{\cmdNewCommand[f]{}{mathfrak}}{A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,a,b,c,d,e,f,g,h,j,k,l,n,o,p,q,s,t,u,v,w,x,y,z}
+
+%% Bold (\tA, \tB, etc.)
+\forcsvlist{\cmdNewCommand[t]{}{mathbf}}{A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z}
+
+%% Roman (\rA, \rB, \ra, \rb, etc.)
+\forcsvlist{\cmdNewCommand[u]{}{mathrm}}{A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z}
+\forcsvlist{\cmdNewCommand[r]{}{mathrm}}{a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z}
+
+%% Script (\sA, \sB, etc.)
+\RequirePackage{mathrsfs}
+\forcsvlist{\cmdNewCommand[s]{}{mathscr}}{A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z}
+
+%% Zapf Chancery (\pA, \pB, \pa, \pb, etc.)
+\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
+\forcsvlist{\cmdNewCommand[p]{mathpzc}{}}{A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,a,b,c,d,e,g,h,j,k,l,n,o,p,q,s,t,u,v,w,z}
+
+%% Gothic (yfonts) (\gA, \gB, \ga, \gb, etc.)
+\DeclareMathAlphabet{\mathgoth}{U}{ygoth}{m}{n}
+\forcsvlist{\cmdNewCommand[g]{}{mathgoth}}{A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z}
+
+%% Dutch calligraphic (\dA, \dB, \da, \db, etc.)
+\DeclareMathAlphabet{\mathdutchcal}{U}{dutchcal}{m}{n}
+\SetMathAlphabet{\mathdutchcal}{bold}{U}{dutchcal}{b}{n}
+\DeclareMathAlphabet{\mathdutchbcal}{U}{dutchcal}{b}{n}
+\forcsvlist{\cmdNewCommand[d]{}{mathdutchcal}}{A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,a,j,h,b,c,d,f,g,i,k,l,m,n,q,r,s,t,u,v,w,x,y,z}
+
+%% Roman text operators
+\forcsvlist{\cmdNewCommand{mathrm}{}}{fd,op,mon,mop,red,dR,ab,pt,CW,rev,fr,hoequiv,id,ev,coev,cusp,cocusp,shell,Spin,Pin}
+
+%% ----------------------------------------------------------------------------
+%% MATH OPERATORS
+%% ----------------------------------------------------------------------------
+%% Fraktur operators
+\forcsvlist{\cmdNewCommand{operatorname}{mathfrak}}{gu,sl,so,sp}
+
+%% Standard operators
+\forcsvlist{\cmdNewCommand{operatorname}{}}{%
+  Acc,ad,Ad,adj,Ann,arccosh,arccsch,arcsech,arcsinh,arctanh,Arg,Ass,Aut,%
+  Bilin,CaCl,CaDiv,card,ch,Ch,Cl,cls,FPdim,codim,coeq,coim,Coim,coker,Cone,%
+  Conj,Der,diag,diam,Dic,dist,Div,Domain,End,eq,ess,eval,Ext,Forget,Frac,%
+  Free,Gal,GL,Gr,height,Hom,HOr,im,Inn,Int,Irr,Inv,LA,lcm,LG,Lie,Lip,loc,%
+  Log,mate,Max,Min,Mor,Multilin,Nat,Obj,Or,Orb,ord,Out,PD,PGL,Pic,pr,PL,%
+  PSL,PSU,PU,Quot,Rad,rank,RCF,res,rk,sgn,sign,sinc,SL,SO,spec,Spec,SSYT,%
+  Stab,SU,supp,Syl,Tor,tr,Tr,U,Var,Vol,wt,rad,gr,Ric,Riem,Sym,Res,div,%
+  Re,Im,colim,holim,hocolim,sgn,Map,Diff,Cyl,Path,Core,Dens%
+}
+
+%% Category theory operators (sans-serif)
+\forcsvlist{\cmdNewCommand{}{mathsf}}{%
+  Alt,Fib,Ising,Poly,Ab,Add,Alg,Bim,Cat,Chain,Coh,Cyc,FreeMod,Fun,Gray,%
+  Grp,Hilb,HoTop,Idem,Ind,LieAlg,Mod,Mon,MonCat,Op,Proj,PSet,PSh,QCoh,%
+  Rep,Ring,Sch,Set,Sh,sSet,sVec,TLJ,Top,UCyc,B,Set,Vec,Cob,Bord,%
+  SymMonCat,Ho,Arr,src,targ%
+}
+
+%% Module/Set/Algebra notation with hyphen
+\forcsvlist{\cmdNewCommand[l]{}{text{-}}}{Mod,Set,Alg,Vec}
+\forcsvlist{\cmdNewCommand[r]{}{text{-}}}{Mod,Set,Alg,Vec}
+
+%% Special operators
+\DeclareMathOperator{\cExt}{\sE\!\mathrm{xt}}
+\DeclareMathOperator{\cHom}{\sH\!\mathrm{om}}
+\DeclareMathOperator{\chr}{char}
+\DeclareMathOperator{\lEnd}{\mathsf{End}}
+\DeclareMathOperator{\Rm}{Riem}
+\DeclareMathOperator{\Scal}{S}
+\DeclareMathOperator{\spn}{span}
+\DeclareMathOperator{\wk}{weak}
+\DeclareMathOperator{\skein}{sk}
+
+%% Additional operators
+\newcommand{\Vect}{\mathsf{Vec}}
+\newcommand{\fdVec}{\Vec_{\fd}}
+\newcommand{\fdHilb}{\Hilb_{\fd}}
+\newcommand{\Rc}{\Ric}
+\newcommand{\dlp}{\uB}
+\newcommand{\biMod}{\text{-}\mathsf{Mod}\text{-}}
+\newcommand{\Rico}{\Ric^{\circ}}
+\newcommand{\orn}{\mathrm{or}}
+\newcommand{\dfd}{\mathrm{f}\dgr\mathrm{d}}
+\newcommand{\fdd}{\mathrm{f}\dgr\mathrm{d}}
+\newcommand{\Cof}{\operatorname{Cof}}
+
+%% ----------------------------------------------------------------------------
+%% GREEK ALPHABET SHORTCUTS
+%% ----------------------------------------------------------------------------
+\renewcommand{\a}{\alpha}
+\renewcommand{\b}{\beta}
+\renewcommand{\d}{\delta}
+\newcommand{\de}{\delta}
+\newcommand{\e}{\varepsilon}
+\renewcommand{\u}{\upsilon}
+\newcommand{\g}{\gamma}
+\renewcommand{\i}{\iota}
+\renewcommand{\j}{\jmath}
+\renewcommand{\l}{\lambda}
+\newcommand{\x}{\xi}
+\newcommand{\p}{\varphi}
+\newcommand{\f}{\phi}
+\let\slasho\o
+\renewcommand{\o}{\omega}
+\newcommand{\n}{\nu}
+\renewcommand{\k}{\kappa}
+\renewcommand{\t}{\tau}
+\renewcommand{\th}{\theta}
+\newcommand{\s}{\sigma}
+\newcommand{\z}{\zeta}
+\renewcommand{\r}{\rho}
+
+%% Uppercase Greek
+\newcommand{\G}{\Gamma}
+\newcommand{\D}{\Delta}
+\newcommand{\Th}{\Theta}
+\newcommand{\X}{\Xi}
+\renewcommand{\L}{\Lambda}
+\renewcommand{\P}{\Phi}
+\renewcommand{\O}{\Omega}
+\let\sectionS\S
+\renewcommand{\S}{\Sigma}
+
+%% ----------------------------------------------------------------------------
+%% NOTATION AND SYMBOLS
+%% ----------------------------------------------------------------------------
+%% Differential
+\newcommand{\dfl}{\operatorname{d\!}{}}
+\newcommand{\der}{\dfl}
+
+%% Bold math
+\renewcommand{*}[1]{{\boldsymbol{#1}}}
+
+%% Inverse
+\newcommand{\inv}{^{-1}}
+
+%% Decorations
+\newcommand{\tld}[1]{{\widetilde{#1}}}
+\renewcommand{\hat}[1]{\widehat{#1}}
+
+%% Wide check
+\DeclareFontFamily{U}{mathx}{}
+\DeclareFontShape{U}{mathx}{m}{n}{<-> mathx10}{}
+\DeclareSymbolFont{mathx}{U}{mathx}{m}{n}
+\DeclareMathAccent{\widehat}{0}{mathx}{"70}
+\DeclareMathAccent{\widecheck}{0}{mathx}{"71}
+\renewcommand{\check}[1]{\widecheck{#1}}
+
+%% Overline/underline
+\AtBeginDocument{\let\bar\overline}
+\newcommand{\ubar}[1]{\underline{#1}}
+
+%% Matrices
+\newcommand{\mtx}[1]{\begin{bNiceMatrix}#1\end{bNiceMatrix}}
+\newcommand{\smtx}[1]{\begin{bNiceMatrix}[small]#1\end{bNiceMatrix}}
+
+%% ----------------------------------------------------------------------------
+%% BINARY OPERATORS AND RELATIONS
+%% ----------------------------------------------------------------------------
+\newcommand{\bd}{\partial}
+\newcommand{\boxtsr}{\mathbin{\boxtimes}}
+\newcommand{\sqtsr}{\boxtimes}
+\newcommand{\Boxtsr}{\bigboxtimes}
+\newcommand{\Sqtsr}{\bigboxtimes}
+\newcommand{\tsr}{\otimes}
+\newcommand{\Tsr}{\bigotimes}
+\newcommand{\Oplus}{\bigoplus}
+\newcommand{\tms}{\times}
+\newcommand{\stms}{\rtimes}
+\newcommand{\wdg}{\wedge}
+\newcommand{\Wdg}{\bigwedge}
+\newcommand{\Vee}{\bigvee}
+\newcommand{\lsup}{\limsup}
+\newcommand{\linf}{\liminf}
+\renewcommand{\Cup}{\bigcup}
+\renewcommand{\Cap}{\bigcap}
+\newcommand{\Sqcup}{\bigsqcup}
+\newcommand{\Scap}{\bigsqcap}
+\newcommand{\spt}{\supp}
+
+%% Colon variants
+\newcommand{\cocolon}{\tikz\node[font=\normalsize,rotate=180,sep=0]{$\colon$};}
+\newcommand{\noloc}{\cocolon}
+\newcommand{\colonfm}{\cocolon}
+
+%% Stack/substack
+\newcommand{\stack}[1]{{\substack{#1}}}
+\renewcommand{\setminus}{\smallsetminus}
+
+%% Subset/superset
+\newcommand{\sst}{\subset}
+\newcommand{\ssteq}{\subseteq}
+\newcommand{\sstneq}{\subsetneq}
+\newcommand{\spst}{\supset}
+\newcommand{\spsteq}{\supseteq}
+\newcommand{\spstneq}{\supsetneq}
+\renewcommand{\supset}{\supseteq}
+\renewcommand{\subset}{\subseteq}
+
+%% Mask command for phantom centering
+\makeatletter
+\newcommand{\mask}[2]{{\mathpalette\mask@{{#1}{#2}}}}
+\newcommand{\mask@}[2]{\mask@@{#1}#2}
+\newcommand{\mask@@}[3]{%
+  \settowidth{\dimen@}{$\m@th#1#2$}%
+  \makebox[\dimen@]{$\m@th#1#3$}%
+}
+\makeatother
+
+%% ----------------------------------------------------------------------------
+%% SET NOTATION
+%% ----------------------------------------------------------------------------
+\makeatletter
+\def\set#1{\@ifnextchar\bgroup{\set@with{#1}}{\left\{#1\right\}}}
+\def\set@with#1#2{\left\{#1\;\middle|\;#2\right\}}
+\makeatother
+
+\newcommand{\angs}[2]{\left\langle#1\;\middle|\;#2\right\rangle}
+\newcommand{\str}[1]{\smash[t]{{*\atop#1}}}
+
+%% Bra-ket notation
+\newcommand{\bra}[1]{\langle#1\rvert}
+\newcommand{\ket}[1]{\lvert#1\rangle}
+\newcommand{\pbra}[1]{\left(#1\rvert}
+\newcommand{\pket}[1]{\lvert#1\right)}
+\newcommand{\pbkt}[2]{\left( #1 \middle| #2 \right)}
+\newcommand{\braopket}[3]{\left\langle #1 \middle| #2 \middle| #3\right\rangle}
+
+%% Hom shortcut
+\renewcommand{\hom}[3][]{{#1}(#2\to#3)}
+
+%% Hint (footnote)
+\newcommand{\hint}[1]{\footnote{\textsl{#1}}}
+
+%% Angle brackets
+\newcommand{\ang}[1]{\left\langle #1 \right\rangle}
+\newcommand{\nm}[1]{\left| #1 \right|}
+\newcommand{\abs}[1]{\left| #1 \right|}
+\newcommand{\cp}{\smile}
+\renewcommand{\rad}{\sqrt}
+
+%% End-to arrow (loop)
+\DeclareRobustCommand{\endto}{\mathop{\smash{\tikz[baseline]{\draw[->] (0,0.2) .. controls (0.5,0.6) and (0.5,-0.4) .. (0,0);}}}}
+
+%% ----------------------------------------------------------------------------
+%% ARROWS
+%% ----------------------------------------------------------------------------
+\newcommand{\fm}{\left}
+\newcommand{\longto}{\longrightarrow}
+\newcommand{\To}{\Rightarrow}
+\newcommand{\lto}{\longrightarrow}
+\newcommand{\lTo}{\Longrightarrow}
+\newcommand{\from}{\leftarrow}
+\newcommand{\lfm}{\longleftarrow}
+\newcommand{\lFm}{\Longleftarrow}
+\newcommand{\Tto}{\Rrightarrow}
+
+%% Mapsfrom (reflected mapsto)
+\providecommand{\mapsfrom}{}
+\newcommand{\mpfm}{\mathrel{\reflectbox{\ensuremath{\mapsto}}}}
+\newcommand{\longmapsfrom}{\mathrel{\reflectbox{\ensuremath{\longmapsto}}}}
+\newcommand{\lmpfm}{\longmapsfrom}
+
+%% Bijection arrows
+\newcommand{\bjto}{\overset{\cong}{\rightarrow}}
+\newcommand{\lbjto}{\overset{\cong}{\longrightarrow}}
+\newcommand{\bjfm}{\overset{\cong}{\from}}
+\newcommand{\lbjfm}{\overset{\cong}{\longfrom}}
+\newcommand{\mpto}{\mapsto}
+\newcommand{\lmpto}{\longmapsto}
+
+%% Injection arrows
+\newcommand{\incto}{\hookrightarrow}
+\newcommand{\inc}{\hookrightarrow}
+\newcommand{\lincto}{\lhook\joinrel\longrightarrow}
+\newcommand{\incfm}{\hookleftarrow}
+\newcommand{\lincfm}{\longleftarrow\joinrel\rhook}
+
+%% vDash variants
+\newcommand{\vDashv}{\mathrel{\text{\ooalign{$\vDash$\cr\reflectbox{$\vDash$}\cr}}}}
+
+%% Arrow tails
+\renewcommand{\rightarrowtail}{\hookrightarrow}
+\renewcommand{\leftarrowtail}{\hookleftarrow}
+\newcommand{\ijto}{\rightarrowtail}
+\newcommand{\ijfrom}{\leftarrowtail}
+\newcommand{\ijfm}{\leftarrowtail}
+
+%% Dashed arrows
+\newcommand{\dashto}{\dashrightarrow}
+\newcommand{\dashfm}{\dashleftarrow}
+
+%% Surjection arrows
+\newcommand{\sjto}{\twoheadrightarrow}
+\newcommand{\lsjto}{\relbar\joinrel\twoheadrightarrow}
+\newcommand{\linjto}{\relbar\joinrel\rightarrowtail}
+\newcommand{\lijto}{\lhook\joinrel\longrightarrow}
+\newcommand{\sjfm}{\twoheadleftarrow}
+\newcommand{\lsjfm}{\twoheadleftarrow\joinrel\relbar}
+
+%% Special injection with dot
+\newcommand{\spsj}{\mathbin{\begin{tikzpicture}[baseline,line width=.7pt,->]\draw (0,.6ex) -- node[baseline,pos=.3,scale=1.2,transform shape]{$\lhook$} (2ex,.6ex);\fill[baseline] (0,.6ex) circle[radius=.5*.55pt];\end{tikzpicture}}}
+\newcommand{\lspsj}{\vcenter{\hbox{\begin{tikzpicture}[baseline,line width=.6pt,->]\draw (0,.6ex) -- node[baseline,pos=.4,scale=1.2,transform shape]{$\lhook$} (3.5ex,.6ex);\fill[baseline] (0,.6ex) circle[radius=.5*.55pt];\end{tikzpicture}}}}
+
+%% Long left-right arrows
+\newcommand{\longleftrightarrows}{\mathrel{%
+  \begin{tikzpicture}[line width=.5pt,yshift=.2ex, line cap=round, -Butt Cap]
+    \draw[-{To[width=0.9ex]}]--(3ex,1ex);
+    \draw[xshift=-0.05ex,yshift=-.05ex,{To[width=0.9ex]}-]---(3ex,0.25ex);
+  \end{tikzpicture}
+}}
+\newcommand{\llrarr}{\longleftrightarrows}
+
+%% Slot placeholder
+\newcommand{\slot}{\mathop{-}}
+
+%% Cauchy symbol
+\newcommand{\Cauchy}{\text{\ensuremath{\begin{tkz}
+  \node[inner sep=0pt, font=\normalfont] (c) {c};
+  \draw[semithick, Round Cap-Round Cap, line cap=round] ($([xshift=.05ex, yshift=.1ex]c.90)!1.3!([xshift=.05ex, yshift=.1ex]c.270)$) -- ($([xshift=.05ex, yshift=.1ex]c.270)!1.3!([xshift=.05ex, yshift=0ex]c.90)$);
+\end{tkz}}}}
+
+%% ----------------------------------------------------------------------------
+%% EXTENSIBLE ARROWS
+%% ----------------------------------------------------------------------------
+\newcommand{\xto}[2]{\xlongrightarrow[#1]{#2}}
+\newcommand{\xfm}[2]{\xlongleftarrow[#1]{#2}}
+\newcommand{\xTo}[2]{\xLongrightarrow[#1]{#2}}
+\newcommand{\xFm}[2]{\xLongleftarrow[#1]{#2}}
+\newcommand{\xiff}[2]{\xLeftrightarrow[#1]{#2}}
+\newcommand{\ximplies}[2]{\xRightarrow[#1]{#2}}
+\newcommand{\ximpliedby}[2]{\xLeftarrow[#1]{#2}}
+\newcommand{\xlrarr}[2]{\xlongleftrightarrows[#1]{#2}}
+\newcommand{\xrlarr}[2]{\xlongrightleftarrows[#1]{#2}}
+\newcommand{\xincto}[2]{\xhookrightarrow[#1]{#2}}
+\newcommand{\xincfm}[2]{\xhookleftarrow[#2]{#1}}
+\newcommand{\xsjto}[2]{\xtwoheadrightarrow[#1]{#2}}
+\newcommand{\xsjfm}[2]{\xtwoheadleftarrow[#1]{#2}}
+\newcommand{\xmpto}[2]{\xmapsto[#1]{#2}}
+\newcommand{\xmpfm}[2]{\underset{#1}{\overset{#2}{\lmpfm}}}
+\newcommand{\xeq}[2]{\underset{#1}{\overset{#2}{=}}}
+
+%% Extensible surjection arrows
+\makeatletter
+\providecommand*{\twoheadrightarrowfill@}{\arrowfill@\relbar\relbar\twoheadrightarrow}
+\providecommand*{\twoheadleftarrowfill@}{\arrowfill@\twoheadleftarrow\relbar\relbar}
+\providecommand*{\xtwoheadrightarrow}[2][]{\ext@arrow 0579\twoheadrightarrowfill@{#1}{#2}}
+\providecommand*{\xtwoheadleftarrow}[2][]{\ext@arrow 5097\twoheadleftarrowfill@{#1}{#2}}
+\makeatother
+
+%% Extensible injection arrows
+\makeatletter
+\newbox\xrat@below
+\newbox\xrat@above
+\newcommand{\xrightarrowtail}[2][]{%
+  \setbox\xrat@below=\hbox{\ensuremath{\scriptstyle #1}}%
+  \setbox\xrat@above=\hbox{\ensuremath{\scriptstyle #2}}%
+  \pgfmathsetlengthmacro{\xrat@len}{max(\wd\xrat@below,\wd\xrat@above)+.6em}%
+  \mathrel{\tikz [>->,baseline=-.75ex]
+    \draw (0,0) -- node[below=-2pt] {\box\xrat@below}
+                   node[above=-2pt] {\box\xrat@above} (\xrat@len,0) ;}}
+\makeatother
+\newcommand{\xinjto}[2]{\xrightarrowtail[#1]{#2}}
+\newcommand{\xijfm}[2]{\overset{#2}{\underset{#1}{\ijfm}}}
+
+%% ----------------------------------------------------------------------------
+%% COLORS
+%% ----------------------------------------------------------------------------
+\newcommand{\Red}[1]{\color{red}#1\color{black}}
+\newcommand{\Gold}[1]{\color{Goldenrod}#1\color{black}}
+\newcommand{\Violet}[1]{\color{Purple}#1\color{black}{}}
+\newcommand{\Purple}[1]{\color{purple}#1\color{black}{}}
+\newcommand{\Pink}[1]{\color{pink}#1\color{black}{}}
+\newcommand{\Green}[1]{\color{Green}#1\color{black}{}}
+\newcommand{\Silver}[1]{\color{SlateGray}#1\color{black}{}}
+\newcommand{\DarkBrown}[1]{\color{BrickRed}#1\color{black}{}}
+\newcommand{\Brown}[1]{\color{brown}#1\color{black}{}}
+\newcommand{\Blue}[1]{\color{blue}#1\color{black}{}}
+\newcommand{\Yellow}[1]{\color{yellow}#1\color{black}{}}
+\newcommand{\Orange}[1]{\color{Orange}#1\color{black}{}}
+\newcommand{\Teal}[1]{\color{teal}#1\color{black}{}}
+
+%% ----------------------------------------------------------------------------
+%% MISCELLANEOUS
+%% ----------------------------------------------------------------------------
+\newcommand{\makedate}[1]{}
+\newcommand{\bigcref}[1]{\hyperref[#1]{#1}}
+
+%% Reference overlays
+\newcommand{\ovrlref}[2]{\overset{\labelcref{#2}}{#1}}
+\newcommand{\ovrcref}[2]{\overset{\cref{#2}}{#1}}
+
+%% C*/W*/H* algebras
+\newcommand{\Cstar}{\ensuremath{\mathrm{C}^{*}}}
+\newcommand{\Wstar}{\ensuremath{\mathrm{W}^{*}}}
+\newcommand{\Hstar}{\ensuremath{\mathrm{H}^{*}}}
+
+%% Bounded operators
+\newcommand{\bdops}[2]{B\left(#1\to#2\right)}
+\newcommand{\bdends}[1]{B\left(#1\right)}
+
+%% Dagger
+\newcommand{\dgr}{\dagger}
+
+%% Quantifiers
+\let\oldforall\forall
+\renewcommand{\forall}{\operatorname{\oldforall}}
+\let\oldexists\exists
+\renewcommand{\exists}{\operatorname{\oldexists}}
+
+%% Yoneda symbol
+\DeclareFontFamily{U}{dmjhira}{}
+\DeclareFontShape{U}{dmjhira}{m}{n}{ <-> dmjhira }{}
+\DeclareRobustCommand{\yo}{\text{\usefont{U}{dmjhira}{m}{n}\symbol{"48}}}
+
+%% Direct summand symbol
+\newcommand{\smdof}{\mathrel{\operatorname{\vcenter{\hbox{\tikz[scale=1.2,transform shape,inner sep=0pt,minimum width=0pt,outer sep=0pt,x=1em,y=1em,yshift=1em,baseline={(current bounding box.center)}]\draw node[xshift=0.05em,scale=0.75]{$+$} node{$\subset$};}}}}}
+
+%% Big box plus/times
+\newcommand{\bigboxplus}{\mathop{\vcenter{\hbox{\tikz[very thick,transform shape,scale=1.2,inner sep=0pt,minimum width=0pt,outer sep=0pt,x=1em,y=1em,yshift=1em,baseline={(current bounding box.center)}]\draw (-.5,-.5)rectangle(.5,.5) (.5,0)--(-.5,0) (0,.5)--(0,-.5);}}}}
+\newcommand{\Boxplus}{\bigboxplus}
+\newcommand{\bigboxtimes}{\mathop{\vcenter{\hbox{\tikz[very thick,transform shape,scale=1.2,inner sep=0pt,minimum width=0pt,outer sep=0pt,x=1em,y=1em,yshift=1em,baseline={(current bounding box.center)}]\draw (-.5,-.5)rectangle(.5,.5) (-.5,-.5)--(.5,.5) (.5,-.5)--(-.5,.5);}}}}
+\newcommand{\Boxtimes}{\bigboxtimes}
+
+%% TODO marker
+\newcommand{\TODO}[1][]{\textbf{\color{Violet}TODO: #1\color{black}{}}}
+
+%% Box with diagonal
+\newcommand{\boxdiag}{\mathbin{\text{\hbox{\tikz[inner sep=0pt,outer sep=0pt,minimum width=0pt,baseline=(current bounding box.south)]{\draw node[font=\normalfont]{$\square$};\draw(-.72ex,-.7375ex)--(.725ex,.775ex);}}}}}
+
+%% Definition emphasis
+\newcommand{\defn}[1]{\emph{#1}}
+
+%% Mod and rel
+\renewcommand{\mod}[1]{,\operatorname{mod}{#1}}
+\newcommand{\rel}[1]{,\operatorname{rel}{#1}}
+
+%% Coloneq variants
+\DeclareSymbolFont{symbolsC}{U}{pxsyc}{m}{n}
+\DeclareRobustCommand{\coloneq}{\mathrel{\vcenter{\baselineskip0.5ex\lineskiplimit0pt\hbox{.}\hbox{.}}}=}
+\DeclareRobustCommand{\coloneqq}{\coloneq}
+\DeclareRobustCommand{\eqcolon}{\mathrel{\scalebox{-1}[1]{$\coloneq$}}}
+\DeclareRobustCommand{\eqqcolon}{\eqcolon}
+
+%% Triangular actions
+\newcommand{\lact}{\mathbin{\scalebox{.8}{$\triangleright$}}}
+\newcommand{\ract}{\mathbin{\scalebox{.8}{$\triangleleft$}}}
+\newcommand{\blact}{\mathbin{\scalebox{.8}{$\blacktriangleright$}}}
+\newcommand{\bract}{\mathbin{\scalebox{.8}{$\blacktriangleleft$}}}
+
+%% Double bra-ket
+\newcommand{\dbra}[1]{\langle!\langle#1\rvert}
+\newcommand{\dket}[1]{\lvert#1\rangle!\rangle}
+\newcommand{\Eq}{\mathrm{Eq}}
+\newcommand{\cut}{\mathrm{cut}}
+\newcommand{\dbkt}[2]{\left\langle!\middle\langle #1 \middle| #2 \middle\rangle!\right\rangle}
+\newcommand{\todo}[1]{\textbf{[[}\textsl{#1}\textbf{]]}}
+
+\newcommand{\glu}{\mathrm{gl}}
+
+\endinput

@@ -1,0 +1,95 @@
+\documentclass[type=wiki,gwikiid=category]{gwiki}
+
+%% ============================================================================
+%% Category
+%% GWiki Note - Definition
+%% ============================================================================
+
+\GWikiMeta{category}{Category}{wiki}[category-theory, definition, foundations]
+\GWikiDate{2025-12-08}
+\GWikiSummary{%
+  A category is a mathematical structure consisting of objects, morphisms,
+  and composition satisfying associativity and identity laws.
+}
+
+\begin{document}
+
+\gwikinoteheader
+
+%% ============================================================================
+%% Definition
+%% ============================================================================
+
+\begin{definition}[Category]
+  A \concept{category} $\cC$ consists of the following data:
+  \begin{lst}
+    \item A class $\Obj(\cC)$ of \term{objects}
+    \item For each pair of objects $A, B \in \Obj(\cC)$, a set $\Hom_\cC(A, B)$
+          of \term{morphisms} (or \term{arrows}) from $A$ to $B$
+    \item For each object $A$, an \term{identity morphism} $\id_A \in \Hom_\cC(A, A)$
+    \item For each triple of objects $A, B, C$, a \term{composition function}
+          \[
+            \circ : \Hom_\cC(B, C) \times \Hom_\cC(A, B) \to \Hom_\cC(A, C)
+          \]
+  \end{lst}
+  satisfying:
+  \begin{lst}
+    \item \textbf{Associativity:} $(h \circ g) \circ f = h \circ (g \circ f)$
+    \item \textbf{Identity:} $f \circ \id_A = f = \id_B \circ f$ for all $f : A \to B$
+  \end{lst}
+\end{definition}
+
+%% ============================================================================
+%% Notation
+%% ============================================================================
+
+\begin{notation}
+  We write $f : A \to B$ or $A \xto{f}{} B$ to indicate $f \in \Hom_\cC(A, B)$.
+  The collection $\Hom_\cC(A, B)$ is also denoted $\cC(A, B)$ or $\Mor_\cC(A, B)$.
+\end{notation}
+
+%% ============================================================================
+%% Examples
+%% ============================================================================
+
+\begin{example}[Standard categories]
+  \begin{lst}
+    \item $\Set$: sets and functions
+    \item $\Grp$: groups and homomorphisms
+    \item $\Ab$: abelian groups and homomorphisms
+    \item $\Ring$: rings and ring homomorphisms
+    \item $\Top$: topological spaces and continuous maps
+    \item $\Vec_k$: vector spaces over $k$ and linear maps
+  \end{lst}
+\end{example}
+
+\begin{example}[Small categories]
+  A \term{small category} is one where $\Obj(\cC)$ is a set (not a proper class).
+  Any monoid $(M, \cdot, e)$ defines a small category with one object $*$ and
+  $\Hom(*, *) = M$.
+\end{example}
+
+%% ============================================================================
+%% Properties
+%% ============================================================================
+
+\begin{remark}[Size issues]
+  The distinction between sets and proper classes is important. A category
+  is \term{locally small} if each $\Hom_\cC(A,B)$ is a set.
+\end{remark}
+
+%% ============================================================================
+%% Related Concepts
+%% ============================================================================
+
+\seealso{functor, natural-transformation, morphism}
+
+%% ============================================================================
+%% References
+%% ============================================================================
+
+For a comprehensive introduction, see \articleref{category-theory-intro}.
+
+\gwikifooter
+
+\end{document}

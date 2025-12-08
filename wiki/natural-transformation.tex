@@ -1,0 +1,118 @@
+\documentclass[type=wiki,gwikiid=natural-transformation]{gwiki}
+
+%% ============================================================================
+%% Natural Transformation
+%% GWiki Note - Definition
+%% ============================================================================
+
+\GWikiMeta{natural-transformation}{Natural Transformation}{wiki}[category-theory, definition]
+\GWikiDate{2025-12-08}
+\GWikiSummary{%
+  A natural transformation is a morphism between functors, consisting of
+  component morphisms that satisfy a naturality condition.
+}
+
+\begin{document}
+
+\gwikinoteheader
+
+%% ============================================================================
+%% Definition
+%% ============================================================================
+
+\begin{definition}[Natural Transformation]
+  Let $F, G : \cC \to \cD$ be \wref{functor}[functors]. A \concept{natural transformation}
+  $\a : F \To G$ consists of:
+  \begin{lst}
+    \item For each object $A \in \cC$, a morphism $\a_A : F(A) \to G(A)$ in $\cD$,
+          called the \term{component} of $\a$ at $A$
+  \end{lst}
+  such that for every morphism $f : A \to B$ in $\cC$, the following
+  \term{naturality square} commutes:
+  \[
+    \begin{tikzcd}
+      F(A) \ar[r, "\a_A"] \ar[d, "F(f)"'] & G(A) \ar[d, "G(f)"] \\
+      F(B) \ar[r, "\a_B"'] & G(B)
+    \end{tikzcd}
+  \]
+  That is, $G(f) \circ \a_A = \a_B \circ F(f)$.
+\end{definition}
+
+%% ============================================================================
+%% Special Cases
+%% ============================================================================
+
+\begin{definition}[Natural isomorphism]
+  A natural transformation $\a : F \To G$ is a \concept{natural isomorphism}
+  if each component $\a_A$ is an isomorphism. We write $F \cong G$.
+\end{definition}
+
+\begin{remark}
+  Natural isomorphisms are the ``right'' notion of equivalence between functors.
+\end{remark}
+
+%% ============================================================================
+%% Composition
+%% ============================================================================
+
+\begin{proposition}[Vertical composition]
+  Given $\a : F \To G$ and $\b : G \To H$, define $\b \circ \a : F \To H$ by
+  $(\b \circ \a)_A = \b_A \circ \a_A$. This is a natural transformation.
+\end{proposition}
+
+\begin{proposition}[Horizontal composition]
+  Given $\a : F \To G$ with $F, G : \cC \to \cD$ and $\b : H \To K$ with
+  $H, K : \cD \to \cE$, the \term{horizontal composite} $\b * \a : H \circ F \To K \circ G$
+  is defined by $(\b * \a)_A = \b_{G(A)} \circ H(\a_A) = K(\a_A) \circ \b_{F(A)}$.
+\end{proposition}
+
+%% ============================================================================
+%% Examples
+%% ============================================================================
+
+\begin{example}[Double dual]
+  For finite-dimensional vector spaces, there is a natural isomorphism
+  $\a : \id_{\fdVec} \To (-)^{**}$ given by $\a_V(v)(\f) = \f(v)$.
+  This is ``canonical'' (no choice of basis required).
+\end{example}
+
+\begin{example}[Determinant]
+  The determinant $\det : \GL_n \To (-)^*$ is a natural transformation
+  from the general linear group functor to the units functor.
+\end{example}
+
+%% ============================================================================
+%% Diagram
+%% ============================================================================
+
+The naturality condition as a diagram:
+
+\begin{center}
+\begin{tikzpicture}[scale=1.2]
+  % Top row
+  \node (FA) at (0,2) {$F(A)$};
+  \node (GA) at (3,2) {$G(A)$};
+
+  % Bottom row
+  \node (FB) at (0,0) {$F(B)$};
+  \node (GB) at (3,0) {$G(B)$};
+
+  % Horizontal arrows
+  \draw[->] (FA) -- node[above] {$\a_A$} (GA);
+  \draw[->] (FB) -- node[below] {$\a_B$} (GB);
+
+  % Vertical arrows
+  \draw[->] (FA) -- node[left] {$F(f)$} (FB);
+  \draw[->] (GA) -- node[right] {$G(f)$} (GB);
+\end{tikzpicture}
+\end{center}
+
+%% ============================================================================
+%% Related Concepts
+%% ============================================================================
+
+\seealso{functor, category, yoneda-lemma, adjunction}
+
+\gwikifooter
+
+\end{document}

@@ -1,0 +1,504 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tz}[2025/12/08 v1.0 GWiki TikZ Extensions]
+
+%% ============================================================================
+%% TZ.STY - TIKZ EXTENSIONS FOR STRING DIAGRAMS AND MATHEMATICS
+%% Based on user's custom TikZ macros
+%% ============================================================================
+
+\RequirePackage{amsmath,amssymb,amsthm}
+\RequirePackage[dvipsnames,svgnames]{xcolor}
+\RequirePackage{etoolbox}
+\RequirePackage{tikz}
+
+%% ----------------------------------------------------------------------------
+%% INLINE MACRO
+%% ----------------------------------------------------------------------------
+\NewDocumentCommand{\tz}{O{} +m}{%
+  \tikz[baseline={([yshift=-\the\dimexpr\fontdimen22\textfont2\relax]current bounding box.center)},#1]{#2}%
+}
+
+%% Environment: Standard wrap
+\NewDocumentEnvironment{tkz}{O{}}{%
+  \csname begin\endcsname{tikzpicture}[baseline={([yshift=-\the\dimexpr\fontdimen22\textfont2\relax]current bounding box.center)},#1]%
+}{%
+  \csname end\endcsname{tikzpicture}%
+}
+
+%% ----------------------------------------------------------------------------
+%% TIKZ LIBRARIES
+%% ----------------------------------------------------------------------------
+\usetikzlibrary{%
+  arrows.meta,
+  backgrounds,
+  calc,
+  bending,
+  decorations,
+  decorations.pathmorphing,
+  decorations.pathreplacing,
+  decorations.text,
+  decorations.markings,
+  decorations.shapes,
+  fit,
+  intersections,
+  math,
+  matrix,
+  patterns,
+  patterns.meta,
+  positioning,
+  scopes,
+  shadings,
+  shapes.geometric,
+  shapes.misc,
+  shapes.multipart,
+  shapes.symbols,
+  tikzmark,
+  3d,
+  through,
+}
+
+%% ----------------------------------------------------------------------------
+%% LAYER CONFIGURATION FOR STRING DIAGRAMS
+%% ----------------------------------------------------------------------------
+\pgfdeclarelayer{bottom}
+\pgfdeclarelayer{back}
+\pgfdeclarelayer{shadings}
+\pgfdeclarelayer{patterns}
+\pgfdeclarelayer{strands}
+\pgfdeclarelayer{front}
+\pgfdeclarelayer{top}
+\pgfsetlayers{bottom,back,shadings,main,patterns,strands,front,top}
+
+%% ----------------------------------------------------------------------------
+%% PATTERN DEFINITIONS
+%% ----------------------------------------------------------------------------
+\tikzdeclarepattern{
+  name=primeddots,
+  type=uncolored,
+  bounding box={(-.6pt,-.6pt) and (.6pt,.6pt)},
+  tile size={(5pt,5pt)},
+  tile transformation={rotate=60},
+  code={\fill(0pt,0pt) circle (.35pt);}
+}
+
+\tikzdeclarepattern{
+  name=primeddots2,
+  type=uncolored,
+  bounding box={(-.3pt,-.3pt) and (.3pt,.3pt)},
+  tile size={(2.5pt,2.5pt)},
+  tile transformation={rotate=60},
+  code={\fill(0pt,0pt) circle (.35pt);}
+}
+
+\tikzdeclarepattern{
+  name=primedbox,
+  type=uncolored,
+  bounding box={(-1pt,-1pt) and (1pt,1pt)},
+  tile size={(5pt,5pt)},
+  tile transformation={rotate=60},
+  code={\draw[very thin] (-.9pt,-.9pt) rectangle (.9pt,.9pt);}
+}
+
+\tikzdeclarepattern{
+  name=primedplus,
+  type=uncolored,
+  bounding box={(-1pt,-1pt) and (1pt,1pt)},
+  tile size={(5pt,5pt)},
+  tile transformation={rotate=30},
+  code={
+    \draw[very thin] (-.9pt,-.9pt) -- (.9pt,.9pt);
+    \draw[very thin] (.9pt,-.9pt) -- (-.9pt,.9pt);
+  }
+}
+
+\tikzdeclarepattern{
+  name=primedstar,
+  type=uncolored,
+  bounding box={(-1.2pt,-1.2pt) and (1.2pt,1.2pt)},
+  tile size={(5pt,5pt)},
+  tile transformation={rotate=30},
+  code={
+    \draw[very thin] (-1.2pt,0pt) -- (1.2pt,0pt);
+    \draw[very thin] (-.6pt,-1.04pt) -- (.6pt,1.04pt);
+    \draw[very thin] (-.6pt,1.04pt) -- (.6pt,-1.04pt);
+  }
+}
+
+\tikzdeclarepattern{
+  name=diaglines,
+  type=uncolored,
+  bounding box={(-1pt,-1pt) and (1pt,1pt)},
+  tile size={(4pt,4pt)},
+  tile transformation={rotate=45},
+  code={\draw[very thin] (-1pt,-1pt) -- (1pt,1pt);}
+}
+
+\tikzdeclarepattern{
+  name=hlines,
+  type=uncolored,
+  bounding box={(-1pt,-.5pt) and (1pt,.5pt)},
+  tile size={(4pt,3pt)},
+  code={\draw[very thin] (-1pt,0pt) -- (1pt,0pt);}
+}
+
+%% Region styles
+\tikzset{
+  primedregion/.style={preaction={fill=#1}, pattern=primeddots, draw=#1},
+  primedregion2/.style={preaction={fill=#1}, pattern=primeddots2, draw=#1},
+  boxregion/.style={preaction={fill=#1}, pattern=primedbox, draw=#1},
+  plusregion/.style={preaction={fill=#1}, pattern=primedplus, draw=#1},
+  starregion/.style={preaction={fill=#1}, pattern=primedstar, draw=#1},
+  diagregion/.style={preaction={fill=#1}, pattern=diaglines, draw=#1},
+  hlineregion/.style={preaction={fill=#1}, pattern=hlines, draw=#1},
+}
+
+%% ----------------------------------------------------------------------------
+%% POSITIONING
+%% ----------------------------------------------------------------------------
+\newcommand{\coord}[1]{coordinate #1}
+\newcommand{\relpos}[3]{([shift={(#2:#3)}]#1)}
+
+\tikzset{%
+  up/.style={yshift=#1},
+  down/.style={yshift=-#1},
+  left/.style={xshift=-#1},
+  right/.style={xshift=#1},
+}
+
+%% ----------------------------------------------------------------------------
+%% COLOR SCHEME
+%% ----------------------------------------------------------------------------
+\colorlet{gr0}{white}
+\colorlet{gr1}{gray!20}
+\colorlet{gr2}{gray!40}
+\colorlet{gr3}{gray!60}
+\colorlet{gr4}{gray!80}
+
+\colorlet{colA}{red!75}
+\colorlet{colB}{blue!75}
+\colorlet{colC}{violet!95}
+\colorlet{colD}{yellow!15}
+\colorlet{colE}{orange!15}
+
+\colorlet{strA}{red!80!black}
+\colorlet{strB}{blue!80!black}
+\colorlet{strC}{green!60!black}
+\colorlet{strD}{orange!80!black}
+\colorlet{strM}{black}
+
+%% ----------------------------------------------------------------------------
+%% PATH STYLES
+%% ----------------------------------------------------------------------------
+\tikzset{
+  s/.style={out=90,in=-90},
+  -s/.style={out=-90,in=90},
+  cupto/.style={out=90,in=90,looseness=1.5},
+  capto/.style={out=-90,in=-90,looseness=1.5},
+}
+
+%% Knot styles
+\tikzset{
+  knot/.style={preaction={draw=white, solid, line width=#1}},
+  knot/.default=\dimexpr2\pgflinewidth+2pt\relax,
+  over/.style={double, draw=white, line width=3pt, double=},
+  crossing gap/.style={preaction={draw=white, line width=#1}},
+  crossing gap/.default=4pt,
+}
+
+%% Decorative paths
+\tikzset{
+  snake/.style={decorate, decoration={snake, segment length=1mm, amplitude=.3mm}},
+  saw/.style={decorate, decoration={saw, segment length=.7mm, amplitude=.25mm}},
+  squiggly/.style={decorate, decoration={snake, segment length=2mm, amplitude=.5mm}},
+  zigzag/.style={decorate, decoration={zigzag, segment length=1.5mm, amplitude=.4mm}},
+  coil/.style={decorate, decoration={coil, segment length=2mm, amplitude=.5mm}},
+  bumps/.style={decorate, decoration={bumps, segment length=2mm}},
+}
+
+%% Arrow styles
+\tikzset{
+  arrow at/.style={
+    decoration={markings, mark=at position #1 with {\arrow{>}}},
+    postaction={decorate}
+  },
+  arrow at/.default=0.5,
+  rev arrow at/.style={
+    decoration={markings, mark=at position #1 with {\arrow{<}}},
+    postaction={decorate}
+  },
+  rev arrow at/.default=0.5,
+  mid>/.style={arrow at=#1},
+  mid</.style={rev arrow at=#1},
+  mid>/.default=0.55,
+  mid</.default=0.55,
+}
+
+%% Multi-line styles
+\tikzset{
+  tripleline/.style args={[#1] in [#2] in [#3]}{
+    #1,
+    preaction={preaction={draw,#3}, draw,#2}
+  },
+  quadrupleline/.style args={[#1] in [#2] in [#3] in [#4]}{
+    #1,
+    preaction={preaction={preaction={draw,#4}, draw,#3}, draw,#2}
+  },
+  double strand/.style={double, double distance=#1},
+  double strand/.default=2pt,
+}
+
+%% Category theory arrows
+\tikzset{
+  Rightarrow/.style={double equal sign distance, >={Implies}, ->},
+  Leftarrow/.style={double equal sign distance, >={Implies}, <-},
+  Leftrightarrow/.style={double equal sign distance, >={Implies}, <->},
+  triplecd/.style={-, preaction={draw, Rightarrow}},
+  quadruplecd/.style={
+    preaction={draw, Rightarrow, shorten >=0pt},
+    shorten >=1pt, -, double, double distance=0.2pt
+  }
+}
+
+%% ----------------------------------------------------------------------------
+%% NODE STYLES
+%% ----------------------------------------------------------------------------
+\makeatletter
+\tikzset{
+  on layer/.code={
+    \gdef\node@@on@layer{%
+      \setbox\tikz@tempbox=\hbox\bgroup
+      \pgfonlayer{#1}%
+      \unhbox\tikz@tempbox
+      \endpgfonlayer
+      \egroup
+    }%
+    \aftergroup\node@on@layer
+    \tikzset{
+      execute at begin scope={\pgfonlayer{#1}},
+      execute at end scope={\endpgfonlayer}
+    }%
+  }
+}
+\def\node@on@layer{\aftergroup\node@@on@layer}
+\makeatother
+
+%% Size parameters
+\newcommand{\mkrad}{0.05cm}
+\newcommand{\obrad}{0.1cm}
+
+\tikzset{
+  vertex/.style={
+    shape=circle,
+    draw,
+    fill=black,
+    inner sep=0pt,
+    minimum size=3pt
+  },
+  object/.style={
+    circle,
+    draw,
+    thick,
+    fill=white,
+    inner sep=0pt,
+    minimum size=2*\obrad
+  },
+  coupon/.style={
+    draw=black,
+    fill=white,
+    rounded corners=5pt,
+    very thick,
+    inner sep=3pt,
+    minimum size=2.1*height("Hg"),
+    on layer=top,
+  },
+  bullet/.style={
+    circle,
+    fill=#1,
+    draw=#1,
+    inner sep=0pt,
+    minimum size=2*\mkrad
+  },
+  bullet/.default=black,
+}
+
+%% Coupon macro
+\newcommand{\cpn}[3][]{\node[coupon,#1] at #2 {#3};}
+\newcommand{\blt}[2][]{\node[bullet,#1] at #2;}
+
+%% ----------------------------------------------------------------------------
+%% DRAWING MACROS
+%% ----------------------------------------------------------------------------
+\NewDocumentCommand{\drawmark}{O{black} m o O{above}}{%
+  \fill[#1] (#2) circle (\mkrad);%
+  \IfValueT{#3}{\node[#4] at (#2) {#3};}%
+}
+
+\NewDocumentCommand{\drawobject}{O{black} m o O{above}}{%
+  \draw[thick, fill=#1] (#2) circle (\obrad);%
+  \IfValueT{#3}{\node[#4] at (#2) {#3};}%
+}
+
+%% Legacy aliases
+\newcommand{\mk}[1]{\drawmark{#1}}
+\newcommand{\ob}[1]{\drawobject[black]{#1}}
+\newcommand{\wob}[1]{\drawobject[white]{#1}}
+\newcommand{\umark}[1]{\draw (#1) circle (\mkrad);}
+\newcommand{\labmark}[3]{\drawmark{#1}[#2]{#3}}
+\newcommand{\labob}[3]{\drawobject[black]{#1}[#2]{#3}}
+
+%% Strand macros
+\newcommand{\vstrand}[2]{%
+  \draw[thick] (#1) -- ++(0,#2);%
+  \fill (#1) circle (1.5pt);%
+  \fill ([yshift=#2]#1) circle (1.5pt);%
+}
+
+\newcommand{\hstrand}[2]{%
+  \draw[thick] (#1) -- ++(#2,0);%
+  \fill (#1) circle (1.5pt);%
+  \fill ([xshift=#2]#1) circle (1.5pt);%
+}
+
+%% Region box
+\newcommand{\regionbox}[3][black]{%
+  \draw[dashed, rounded corners=5pt, draw=#1] #2 rectangle #3;%
+}
+\newcommand{\rregionbox}[2]{\regionbox[red]{#1}{#2}}
+\newcommand{\bregionbox}[2]{\regionbox[blue]{#1}{#2}}
+\newcommand{\oregionbox}[2]{\regionbox[orange]{#1}{#2}}
+\newcommand{\gregionbox}[2]{\regionbox[green!60!black]{#1}{#2}}
+
+%% Bubble/circle
+\newcommand{\bubble}[3][]{\draw[#1] #2 circle (#3);}
+
+%% Arc macros
+\newcommand{\capto}[1]{arc(180:0:#1)}
+\newcommand{\cupto}[1]{arc(-180:0:#1)}
+\newcommand{\capfrom}[1]{arc(0:180:#1)}
+\newcommand{\cupfrom}[1]{arc(0:-180:#1)}
+
+%% ----------------------------------------------------------------------------
+%% UTILITY STYLES
+%% ----------------------------------------------------------------------------
+\tikzset{
+  horizontal gradient/.style 2 args={left color=#1, right color=#2},
+  vertical gradient/.style 2 args={top color=#1, bottom color=#2},
+  super thick/.style={line width=3pt},
+  ultra super thick/.style={line width=4pt},
+  hair/.style={line width=0.1pt},
+  strand/.style={thick},
+  boundary/.style={very thick},
+  sep/.style={inner sep=#1, outer sep=#1},
+  tight/.style={inner sep=0pt, outer sep=0pt},
+  boxed/.style={
+    execute at end picture={
+      \begin{pgfonlayer}{bottom}
+        \node[
+          minimum size=0pt,
+          inner ysep=0,
+          outer sep=0pt,
+          rounded corners,
+          fit=(current bounding box),
+          inner xsep=5pt,
+          #1,
+          draw=none,
+        ]{};
+      \end{pgfonlayer}
+      \begin{pgfonlayer}{top}
+        \node[
+          minimum size=0pt,
+          inner ysep=0,
+          outer sep=0pt,
+          rounded corners,
+          fit=(current bounding box),
+          inner xsep=5pt,
+          #1,
+          fill=none
+        ]{};
+      \end{pgfonlayer}
+    }
+  },
+  boxed/.default = {draw=black, very thick},
+  invclip/.style={
+    clip,
+    overlay,
+    insert path={[reset cm] (-100cm,-100cm) rectangle (100cm,100cm)}
+  },
+  xy/.style={canvas is xy plane at z=#1},
+  yx/.style={canvas is yx plane at z=#1},
+  yz/.style={canvas is yz plane at x=#1},
+  zy/.style={canvas is zy plane at x=#1},
+  zx/.style={canvas is zx plane at y=#1},
+  xz/.style={canvas is xz plane at y=#1},
+  frameR/.style={
+    preaction={draw=#1, super thick, opacity=.2, decorate, decoration={curveto, amplitude=0, raise=-1.5pt}},
+    thick, #1
+  },
+  frameL/.style={
+    preaction={draw=#1, super thick, opacity=.2, decorate, decoration={curveto, amplitude=0, raise=1.5pt}},
+    thick, #1
+  }
+}
+
+\newcommand{\invclip}{\path[invclip]}
+
+%% Last coordinate access
+\makeatletter
+\newcommand\this{\the\tikz@lastxsaved,\the\tikz@lastysaved}
+\makeatother
+
+%% ----------------------------------------------------------------------------
+%% EXTENDED ANCHORS FOR RECTANGLE NODES
+%% ----------------------------------------------------------------------------
+\makeatletter
+\def\pgfaddtoshape#1#2{\begingroup\def\pgf@sm@shape@name{#1}\let\anchor\pgf@sh@anchor#2\endgroup}
+\def\useanchor#1#2{\csname pgf@anchor@#1@#2\endcsname}
+\def\@shiftback#1#2#3#4#5#6{\advance\pgf@x by -#5\relax\advance\pgf@y by -#6\relax}
+
+\pgfaddtoshape{rectangle}{
+  \anchor{west south west}{%
+    \pgf@process{\northeast}\pgf@ya=.5\pgf@y%
+    \pgf@process{\southwest}\pgf@y=1.5\pgf@y%
+    \advance\pgf@y by \pgf@ya\pgf@y=.5\pgf@y}
+  \anchor{west north west}{%
+    \pgf@process{\northeast}\pgf@ya=1.5\pgf@y%
+    \pgf@process{\southwest}\pgf@y=.5\pgf@y%
+    \advance\pgf@y by \pgf@ya\pgf@y=.5\pgf@y}
+  \anchor{east north east}{%
+    \pgf@process{\southwest}\pgf@ya=.5\pgf@y%
+    \pgf@process{\northeast}\pgf@y=1.5\pgf@y%
+    \advance\pgf@y by \pgf@ya\pgf@y=.5\pgf@y}
+  \anchor{east south east}{%
+    \pgf@process{\southwest}\pgf@ya=1.5\pgf@y%
+    \pgf@process{\northeast}\pgf@y=.5\pgf@y%
+    \advance\pgf@y by \pgf@ya\pgf@y=.5\pgf@y}
+  \anchor{north north west}{%
+    \pgf@process{\southwest}\pgf@xa=1.5\pgf@x%
+    \pgf@process{\northeast}\pgf@x=.5\pgf@x%
+    \advance\pgf@x by \pgf@xa\pgf@x=.5\pgf@x}
+  \anchor{north north east}{%
+    \pgf@process{\southwest}\pgf@xa=.5\pgf@x%
+    \pgf@process{\northeast}\pgf@x=1.5\pgf@x%
+    \advance\pgf@x by \pgf@xa\pgf@x=.5\pgf@x}
+  \anchor{south south west}{%
+    \pgf@process{\northeast}\pgf@xa=.5\pgf@x%
+    \pgf@process{\southwest}\pgf@x=1.5\pgf@x%
+    \advance\pgf@x by \pgf@xa\pgf@x=.5\pgf@x}
+  \anchor{south south east}{%
+    \pgf@process{\northeast}\pgf@xa=1.5\pgf@x%
+    \pgf@process{\southwest}\pgf@x=.5\pgf@x%
+    \advance\pgf@x by \pgf@xa\pgf@x=.5\pgf@x}
+}
+
+\newcommand{\anchorlet}[2]{\global\expandafter\let\csname pgf@anchor@\pgf@sm@shape@name @#1\expandafter\endcsname \csname pgf@anchor@\pgf@sm@shape@name @#2\endcsname}
+\newcommand{\anchoralias}[2]{\expandafter\gdef\csname pgf@anchor@\pgf@sm@shape@name @#1\expandafter\endcsname \expandafter{\csname pgf@anchor@\pgf@sm@shape@name @#2\endcsname}}
+
+\pgfaddtoshape{rectangle}{%
+  \anchorlet{s}{south}\anchorlet{e}{east}\anchorlet{w}{west}\anchorlet{n}{north}%
+  \anchorlet{se}{south east}\anchorlet{sw}{south west}\anchorlet{ne}{north east}\anchorlet{nw}{north west}%
+  \anchorlet{wsw}{west south west}\anchorlet{wnw}{west north west}\anchorlet{ene}{east north east}\anchorlet{ese}{east south east}%
+  \anchorlet{nnw}{north north west}\anchorlet{nne}{north north east}\anchorlet{ssw}{south south west}\anchorlet{sse}{south south east}%
+}
+\makeatother
+
+\endinput

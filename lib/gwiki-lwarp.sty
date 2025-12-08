@@ -1,0 +1,236 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{gwiki-lwarp}[2025/12/08 v1.0 GWiki LWarp Integration]
+
+%% ============================================================================
+%% GWIKI LWARP INTEGRATION
+%% Enables high-quality HTML output with TikZ diagram support
+%% ============================================================================
+
+%% ----------------------------------------------------------------------------
+%% LWARP CONFIGURATION
+%% ----------------------------------------------------------------------------
+
+%% Only load lwarp if not already in HTML mode
+\@ifpackageloaded{lwarp}{}{%
+  \RequirePackage[
+    mathjax,                    % Use MathJax for math rendering
+    latexmk,                    % Compatible with latexmk
+    HomeHTMLFilename=index,     % Name of the home page
+    HTMLFilename={node-},       % Prefix for HTML files
+  ]{lwarp}
+}
+
+%% ----------------------------------------------------------------------------
+%% TIKZ/PGF SUPPORT FOR LWARP
+%% ----------------------------------------------------------------------------
+
+%% TikZ diagrams are rendered as SVG images by lwarp
+%% Configure SVG generation settings
+\begin{warpHTML}
+  %% Navigation setup
+  \setcounter{FileDepth}{1}
+  \setcounter{SideTOCDepth}{1}
+
+  %% CSS customization
+  \CSSFilename{gwiki.css}
+
+  %% Math rendering
+  \begin{warpMathJax}
+    %% Custom MathJax configuration for GWiki macros
+    \CustomizeMathJax{\newcommand{\bA}{\mathbb{A}}}
+    \CustomizeMathJax{\newcommand{\bB}{\mathbb{B}}}
+    \CustomizeMathJax{\newcommand{\bC}{\mathbb{C}}}
+    \CustomizeMathJax{\newcommand{\bD}{\mathbb{D}}}
+    \CustomizeMathJax{\newcommand{\bE}{\mathbb{E}}}
+    \CustomizeMathJax{\newcommand{\bF}{\mathbb{F}}}
+    \CustomizeMathJax{\newcommand{\bG}{\mathbb{G}}}
+    \CustomizeMathJax{\newcommand{\bH}{\mathbb{H}}}
+    \CustomizeMathJax{\newcommand{\bI}{\mathbb{I}}}
+    \CustomizeMathJax{\newcommand{\bJ}{\mathbb{J}}}
+    \CustomizeMathJax{\newcommand{\bK}{\mathbb{K}}}
+    \CustomizeMathJax{\newcommand{\bL}{\mathbb{L}}}
+    \CustomizeMathJax{\newcommand{\bM}{\mathbb{M}}}
+    \CustomizeMathJax{\newcommand{\bN}{\mathbb{N}}}
+    \CustomizeMathJax{\newcommand{\bO}{\mathbb{O}}}
+    \CustomizeMathJax{\newcommand{\bP}{\mathbb{P}}}
+    \CustomizeMathJax{\newcommand{\bQ}{\mathbb{Q}}}
+    \CustomizeMathJax{\newcommand{\bR}{\mathbb{R}}}
+    \CustomizeMathJax{\newcommand{\bS}{\mathbb{S}}}
+    \CustomizeMathJax{\newcommand{\bT}{\mathbb{T}}}
+    \CustomizeMathJax{\newcommand{\bU}{\mathbb{U}}}
+    \CustomizeMathJax{\newcommand{\bV}{\mathbb{V}}}
+    \CustomizeMathJax{\newcommand{\bW}{\mathbb{W}}}
+    \CustomizeMathJax{\newcommand{\bX}{\mathbb{X}}}
+    \CustomizeMathJax{\newcommand{\bY}{\mathbb{Y}}}
+    \CustomizeMathJax{\newcommand{\bZ}{\mathbb{Z}}}
+
+    %% Calligraphic
+    \CustomizeMathJax{\newcommand{\cA}{\mathcal{A}}}
+    \CustomizeMathJax{\newcommand{\cB}{\mathcal{B}}}
+    \CustomizeMathJax{\newcommand{\cC}{\mathcal{C}}}
+    \CustomizeMathJax{\newcommand{\cD}{\mathcal{D}}}
+    \CustomizeMathJax{\newcommand{\cE}{\mathcal{E}}}
+    \CustomizeMathJax{\newcommand{\cF}{\mathcal{F}}}
+    \CustomizeMathJax{\newcommand{\cG}{\mathcal{G}}}
+    \CustomizeMathJax{\newcommand{\cH}{\mathcal{H}}}
+    \CustomizeMathJax{\newcommand{\cI}{\mathcal{I}}}
+    \CustomizeMathJax{\newcommand{\cJ}{\mathcal{J}}}
+    \CustomizeMathJax{\newcommand{\cK}{\mathcal{K}}}
+    \CustomizeMathJax{\newcommand{\cL}{\mathcal{L}}}
+    \CustomizeMathJax{\newcommand{\cM}{\mathcal{M}}}
+    \CustomizeMathJax{\newcommand{\cN}{\mathcal{N}}}
+    \CustomizeMathJax{\newcommand{\cO}{\mathcal{O}}}
+    \CustomizeMathJax{\newcommand{\cP}{\mathcal{P}}}
+    \CustomizeMathJax{\newcommand{\cQ}{\mathcal{Q}}}
+    \CustomizeMathJax{\newcommand{\cR}{\mathcal{R}}}
+    \CustomizeMathJax{\newcommand{\cS}{\mathcal{S}}}
+    \CustomizeMathJax{\newcommand{\cT}{\mathcal{T}}}
+    \CustomizeMathJax{\newcommand{\cU}{\mathcal{U}}}
+    \CustomizeMathJax{\newcommand{\cV}{\mathcal{V}}}
+    \CustomizeMathJax{\newcommand{\cW}{\mathcal{W}}}
+    \CustomizeMathJax{\newcommand{\cX}{\mathcal{X}}}
+    \CustomizeMathJax{\newcommand{\cY}{\mathcal{Y}}}
+    \CustomizeMathJax{\newcommand{\cZ}{\mathcal{Z}}}
+
+    %% Greek shortcuts
+    \CustomizeMathJax{\newcommand{\a}{\alpha}}
+    \CustomizeMathJax{\newcommand{\b}{\beta}}
+    \CustomizeMathJax{\newcommand{\g}{\gamma}}
+    \CustomizeMathJax{\newcommand{\d}{\delta}}
+    \CustomizeMathJax{\newcommand{\e}{\varepsilon}}
+    \CustomizeMathJax{\newcommand{\z}{\zeta}}
+    \CustomizeMathJax{\newcommand{\th}{\theta}}
+    \CustomizeMathJax{\newcommand{\k}{\kappa}}
+    \CustomizeMathJax{\newcommand{\l}{\lambda}}
+    \CustomizeMathJax{\newcommand{\n}{\nu}}
+    \CustomizeMathJax{\newcommand{\x}{\xi}}
+    \CustomizeMathJax{\newcommand{\p}{\varphi}}
+    \CustomizeMathJax{\newcommand{\f}{\phi}}
+    \CustomizeMathJax{\newcommand{\s}{\sigma}}
+    \CustomizeMathJax{\newcommand{\t}{\tau}}
+    \CustomizeMathJax{\newcommand{\o}{\omega}}
+    \CustomizeMathJax{\newcommand{\r}{\rho}}
+
+    \CustomizeMathJax{\newcommand{\G}{\Gamma}}
+    \CustomizeMathJax{\newcommand{\D}{\Delta}}
+    \CustomizeMathJax{\newcommand{\Th}{\Theta}}
+    \CustomizeMathJax{\newcommand{\L}{\Lambda}}
+    \CustomizeMathJax{\newcommand{\X}{\Xi}}
+    \CustomizeMathJax{\newcommand{\P}{\Phi}}
+    \CustomizeMathJax{\newcommand{\S}{\Sigma}}
+    \CustomizeMathJax{\newcommand{\O}{\Omega}}
+
+    %% Operators
+    \CustomizeMathJax{\DeclareMathOperator{\Hom}{Hom}}
+    \CustomizeMathJax{\DeclareMathOperator{\End}{End}}
+    \CustomizeMathJax{\DeclareMathOperator{\Aut}{Aut}}
+    \CustomizeMathJax{\DeclareMathOperator{\im}{im}}
+    \CustomizeMathJax{\DeclareMathOperator{\coker}{coker}}
+    \CustomizeMathJax{\DeclareMathOperator{\Ext}{Ext}}
+    \CustomizeMathJax{\DeclareMathOperator{\Tor}{Tor}}
+    \CustomizeMathJax{\DeclareMathOperator{\colim}{colim}}
+    \CustomizeMathJax{\DeclareMathOperator{\Spec}{Spec}}
+    \CustomizeMathJax{\DeclareMathOperator{\Proj}{Proj}}
+    \CustomizeMathJax{\DeclareMathOperator{\supp}{supp}}
+    \CustomizeMathJax{\DeclareMathOperator{\tr}{tr}}
+    \CustomizeMathJax{\DeclareMathOperator{\rank}{rank}}
+    \CustomizeMathJax{\DeclareMathOperator{\sgn}{sgn}}
+
+    %% Symbols
+    \CustomizeMathJax{\newcommand{\inv}{^{-1}}}
+    \CustomizeMathJax{\newcommand{\tsr}{\otimes}}
+    \CustomizeMathJax{\newcommand{\Tsr}{\bigotimes}}
+    \CustomizeMathJax{\newcommand{\Oplus}{\bigoplus}}
+    \CustomizeMathJax{\newcommand{\wdg}{\wedge}}
+    \CustomizeMathJax{\newcommand{\Wdg}{\bigwedge}}
+    \CustomizeMathJax{\newcommand{\bd}{\partial}}
+    \CustomizeMathJax{\newcommand{\tms}{\times}}
+
+    %% Arrows
+    \CustomizeMathJax{\newcommand{\To}{\Rightarrow}}
+    \CustomizeMathJax{\newcommand{\lto}{\longrightarrow}}
+    \CustomizeMathJax{\newcommand{\incto}{\hookrightarrow}}
+    \CustomizeMathJax{\newcommand{\sjto}{\twoheadrightarrow}}
+    \CustomizeMathJax{\newcommand{\mpto}{\mapsto}}
+
+    %% Categories
+    \CustomizeMathJax{\newcommand{\Set}{\mathsf{Set}}}
+    \CustomizeMathJax{\newcommand{\Grp}{\mathsf{Grp}}}
+    \CustomizeMathJax{\newcommand{\Ab}{\mathsf{Ab}}}
+    \CustomizeMathJax{\newcommand{\Ring}{\mathsf{Ring}}}
+    \CustomizeMathJax{\newcommand{\Mod}{\mathsf{Mod}}}
+    \CustomizeMathJax{\newcommand{\Top}{\mathsf{Top}}}
+    \CustomizeMathJax{\newcommand{\Vec}{\mathsf{Vec}}}
+    \CustomizeMathJax{\newcommand{\Cat}{\mathsf{Cat}}}
+    \CustomizeMathJax{\newcommand{\Fun}{\mathsf{Fun}}}
+
+    %% Bra-ket
+    \CustomizeMathJax{\newcommand{\bra}[1]{\langle#1\rvert}}
+    \CustomizeMathJax{\newcommand{\ket}[1]{\lvert#1\rangle}}
+    \CustomizeMathJax{\newcommand{\braket}[2]{\langle#1|#2\rangle}}
+
+  \end{warpMathJax}
+\end{warpHTML}
+
+%% ----------------------------------------------------------------------------
+%% HTML-SPECIFIC FORMATTING
+%% ----------------------------------------------------------------------------
+\begin{warpHTML}
+  %% Wiki link styling for HTML
+  \renewcommand{\wref}[2][]{%
+    \ifx#2\empty
+      \LWR@htmltag{a href="#1.html" class="gwiki-link"}\texttt{#1}\LWR@htmltag{/a}%
+    \else
+      \LWR@htmltag{a href="#1.html" class="gwiki-link"}#2\LWR@htmltag{/a}%
+    \fi
+  }
+
+  %% Navigation bar for HTML
+  \renewcommand{\navbar}[2]{%
+    \LWR@htmltag{nav class="gwiki-nav"}%
+    \ifx#1\empty\else
+      \LWR@htmltag{a href="#1.html" class="nav-prev"}$\leftarrow$ Previous\LWR@htmltag{/a}%
+    \fi
+    \LWR@htmltag{a href="index.html" class="nav-home"}Index\LWR@htmltag{/a}%
+    \ifx#2\empty\else
+      \LWR@htmltag{a href="#2.html" class="nav-next"}Next $\rightarrow$\LWR@htmltag{/a}%
+    \fi
+    \LWR@htmltag{/nav}%
+  }
+
+  %% Tag display for HTML
+  \renewcommand{\showtags}[1]{%
+    \LWR@htmltag{span class="gwiki-tags"}#1\LWR@htmltag{/span}%
+  }
+
+  %% Backlinks section for HTML
+  \renewcommand{\showbacklinks}{%
+    \ifx\gwiki@backlinks\empty
+    \else
+      \LWR@htmltag{section class="gwiki-backlinks"}%
+      \LWR@htmltag{h3}Pages that link here\LWR@htmltag{/h3}%
+      \gwiki@backlinks
+      \LWR@htmltag{/section}%
+    \fi
+  }
+\end{warpHTML}
+
+%% ----------------------------------------------------------------------------
+%% PDF-SPECIFIC SETTINGS (when not generating HTML)
+%% ----------------------------------------------------------------------------
+\begin{warpprint}
+  %% Standard PDF output - no changes needed
+\end{warpprint}
+
+%% ----------------------------------------------------------------------------
+%% TIKZ IMAGE HANDLING
+%% ----------------------------------------------------------------------------
+%% lwarp automatically handles TikZ by generating SVG images
+%% The following ensures proper configuration
+
+\begin{warpHTML}
+  %% Ensure TikZ pictures are rendered as images
+  \newcommand{\tikzaliasaliaspicture}{}
+\end{warpHTML}
+
+\endinput

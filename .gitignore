@@ -1,0 +1,71 @@
+# GWiki .gitignore
+
+# Build output
+build/
+
+# LaTeX auxiliary files
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.synctex(busy)
+*.pdfsync
+*.bbl
+*.bcf
+*.blg
+*.run.xml
+*.idx
+*.ilg
+*.ind
+*.ist
+*.glg
+*.glo
+*.gls
+*.glsdefs
+*.nav
+*.snm
+*.vrb
+*.xdv
+
+# LWarp files
+*_html.*
+*.lwarpmk
+lwarpmk.conf
+*.warpcfg
+
+# Generated index (can be regenerated)
+index/*.json
+
+# Editor files
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# IDE directories
+.idea/
+.vscode/
+*.sublime-*
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+*.egg
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# OS generated files
+.Spotlight-V100
+.Trashes
+ehthumbs.db
