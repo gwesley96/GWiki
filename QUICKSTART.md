@@ -80,7 +80,7 @@ PDFs go to `build/pdf/`.
 
 ## Linking
 
-**One command: `\wref{}`** - Links between PDFs work! Click a link to open the other PDF.
+**One command: `\wref{}`** - Links between PDFs work!
 
 | What you write | What it does |
 |----------------|--------------|
@@ -89,7 +89,15 @@ PDFs go to `build/pdf/`.
 | `\wref{#sec:examples}` | Links to label in same file |
 | `\wref{functor#thm:main}` | Links to functor.pdf at specific section |
 
-**Note:** Cross-PDF links work in most PDF viewers (Preview, Adobe, Okular, etc.). Keep all PDFs in the same `build/pdf/` directory for relative links to work.
+**Important:** Cross-PDF links work in **Adobe Acrobat Reader**, but NOT in VS Code's built-in PDF viewer (security restrictions).
+
+**Recommended workflow:**
+1. Edit `.tex` files in VS Code (autocomplete works!)
+2. Run `make` to build PDFs
+3. View PDFs in Adobe Acrobat (links work perfectly)
+4. Keep Adobe open - it auto-refreshes when PDFs rebuild
+
+All PDFs go to `build/pdf/` directory.
 
 ## Autocomplete
 
