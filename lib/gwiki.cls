@@ -143,9 +143,13 @@
   citecolor=blue,
   pdfpagemode=FullScreen,
   linktocpage=true,
-  hyperfootnotes=true
+  hyperfootnotes=true,
+  pdfnewwindow=true
 ]{hyperref}
 
+% Try zref-xr for better hyperlink support between documents
+\RequirePackage{zref-xr}
+\IfFileExists{gwiki-externaldocs.sty}{\RequirePackage{gwiki-externaldocs}}{}
 \RequirePackage[capitalize,noabbrev]{cleveref}
 \RequirePackage[\gwiki@paper,left=\gwiki@margins,right=\gwiki@margins]{geometry}
 

@@ -54,16 +54,16 @@
       \StrBehind{#1}{\#}[\gwiki@xlabel]%
       \IfStrEq{#2}{}{%
         % Link to other PDF with named destination
-        \href{\gwiki@xdoc.pdf\#\gwiki@xlabel}{\textsl{\gwiki@xdoc} \S\gwiki@xlabel}%
+        \href{run:\gwiki@xdoc.pdf\#\gwiki@xlabel}{\textsl{\gwiki@xdoc} \S\gwiki@xlabel}%
       }{%
-        \href{\gwiki@xdoc.pdf\#\gwiki@xlabel}{#2}%
+        \href{run:\gwiki@xdoc.pdf\#\gwiki@xlabel}{#2}%
       }%
     }{%
       % Simple document reference - link to PDF file
       \IfStrEq{#2}{}{%
-        \href{#1.pdf}{\textsl{#1}}%
+        \href{run:#1.pdf}{\textsl{#1}}%
       }{%
-        \href{#1.pdf}{#2}%
+        \href{run:#1.pdf}{#2}%
       }%
     }%
   }%
