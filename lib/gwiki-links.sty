@@ -30,50 +30,50 @@
 %% THE ONE COMMAND: \wref
 %% ----------------------------------------------------------------------------
 %% Usage:
-%%   \wref{note-name}           -> Link to note.pdf, display "note-name"
-%%   \wref{note-name}[Text]     -> Link to note.pdf, display "Text"
-%%   \wref{note#sec:intro}      -> Link to note.pdf at named dest
-%%   \wref{#sec:intro}          -> Link within same document
+%%   \wref{note-name}                    -> Link to note.pdf, display "note-name"
+%%   \wref[monoid]{monoid-in-monoidal}  -> Link, display "monoid" in prose
+%%   \wref{note#sec:intro}               -> Link to note.pdf at named dest
+%%   \wref{#sec:intro}                   -> Link within same document
 %%
 %% Links open the target PDF when clicked in a PDF viewer.
 
-\NewDocumentCommand{\wref}{m O{}}{%
+\NewDocumentCommand{\wref}{O{} m}{%
   % Check if it starts with # (internal reference)
-  \IfBeginWith{#1}{\#}{%
+  \IfBeginWith{#2}{\#}{%
     % Internal reference - strip the # and use hyperref
-    \StrBehind{#1}{\#}[\gwiki@intlabel]%
-    \IfStrEq{#2}{}{%
+    \StrBehind{#2}{\#}[\gwiki@intlabel]%
+    \IfStrEq{#1}{}{%
       \hyperref[\gwiki@intlabel]{\gwiki@intlabel}%
     }{%
-      \hyperref[\gwiki@intlabel]{#2}%
+      \hyperref[\gwiki@intlabel]{#1}%
     }%
   }{%
     % Check if it contains # (cross-document section reference)
-    \IfSubStr{#1}{\#}{%
-      \StrBefore{#1}{\#}[\gwiki@xdoc]%
-      \StrBehind{#1}{\#}[\gwiki@xlabel]%
-      \IfStrEq{#2}{}{%
+    \IfSubStr{#2}{\#}{%
+      \StrBefore{#2}{\#}[\gwiki@xdoc]%
+      \StrBehind{#2}{\#}[\gwiki@xlabel]%
+      \IfStrEq{#1}{}{%
         % Link to other PDF with named destination
         \href{run:./\gwiki@xdoc.pdf\#\gwiki@xlabel}{\textsl{\gwiki@xdoc} \S\gwiki@xlabel}%
       }{%
-        \href{run:./\gwiki@xdoc.pdf\#\gwiki@xlabel}{#2}%
+        \href{run:./\gwiki@xdoc.pdf\#\gwiki@xlabel}{#1}%
       }%
     }{%
       % Simple document reference - link to PDF file
-      \IfStrEq{#2}{}{%
-        \href{run:./#1.pdf}{\textsl{#1}}%
+      \IfStrEq{#1}{}{%
+        \href{run:./#2.pdf}{\textsl{#2}}%
       }{%
-        \href{run:./#1.pdf}{#2}%
+        \href{run:./#2.pdf}{#1}%
       }%
     }%
   }%
   % Record for backlinks (processed by build system)
-  \IfBeginWith{#1}{\#}{}{%
-    \IfSubStr{#1}{\#}{%
-      \StrBefore{#1}{\#}[\gwiki@refdoc]%
+  \IfBeginWith{#2}{\#}{}{%
+    \IfSubStr{#2}{\#}{%
+      \StrBefore{#2}{\#}[\gwiki@refdoc]%
       \immediate\write\@auxout{\string\gwiki@ref{\jobname}{\gwiki@refdoc}}%
     }{%
-      \immediate\write\@auxout{\string\gwiki@ref{\jobname}{#1}}%
+      \immediate\write\@auxout{\string\gwiki@ref{\jobname}{#2}}%
     }%
   }%
 }
