@@ -1,0 +1,37 @@
+\documentclass{gwiki}
+
+\Title{Natural Transformation}
+\Tags{category-theory, definition}
+
+\begin{document}
+
+\NoteHeader
+
+\prereq{functor, category}
+
+\begin{definition}[Natural Transformation]
+Let $F, G : \cC \to \cD$ be \wref{functor}[functors]. A \textbf{natural transformation} $\eta : F \Rightarrow G$ assigns to each object $A \in \cC$ a morphism $\eta_A : F(A) \to G(A)$ such that for every $f : A \to B$ in $\cC$:
+\[
+\begin{tikzcd}
+  F(A) \ar[r, "\eta_A"] \ar[d, "F(f)"'] & G(A) \ar[d, "G(f)"] \\
+  F(B) \ar[r, "\eta_B"'] & G(B)
+\end{tikzcd}
+\]
+commutes. The morphisms $\eta_A$ are called the \emph{components} of $\eta$.
+\end{definition}
+
+\section{Examples}
+
+\begin{example}[Double dual]
+For finite-dimensional vector spaces, there is a natural isomorphism $V \to V^{**}$ given by $v \mapsto (\varphi \mapsto \varphi(v))$.
+\end{example}
+
+\begin{example}[Determinant]
+$\det : \GL_n \Rightarrow (-)^\times$ is a natural transformation of functors $\Ring \to \Grp$.
+\end{example}
+
+\seealso{functor, category}
+
+\Footer
+
+\end{document}

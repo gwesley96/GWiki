@@ -1,14 +1,14 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{gwiki-links}[2025/12/08 v2.0 GWiki Simplified Linking]
+\ProvidesPackage{gwiki-links}[2025/12/08 v3.0 GWiki Cross-Document PDF Linking]
 
 %% ============================================================================
-%% GWIKI LINKS v2 - SIMPLIFIED
+%% GWIKI LINKS v3 - CROSS-DOCUMENT PDF LINKING
 %%
 %% Design principles:
 %%   - Filename = ID (no manual ID assignment)
 %%   - Single \wref{name} command for everything
-%%   - Uses \cref for internal references
-%%   - Minimal boilerplate
+%%   - Links between separate PDFs using \href{file.pdf}
+%%   - Click a link -> opens the other PDF
 %% ============================================================================
 
 \RequirePackage{xparse}
@@ -19,27 +19,23 @@
 %% ----------------------------------------------------------------------------
 %% AUTO ID FROM FILENAME
 %% ----------------------------------------------------------------------------
-%% The document ID is automatically set to the filename (without .tex)
-%% No need to manually specify IDs!
-
 \newcommand{\gwiki@id}{\jobname}
 
-%% Create the main anchor at document start
+%% Create anchor at document start (for internal refs)
 \AtBeginDocument{%
-  \label{gwiki:\jobname}%
-  \hypertarget{gwiki:\jobname}{}%
+  \hypertarget{gwiki:top}{}%
 }
 
 %% ----------------------------------------------------------------------------
 %% THE ONE COMMAND: \wref
 %% ----------------------------------------------------------------------------
 %% Usage:
-%%   \wref{note-name}           -> Link to note, display "note-name" (italicized)
-%%   \wref{note-name}[Text]     -> Link to note, display "Text"
-%%   \wref{note#sec:intro}      -> Link to section in another note
-%%   \wref{#sec:intro}          -> Link within same document (uses \cref behavior)
+%%   \wref{note-name}           -> Link to note.pdf, display "note-name"
+%%   \wref{note-name}[Text]     -> Link to note.pdf, display "Text"
+%%   \wref{note#sec:intro}      -> Link to note.pdf at named dest
+%%   \wref{#sec:intro}          -> Link within same document
 %%
-%% That's it. One command for everything.
+%% Links open the target PDF when clicked in a PDF viewer.
 
 \NewDocumentCommand{\wref}{m O{}}{%
   % Check if it starts with # (internal reference)
@@ -57,16 +53,17 @@
       \StrBefore{#1}{\#}[\gwiki@xdoc]%
       \StrBehind{#1}{\#}[\gwiki@xlabel]%
       \IfStrEq{#2}{}{%
-        \hyperref[gwiki:\gwiki@xdoc:\gwiki@xlabel]{\textsl{\gwiki@xdoc} \S\gwiki@xlabel}%
+        % Link to other PDF with named destination
+        \href{\gwiki@xdoc.pdf\#\gwiki@xlabel}{\textsl{\gwiki@xdoc} \S\gwiki@xlabel}%
       }{%
-        \hyperref[gwiki:\gwiki@xdoc:\gwiki@xlabel]{#2}%
+        \href{\gwiki@xdoc.pdf\#\gwiki@xlabel}{#2}%
       }%
     }{%
-      % Simple document reference
+      % Simple document reference - link to PDF file
       \IfStrEq{#2}{}{%
-        \hyperref[gwiki:#1]{\textsl{#1}}%
+        \href{#1.pdf}{\textsl{#1}}%
       }{%
-        \hyperref[gwiki:#1]{#2}%
+        \href{#1.pdf}{#2}%
       }%
     }%
   }%

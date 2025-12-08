@@ -21,7 +21,7 @@
   enableParskip,enableNoLimits,enableLeftRightReducePadding,%
   enableLeftRightIgnoreScripts,enableLabelNumberBeforeName,%
   enableBibliography,enableDisplayUncited,enableFancyhead,%
-  enableIndex,enableLwarp,enableBacklinks%
+  enableIndex,enableBacklinks%
 }
 
 %% ----------------------------------------------------------------------------
@@ -44,7 +44,6 @@
 \DeclareBoolOption[false]{bibliography}
 \DeclareBoolOption[false]{fancyhead}
 \DeclareBoolOption[false]{index}
-\DeclareBoolOption[false]{lwarp}
 \DeclareBoolOption[false]{backlinks}
 \DeclareBoolOption[false]{draft}
 
@@ -64,7 +63,6 @@
 \ifgwiki@labelnumberbeforename\settoggle{enableLabelNumberBeforeName}{true}\fi
 \ifgwiki@fancyhead\settoggle{enableFancyhead}{true}\fi
 \ifgwiki@index\settoggle{enableIndex}{true}\fi
-\ifgwiki@lwarp\settoggle{enableLwarp}{true}\fi
 \ifgwiki@backlinks\settoggle{enableBacklinks}{true}\fi
 
 %% ----------------------------------------------------------------------------
@@ -388,12 +386,5 @@
 \RequirePackage{gwiki-macros}
 \RequirePackage{gwiki-links}
 \RequirePackage{tz}
-
-%% ============================================================================
-%% LWARP SUPPORT (conditional)
-%% ============================================================================
-\iftoggle{enableLwarp}{
-  \RequirePackage{gwiki-lwarp}
-}{}
 
 \endinput

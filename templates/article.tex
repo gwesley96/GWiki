@@ -1,24 +1,15 @@
-\documentclass[type=article,gwikiid=ARTICLE_ID]{gwiki}
+\documentclass{gwiki}
 
-%% ============================================================================
-%% ARTICLE_TITLE
-%% GWiki Article - Created ARTICLE_DATE
-%% ============================================================================
-
-\GWikiMeta{ARTICLE_ID}{ARTICLE_TITLE}{article}[tag1, tag2]
-\GWikiAuthor{Author Name}
-\GWikiDate{ARTICLE_DATE}
-\GWikiSummary{%
-  A brief summary of this article goes here. This should be 1-2 sentences
-  describing what the reader will learn.
-}
+\Title{TITLE}
+\Tags{}
+\Summary{Brief summary of this article.}
 
 \begin{document}
 
-\gwikiarticleheader
+\ArticleHeader
 
 %% Uncomment to list prerequisites
-%% \prerequisites{prereq-id-1, prereq-id-2}
+%% \prereq{prereq-1, prereq-2}
 
 \tableofcontents
 
@@ -26,26 +17,13 @@
 \section{Introduction}
 %% ============================================================================
 
-Introduce the topic here. Explain why it matters and what the reader will learn.
+Introduce the topic here.
 
-%% Link to wiki notes like this:
-%% \wref{wiki-note-id}[optional display text]
-
-%% ============================================================================
-\section{Background}
-%% ============================================================================
-
-Provide necessary background material here.
-
-\begin{definition}[Key Definition]
-  A \concept{key concept} is defined as...
-\end{definition}
+%% Link to other notes: \wref{note-name}
 
 %% ============================================================================
 \section{Main Results}
 %% ============================================================================
-
-Present the main results of the article.
 
 \begin{theorem}[Main Theorem]
   The main result states that...
@@ -60,24 +38,17 @@ Present the main results of the article.
 %% ============================================================================
 
 \begin{example}
-  Here is an illustrative example demonstrating the theory...
+  An illustrative example...
 \end{example}
-
-%% ============================================================================
-\section{Applications}
-%% ============================================================================
-
-Discuss applications and implications of the results.
 
 %% ============================================================================
 \section{Conclusion}
 %% ============================================================================
 
-Summarize the key points and suggest directions for further study.
+Summarize key points.
 
-%% List related topics
-\seealso{related-topic-1, related-topic-2}
+\seealso{related-1, related-2}
 
-\gwikifooter
+\Footer
 
 \end{document}

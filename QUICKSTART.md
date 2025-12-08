@@ -80,14 +80,16 @@ PDFs go to `build/pdf/`.
 
 ## Linking
 
-**One command: `\wref{}`**
+**One command: `\wref{}`** - Links between PDFs work! Click a link to open the other PDF.
 
 | What you write | What it does |
 |----------------|--------------|
-| `\wref{functor}` | Links to functor.tex, shows "functor" |
-| `\wref{functor}[Functors]` | Links to functor.tex, shows "Functors" |
+| `\wref{functor}` | Links to functor.pdf, shows "functor" |
+| `\wref{functor}[Functors]` | Links to functor.pdf, shows "Functors" |
 | `\wref{#sec:examples}` | Links to label in same file |
-| `\wref{functor#thm:main}` | Links to label in another file |
+| `\wref{functor#thm:main}` | Links to functor.pdf at specific section |
+
+**Note:** Cross-PDF links work in most PDF viewers (Preview, Adobe, Okular, etc.). Keep all PDFs in the same `build/pdf/` directory for relative links to work.
 
 ## Autocomplete
 
