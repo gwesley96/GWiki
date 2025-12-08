@@ -1,0 +1,47 @@
+{
+  "wref-my-topic": {
+    "prefix": [
+      "wrefmy-topic",
+      "my-topic",
+      "test topic"
+    ],
+    "body": "\\\\wref{my-topic}[${1:Test topic}]$0",
+    "description": "Test topic (notes/my-topic.tex)"
+  },
+  "wref-natural-transformation": {
+    "prefix": [
+      "wrefnatural-transformation",
+      "natural-transformation",
+      "natural transformation"
+    ],
+    "body": "\\\\wref{natural-transformation}[${1:Natural Transformation}]$0",
+    "description": "Natural Transformation (wiki/natural-transformation.tex)"
+  },
+  "wref-functor": {
+    "prefix": [
+      "wreffunctor",
+      "functor",
+      "functor"
+    ],
+    "body": "\\\\wref{functor}[${1:Functor}]$0",
+    "description": "Functor (notes/functor.tex)"
+  },
+  "wref-category": {
+    "prefix": [
+      "wrefcategory",
+      "category",
+      "category"
+    ],
+    "body": "\\\\wref{category}[${1:Category}]$0",
+    "description": "Category (notes/category.tex)"
+  },
+  "wref-category-theory-intro": {
+    "prefix": [
+      "wrefcategory-theory-intro",
+      "category-theory-intro",
+      "introduction to category theory"
+    ],
+    "body": "\\\\wref{category-theory-intro}[${1:Introduction to Category Theory}]$0",
+    "description": "Introduction to Category Theory (articles/category-theory-intro.tex)"
+  }
+}
