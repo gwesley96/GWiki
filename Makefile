@@ -13,36 +13,35 @@ PDFS_DIR := pdfs
 LATEX := pdflatex
 LATEXFLAGS := -interaction=nonstopmode -halt-on-error
 
-# Find all notes
-SOURCES := $(wildcard $(NOTES_DIR)/*.tex)
-PDFS := $(patsubst $(NOTES_DIR)/%.tex,$(BUILD_DIR)/%.pdf,$(SOURCES))
 INDEX_TEX := index.tex
-INDEX_PDF := $(BUILD_DIR)/index.pdf
 
 # Default: build all
 .PHONY: all clean new watch help index vault
 
-all: $(PDFS)
-	@echo "✓ Built $(words $(PDFS)) notes"
+all:
+	@mkdir -p $(BUILD_DIR)
+	@count=0; \
+	for f in $(NOTES_DIR)/*.tex; do \
+		if [ -f "$$f" ]; then \
+			name=$$(basename "$$f" .tex); \
+			echo "Building: $$name"; \
+			(cd $(NOTES_DIR) && TEXINPUTS=../$(LIB_DIR): $(LATEX) $(LATEXFLAGS) -output-directory=../$(BUILD_DIR) "$$(basename "$$f")" > /dev/null 2>&1); \
+			(cd $(NOTES_DIR) && TEXINPUTS=../$(LIB_DIR): $(LATEX) $(LATEXFLAGS) -output-directory=../$(BUILD_DIR) "$$(basename "$$f")" > /dev/null 2>&1); \
+			echo "  → $(BUILD_DIR)/$$name.pdf"; \
+			count=$$((count + 1)); \
+		fi; \
+	done; \
+	echo "✓ Built $$count notes"
 
 # Build complete vault (all notes + index)
-vault: $(PDFS) index
+vault: all index
 	@mkdir -p $(PDFS_DIR)
 	@cp -f $(BUILD_DIR)/*.pdf $(PDFS_DIR)/
-	@echo "✓ Complete vault built → $(PDFS_DIR)/"
-	@echo "  - $(words $(PDFS)) notes"
-	@echo "  - 1 index"
-
-# Build output directory
-$(BUILD_DIR):
-	@mkdir -p $@
-
-# Build any note
-$(BUILD_DIR)/%.pdf: $(NOTES_DIR)/%.tex $(LIB_DIR)/*.sty $(LIB_DIR)/*.cls | $(BUILD_DIR)
-	@echo "Building: $*"
-	@cd $(NOTES_DIR) && TEXINPUTS=../$(LIB_DIR): $(LATEX) $(LATEXFLAGS) -output-directory=../$(BUILD_DIR) $(<F) > /dev/null 2>&1
-	@cd $(NOTES_DIR) && TEXINPUTS=../$(LIB_DIR): $(LATEX) $(LATEXFLAGS) -output-directory=../$(BUILD_DIR) $(<F) > /dev/null 2>&1
-	@echo "  → $(BUILD_DIR)/$*.pdf"
+	@note_count=$$(ls -1 $(BUILD_DIR)/*.pdf 2>/dev/null | wc -l); \
+	note_count=$$((note_count - 1)); \
+	echo "✓ Complete vault built → $(PDFS_DIR)/"; \
+	echo "  - $$note_count notes"; \
+	echo "  - 1 index"
 
 # Generate and build vault index
 index: $(INDEX_TEX)
@@ -52,12 +51,8 @@ index: $(INDEX_TEX)
 	@echo "  → $(BUILD_DIR)/index.pdf"
 
 # Generate index.tex from notes
-$(INDEX_TEX): $(SOURCES)
+$(INDEX_TEX):
 	@python3 scripts/generate-index.py
-
-# Build single note by name
-%: $(NOTES_DIR)/%.tex
-	@$(MAKE) $(BUILD_DIR)/$*.pdf
 
 # Create new note (simplest possible)
 new:

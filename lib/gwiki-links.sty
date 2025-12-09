@@ -14,11 +14,14 @@
 \RequirePackage{xparse}
 \RequirePackage{xstring}
 \RequirePackage{hyperref}
+\RequirePackage{xr-hyper}  % Cross-document references
 \RequirePackage{pgffor}
 \RequirePackage{filemod}
 \RequirePackage{datetime2}
 \RequirePackage{etoolbox}
 \RequirePackage{array}
+
+\makeatletter
 
 %% ----------------------------------------------------------------------------
 %% AUTO ID FROM FILENAME
@@ -159,6 +162,39 @@
 \newcommand{\gwiki@meta}[4]{}
 
 %% ----------------------------------------------------------------------------
+%% CROSS-FILE LABEL REFERENCES
+%% ----------------------------------------------------------------------------
+%% \wintref[display]{filename}{label} - Link to specific theorem/label in another file
+%% Shows: [display/filename, ref-text] with clickable link to that location
+%%
+%% To enable full cross-document reference resolution, add to your document preamble:
+%%   \externaldocument[filename-]{../build/pdf/filename}
+%%
+%% Example: \wintref[NT]{functor}{thm:yoneda} -> [NT, Theorem 2.1]
+%%
+%% Without \externaldocument, it shows: [NT, thm:yoneda] (label name as fallback)
+
+\NewDocumentCommand{\wintref}{o m m}{%
+  % #1 = optional display name (default: filename)
+  % #2 = filename (without .pdf extension)
+  % #3 = label name
+  \def\wintref@display{#2}%
+  \IfNoValueF{#1}{\def\wintref@display{#1}}%
+  % Try to resolve the label reference
+  % If \externaldocument was used, the label will be prefixed with filename-
+  \def\wintref@labeltext{#3}%
+  \@ifundefined{r@#2-#3}{%
+    % Label not found - use label name as fallback
+    \def\wintref@labeltext{#3}%
+  }{%
+    % Label found - use \ref to get the number
+    \edef\wintref@labeltext{\ref*{#2-#3}}%
+  }%
+  % Create hyperlink to the specific label in the target PDF
+  \mbox{[\href{run:./#2.pdf\##3}{\wintref@display, \wintref@labeltext}]}%
+}
+
+%% ----------------------------------------------------------------------------
 %% PREREQUISITES AND RELATED
 %% ----------------------------------------------------------------------------
 \newcommand{\prereq}[1]{%
@@ -168,13 +204,15 @@
 }
 
 \newcommand{\seealso}[1]{%
-  \par\medskip\noindent\textbf{See also:}~%
-  \foreach \p in {#1} {\wref{\p}~}%
+  \par\medskip\noindent\textbf{See also:}%
+  \begin{itemize}[nosep,leftmargin=*]
+    \foreach \p in {#1} {\item \wref{\p}}
+  \end{itemize}
 }
 
 \newcommand{\SeeAlso}[1]{%
   \par\medskip\noindent\textbf{See also:}%
-  \begin{itemize}[leftmargin=*]
+  \begin{itemize}[nosep,leftmargin=*]
     \foreach \p in {#1} {\item \wref{\p}}
   \end{itemize}
 }
@@ -300,5 +338,7 @@
 \let\gwikiarticleheader\ArticleHeader
 \let\gwikinoteheader\NoteHeader
 \let\gwikifooter\Footer
+
+\makeatother
 
 \endinput
