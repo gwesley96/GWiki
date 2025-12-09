@@ -31,7 +31,7 @@
 \DeclareStringOption[]{gwikiid}            % Unique ID for this document
 \DeclareStringOption[12pt plus 3pt minus 9pt]{displayMathPadding}
 \DeclareStringOption[0.25in]{parindent}
-\DeclareStringOption[12pt]{fontsize}
+\DeclareStringOption[14pt]{fontsize}
 \DeclareStringOption[letterpaper]{paper}
 \DeclareStringOption[1in]{margins}
 
@@ -154,7 +154,7 @@
 \RequirePackage{zref-xr}
 \IfFileExists{gwiki-externaldocs.sty}{\RequirePackage{gwiki-externaldocs}}{}
 \RequirePackage[capitalize,noabbrev]{cleveref}
-\RequirePackage[\gwiki@paper,left=\gwiki@margins,right=\gwiki@margins]{geometry}
+\RequirePackage[\gwiki@paper,margin=\gwiki@margins]{geometry}
 
 %% mathclap definition
 \makeatletter
@@ -399,6 +399,7 @@
 %% DEFAULT FANCYHEAD FOR NOTES
 %% ============================================================================
 \RequirePackage{fancyhdr}
+\makeatletter
 \pagestyle{fancy}
 \fancyhf{} % Clear all
 \fancyhead[L]{\small\sffamily\color{gray!60}\gwiki@title}
@@ -406,6 +407,7 @@
 \fancyfoot{}
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\headrule}{\hbox to\headwidth{\color{gray!30}\leaders\hrule height \headrulewidth\hfill}}
-\setlength{\headheight}{14pt}
+\setlength{\headheight}{24pt}
+\makeatother
 
 \endinput
