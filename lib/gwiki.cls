@@ -395,4 +395,17 @@
 \RequirePackage{gwiki-links}
 \RequirePackage{tz}
 
+%% ============================================================================
+%% DEFAULT FANCYHEAD FOR NOTES
+%% ============================================================================
+\RequirePackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{} % Clear all
+\fancyhead[L]{\small\sffamily\color{gray!60}\gwiki@title}
+\fancyhead[R]{\small\color{gray!60}\thepage}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{gray!30}\leaders\hrule height \headrulewidth\hfill}}
+\setlength{\headheight}{14pt}
+
 \endinput

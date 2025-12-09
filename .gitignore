@@ -2,6 +2,10 @@
 
 # Build output
 build/
+pdfs/
+
+# Generated files
+index.tex
 
 # LaTeX auxiliary files
 *.aux
@@ -52,11 +56,9 @@ Thumbs.db
 .idea/
 *.sublime-*
 
-# VS Code - ignore user settings but keep GWiki extension
+# VS Code - ignore user settings
 .vscode/*
 !.vscode/settings.json
-!.vscode/gwiki-extension/
-!.vscode/gwiki.code-snippets
 
 # Python
 __pycache__/

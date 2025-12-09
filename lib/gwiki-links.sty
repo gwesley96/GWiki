@@ -234,21 +234,24 @@
   }\par\medskip
 }
 
-%% Wiki note header (minimal)
+%% Wiki note header (minimal - just title and summary)
 \newcommand{\NoteHeader}{%
   \noindent{\Huge\bfseries\sffamily\color{blue!60!black}\gwiki@title}%
   \par\medskip
-  \noindent{\color{gray!40}\rule[2pt]{\linewidth}{0.6pt}}\par\smallskip
-  \noindent{\small\color{gray!55}
-    \ifdefempty{\gwiki@created}{}{\noindent Created: \gwiki@created\quad}%
-    \noindent Last modified: \gwiki@moddatestring
-    \ifdefempty{\gwiki@tags}{}{\quad Tags: \gwiki@tags}
-  }\par\smallskip
+  \noindent{\color{gray!40}\rule[2pt]{\linewidth}{0.6pt}}\par\medskip
   \ifdefempty{\gwiki@summary}{}{\noindent\textbf{Summary.} \gwiki@summary\par\medskip}
 }
 
-%% Footer with tags
+%% Footer with metadata
 \newcommand{\Footer}{%
+  \vfill
+  \par\medskip
+  \noindent{\color{gray!40}\rule[2pt]{\linewidth}{0.4pt}}\par\smallskip
+  \noindent{\scriptsize\color{gray!50}
+    \ifdefempty{\gwiki@created}{}{Created: \gwiki@created\quad}%
+    Last modified: \gwiki@moddatestring
+    \ifdefempty{\gwiki@tags}{}{\quad$\bullet$\quad Tags: \gwiki@tags}
+  }\par
 }
 
 %% ----------------------------------------------------------------------------
