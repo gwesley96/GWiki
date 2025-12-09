@@ -36,6 +36,7 @@
 \DeclareStringOption[12pt]{fontsize}
 \DeclareStringOption[letterpaper]{paper}
 \DeclareStringOption[1in]{margins}
+\DeclareStringOption[]{maincounterparent}  % e.g., section, subsection, etc.
 
 \DeclareBoolOption[false]{parskip}
 \DeclareBoolOption[false]{nolimits}
@@ -122,6 +123,7 @@
 \RequirePackage{datetime2}
 \RequirePackage{lastpage}
 \RequirePackage{indentfirst}
+\RequirePackage{chngcntr}
 \RequirePackage{float}
 \RequirePackage[footnotesize,bf]{caption}
 \captionsetup{margin=0.75cm}
@@ -198,6 +200,33 @@
 %% ============================================================================
 %% ENUNCIATION ENVIRONMENTS (Theorems, Definitions, etc.)
 %% ============================================================================
+\makeatletter
+\newcounter{mainctr}
+\newcommand{\gwiki@mainctrparent}{} % Tracks which counter (if any) mainctr follows
+
+\newcommand{\MainCounterWithin}[1]{%
+  \edef\gwiki@tmpparent{#1}%
+  % Detach from previous parent if there was one
+  \ifdefempty{\gwiki@mainctrparent}{}{%
+    \@ifundefined{c@\gwiki@mainctrparent}{}{%
+      \counterwithout{mainctr}{\gwiki@mainctrparent}%
+    }%
+  }%
+  % Attach to the requested parent (if provided and defined)
+  \ifdefempty{\gwiki@tmpparent}{}{%
+    \@ifundefined{c@\gwiki@tmpparent}{%
+      \PackageWarning{gwiki}{Counter `\gwiki@tmpparent' undefined; leaving mainctr global}%
+    }{%
+      \counterwithin{mainctr}{\gwiki@tmpparent}%
+    }%
+  }%
+  \renewcommand{\gwiki@mainctrparent}{\gwiki@tmpparent}%
+  \setcounter{mainctr}{0}%
+}
+
+% Apply default parent from the class option (empty = global numbering)
+\MainCounterWithin{\gwiki@maincounterparent}
+
 \newcounter{alpha}
 \renewcommand\thealpha{\Alph{alpha}}
 
@@ -214,8 +243,8 @@
     postheadhook={\phantom{}{}},
     #4
   ]{#1Style}%
-  \declaretheorem[style=#1Style,name=#2,numberlike=#5]{#1}%
-  \declaretheorem[style=#1Style,name=#3,numberlike=#5]{#1s}%
+  \declaretheorem[style=#1Style,name=#2,sibling=#5]{#1}%
+  \declaretheorem[style=#1Style,name=#3,sibling=#5]{#1s}%
   \declaretheorem[style=#1Style,name=#2,sibling=alpha]{#1alpha}
   \declaretheorem[style=#1Style,name=#3,sibling=alpha]{#1salpha}
   \crefname{#1}{#2}{#3}%
@@ -300,7 +329,6 @@
   \defineFramedEnunciation{#1}{#2}{#4}{#5}{\gwiki@targetCounter}%
 }
 
-
 %% ----------------------------------------------------------------------------
 %% ENUNCIATION CONFIGURATION
 %% ----------------------------------------------------------------------------
@@ -332,34 +360,32 @@
 \defineEnunciation{assumption}{Assumption}{Assumptions}{bodyfont=\upshape}{colframe=red, fontupper=\upshape}{theorem}
 \defineEnunciation{algorithm}{Algorithm}{Algorithms}{bodyfont=\upshape}{colframe=red, fontupper=\upshape}{theorem}
 \defineEnunciation{postulate}{Postulate}{Postulates}{bodyfont=\upshape}{colframe=red, fontupper=\upshape}{theorem}
-
-%% Special Idea box (no counter, cleaner styling for note introductions)
-\newtcolorbox{framedidea}[1][Idea]{
-  enhanced,
-  breakable,
-  colback=blue!3,
-  colframe=blue!40,
-  boxrule=0.5pt,
-  arc=2mm,
-  left=8pt,
-  right=8pt,
-  top=6pt,
-  bottom=6pt,
-  fonttitle=\sffamily\bfseries,
-  coltitle=blue!70!black,
-  colbacktitle=blue!10,
-  title={#1},
-  attach boxed title to top left={yshift=-2mm, xshift=4mm},
-  boxed title style={
-    arc=1.5mm,
-    boxrule=0.5pt,
-    colframe=blue!40,
-  }
-}
-
-%% Alias: \begin{idea} = \begin{framedidea}
-\let\idea\framedidea
-\let\endidea\endframedidea
+%% Define all enunciation types
+\tracingmacros=1\tracingcommands=1\typeout{TRACE-ENUNCIATIONS-BEGIN}
+\defineEnunciation{corollary}{Corollary}{Corollaries}{bodyfont=\itshape}{colframe=gray, fontupper=\itshape}{mainctr}
+\defineEnunciation{theorem}{Theorem}{Theorems}{bodyfont=\itshape}{colframe=blue, fontupper=\itshape}{mainctr}
+\defineEnunciation{lemma}{Lemma}{Lemmas}{bodyfont=\itshape}{colframe=Dandelion, fontupper=\itshape}{mainctr}
+\defineEnunciation{proposition}{Proposition}{Propositions}{bodyfont=\itshape}{colframe=purple, fontupper=\itshape}{mainctr}
+\defineEnunciation{claim}{Claim}{Claims}{bodyfont=\itshape}{colframe=teal, fontupper=\itshape}{mainctr}
+\defineEnunciation{step}{Step}{Steps}{bodyfont=\itshape}{colframe=orange, fontupper=\itshape}{mainctr}
+\defineEnunciation{construction}{Construction}{Constructions}{bodyfont=\upshape}{colframe=green, fontupper=\upshape}{mainctr}
+\defineEnunciation{question}{Question}{Questions}{bodyfont=\upshape}{colframe=red, fontupper=\upshape}{mainctr}
+\defineEnunciation{warning}{Warning}{Warnings}{bodyfont=\upshape}{colframe=magenta, fontupper=\upshape}{mainctr}
+\defineEnunciation{exercise}{Exercise}{Exercises}{bodyfont=\upshape}{colframe=violet, fontupper=\upshape}{mainctr}
+\defineEnunciation{example}{Example}{Examples}{bodyfont=\upshape}{colframe=ForestGreen, fontupper=\upshape}{mainctr}
+\defineEnunciation{definition}{Definition}{Definitions}{bodyfont=\upshape}{colframe=olive, fontupper=\upshape}{mainctr}
+\defineEnunciation{fact}{Fact}{Facts}{bodyfont=\upshape}{colframe=olive, fontupper=\upshape}{mainctr}
+\defineEnunciation{observation}{Observation}{Observations}{bodyfont=\upshape}{colframe=brown, fontupper=\upshape}{mainctr}
+\defineEnunciation{convention}{Convention}{Conventions}{bodyfont=\upshape}{colframe=pink, fontupper=\upshape}{mainctr}
+\defineEnunciation{remark}{Remark}{Remarks}{bodyfont=\upshape}{colframe=gray, fontupper=\upshape}{mainctr}
+\defineEnunciation{note}{Note}{Notes}{bodyfont=\upshape}{colframe=yellow, fontupper=\upshape}{mainctr}
+\defineEnunciation{notation}{Notation}{Notations}{bodyfont=\upshape}{colframe=blue!50, fontupper=\upshape}{mainctr}
+\defineEnunciation{idea}{Idea}{Ideas}{bodyfont=\upshape}{colframe=cyan, fontupper=\upshape}{mainctr}
+\defineEnunciation{axiom}{Axiom}{Axioms}{bodyfont=\upshape}{colframe=violet, fontupper=\upshape}{mainctr}
+\defineEnunciation{assumption}{Assumption}{Assumptions}{bodyfont=\upshape}{colframe=red, fontupper=\upshape}{mainctr}
+\defineEnunciation{algorithm}{Algorithm}{Algorithms}{bodyfont=\upshape}{colframe=red, fontupper=\upshape}{mainctr}
+\defineEnunciation{postulate}{Postulate}{Postulates}{bodyfont=\upshape}{colframe=red, fontupper=\upshape}{mainctr}
+>>>>>>> Stashed changes
 
 %% Equation numbering linked to theorem counter
 \makeatletter
@@ -460,16 +486,24 @@
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\headrule}{\hbox to\headwidth{\color{gray!30}\leaders\hrule height \headrulewidth\hfill}}
 \setlength{\headheight}{24pt}
-
-% Plain style for first page (no header, metadata in footer)
-\fancypagestyle{plain}{%
-  \fancyhf{}%
+\newcommand{\gwiki@firstfooter}{%
   \fancyfoot[C]{\scriptsize\color{gray!60}\thepage}%
   \fancyfoot[L]{\scriptsize\color{gray!50}%
     \ifdefempty{\gwiki@created}{}{Created: \gwiki@created\quad}%
     Last modified: \gwiki@moddatestring
     \ifdefempty{\gwiki@tags}{}{\quad$\bullet$\quad Tags: \gwiki@tags}%
   }%
+}
+
+\fancypagestyle{gwiki@first}{%
+  \fancyhf{}%
+  \gwiki@firstfooter
+  \renewcommand{\headrulewidth}{0pt}%
+}
+
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \gwiki@firstfooter
   \renewcommand{\headrulewidth}{0pt}%
 }
 \makeatother

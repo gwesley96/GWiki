@@ -26,7 +26,7 @@ A morphism can be drawn inline: \tz{\draw[thick] (0,0) -- (1,0); \fill (0,0) cir
 String diagrams use coupons (boxes) connected by strands:
 
 \begin{center}
-\begin{tikzpicture}
+\begin{tkz}
   % Draw strands
   \draw[thick] (0,0) -- (0,1.5);
   \draw[thick] (2,0) -- (2,1.5);
@@ -41,7 +41,7 @@ String diagrams use coupons (boxes) connected by strands:
   % Label endpoints
   \node[below] at (0,0) {$A$};
   \node[below] at (2,0) {$B$};
-\end{tikzpicture}
+\end{tkz}
 \end{center}
 
 \section{Patterns and Regions}
@@ -49,7 +49,7 @@ String diagrams use coupons (boxes) connected by strands:
 The package includes several pattern styles for indicating different types of regions:
 
 \begin{center}
-\begin{tikzpicture}
+\begin{tkz}
   \fill[primedregion=blue!20] (0,0) rectangle (1.5,1.5);
   \fill[boxregion=red!20] (2,0) rectangle (3.5,1.5);
   \fill[diagregion=green!20] (4,0) rectangle (5.5,1.5);
@@ -57,7 +57,7 @@ The package includes several pattern styles for indicating different types of re
   \node at (0.75,0.75) {Dots};
   \node at (2.75,0.75) {Boxes};
   \node at (4.75,0.75) {Lines};
-\end{tikzpicture}
+\end{tkz}
 \end{center}
 
 \section{Arrow Styles}
@@ -65,11 +65,11 @@ The package includes several pattern styles for indicating different types of re
 Various arrow decorations are available:
 
 \begin{center}
-\begin{tikzpicture}
+\begin{tkz}
   \draw[thick,mid>] (0,0) -- (2,0) node[right] {Mid arrow};
-  \draw[thick,arrow at=0.3] (0,-.5) -- (2,-.5) node[right] {Arrow at 30\%};
+  \draw[thick,arrow at=0.3] (0,-.5) -- (2,-.5) node[right] {Arrow at 30 percent};
   \draw[thick,Rightarrow] (0,-1) -- (2,-1) node[right] {Double arrow};
-\end{tikzpicture}
+\end{tkz}
 \end{center}
 
 \section{Knot Diagrams}
@@ -77,15 +77,15 @@ Various arrow decorations are available:
 Drawing overcrossings and undercrossings:
 
 \begin{center}
-\begin{tikzpicture}
+\begin{tkz}
   % First strand (goes over)
-  \draw[thick,knot] (0,0) .. controls (0.5,0.5) and (1.5,0.5) .. (2,0);
 
   % Second strand (goes under)
   \draw[thick] (1,-0.5) -- (1,0.5);
+  \draw[thick,over] (0,0) .. controls (0.5,0.5) and (1.5,0.5) .. (2,0);
 
   \node[below] at (1,-0.5) {Crossing};
-\end{tikzpicture}
+\end{tkz}
 \end{center}
 
 \section{Color Schemes}
@@ -93,12 +93,12 @@ Drawing overcrossings and undercrossings:
 Predefined color scheme for consistency:
 
 \begin{center}
-\begin{tikzpicture}
+\begin{tkz}
   \foreach \i/\col in {0/colA,1/colB,2/colC,3/colD,4/colE} {
     \fill[\col] (\i*1.2,0) circle (0.4);
     \node[below] at (\i*1.2,-0.5) {\texttt{\col}};
   }
-\end{tikzpicture}
+\end{tkz}
 \end{center}
 
 \section{Conclusion}

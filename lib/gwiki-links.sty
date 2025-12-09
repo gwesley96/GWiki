@@ -269,6 +269,7 @@
 
 %% Article header
 \newcommand{\ArticleHeader}{%
+  \thispagestyle{gwiki@first}%
   \maketitle
   \ifdefempty{\gwiki@summary}{}{\begin{abstract}\gwiki@summary\end{abstract}}
   {\small\color{gray!70}
@@ -279,15 +280,77 @@
 }
 
 %% Wiki note header (minimal - just title and summary)
+%% Wiki note header (minimal - just title and summary)
 \newcommand{\NoteHeader}{%
-  \thispagestyle{plain}% No header on first page
-  \noindent{\LARGE\bfseries\sffamily\color{blue!60!black}\gwiki@title}%
+  \thispagestyle{gwiki@first}%
+  \noindent{\huge\bfseries\sffamily\color{blue!60!black}\gwiki@title}%
   \par\medskip
   \noindent{\color{gray!40}\rule[2pt]{\linewidth}{0.6pt}}\par\medskip
   \ifdefempty{\gwiki@summary}{}{\noindent\textbf{Summary.} \gwiki@summary\par\medskip}
 }
 
-%% Footer (metadata now in page footer via fancyhdr)
+%% ----------------------------------------------------------------------------
+%% IDEA + SOURCE BLOCKS
+%% ----------------------------------------------------------------------------
+\tcbset{
+  gwikiIdeaBox/.style={
+    enhanced,
+    breakable,
+    colback=cyan!3,
+    colframe=cyan!40!black,
+    coltitle=blue!55!black,
+    colbacktitle=cyan!10,
+    boxrule=0.45pt,
+    arc=1mm,
+    left=9pt,
+    right=9pt,
+    top=7pt,
+    bottom=7pt,
+    borderline west={0.9pt}{0pt}{cyan!60!black},
+    title style={boxrule=0pt, colback=cyan!10, sharp corners},
+    fonttitle=\bfseries\sffamily,
+    before skip=8pt,
+    after skip=10pt,
+  },
+  gwikiKeySourceBox/.style={
+    enhanced,
+    breakable,
+    colback=gray!3,
+    colframe=gray!35,
+    coltitle=gray!20!black,
+    colbacktitle=gray!10,
+    boxrule=0.35pt,
+    arc=0.9mm,
+    left=8pt,
+    right=8pt,
+    top=6pt,
+    bottom=6pt,
+    title style={boxrule=0pt, colback=gray!10, sharp corners},
+    fonttitle=\bfseries\sffamily,
+    before skip=6pt,
+    after skip=10pt,
+  }
+}
+
+\newcommand{\gwiki@ideasuffix}{}
+\NewDocumentEnvironment{framedidea}{o}{%
+  \IfNoValueTF{#1}{\def\gwiki@ideasuffix{}}{%
+    \IfStrEq{#1}{Idea}{\def\gwiki@ideasuffix{}}{\def\gwiki@ideasuffix{\ \textnormal{\footnotesize#1}}}%
+  }%
+  \begin{tcolorbox}[gwikiIdeaBox,title={Idea\gwiki@ideasuffix}]%
+}{\end{tcolorbox}}
+
+\NewDocumentEnvironment{idea}{o}{%
+  \IfNoValueTF{#1}{\begin{framedidea}}{\begin{framedidea}[#1]}%
+}{\end{framedidea}}
+
+\NewDocumentCommand{\Idea}{O{} m}{%
+  \IfNoValueTF{#1}{\begin{framedidea}}{\begin{framedidea}[#1]}%
+  #2%
+  \end{framedidea}%
+}
+
+%% Footer with metadata
 \newcommand{\Footer}{%
   % Metadata is automatically shown in first page footer
   % This command now just marks the end of content
@@ -298,6 +361,19 @@
 %% ----------------------------------------------------------------------------
 \providecommand{\gwiki@refslist}{}
 \newcommand{\gwiki@addref}[1]{\listadd{\gwiki@refslist}{#1}}
+
+\NewDocumentCommand{\KeySources}{m}{%
+  \ifdefempty{#1}{}{%
+    \begin{tcolorbox}[gwikiKeySourceBox,title={Key sources}]
+      \begin{itemize}[leftmargin=*,nosep]
+        \foreach \src in {#1} {%
+          \item \src%
+          \gwiki@addref{\src}%
+        }%
+      \end{itemize}
+    \end{tcolorbox}
+  }%
+}
 
 \newcommand{\arxiv}[1]{%
   \href{https://arxiv.org/abs/#1}{{\small\texttt{[arXiv:#1]}}}%

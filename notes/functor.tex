@@ -2,15 +2,17 @@
 
 \Title{Functor}
 \Tags{category-theory, definition}
-\Summary{A functor is a structure-preserving map between categories, sending objects to objects and morphisms to morphisms while preserving composition and identities.}
+\Summary{A functor transports objects and morphisms between categories while preserving identities and composition; it is the structure-preserving map between categories.}
 
 \begin{document}
 
 \NoteHeader
 
 \begin{idea}[Idea]
-Functors are to categories what homomorphisms are to groups: they preserve the categorical structure by mapping objects and morphisms in a way that respects composition and identities, enabling us to compare and relate different mathematical contexts.
+Functors are to categories what homomorphisms are to groups: they send objects to objects and morphisms to morphisms while respecting identities and composition, letting us compare different mathematical contexts.
 \end{idea}
+
+\KeySources{\nlab{functor}}
 
 \begin{definition}[Functor]
 Let $\cC, \cD$ be \wref[category]{category}. A \textbf{functor} $F : \cC \to \cD$ consists of:
@@ -38,7 +40,7 @@ $F : \Set \to \Grp$ sends $X$ to the free group on $X$.
 For any $A \in \cC$: $\Hom(A, -) : \cC \to \Set$ is covariant.
 \end{example}
 
-\seealso{category, natural transformation}
+\SeeAlso{category, natural transformation}
 
 \References
 

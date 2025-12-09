@@ -2,15 +2,17 @@
 
 \Title{Natural Transformation}
 \Tags{category-theory, definition}
-\Summary{A natural transformation is a morphism between functors, consisting of component morphisms that commute with the functors' actions.}
+\Summary{A natural transformation compares two functors by providing componentwise morphisms that commute with every arrow in the source category, so one functor transforms into the other uniformly.}
 
 \begin{document}
 
 \NoteHeader
 
 \begin{idea}[Idea]
-Natural transformations provide the notion of "morphism between functors" and capture transformations that work uniformly across all objects in a category, independent of specific choices. They are the 2-morphisms in the 2-category of categories.
+Natural transformations are the morphisms between functors: they assign component maps that commute with every arrow in the source category, making the transformation uniform and functorial.
 \end{idea}
+
+\KeySources{\nlab{natural transformation}, \wref{functor}}
 
 \prereq{functor, category}
 
@@ -35,7 +37,7 @@ For finite-dimensional vector spaces, there is a natural isomorphism $V \to V^{*
 $\det : \GL_n \Rightarrow (-)^\times$ is a natural transformation of functors $\Ring \to \Grp$.
 \end{example}
 
-\seealso{functor, category}
+\SeeAlso{functor, category}
 
 \References
 

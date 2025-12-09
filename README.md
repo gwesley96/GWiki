@@ -43,6 +43,8 @@ A category abstracts the concept of mathematical structure
 and structure-preserving maps.
 \end{framedidea}
 
+\KeySources{\nlab{category}}
+
 \begin{definition}[Category]
 A \textbf{category} $\cC$ consists of...
 \end{definition}
@@ -148,6 +150,10 @@ Available environments (use `framed` prefix for colored boxes):
 
 Environments: `theorem`, `lemma`, `proposition`, `corollary`, `definition`, `example`, `remark`, `idea`, etc.
 
+### Numbering defaults
+
+Enunciations now share a single counter, so the first one you write is `Definition 1`, then `Lemma 2`, etc. To tie the main counter to sections, pass a class option (`\documentclass[maincounterparent=section]{gwiki}`) or call `\MainCounterWithin{section}` (or `subsection`, etc.) in the preamble.
+
 ## External References
 
 ```latex
@@ -157,7 +163,15 @@ Environments: `theorem`, `lemma`, `proposition`, `corollary`, `definition`, `exa
 \wcite[Ch. 5]{Book}     % Citation with location
 ```
 
-All references automatically appear in the References section.
+## Key Sources
+
+```latex
+\KeySources{\nlab{category}, \arxiv{0601185}}
+```
+
+Place this near the top of a note (often after the Idea box). Entries are listed in a clean box and also recorded for `\References`.
+
+All references added via `\KeySources`, `\arxiv`, `\nlab`, or `\wcite` automatically appear in the References section.
 
 ## Tags and Aliases
 

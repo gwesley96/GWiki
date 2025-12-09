@@ -46,7 +46,7 @@ def parse_metadata(tex_file: Path) -> dict:
         tags_text = tags_match.group(0)
         # Extract all {...} groups
         tag_groups = re.findall(r'\{([^}]*)\}', tags_text)
-        for group in tag_groups[1:]:  # Skip first which is "Tags"
+        for group in tag_groups:
             # Split by comma and strip
             tags = [t.strip() for t in group.split(',') if t.strip()]
             meta['tags'].extend(tags)
