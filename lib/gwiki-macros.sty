@@ -22,14 +22,14 @@
 %% ----------------------------------------------------------------------------
 %% MATH ALPHABET SHORTCUTS
 %% ----------------------------------------------------------------------------
-%% Blackboard bold (\bA, \bB, etc.)
-\forcsvlist{\cmdNewCommand[b]{}{mathbb}}{A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z}
+%% Blackboard bold (\bbA, \bbB, etc.)
+\forcsvlist{\cmdNewCommand[bb]{}{mathbb}}{A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z}
 
 %% Calligraphic (\cA, \cB, etc.)
 \forcsvlist{\cmdNewCommand[c]{}{mathcal}}{A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z}
 
-%% Sans-serif (\lA, \lB, etc.)
-\forcsvlist{\cmdNewCommand[l]{}{mathsf}}{A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,d,f,h,i,j,k,m,o,r,s,t,u,v,w,x,y,z}
+%% Sans-serif (\sfA, \sfB, etc.)
+\forcsvlist{\cmdNewCommand[sf]{}{mathsf}}{A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,d,f,h,i,j,k,m,o,r,s,t,u,v,w,x,y,z}
 
 %% Euler script (\eA, \eB, etc.)
 \DeclareMathAlphabet{\matheulscr}{U}{eus}{m}{n}
@@ -38,11 +38,10 @@
 %% Fraktur (\fA, \fB, \fa, \fb, etc.)
 \forcsvlist{\cmdNewCommand[f]{}{mathfrak}}{A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,a,b,c,d,e,f,g,h,j,k,l,n,o,p,q,s,t,u,v,w,x,y,z}
 
-%% Bold (\tA, \tB, etc.)
-\forcsvlist{\cmdNewCommand[t]{}{mathbf}}{A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z}
+%% Bold (\bfA, \bfB, etc.)
+\forcsvlist{\cmdNewCommand[bf]{}{mathbf}}{A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z}
 
 %% Roman (\rA, \rB, \ra, \rb, etc.)
-\forcsvlist{\cmdNewCommand[u]{}{mathrm}}{A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z}
 \forcsvlist{\cmdNewCommand[r]{}{mathrm}}{a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z}
 
 %% Script (\sA, \sB, etc.)
@@ -490,6 +489,7 @@
 \newcommand{\dket}[1]{\lvert#1\rangle!\rangle}
 \newcommand{\Eq}{\mathrm{Eq}}
 \newcommand{\cut}{\mathrm{cut}}
+\newcommand{\bkt}[2]{\left\langle #1 \middle| #2 \right\rangle}
 \newcommand{\dbkt}[2]{\left\langle!\middle\langle #1 \middle| #2 \middle\rangle!\right\rangle}
 \newcommand{\todo}[1]{\textbf{[[}\textsl{#1}\textbf{]]}}
 
