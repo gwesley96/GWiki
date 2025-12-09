@@ -1,0 +1,114 @@
+\documentclass{gwiki}
+
+\Title{TikZ String Diagrams Demo}
+\Tags{tikz}{visualization}{category-theory}
+\Aliases{TikZ demo, string diagram examples}
+\Summary{Demonstration of the tz.sty package for creating string diagrams and mathematical visualizations in GWiki.}
+
+\begin{document}
+
+\NoteHeader
+
+\begin{framedidea}[Idea]
+The \texttt{tz.sty} package provides convenient macros for drawing string diagrams, commutative diagrams, and other mathematical visualizations using TikZ, with support for layers, patterns, and specialized node styles.
+\end{framedidea}
+
+\section{Basic String Diagrams}
+
+The \texttt{tz.sty} package provides inline TikZ via the \verb|\tz{}| command and the \texttt{tkz} environment. Here's a simple example:
+
+\begin{example}[Inline diagram]
+A morphism can be drawn inline: \tz{\draw[thick] (0,0) -- (1,0); \fill (0,0) circle (1.5pt); \fill (1,0) circle (1.5pt);} using the \verb|\tz{}| command.
+\end{example}
+
+\section{Coupons and String Diagrams}
+
+String diagrams use coupons (boxes) connected by strands:
+
+\begin{center}
+\begin{tikzpicture}
+  % Draw strands
+  \draw[thick] (0,0) -- (0,1.5);
+  \draw[thick] (2,0) -- (2,1.5);
+
+  % Draw coupon
+  \cpn{(1,0.75)}{$f$}
+
+  % Connect to coupon
+  \draw[thick] (0,1.5) -- (0.6,0.75);
+  \draw[thick] (2,1.5) -- (1.4,0.75);
+
+  % Label endpoints
+  \node[below] at (0,0) {$A$};
+  \node[below] at (2,0) {$B$};
+\end{tikzpicture}
+\end{center}
+
+\section{Patterns and Regions}
+
+The package includes several pattern styles for indicating different types of regions:
+
+\begin{center}
+\begin{tikzpicture}
+  \fill[primedregion=blue!20] (0,0) rectangle (1.5,1.5);
+  \fill[boxregion=red!20] (2,0) rectangle (3.5,1.5);
+  \fill[diagregion=green!20] (4,0) rectangle (5.5,1.5);
+
+  \node at (0.75,0.75) {Dots};
+  \node at (2.75,0.75) {Boxes};
+  \node at (4.75,0.75) {Lines};
+\end{tikzpicture}
+\end{center}
+
+\section{Arrow Styles}
+
+Various arrow decorations are available:
+
+\begin{center}
+\begin{tikzpicture}
+  \draw[thick,mid>] (0,0) -- (2,0) node[right] {Mid arrow};
+  \draw[thick,arrow at=0.3] (0,-.5) -- (2,-.5) node[right] {Arrow at 30\%};
+  \draw[thick,Rightarrow] (0,-1) -- (2,-1) node[right] {Double arrow};
+\end{tikzpicture}
+\end{center}
+
+\section{Knot Diagrams}
+
+Drawing overcrossings and undercrossings:
+
+\begin{center}
+\begin{tikzpicture}
+  % First strand (goes over)
+  \draw[thick,knot] (0,0) .. controls (0.5,0.5) and (1.5,0.5) .. (2,0);
+
+  % Second strand (goes under)
+  \draw[thick] (1,-0.5) -- (1,0.5);
+
+  \node[below] at (1,-0.5) {Crossing};
+\end{tikzpicture}
+\end{center}
+
+\section{Color Schemes}
+
+Predefined color scheme for consistency:
+
+\begin{center}
+\begin{tikzpicture}
+  \foreach \i/\col in {0/colA,1/colB,2/colC,3/colD,4/colE} {
+    \fill[\col] (\i*1.2,0) circle (0.4);
+    \node[below] at (\i*1.2,-0.5) {\texttt{\col}};
+  }
+\end{tikzpicture}
+\end{center}
+
+\section{Conclusion}
+
+The \texttt{tz.sty} package integrates seamlessly with GWiki's document class, providing powerful tools for mathematical visualization while maintaining clean, readable source code.
+
+\SeeAlso{category,functor}
+
+\References
+
+\Footer
+
+\end{document}
