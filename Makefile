@@ -17,7 +17,7 @@ SOURCES := $(wildcard $(NOTES_DIR)/*.tex)
 PDFS := $(patsubst $(NOTES_DIR)/%.tex,$(BUILD_DIR)/%.pdf,$(SOURCES))
 
 # Default: build all
-.PHONY: all clean new watch help completions
+.PHONY: all clean new watch help
 
 all: $(PDFS)
 	@echo "✓ Built $(words $(PDFS)) notes"
@@ -60,13 +60,8 @@ else
 		echo '' >> $(NOTES_DIR)/$(NAME).tex; \
 		echo '\\end{document}' >> $(NOTES_DIR)/$(NAME).tex; \
 		echo "✓ Created: $(NOTES_DIR)/$(NAME).tex"; \
-		$(MAKE) completions 2>/dev/null || true; \
 	fi
 endif
-
-# Update VS Code completions
-completions:
-	@python3 scripts/generate-completions.py 2>/dev/null || echo "(completions script not found)"
 
 # Watch and rebuild on changes
 watch:
@@ -74,7 +69,6 @@ watch:
 	@while true; do \
 		inotifywait -q -e modify,create,delete -r $(NOTES_DIR) $(LIB_DIR) 2>/dev/null || sleep 2; \
 		$(MAKE) all; \
-		$(MAKE) completions 2>/dev/null || true; \
 	done
 
 # Clean
