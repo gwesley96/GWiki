@@ -1,0 +1,220 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{gwiki-bibliography}[2025/12/09 v1.0 GWiki BibTeX Integration with PDF Linking]
+
+%% ============================================================================
+%% GWIKI BIBLIOGRAPHY SYSTEM
+%%
+%% Features:
+%%   - Global BibTeX file (references/references.bib)
+%%   - \wcite{key} command with optional prenote/postnote
+%%   - Automatic linking to local PDFs in references/pdfs/
+%%   - Fallback to inline citations for non-BibTeX entries
+%%   - Clean bibliography formatting
+%% ============================================================================
+
+\RequirePackage{xparse}
+\RequirePackage{etoolbox}
+\RequirePackage{xstring}
+\RequirePackage{ifthen}
+
+%% ----------------------------------------------------------------------------
+%% BIBLATEX CONFIGURATION
+%% ----------------------------------------------------------------------------
+\RequirePackage[
+  backend=biber,
+  style=alphabetic,        % Use alphabetic style (e.g., [Mac78])
+  sorting=nyt,             % Sort by name, year, title
+  maxbibnames=99,          % Show all authors in bibliography
+  maxcitenames=2,          % Show up to 2 authors in citations
+  giveninits=true,         % Use initials for first names
+  uniquename=init,
+  uniquelist=false,
+  backref=true,            % Show which pages cite each reference
+  hyperref=true,
+  doi=true,
+  url=true,
+  isbn=false,
+]{biblatex}
+
+%% Add the global bibliography file
+\addbibresource{references/references.bib}
+
+%% ----------------------------------------------------------------------------
+%% PDF LINKING SETUP
+%% ----------------------------------------------------------------------------
+%% Path to local PDF files (relative to document root)
+\newcommand{\gwiki@pdfdir}{references/pdfs}
+
+%% Check if a PDF exists for a given citation key
+\newcommand{\gwiki@pdfexists}[1]{%
+  \IfFileExists{\gwiki@pdfdir/#1.pdf}{true}{false}%
+}
+
+%% Create a link to local PDF if it exists
+\newcommand{\gwiki@pdflink}[2]{%
+  \IfFileExists{\gwiki@pdfdir/#1.pdf}{%
+    \href{run:../\gwiki@pdfdir/#1.pdf}{#2}%
+  }{#2}%
+}
+
+%% ----------------------------------------------------------------------------
+%% ENHANCED \wcite COMMAND
+%% ----------------------------------------------------------------------------
+%% Saves the old \wcite command (lightweight inline citation)
+\let\gwiki@oldwcite\wcite
+
+%% New \wcite that integrates with BibTeX
+%% Usage:
+%%   \wcite{key}              -> [Mac78] (linked to PDF if exists)
+%%   \wcite[p. 42]{key}       -> [Mac78, p. 42] (with postnote)
+%%   \wcite[See][p. 42]{key}  -> [See Mac78, p. 42] (with prenote and postnote)
+%%
+%% If the key is not in the .bib file, falls back to old inline behavior
+
+\RenewDocumentCommand{\wcite}{o o m}{%
+  % Check if citation key exists in bibliography
+  \ifcsundef{abx@key@#3}{%
+    % Not in .bib file - use old inline citation
+    \IfNoValueTF{#1}{%
+      \gwiki@oldwcite{#3}%
+    }{%
+      \IfNoValueTF{#2}{%
+        \gwiki@oldwcite[#1]{#3}%
+      }{%
+        \gwiki@oldwcite[#1, #2]{#3}% Combine prenote and postnote
+      }%
+    }%
+  }{%
+    % In .bib file - use biblatex citation with PDF linking
+    \IfNoValueTF{#1}{%
+      % No optional arguments: \wcite{key}
+      \gwiki@pdflink{#3}{\cite{#3}}%
+    }{%
+      \IfNoValueTF{#2}{%
+        % One optional argument: \wcite[postnote]{key}
+        \gwiki@pdflink{#3}{\cite[#1]{#3}}%
+      }{%
+        % Two optional arguments: \wcite[prenote][postnote]{key}
+        \gwiki@pdflink{#3}{\cite[#1][#2]{#3}}%
+      }%
+    }%
+  }%
+}
+
+%% ----------------------------------------------------------------------------
+%% ADDITIONAL CITATION COMMANDS
+%% ----------------------------------------------------------------------------
+
+%% Text citation: "Mac Lane (1978)"
+\NewDocumentCommand{\wtextcite}{o o m}{%
+  \ifcsundef{abx@key@#3}{%
+    % Fallback for non-BibTeX entries
+    \textbf{#3}%
+    \IfNoValueF{#1}{~(#1)}%
+  }{%
+    \IfNoValueTF{#1}{%
+      \gwiki@pdflink{#3}{\textcite{#3}}%
+    }{%
+      \IfNoValueTF{#2}{%
+        \gwiki@pdflink{#3}{\textcite[#1]{#3}}%
+      }{%
+        \gwiki@pdflink{#3}{\textcite[#1][#2]{#3}}%
+      }%
+    }%
+  }%
+}
+
+%% Parenthetical citation: "(Mac Lane 1978)"
+\NewDocumentCommand{\wparencite}{o o m}{%
+  \ifcsundef{abx@key@#3}{%
+    % Fallback
+    (#3\IfNoValueF{#1}{, #1})%
+  }{%
+    \IfNoValueTF{#1}{%
+      \gwiki@pdflink{#3}{\parencite{#3}}%
+    }{%
+      \IfNoValueTF{#2}{%
+        \gwiki@pdflink{#3}{\parencite[#1]{#3}}%
+      }{%
+        \gwiki@pdflink{#3}{\parencite[#1][#2]{#3}}%
+      }%
+    }%
+  }%
+}
+
+%% Full citation (author, title, year, etc.)
+\NewDocumentCommand{\wfullcite}{m}{%
+  \ifcsundef{abx@key@#1}{%
+    \textbf{#1} (full citation not available)%
+  }{%
+    \gwiki@pdflink{#1}{\fullcite{#1}}%
+  }%
+}
+
+%% Direct PDF link (just opens the PDF, no citation)
+\NewDocumentCommand{\wpdf}{o m}{%
+  \IfFileExists{\gwiki@pdfdir/#2.pdf}{%
+    \href{run:../\gwiki@pdfdir/#2.pdf}{\IfNoValueTF{#1}{#2}{#1}}%
+  }{%
+    \textcolor{red}{\IfNoValueTF{#1}{#2}{#1} (PDF not found)}%
+  }%
+}
+
+%% ----------------------------------------------------------------------------
+%% BIBLIOGRAPHY PRINTING
+%% ----------------------------------------------------------------------------
+
+%% Print the bibliography
+%% This replaces the old \References command when using BibTeX
+\newcommand{\PrintBibliography}{%
+  \printbibliography[heading=bibintoc,title={References}]%
+}
+
+%% Conditional: use \PrintBibliography if using BibTeX, else \References
+%% We redefine \References to check if biblatex is loaded
+\let\gwiki@oldReferences\References
+\renewcommand{\References}{%
+  \ifbool{bbx@defernumbers}{%
+    % biblatex is loaded
+    \PrintBibliography
+  }{%
+    % Fall back to old References
+    \gwiki@oldReferences
+  }%
+}
+
+%% ----------------------------------------------------------------------------
+%% HELPER COMMANDS
+%% ----------------------------------------------------------------------------
+
+%% Add a note about a PDF location in the bibliography
+\newcommand{\PdfNote}[1]{%
+  \par\smallskip\noindent
+  \textcolor{blue!60!black}{\small\faFilePdf~Local PDF: \texttt{references/pdfs/#1.pdf}}%
+}
+
+%% Quick command to cite and note PDF
+\NewDocumentCommand{\wcitepdf}{o m}{%
+  \IfNoValueTF{#1}{%
+    \wcite{#2}~\wpdf[\faFilePdf]{#2}%
+  }{%
+    \wcite[#1]{#2}~\wpdf[\faFilePdf]{#2}%
+  }%
+}
+
+%% ----------------------------------------------------------------------------
+%% BACKREF CUSTOMIZATION
+%% ----------------------------------------------------------------------------
+%% Show "Cited on page(s)" in bibliography
+\DefineBibliographyStrings{english}{%
+  backrefpage  = {cited on p\adddot},
+  backrefpages = {cited on pp\adddot},
+}
+
+%% ----------------------------------------------------------------------------
+%% INTEGRATION WITH KEYSOURCES
+%% ----------------------------------------------------------------------------
+%% Allow \KeySources to accept BibTeX keys
+%% This hooks into the existing \KeySources command from gwiki-links.sty
+
+\endinput

@@ -446,6 +446,11 @@
 \RequirePackage{gwiki-links}
 \RequirePackage{tz}
 
+%% Load bibliography system if enabled
+\iftoggle{enableBibliography}{%
+  \RequirePackage{gwiki-bibliography}
+}{}
+
 %% ============================================================================
 %% DEFAULT FANCYHEAD FOR NOTES
 %% ============================================================================

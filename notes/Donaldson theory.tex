@@ -1,18 +1,57 @@
-\documentclass{gwiki}
+\documentclass[bibliography]{gwiki}
 
 \Title{Donaldson Theory}
-\Tags{}
+\Tags{gauge-theory, differential-geometry, 4-manifolds}
+\Summary{Donaldson theory studies smooth 4-manifolds using moduli spaces of anti-self-dual connections on principal bundles.}
 
 \begin{document}
 
 \NoteHeader
 
-% TODO: Add content about Donaldson Theory
+\begin{idea}[Core Idea]
+Donaldson theory revolutionized 4-manifold topology by using gauge theory to construct differential-topological invariants that distinguish smooth structures invisible to classical algebraic topology.
+\end{idea}
 
-See also:
-\begin{itemize}
-\item \wref{seiberg–witten-theory}
-\end{itemize}
+\KeySources{\wcite{Donaldson1983}, \wcite{Freed1995}}
+
+\section{Introduction}
+
+Donaldson theory, introduced by Simon Donaldson in his groundbreaking 1983 paper \wcite{Donaldson1983}, applies Yang-Mills gauge theory to study smooth structures on 4-manifolds. The key insight is to study moduli spaces of anti-self-dual (ASD) connections on principal $SU(2)$-bundles over a compact oriented 4-manifold.
+
+\begin{definition}[Anti-Self-Dual Connection]
+A connection $A$ on a principal bundle over a Riemannian 4-manifold $X$ is \textbf{anti-self-dual} (ASD) if its curvature $F_A$ satisfies
+\[
+F_A = -\star F_A
+\]
+where $\star$ is the Hodge star operator.
+\end{definition}
+
+\section{Main Results}
+
+Donaldson's theorem established fundamental constraints on the topology of smooth 4-manifolds. For a comprehensive treatment, see \wcite[Ch. 2]{Freed1995}.
+
+\begin{framedtheorem}[Donaldson's Diagonalization Theorem]
+Let $X$ be a smooth, closed, simply-connected 4-manifold with definite intersection form. Then the intersection form is diagonalizable over $\mathbb{Z}$.
+\end{framedtheorem}
+
+This theorem has remarkable consequences:
+\begin{lst}
+  \item The $E_8$ manifold (with intersection form $E_8$) admits no smooth structure
+  \item Exotic smooth structures on $\mathbb{R}^4$ must exist
+  \item Most simply-connected 4-manifolds cannot be smoothed
+\end{lst}
+
+\section{Relation to Physics}
+
+The connection to physics, particularly Yang-Mills theory, is deep \wcite{Atiyah1989}. The moduli spaces of ASD connections correspond to instantons in quantum field theory. Later developments connected Donaldson theory to topological quantum field theories \wcite{Witten1988}.
+
+\section{Further Developments}
+
+Donaldson theory was later superseded by Seiberg-Witten theory, which provides similar but more computable invariants. However, Donaldson's original construction remains fundamental for understanding the differential topology of 4-manifolds.
+
+\SeeAlso{3-manifold}
+
+\References
 
 \Footer
 

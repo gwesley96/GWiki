@@ -154,12 +154,69 @@ Environments: `theorem`, `lemma`, `proposition`, `corollary`, `definition`, `exa
 
 Enunciations now share a single counter, so the first one you write is `Definition 1`, then `Lemma 2`, etc. To tie the main counter to sections, pass a class option (`\documentclass[maincounterparent=section]{gwiki}`) or call `\MainCounterWithin{section}` (or `subsection`, etc.) in the preamble.
 
-## External References
+## Bibliography System
+
+GWiki includes a comprehensive BibTeX bibliography system with automatic PDF linking.
+
+### Quick Start
+
+1. **Enable bibliography** in your note:
+   ```latex
+   \documentclass[bibliography]{gwiki}
+   ```
+
+2. **Add references** to `references/references.bib`:
+   ```bibtex
+   @book{MacLane1978,
+     author    = {Mac Lane, Saunders},
+     title     = {Categories for the Working Mathematician},
+     year      = {1978},
+     publisher = {Springer},
+   }
+   ```
+
+3. **Place PDFs** in `references/pdfs/`:
+   - Filename should match BibTeX key: `MacLane1978.pdf`
+
+4. **Cite in your notes**:
+   ```latex
+   \wcite{MacLane1978}           % [Mac78] - auto-links to PDF!
+   \wcite[p. 42]{MacLane1978}    % [Mac78, p. 42]
+   \wtextcite{MacLane1978}       % Mac Lane (1978)
+   ```
+
+5. **Print bibliography**:
+   ```latex
+   \References  % Automatically uses BibTeX when enabled
+   ```
+
+### Citation Commands
+
+- `\wcite{key}` - Standard citation: `[Mac78]` (links to PDF if exists)
+- `\wcite[p. 42]{key}` - With page number: `[Mac78, p. 42]`
+- `\wcite[See][Ch. 5]{key}` - With prenote: `[See Mac78, Ch. 5]`
+- `\wtextcite{key}` - Text citation: `Mac Lane (1978)`
+- `\wparencite{key}` - Parenthetical: `(Mac Lane 1978)`
+- `\wpdf{key}` - Direct PDF link (no citation)
+- `\wfullcite{key}` - Full citation inline
+
+### Features
+
+- **Automatic PDF Linking**: Citations link directly to local PDFs
+- **Hybrid System**: Works with both BibTeX entries and inline citations
+- **Backref**: Bibliography shows which pages cite each reference
+- **Flexible**: Disable bibliography option for simple notes
+
+See `references/README.md` for complete documentation.
+
+## External References (Non-BibTeX)
+
+For quick references without BibTeX:
 
 ```latex
 \arxiv{0601185}         % arXiv reference
 \nlab{category}         % nLab reference
-\wcite{Author23}        % Simple citation
+\wcite{Author23}        % Simple inline citation (no .bib needed)
 \wcite[Ch. 5]{Book}     % Citation with location
 ```
 

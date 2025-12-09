@@ -12,8 +12,20 @@ PDFS_DIR := pdfs
 # LaTeX
 LATEX := pdflatex
 LATEXFLAGS := -interaction=nonstopmode -halt-on-error
+BIBER := biber
 
 INDEX_TEX := index.tex
+
+# Helper function to compile with optional biber
+# Usage: $(call compile_latex,filename,source_dir)
+define compile_latex
+	@cd $(2) && TEXINPUTS=../$(LIB_DIR):../references: $(LATEX) $(LATEXFLAGS) -output-directory=../$(BUILD_DIR) "$(1).tex" > /dev/null 2>&1; \
+	if [ -f "../$(BUILD_DIR)/$(1).bcf" ]; then \
+		cd ../$(BUILD_DIR) && $(BIBER) "$(1)" > /dev/null 2>&1; \
+		cd ../$(2) && TEXINPUTS=../$(LIB_DIR):../references: $(LATEX) $(LATEXFLAGS) -output-directory=../$(BUILD_DIR) "$(1).tex" > /dev/null 2>&1; \
+	fi; \
+	cd $(2) && TEXINPUTS=../$(LIB_DIR):../references: $(LATEX) $(LATEXFLAGS) -output-directory=../$(BUILD_DIR) "$(1).tex" > /dev/null 2>&1
+endef
 
 # Default: build all
 .PHONY: all clean new watch help index vault
@@ -25,8 +37,7 @@ all:
 		if [ -f "$$f" ]; then \
 			name=$$(basename "$$f" .tex); \
 			echo "Building: $$name"; \
-			(cd $(NOTES_DIR) && TEXINPUTS=../$(LIB_DIR): $(LATEX) $(LATEXFLAGS) -output-directory=../$(BUILD_DIR) "$$(basename "$$f")" > /dev/null 2>&1); \
-			(cd $(NOTES_DIR) && TEXINPUTS=../$(LIB_DIR): $(LATEX) $(LATEXFLAGS) -output-directory=../$(BUILD_DIR) "$$(basename "$$f")" > /dev/null 2>&1); \
+			$(call compile_latex,$$name,$(NOTES_DIR)); \
 			echo "  → $(BUILD_DIR)/$$name.pdf"; \
 			count=$$((count + 1)); \
 		fi; \
@@ -92,8 +103,21 @@ watch:
 clean:
 	@rm -rf build pdfs index.tex
 	@rm -f $(NOTES_DIR)/*.aux $(NOTES_DIR)/*.log $(NOTES_DIR)/*.out $(NOTES_DIR)/*.toc
-	@rm -f *.aux *.log *.out *.toc
+	@rm -f $(BUILD_DIR)/*.aux $(BUILD_DIR)/*.log $(BUILD_DIR)/*.bcf $(BUILD_DIR)/*.blg $(BUILD_DIR)/*.bbl $(BUILD_DIR)/*.run.xml
+	@rm -f *.aux *.log *.out *.toc *.bcf *.blg *.bbl *.run.xml
 	@echo "✓ Cleaned"
+
+# Pattern rule for building individual notes
+%:
+	@if [ -f "$(NOTES_DIR)/$@.tex" ]; then \
+		mkdir -p $(BUILD_DIR); \
+		echo "Building: $@"; \
+		$(call compile_latex,$@,$(NOTES_DIR)); \
+		echo "  → $(BUILD_DIR)/$@.pdf"; \
+	else \
+		echo "Error: $(NOTES_DIR)/$@.tex not found"; \
+		exit 1; \
+	fi
 
 # Help
 help:
