@@ -115,12 +115,21 @@
 \newcommand{\gwiki@tagslist}{}
 \newcommand{\gwiki@moddate}{}
 \newcommand{\gwiki@modtime}{}
+\newcommand{\gwiki@author}{Greyson Wesley}
+\newcommand{\gwiki@keysources}{}
+\newif\ifgwiki@keysourcespresent
+\gwiki@keysourcespresentfalse
+\newif\ifgwiki@keysourcesprinted
+\gwiki@keysourcesprintedfalse
+\newif\ifgwiki@headerprinted
+\gwiki@headerprintedfalse
 \providecommand{\gwiki@refslist}{}
 
 % Default date formatter (user can \renewcommand)
 \newcommand{\GWikiDateFormat}[2]{#1\space #2} % args: date, time
 \newcommand{\CreatedOn}[1]{\renewcommand{\gwiki@created}{#1}}
 \newcommand{\ModifiedOn}[1]{\renewcommand{\gwiki@manualmodified}{#1}}
+\newcommand{\Author}[1]{\renewcommand{\gwiki@author}{#1}}
 
 %% Set title
 \newcommand{\Title}[1]{%
@@ -266,18 +275,28 @@
   \thispagestyle{gwiki@first}%
   \maketitle
   \ifdefempty{\gwiki@summary}{}{\begin{abstract}\gwiki@summary\end{abstract}}
-  {\small\color{gray!70}
-    \ifdefempty{\gwiki@created}{}{Created: \gwiki@created\quad}
+  {\hfill\small\color{gray!70}
+    \ifdefempty{\gwiki@created}{}{Created: \gwiki@created\hfill}
     Last modified: \gwiki@moddatestring
-    \ifdefempty{\gwiki@tags}{}{\quad Tags: \gwiki@tags}
-  }\par\medskip
+    \ifdefempty{\gwiki@tags}{}{\hfill Tags: \gwiki@tags}
+  }
 }
 
 %% Wiki note header (minimal - just title and summary)
 %% Wiki note header (minimal - just title and summary)
 \newcommand{\NoteHeader}{%
   \thispagestyle{gwiki@first}%
-  \noindent{\huge\bfseries\sffamily\color{blue!60!black}\gwiki@title}%
+  \gwiki@headerprintedtrue
+  \noindent
+  \begin{minipage}[t]{0.72\linewidth}%
+    {\LARGE\bfseries\sffamily\color{blue!55!black}\gwiki@title\par}%
+    \vspace{2pt}%
+    \gwiki@printkeysources
+  \end{minipage}%
+  \hfill
+  \begin{minipage}[b]{0.26\linewidth}%
+    \raggedleft{\color{gray!60}\small \gwiki@author\par}%
+  \end{minipage}%
   \par\medskip
   \noindent{\color{gray!40}\rule[2pt]{\linewidth}{0.6pt}}\par\medskip
   \ifdefempty{\gwiki@summary}{}{\noindent\textbf{Summary.} \gwiki@summary\par\medskip}
@@ -301,7 +320,7 @@
     top=7pt,
     bottom=7pt,
     borderline west={0.9pt}{0pt}{cyan!60!black},
-    title style={boxrule=0pt, colback=cyan!10, sharp corners},
+    boxed title style={boxrule=0pt, colback=cyan!10, sharp corners},
     fonttitle=\bfseries\sffamily,
     before skip=8pt,
     after skip=10pt,
@@ -319,7 +338,7 @@
     right=8pt,
     top=6pt,
     bottom=6pt,
-    title style={boxrule=0pt, colback=gray!10, sharp corners},
+    boxed title style={boxrule=0pt, colback=gray!10, sharp corners},
     fonttitle=\bfseries\sffamily,
     before skip=6pt,
     after skip=10pt,
@@ -356,17 +375,28 @@
 \providecommand{\gwiki@refslist}{}
 \newcommand{\gwiki@addref}[1]{\listadd{\gwiki@refslist}{#1}}
 
-\NewDocumentCommand{\KeySources}{m}{%
+\newcommand{\gwiki@storekeysources}[1]{%
+  \renewcommand{\gwiki@keysources}{#1}%
+  \gwiki@keysourcespresenttrue
+  \gwiki@keysourcesprintedfalse
   \ifdefempty{#1}{}{%
-    \begin{tcolorbox}[gwikiKeySourceBox,title={Key sources}]
-      \begin{itemize}[leftmargin=*,nosep]
-        \foreach \src in {#1} {%
-          \item \src%
-          \gwiki@addref{\src}%
-        }%
-      \end{itemize}
-    \end{tcolorbox}
+    \foreach \src in {#1} {%
+      \gwiki@addref{\src}%
+    }%
   }%
+}
+
+\newcommand{\gwiki@printkeysources}{%
+  \ifgwiki@keysourcesprinted\else
+    \ifgwiki@keysourcespresent
+      {\color{gray!60}\footnotesize Key sources: \gwiki@keysources\par}%
+      \global\gwiki@keysourcesprintedtrue
+    \fi
+  \fi
+}
+
+\NewDocumentCommand{\KeySources}{m}{%
+  \gwiki@storekeysources{#1}%
 }
 
 \newcommand{\arxiv}[1]{%

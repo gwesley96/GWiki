@@ -3,7 +3,7 @@
 
   // LaTeX Workshop settings
   "latex-workshop.latex.autoBuild.run": "onSave",
-  "latex-workshop.latex.outDir": "%DIR%/../build/pdf",
+  "latex-workshop.latex.outDir": "%DIR%/build/pdf",
   "latex-workshop.latex.recipes": [
     {
       "name": "GWiki Build",
@@ -22,7 +22,7 @@
         "%DOC%"
       ],
       "env": {
-        "TEXINPUTS": "%DIR%/../lib:"
+        "TEXINPUTS": "%DIR%/lib:%DIR%/../lib:"
       }
     }
   ],

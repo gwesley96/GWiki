@@ -453,18 +453,15 @@
 \makeatletter
 \pagestyle{fancy}
 \fancyhf{} % Clear all
-\fancyhead[L]{\scriptsize\sffamily\color{gray!60}\gwiki@title}
-\fancyhead[R]{\scriptsize\color{gray!60}\thepage}
-\fancyfoot{}
-\renewcommand{\headrulewidth}{0.4pt}
-\renewcommand{\headrule}{\hbox to\headwidth{\color{gray!30}\leaders\hrule height \headrulewidth\hfill}}
+\fancyfoot[C]{\scriptsize\color{gray!60}\thepage}
+\renewcommand{\headrulewidth}{0pt}
 \setlength{\headheight}{24pt}
 \newcommand{\gwiki@firstfooter}{%
   \fancyfoot[C]{\scriptsize\color{gray!60}\thepage}%
   \fancyfoot[L]{\scriptsize\color{gray!50}%
-    \ifdefempty{\gwiki@created}{}{Created: \gwiki@created\quad}%
-    Last modified: \gwiki@moddatestring
-    \ifdefempty{\gwiki@tags}{}{\quad$\bullet$\quad Tags: \gwiki@tags}%
+    \ifdefempty{\gwiki@created}{}{Created on \gwiki@created}%
+    \hfill{}Last modified on \gwiki@moddatestring
+    \ifdefempty{\gwiki@tags}{}{\hfill{}Tags: \gwiki@tags}%
   }%
 }
 
