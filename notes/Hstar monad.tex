@@ -1,0 +1,313 @@
+\documentclass{gwiki}
+
+\texorpdfstring{\Title{H*-monads and completions of pre-3-Hilbert spaces}}
+
+\Tags{}
+
+\colorlet{colA}{red}
+\colorlet{colB}{blue}
+\colorlet{colC}{black}
+\tikzset{
+    % Strands
+    strA/.style={colA, very thick},
+    strB/.style={colB, very thick},
+    strC/.style={colC, very thick},
+    % Regions
+    regA/.style={fill=colA!10, rounded corners=5pt},
+    regB/.style={fill=colB!15},
+    % Paths
+    s/.style={out=90,in=-90},
+    -s/.style={out=-90,in=90},
+}
+\begin{document}
+
+\NoteHeader
+
+% \subsection{\texorpdfstring{$\mathrm{H}^*$}{H*}-monads in pre-3-Hilbert spaces}
+
+\begin{definition}
+An \defn{$\mathrm{H}^*$-monad} in a pre-3-Hilbert space $(\mathfrak{X},\vee,\Psi)$ consists of an object $a\in\fX$ and a 1-morphism ${}_aA_a\in \Omega_a$ equipped with an associative multiplication $\mu\colon {}_aA\otimes_aA_a\to {}_aA_a$
+with unit $\iota\colon 1_a\to {}_aA_a$ satisfying the following axioms.
+\begin{lst}[label=(H$^*$\arabic*)]
+\item ($\rC^*$-Frobenius) $\mu^\dag$ is an $A$--$A$-bimodule map, i.e.,
+\[
+\begin{tkz}[scale=0.3]
+    \coordinate (O) at (0,0);
+    \fill[regA] (O) rectangle ++(6,4);                  % Background
+    \draw[strA] (O) ++(1,0) -- ++(0,2)  
+        \capto{1}                       
+        \cupto{1} -- ++(0,2);           
+    \draw[strA] (O) ++(2,4) -- ++(0,-1);                % Top line
+    \draw[strA] (O) ++(4,0) -- ++(0,1);                 % Bottom line
+\end{tkz}
+=
+\begin{tkz}[scale=0.3]
+    \coordinate (O) at (0,0);
+    \fill[regA] (O) rectangle ++(4,4);                  % Background
+    \draw[strA] (O) ++(1,4) \cupto{1};                  % Top cup
+    \draw[strA] (O) ++(1,0) \capto{1};                  % Bottom cap
+    \draw[strA] (O) ++(2,1) -- ++(0,2); 
+\end{tkz}
+=
+\begin{tkz}[scale=0.3, xscale=-1]                        % Flipped horizontally
+    \coordinate (O) at (0,0);
+    \fill[regA] (O) rectangle ++(6,4);                  % Background
+    \draw[strA] (O) ++(1,0) -- ++(0,2)  \capto{1} \cupto{1} -- ++(0,2);
+    \draw[strA] (O) ++(2,4) -- ++(0,-1);
+    \draw[strA] (O) ++(4,0) -- ++(0,1);
+\end{tkz}
+\qquad\quad\text{where}\quad\quad 
+a=\tz[scale=.7]{
+    \coordinate(O) at (0,0); 
+    \fill[regA](O) rectangle ++(1,1);   
+},
+\quad
+A=\tz[scale=.7]{
+    \coordinate(O) at (0,0); 
+    \fill[regA](O) rectangle ++(1,1);   
+    \draw[strA](O)++(0.5,0)--++(0,1);
+},
+\quad
+\mu=\tz[scale=.7]{
+    \coordinate(O) at (0,0); 
+    \fill[regA](O)++(-0.25,0) rectangle ++(1.5,1);       
+    \draw[strA](O)++(0.5,0.5)--++(0,0.5);                     
+    \draw[strA] (O)++(1,0) \capfrom{0.5};                
+}.
+\]
+\item\label{H:Separable} (Separable) The endomorphism $\mu\mu^\dag$ of ${}_aA_a$ is invertible, i.e.,
+\[
+\begin{tkz}[scale=0.3]
+    \coordinate (O) at (0,0);
+    \fill[regA] (O) rectangle ++(4,4);                  % Background
+    \bubble[very thick,fill=colA!10, draw=colA]{(O)++(2,2)}{1};        % Bubble (very thick)
+    \draw[strA] (O) ++(2,3) -- ++(0,1);                 % Top wire
+    \draw[strA] (O) ++(2,1) -- ++(0,-1);                % Bottom wire
+\end{tkz}
+\in
+\Aut_\fX(A).
+\]
+\item\label{H:Standard} (Standard)
+For all endomorphisms $f \in \End_{\fX}({}_aA_a)$,
+\[
+\Psi_a
+\left(
+\begin{tkz}[scale=0.3]
+    \coordinate (O) at (0,0);
+    \fill[regA] (O) rectangle ++(5,6);                  % Background
+    \draw[strA] (O) ++(1.5,2) -- ++(0,2);                 % Left vertical
+    \draw[strA] (O) ++(3.5,2) -- coordinate(f) ++(0,2);   % Right vertical
+    \draw[strA] (O) ++(1.5,4) \capto{1};                  % Top arc
+    \draw[strA] (O) ++(2.5,5) -- ++(0,1);                 % Top antenna
+    \draw[strA] (O) ++(3.5,2) \cupfrom{1};                 % Bottom arc
+    \draw[strA] (O) ++(2.5,1) -- ++(0,-1);                % Bottom antenna
+    \cpn{(f)}{$f$}                                       % Coupon
+\end{tkz}
+\right)
+=
+\Psi_a
+\left(
+\begin{tkz}[scale=0.3,xscale=-1]
+    \coordinate (O) at (0,0);
+    \fill[regA] (O) rectangle ++(5,6);                  % Background
+    \draw[strA] (O) ++(1.5,2) -- ++(0,2);                 % Logic flipped
+    \draw[strA] (O) ++(3.5,2) -- coordinate(f) ++(0,2);
+    \draw[strA] (O) ++(1.5,4) \capto{1};
+    \draw[strA] (O) ++(2.5,5) -- ++(0,1);
+    \draw[strA] (O) ++(3.5,2) \cupfrom{1};
+    \draw[strA] (O) ++(2.5,1) -- ++(0,-1);
+    \cpn{(f)}{$f$}
+\end{tkz}
+\right).
+\]
+\end{lst}
+An $\rH^*$-monad is \defn{trivial} when it has the form $A=1_a$, $m\colon 1_a\otimes_a 1_a\to 1_a$ is the unitor, and $i\colon 1_a\to 1_a$ is the identity.
+\end{definition}
+
+\begin{definition}
+A \defn{splitting} of an $\rH^*$-monad $({}_aA_a,\mu,\iota)$ in $\fX$ is a pair $({}_aX_b,\gamma)$ consisting of a 1-morphism ${}_aX_b\in\fX(a\to b)$ such that $\ev_X\ev_X^\dag \in \End_\fX(1_b)$ is invertible and a unitary monad isomorphism $\gamma\colon {}_aA_a\Rightarrow {}_aX\otimes_b X^\vee_a$.
+\end{definition}
+
+Diagrammatically, if we write
+\[
+b=\tz[scale=.7]{
+    \coordinate(O) at (0,0); 
+    \fill[regB, rounded corners=5pt](O)rectangle ++(1,1); % Object b
+},
+\qquad\qquad
+X=\tz[scale=.7]{
+    \coordinate(O) at (0,0); 
+    \clip[rounded corners](O)rectangle ++(1,1);
+    \fill[regA](O)rectangle ++(1,1);                    % 1-morph X (Red)
+    \fill[regB](O)++(0.5,0)rectangle ++(0.5,1);              % 1-morph X (Blue side)
+    \draw[strC](O)++(0.5,0)--++(0,1);                       % Separator
+},
+\qquad\qquad
+\gamma=\tz[scale=.7,yscale=-1]{
+    \coordinate(O) at (0,0); 
+    \fill[regA](O)++(-0.25,0)rectangle ++(1.5,1);         % Gamma map
+    \draw[strA](O)++(0.5,0.5)--++(0,0.5);
+    \fill[regB](O)++(1,0) \capfrom{0.5} --cycle;
+    \draw[strC] (O)++(1,0) \capfrom{0.5};
+},
+\]
+then to say $(X,\gamma)$ splits $(A,\mu,\iota)$ means that
+\[
+\begin{tkz}[scale=0.4]
+    \coordinate (O) at (0,0);
+    \fill[regB, rounded corners=5pt] (O) rectangle ++(3,3); % Background
+    \bubble[very thick,fill=colA!10, draw=colC]{(O)++(1.5,1.5)}{0.8};              % Bubble
+\end{tkz}
+\in
+(\Omega^2_b)^\times
+\]
+and that $\gamma$ satisfies
+\[
+\begin{tkz}[scale=0.4]
+    \coordinate (O) at (0,0);
+    \fill[regA] (O) rectangle ++(3,4);                  % Background
+    \draw[strA] (O) ++(1.5,0) -- ++(0,1);                 % Bottom wire
+    \draw[strA] (O) ++(1.5,3) -- ++(0,1);                 % Top wire
+    \bubble[very thick,fill=colB!15, draw=colC]{(O)++(1.5,2)}{1};        % Bubble
+\end{tkz}
+=
+\begin{tkz}[scale=0.4]
+    \coordinate (O) at (0,0);
+    \fill[regA] (O) rectangle ++(2,4);                  % Background
+    \draw[strA] (O) ++(1,0) -- ++(0,4);                  % Identity wire
+\end{tkz},
+\qquad\qquad
+\begin{tkz}[scale=0.4]
+    \coordinate (O) at (0,0);
+    \fill[regA] (O) rectangle ++(4,4);                  % Background
+    \fill[regB] (O) ++(1,4) \cupto{1} -- cycle;        % Top blue cup
+    \fill[regB] (O) ++(1,0) \capto{1} -- cycle;        % Bottom blue cap
+    \draw[strA] (O) ++(2,1)--++(0,2);                 % Red wire
+    \draw[strC] (O) ++(1,4) \cupto{1};                  % Black cup
+    \draw[strC] (O) ++(1,0) \capto{1};                  % Black cap
+\end{tkz}
+=
+\begin{tkz}[scale=0.4]
+    \coordinate (O) at (0,0);
+    \fill[regA] (O) rectangle ++(4,4);                  % Background
+    \fill[regB] (O) ++(1.2,0) rectangle ++(1.6,4);        % Blue strip
+    \draw[strC] (O) ++(1.2,0) -- ++(0,4);                  % Left separator
+    \draw[strC] (O) ++(2.8,0) -- ++(0,4);                  % Right separator
+\end{tkz},
+\qquad\text{and}\qquad
+\begin{tkz}[scale=0.4]
+    \coordinate (O) at (0,0);
+    \fill[regA] (O) rectangle ++(4,4);                  % Background
+    \fill[regB] (O) ++(1,4) \cupto{1} --cycle;         % Blue cup
+    \draw[strA] (O) ++(1,0) \capto{1};                  % Red cap
+    \draw[strA] (O) ++(2,1)--++(0,2);                 % Red wire
+    \draw[strC] (O) ++(1,4) \cupto{1};                  % Black cup
+\end{tkz}
+=
+\begin{tkz}[scale=0.325]
+    \coordinate (O) at (0,0);
+    \fill[regA] (O) rectangle ++(6,5);                  % Main Background
+    
+    % Unified Blue Region
+    \fill[regB] (O) ++(1.8,5)
+        to[-s] ++(-1, -3.2)                               % Left leg down (adjusted)
+        \cupto{0.7}                                         % Left cup bottom
+        -- ++(0, 0.2) \capto{0.8} -- ++(0, -0.2) \cupto{0.7}                     
+        to[s] ++(-1, 3.2)
+        -- cycle;
+    
+    % Wires
+    \draw[strA] (O) ++(1.5,0) -- ++(0,1.1); 
+    \draw[strA] (O) ++(4.5,0) -- ++(0,1.1);
+    \draw[strC] (O) ++(1.8,5) to[-s] ++(-1, -3.2) \cupto{0.7} -- ++(0,0.2);
+    \draw[strC] (O) ++(4.2,5) to[-s] ++(1, -3.2) \cupfrom{0.7} -- ++(0,0.2);
+    \draw[strC] (O) ++(2.2,2.0) \capto{0.8};                 
+\end{tkz}
+.
+\]
+
+\subsection{\texorpdfstring{$\mathrm{H}^*$}{H*}-monad completion of pre-3-Hilbert spaces}
+Given a pre-3-Hilbert space $\fX$, define the \defn{$\mathrm{H}^*$-monad completion} of $\fX$ by the pre-3-Hilbert space $\mathsf{H^*Alg}(\fX)$ whose
+\begin{itemize}
+    \item objects are $\mathrm{H}^*$-monads in $X$,
+    \item 1-morphisms are $\mathrm{H}^*$-bimodules, and
+    \item 2-morphisms are intertwiners,
+    \item UAF is \greyson{todo},
+    \item spherical trace is \greyson{todo}
+\end{itemize}
+
+\SeeAlso{spectrum (Banach algebra)}
+
+\References
+
+\Footer
+
+\end{document}
+% \subsection{Relative tensor products over \texorpdfstring{$\mathrm{H}^*$}{H*}-multifusion categories}
+% Let $\mathfrak{X}$ be a 3-Hilbert space and $c \in \mathfrak{X}$, with $\Omega_c = \mathrm{End}_{\mathfrak{X}}(c)$.
+
+% First, for $\mathcal{M}_{\Omega_c} \in \mathsf{Mod}^\dagger(\Omega_c)$, we define the object $\mathcal{M} \boxdot_{\Omega_c} c \in \mathfrak{X}$ as the image of $\mathcal{M}$ under the unique isometric embedding $\mathsf{Mod}^\dagger(\Omega_c) \hookrightarrow \mathfrak{X}$ that extends the map $\mathrm{B}\Omega_c \to \mathfrak{X}$ sending $* \mapsto c$. This extension is obtained by the universal property of unitary Cauchy completion together with the isometric equivalence $(\mathrm{B}\Omega_c)^{\Cauchy} \cong \mathsf{Mod}^\dagger(\Omega_c)$.
+
+% More generally, for any $\mathrm{H}^*$-multifusion category $\mathcal{A}$ equipped with an isometric unitary tensor functor $F\colon \mathcal{A} \to \Omega_c$, and for a module $\mathcal{M}_{\mathcal{A}} \in \mathsf{Mod}^\dagger(\mathcal{A})$, we define the object $\mathcal{M} \boxdot_{\mathcal{A}} c \in \mathfrak{X}$ as the image of $\mathcal{M}_{\mathcal{A}}$ under the composite isometric embedding
+% \[
+% \mathrm{B}\mathcal{A} \xrightarrow{\mathrm{B}F} \mathrm{B}\Omega_c \to \mathsf{Mod}^\dagger(\Omega_c) \hookrightarrow \mathfrak{X}.
+% \]
+% Note that the notation $\mathcal{M} \boxdot_{\mathcal{A}} c$ implicitly depends on the functor $F$, which we suppress for brevity.
+
+% By the construction of these embeddings (specifically \textbf{Theorem 3.28} and \textbf{Lemma 4.41} in \textit{3Hilb}), the object $b \coloneqq \mathcal{M} \boxdot_{\mathcal{A}} c$ is the \textbf{splitting object} of the $\mathrm{H}^*$-monad $F(A)$ in $\mathfrak{X}$, where $A = [m,m]_{\mathcal{A}}$ is the internal end $\mathrm{H}^*$-algebra of a generator $m \in \mathcal{M}$.
+
+% Diagrammatically, this is characterized by the existence of a 1-morphism ${}_cX_b$ (the condensation bimodule) and a unitary intertwiner $\gamma$ such that:
+
+% \[
+% \begin{tkz}[scale=0.8]
+%     \coordinate (O) at (0,0);
+    
+%     % --- LHS: The H*-Monad F(A) on c ---
+%     % Region c (Background)
+%     \fill[regA] (0,0) rectangle (3,4);
+    
+%     % The Algebra 1-Morphism F(A): c -> c
+%     \draw[strA] (1.5,0) -- (1.5,4);
+    
+%     % Labels LHS
+%     \node[below] at (1.5,0) {$F(A)$};
+%     \node[above] at (1.5,4) {$F(A)$};
+%     \node at (0.75, 2) {$c$};
+%     \node at (2.25, 2) {$c$};
+    
+%     % Visual aid: Algebra multiplication point
+%     \fill[colA] (1.5,2) circle (2pt);
+%     \node[right, colA!80!black] at (1.5,2) {$\mu_{F(A)}$};
+
+% \end{tkz}
+% \quad\xrightarrow[\cong]{\gamma}\quad
+% \begin{tkz}[scale=0.8]
+%     \coordinate (O) at (0,0);
+    
+%     % --- RHS: The Splitting Object b ---
+%     % Background Region c
+%     \fill[regA] (0,0) rectangle (4,4);
+    
+%     % The Condensation Object b (as a strip splitting c)
+%     \fill[regB] (1.5,0) rectangle (2.5,4);
+    
+%     % Boundary 1-morphism X: c -> b
+%     \draw[strC] (1.5,0) -- (1.5,4);
+    
+%     % Boundary 1-morphism X^v: b -> c
+%     \draw[strC] (2.5,0) -- (2.5,4);
+    
+%     % Labels RHS
+%     \node at (0.75,2) {$c$};
+%     \node at (3.25,2) {$c$};
+    
+%     % Label for the condensed object b
+%     \node[font=\bfseries] at (2,2) {$b$};
+%     \node[below] at (2,0) {$\mathcal{M} \boxdot_{\mathcal{A}} c$};
+    
+%     % Boundary labels
+%     \node[above] at (1.5,4) {$X$};
+%     \node[above] at (2.5,4) {$X^\vee$};
+    
+% \end{tkz}
+% \]

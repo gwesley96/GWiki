@@ -4,6 +4,8 @@
 \WarningFilter{latex}{You have requested package}
 \ProvidesClass{gwiki}[2025/12/08 v1.0 GWiki LaTeX Class - Interconnected Note System]
 
+\newcommand{\ctrsubordto}{section} % replace the name here of whichever level of header (e.g., section, subsection, subsubsection, etc.) you want the theorem (and thus the rest of the enunciations relying on it) to be siblings to. E.g,. use "section" if you want "Definition 1", then eg "Lemma 2", etc., instead of something like "Definition 0.1", then eg "Lemma 0.2".
+
 %% ============================================================================
 %% GWIKI DOCUMENT CLASS
 %% A LaTeX class for interconnected mathematical/physics notes
@@ -31,7 +33,7 @@
 \DeclareStringOption[]{gwikiid}            % Unique ID for this document
 \DeclareStringOption[12pt plus 3pt minus 9pt]{displayMathPadding}
 \DeclareStringOption[0.25in]{parindent}
-\DeclareStringOption[14pt]{fontsize}
+\DeclareStringOption[12pt]{fontsize}
 \DeclareStringOption[letterpaper]{paper}
 \DeclareStringOption[1in]{margins}
 
@@ -124,6 +126,9 @@
 \RequirePackage[footnotesize,bf]{caption}
 \captionsetup{margin=0.75cm}
 \RequirePackage[dvipsnames,svgnames]{xcolor}
+\RequirePackage[final]{microtype}
+\microtypecontext{spacing=nonfrench}
+
 
 \iftoggle{enableParskip}{\RequirePackage{parskip}}{}
 
@@ -197,6 +202,7 @@
 \renewcommand\thealpha{\Alph{alpha}}
 
 %% Standard (unframed) enunciation
+%% NOTE: #5 is the target counter name (e.g., 'theorem' or 'childofsection')
 \newcommand{\defineStandardEnunciation}[5]{%
   \declaretheoremstyle[
     spaceabove=\parsep,
@@ -208,8 +214,8 @@
     postheadhook={\phantom{}{}},
     #4
   ]{#1Style}%
-  \declaretheorem[style=#1Style,name=#2,numberlike=childof#5]{#1}%
-  \declaretheorem[style=#1Style,name=#3,numberlike=childof#5]{#1s}%
+  \declaretheorem[style=#1Style,name=#2,numberlike=#5]{#1}%
+  \declaretheorem[style=#1Style,name=#3,numberlike=#5]{#1s}%
   \declaretheorem[style=#1Style,name=#2,sibling=alpha]{#1alpha}
   \declaretheorem[style=#1Style,name=#3,sibling=alpha]{#1salpha}
   \crefname{#1}{#2}{#3}%
@@ -268,27 +274,43 @@
 }
 \makeatother
 
+%% MAIN DEFINITION COMMAND
 \newcommand{\defineEnunciation}[6]{%
   \makeatletter
-  \ifcsname c@childof#6\endcsname
-  \else
-    \newcounter{childof#6}
-    \ifstrempty{#6}{
-      \counterwithout{childof}{section}
-    }{
-      \counterwithin{childof#6}{#6}
-    }
-  \fi
+  % Check if #6 is a structural parent (empty, section, subsection) or a sibling
+  \ifboolexpr{ test {\ifstrempty{#6}} or test {\ifstrequal{#6}{section}} or test {\ifstrequal{#6}{subsection}} }
+  {%
+    % Case 1: Root Driver (e.g. Theorem)
+    \ifcsname c@childof#6\endcsname\else
+      \newcounter{childof#6}%
+      \ifstrempty{#6}{
+         \counterwithout{childof}{section}% Global numbering (1, 2, 3...)
+      }{
+         \counterwithin{childof#6}{#6}% Sectional numbering (1.1, 1.2...)
+      }%
+    \fi
+    \def\gwiki@targetCounter{childof#6}%
+  }
+  {%
+    % Case 2: Sibling (e.g. Lemma sharing counter with Theorem)
+    \def\gwiki@targetCounter{#6}%
+  }%
   \makeatother
-  \defineStandardEnunciation{#1}{#2}{#3}{#4}{#6}%
-  \defineFramedEnunciation{#1}{#2}{#4}{#5}{#6}%
+  \defineStandardEnunciation{#1}{#2}{#3}{#4}{\gwiki@targetCounter}%
+  \defineFramedEnunciation{#1}{#2}{#4}{#5}{\gwiki@targetCounter}%
 }
 
-%% Define all enunciation types
-%% Default: continuous numbering (Definition 1, Lemma 2, Theorem 3, etc.)
-%% To change to section-based numbering, replace {} with {section} in all definitions
-%% To have counters reset per section but still share numbers, use {theorem} for all
-\defineEnunciation{theorem}{Theorem}{Theorems}{bodyfont=\itshape}{colframe=blue, fontupper=\itshape}{}
+
+%% ----------------------------------------------------------------------------
+%% ENUNCIATION CONFIGURATION
+%% ----------------------------------------------------------------------------
+
+%% DRIVER: Theorem determines the numbering style.
+%% Use {} for global numbering (Definition 1, Lemma 2...)
+%% Use {section} for per-section numbering (Definition 1.1, Lemma 1.2...)
+\defineEnunciation{theorem}{Theorem}{Theorems}{bodyfont=\itshape}{colframe=blue, fontupper=\itshape}{\ctrsubordto}
+
+%% SIBLINGS: All following environments share the 'theorem' counter
 \defineEnunciation{corollary}{Corollary}{Corollaries}{bodyfont=\itshape}{colframe=gray, fontupper=\itshape}{theorem}
 \defineEnunciation{lemma}{Lemma}{Lemmas}{bodyfont=\itshape}{colframe=Dandelion, fontupper=\itshape}{theorem}
 \defineEnunciation{proposition}{Proposition}{Propositions}{bodyfont=\itshape}{colframe=purple, fontupper=\itshape}{theorem}
