@@ -28,6 +28,57 @@ BUILD_DIR = ROOT_DIR / "build"
 # Ensure directories exist
 INDEX_DIR.mkdir(exist_ok=True)
 
+def ensure_list(value):
+    """Normalize metadata fields to a list of strings."""
+    if not value:
+        return []
+    if isinstance(value, list):
+        return [v.strip() for v in value if str(v).strip()]
+    return [v.strip() for v in str(value).split(',') if v.strip()]
+
+def parse_frontmatter(content: str) -> dict:
+    """Parse YAML-style frontmatter from a commented block at the top of the file."""
+    pattern = re.compile(r'^\s*%?\s*---\s*\n(.*?)\n\s*%?\s*---', re.DOTALL | re.MULTILINE)
+    match = pattern.search(content)
+    if not match:
+        return {}
+
+    block = match.group(1)
+    lines = []
+    for line in block.splitlines():
+        cleaned = re.sub(r'^\s*%+\s?', '', line)
+        lines.append(cleaned)
+
+    data = {}
+    current_key = None
+    for line in lines:
+        stripped = line.strip()
+        if not stripped:
+            continue
+
+        if ':' in stripped and not stripped.startswith('-'):
+            key, value = stripped.split(':', 1)
+            key = key.strip().lower().replace(' ', '_')
+            value = value.strip()
+            if value:
+                if value.startswith('[') and value.endswith(']'):
+                    data[key] = [v.strip() for v in value[1:-1].split(',') if v.strip()]
+                else:
+                    data[key] = value
+            else:
+                data[key] = []
+            current_key = key
+            continue
+
+        if stripped.startswith('-') and current_key:
+            data.setdefault(current_key, [])
+            if isinstance(data[current_key], list):
+                item = stripped.lstrip('-').strip()
+                if item:
+                    data[current_key].append(item)
+
+    return data
+
 def extract_metadata(tex_file):
     """Extract GWiki metadata from a .tex file."""
     metadata = {
@@ -35,7 +86,10 @@ def extract_metadata(tex_file):
         'title': '',
         'type': '',
         'tags': [],
+        'aliases': [],
         'date': '',
+        'created': '',
+        'modified': [],
         'author': '',
         'summary': '',
         'prerequisites': [],
@@ -49,19 +103,33 @@ def extract_metadata(tex_file):
         print(f"Warning: Could not read {tex_file}: {e}")
         return metadata
 
+    frontmatter = parse_frontmatter(content)
+    if frontmatter:
+        metadata['title'] = frontmatter.get('title', metadata['title'])
+        metadata['tags'] = ensure_list(frontmatter.get('tags') or frontmatter.get('tag')) or metadata['tags']
+        metadata['aliases'] = ensure_list(frontmatter.get('aliases') or frontmatter.get('alias')) or metadata['aliases']
+        metadata['created'] = frontmatter.get('date_created') or frontmatter.get('created') or metadata['created']
+        fm_modified = frontmatter.get('date_modified') or frontmatter.get('modified')
+        if fm_modified:
+            metadata['modified'] = ensure_list(fm_modified)
+        if not metadata['date'] and frontmatter.get('date'):
+            metadata['date'] = frontmatter.get('date')
+
     # Extract GWikiID
     match = re.search(r'\\GWikiID\{([^}]+)\}', content)
     if match:
         metadata['id'] = match.group(1)
 
     # Extract from GWikiMeta (combined command)
-    match = re.search(r'\\GWikiMeta\{([^}]+)\}\{([^}]+)\}\{([^}]+)\}(?:\[([^\]]*)\])?', content)
+    match = re.search(r'\\GWikiMeta\{([^}]+)\}\{([^}]+)\}\{([^}]+)\}(?:\[([^\]]*)\])?(?:\[([^\]]*)\])?', content)
     if match:
         metadata['id'] = match.group(1)
         metadata['title'] = match.group(2)
         metadata['type'] = match.group(3)
         if match.group(4):
-            metadata['tags'] = [t.strip() for t in match.group(4).split(',')]
+            metadata['tags'] = ensure_list(match.group(4))
+        if match.group(5):
+            metadata['aliases'] = ensure_list(match.group(5))
 
     # Extract individual fields if not set by GWikiMeta
     if not metadata['title']:
@@ -75,9 +143,17 @@ def extract_metadata(tex_file):
             metadata['type'] = match.group(1)
 
     if not metadata['tags']:
-        match = re.search(r'\\GWikiTags\{([^}]+)\}', content)
+        matches = re.findall(r'\\Tags\{([^}]*)\}', content)
+        tags = []
+        for m in matches:
+            tags.extend([t.strip() for t in m.split(',') if t.strip()])
+        if tags:
+            metadata['tags'] = tags
+
+    if not metadata['aliases']:
+        match = re.search(r'\\Aliases\{([^}]+)\}', content)
         if match:
-            metadata['tags'] = [t.strip() for t in match.group(1).split(',')]
+            metadata['aliases'] = ensure_list(match.group(1))
 
     match = re.search(r'\\GWikiDate\{([^}]+)\}', content)
     if match:

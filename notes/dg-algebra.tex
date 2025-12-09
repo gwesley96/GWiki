@@ -1,15 +1,27 @@
 \documentclass{gwiki}
 
 \Title{DG-algebra}
-\Tags{algebra, homological-algebra}
+\Tags{algebra}{homological-algebra}
+\Summary{Differential graded algebras as monoids in chain complexes and their module theory.}
 
 \begin{document}
 
 \NoteHeader
 
-A \textbf{DG-algebra} (AKA \textbf{DGA}) is a \wref[monoid]{monoid-in-a-monoidal-category} $A$ in $(\mathrm{Ch}_{\mathbb{k}},\otimes _{\mathbb{k}})$ viewed as a one-object \wref[enriched category]{enriched-category} $\underline{A}$ (without \wref[DG-structure]{dg-category}).
+\begin{framedidea}[Idea]
+A differential graded algebra packages a chain complex with a compatible multiplication, so it behaves like an algebra object in the monoidal category of chain complexes; modules over it are enriched functors out of the associated one-object DG-category.
+\end{framedidea}
+
+A \textbf{DG-algebra} (AKA \textbf{DGA}) is a \wref[monoid]{monoid in a monoidal category} $A$ in $(\mathrm{Ch}_{\mathbb{k}},\otimes _{\mathbb{k}})$ viewed as a one-object \wref[enriched category]{enriched category} $\underline{A}$ (without \wref[DG-structure]{dg-category}).
 
 A \textbf{DG-module} $\mathcal{M}$ over a DGA $A$ is a functor $\underline{A}\to \mathrm{Ch}_{k}$ (where $\mathrm{Ch}_{k}$ is enriched).
+
+For a quick primer on DGAs, see \arxiv{0601185}.
+
+\SeeAlso{category,functor,natural-transformation}
+\IncomingLinks{(pseudo-)Riemannian metric}
+
+\References
 
 \Footer
 

@@ -116,6 +116,8 @@
 \RequirePackage{tikz-cd}
 \RequirePackage{quiver}
 \RequirePackage{nicematrix}
+\RequirePackage{filemod}
+\RequirePackage{datetime2}
 \RequirePackage{lastpage}
 \RequirePackage{indentfirst}
 \RequirePackage{float}
@@ -137,6 +139,7 @@
 %% ============================================================================
 \RequirePackage[
   colorlinks=true,
+  breaklinks=true,
   linkcolor=purple,
   filecolor=purple,
   urlcolor=blue,
@@ -300,6 +303,7 @@
 \defineEnunciation{remark}{Remark}{Remarks}{bodyfont=\upshape}{colframe=gray, fontupper=\upshape}{section}
 \defineEnunciation{note}{Note}{Notes}{bodyfont=\upshape}{colframe=yellow, fontupper=\upshape}{section}
 \defineEnunciation{notation}{Notation}{Notations}{bodyfont=\upshape}{colframe=blue!50, fontupper=\upshape}{section}
+\defineEnunciation{idea}{Idea}{Ideas}{bodyfont=\upshape}{colframe=cyan, fontupper=\upshape}{section}
 \defineEnunciation{axiom}{Axiom}{Axioms}{bodyfont=\upshape}{colframe=violet, fontupper=\upshape}{section}
 \defineEnunciation{assumption}{Assumption}{Assumptions}{bodyfont=\upshape}{colframe=red, fontupper=\upshape}{section}
 \defineEnunciation{algorithm}{Algorithm}{Algorithms}{bodyfont=\upshape}{colframe=red, fontupper=\upshape}{section}

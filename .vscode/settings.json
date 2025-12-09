@@ -50,5 +50,8 @@
     "**/*.aux": true,
     "**/*.log": true,
     "**/*.out": true
-  }
+  },
+  "cSpell.words": [
+    "psuedo"
+  ]
 }

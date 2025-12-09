@@ -1,32 +1,78 @@
+% ---
+% title: (pseudo-)Riemannian metric
+% tags:
+%   - differential-geometry
+%   - riemannian-geometry
+%   - metric-geometry
+% aliases:
+%   - pseudo-inner product space
+%   - pseudo-Euclidean vector space
+%   - Euclidean metric
+%   - Poincaré metric
+%   - Poincaré disk model
+%   - hyperbolic space
+%   - pseudo-Riemannian manifold
+%   - Riemannian manifold
+% date created: August 9, 2025 at 9:12 pm ET
+% date modified:
+%   - November 11, 2025 at 10:19 pm ET
+%   - August 16, 2025 at 5:28 pm ET
+% ---
 \documentclass{gwiki}
+\usepackage{tz}
 
 \Title{(pseudo-)Riemannian metric}
-\Tags{}
-
+\Tags{differential-geometry}{riemannian-geometry}{metric-geometry}
+\Aliases{pseudo-inner product space, pseudo-Euclidean vector space, Euclidean metric, Poincaré metric, Poincaré disk model, hyperbolic space, pseudo-Riemannian manifold, Riemannian manifold}
+\Summary{Positive-semidefinite and positive-definite quadratic data on vector spaces and manifolds, including canonical models.}
 \begin{document}
 
 \NoteHeader
 
-For a vector space $V$, a \textbf{pseudo-inner product} (resp. \textbf{inner product}) on $V$ is a \wref[positive-semidefinite form]{positive-definite-form} (resp. \wref[positive-definite form]{positive-definite-form}) symmetric bilinear form $\bkt{-}{-}\colon V\times V\to\bbR$.
+\begin{framedidea}[Idea]
+Metrics capture the quadratic data needed to measure lengths and angles; pseudo-Riemannian metrics relax positivity to accommodate signatures such as Lorentzian geometries while retaining smooth variation over the manifold.
+\end{framedidea}
 
-\textbf{Definition ((Pseudo-)Euclidean vector spaces).} A \textbf{pseudo-Euclidean vector space} (resp. \textbf{Euclidean vector space}) is a finite-dimensional $\bbR$-vector space $V$ equipped with a positive-semidefinite (resp. positive-definite) \wref[quadratic form]{quadratic-form} $Q\colon V\to\bbR$.
+\begin{definition}[Pseudo-inner product]
+A \textbf{pseudo-inner product} (resp. \textbf{inner product}) on a vector space $V$ is a \wref[positive-semidefinite form]{positive-definite-form} (resp. \wref[positive-definite form]{positive-definite-form}) symmetric bilinear form $\bkt{-}{-}\colon V\times V\to\bbR$.
+\end{definition}
 
-\textbf{Remark ((Pseudo-)norms from quadratic forms).} A (pseudo-)Euclidean vector space $(V,Q)$ has \textbf{(pseudo-)norm} $\|-\|\coloneqq \sqrt{Q(-)}$.
+\begin{definition}[(Pseudo-)Euclidean vector spaces]
+A \textbf{pseudo-Euclidean vector space} (resp. \textbf{Euclidean vector space}) is a finite-dimensional $\bbR$-vector space $V$ equipped with a positive-semidefinite (resp. positive-definite) \wref[quadratic form]{quadratic-form} $Q\colon V\to\bbR$.
+\end{definition}
+
+\begin{remark}[(Pseudo-)norms from quadratic forms]
+A (pseudo-)Euclidean vector space $(V,Q)$ has \textbf{(pseudo-)norm} $\|-\|\coloneqq \sqrt{Q(-)}$.
+\end{remark}
 
 \section{(Pseudo-)Riemannian metrics}
-A \textbf{pseudo-Riemannian metric} is a $(0,2)$-\wref[tensor field]{tensor-field} $\mathrm{g}$ on $M$ such that for each $p\in M$, the bilinear form $\mathrm{g}_p\coloneqq \bkt{-}{-}_p$ bilinear form $T^*M\times T^*M\cong (TM\times TM)^*\to \bbR$, is symmetric and nondegenerate. If in addition $\mathrm{g}$ is positive-definite, $\mathrm{g}$ is called a \textbf{Riemannian metric}. 
 
-A \textbf{(pseudo-)Riemannian manifold} is a \wref[smooth manifold]{smooth-manifold} $M$ equipped with a (psuedo-)Riemannian metric $\mathrm{g} \coloneqq \bkt{-}{-}$.
+\begin{definition}
+A \textbf{pseudo-Riemannian metric} on a smooth manifold $M$ is a $(0,2)$-\wref[tensor field]{tensor-field} $\mathrm{g}$ such that for each $p\in M$, the bilinear form $\mathrm{g}_p\coloneqq \bkt{-}{-}_p\colon T_pM\times T_pM\to \bbR$ is symmetric and nondegenerate. If $\mathrm{g}$ is positive-definite, it is a \textbf{Riemannian metric}.
+\end{definition}
 
-\textbf{Example (Euclidean metric).} For $M = \bbR^n$ and local (and so, in fact, global) coordinates $x^i$, the \textbf{Euclidean metric} $\overline{\mathrm{g}} \coloneqq (\mathrm{d} x^1)^2 + \cdots + (\mathrm{d} x^n)^2$ makes $\bbR^n$ into a Riemannian manifold, called the \textbf{Euclidean vector space} of dimension $n$. (Here $(\mathrm{d} x^i)^2 \coloneqq \mathrm{d} x^i \otimes \mathrm{d} x^i$.)
+\begin{definition}[(Pseudo-)Riemannian manifolds]
+A \textbf{(pseudo-)Riemannian manifold} is a \wref[smooth manifold]{smooth-manifold} $M$ equipped with a (pseudo-)Riemannian metric $\mathrm{g} \coloneqq \bkt{-}{-}$.
+\end{definition}
 
-\textbf{Example.} For $M = \overset\circ D{}^n$, the interior of the open disk in $\bbR^n$, the \textbf{Poincaré metric} $\mathrm{g}_{\small\mathbb{H}}\coloneqq 4\overline {\mathrm{g}}/(1-\overline{\mathrm{g}})$ gives the \textbf{Poincaré disk model} of $n$-dimensional \textbf{hyperbolic space} $\mathbb{H}^n$.
+\begin{example}[Euclidean metric]
+For $M = \bbR^n$ with global coordinates $x^i$, the \textbf{Euclidean metric} $\overline{\mathrm{g}} \coloneqq (\mathrm{d} x^1)^2 + \cdots + (\mathrm{d} x^n)^2$ makes $\bbR^n$ into a Riemannian manifold, the standard Euclidean vector space of dimension $n$.
+\end{example}
 
-One uses a \wref{partition-of-unity} to prove the following result.
+\begin{example}[Poincaré disk model]
+For $M = \overset\circ D{}^n \subset \bbR^n$, the \textbf{Poincaré metric} $\mathrm{g}_{\small\mathbb{H}}\coloneqq \dfrac{4\overline{\mathrm{g}}}{1-\overline{\mathrm{g}}}$ yields the Poincaré disk model of $n$-dimensional \textbf{hyperbolic space} $\mathbb{H}^n$.
+\end{example}
 
-\textbf{Proposition (((Lee18, Prop. 2.4))).} Every smooth manifold admits a Riemannian metric.
+\begin{framedproposition}[{(Lee18, Prop. 2.4)}]
+Every smooth manifold admits a Riemannian metric; one proof uses a \wref{partition-of-unity}.
+\end{framedproposition}
+
+\SeeAlso{smooth-manifold,quadratic-form,tensor-field}
+\IncomingLinks{dg-algebra}
+
+Further reading: \nlab{pseudo-Riemannian manifold}.
+\References
 
 \Footer
 
 \end{document}
-

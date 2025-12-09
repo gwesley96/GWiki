@@ -1,15 +1,28 @@
 \documentclass{gwiki}
 
 \Title{Birkhoff Duality}
-\Tags{}
+\Tags{order-theory}{lattice-theory}
+\Summary{Finite distributive lattices are dual to finite posets via ideals and sets of join-irreducibles.}
 
 \begin{document}
 
+
 \NoteHeader
 
+\begin{framedidea}[Idea]
+Birkhoff duality identifies a finite distributive lattice with the poset of its join-irreducible elements, while the lattice itself is recovered as the lattice of order ideals of that poset. Morphisms become order-preserving maps in the opposite direction.
+\end{framedidea}
 
+\begin{definition}[Duality statement]
+Let $\mathsf{FDLat}$ be the category of finite distributive lattices and $\mathsf{FPos}$ the category of finite posets. The functor sending $L$ to its poset of join-irreducibles $J(L)$ and $P$ to its lattice of ideals $\mathrm{Idl}(P)$ yields an equivalence $\mathsf{FDLat} \simeq \mathsf{FPos}^{\mathrm{op}}$.
+\end{definition}
+
+\SeeAlso{category,functor,natural-transformation}
+\IncomingLinks{dg-algebra}
+
+Key sources: \nlab{Birkhoff duality}.
+\References
 
 \Footer
 
 \end{document}
-

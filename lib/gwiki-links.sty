@@ -15,6 +15,10 @@
 \RequirePackage{xstring}
 \RequirePackage{hyperref}
 \RequirePackage{pgffor}
+\RequirePackage{filemod}
+\RequirePackage{datetime2}
+\RequirePackage{etoolbox}
+\RequirePackage{array}
 
 %% ----------------------------------------------------------------------------
 %% AUTO ID FROM FILENAME
@@ -37,33 +41,40 @@
 %%
 %% Links open the target PDF when clicked in a PDF viewer.
 
-\NewDocumentCommand{\wref}{O{} m}{%
+\NewDocumentCommand{\wref}{O{} m o}{%
+  % Allow display text either before or after the target argument
+  \def\gwiki@display{#1}%
+  \IfNoValueF{#3}{%
+    \IfStrEq{#1}{}{%
+      \def\gwiki@display{#3}%
+    }{}%
+  }%
   % Check if it starts with # (internal reference)
   \IfBeginWith{#2}{\#}{%
     % Internal reference - strip the # and use hyperref
     \StrBehind{#2}{\#}[\gwiki@intlabel]%
-    \IfStrEq{#1}{}{%
+    \IfStrEq{\gwiki@display}{}{%
       \hyperref[\gwiki@intlabel]{\gwiki@intlabel}%
     }{%
-      \hyperref[\gwiki@intlabel]{#1}%
+      \hyperref[\gwiki@intlabel]{\gwiki@display}%
     }%
   }{%
     % Check if it contains # (cross-document section reference)
     \IfSubStr{#2}{\#}{%
       \StrBefore{#2}{\#}[\gwiki@xdoc]%
       \StrBehind{#2}{\#}[\gwiki@xlabel]%
-      \IfStrEq{#1}{}{%
+      \IfStrEq{\gwiki@display}{}{%
         % Link to other PDF with named destination
         \href{run:./\gwiki@xdoc.pdf\#\gwiki@xlabel}{\textsl{\gwiki@xdoc} \S\gwiki@xlabel}%
       }{%
-        \href{run:./\gwiki@xdoc.pdf\#\gwiki@xlabel}{#1}%
+        \href{run:./\gwiki@xdoc.pdf\#\gwiki@xlabel}{\gwiki@display}%
       }%
     }{%
       % Simple document reference - link to PDF file
-      \IfStrEq{#1}{}{%
+      \IfStrEq{\gwiki@display}{}{%
         \href{run:./#2.pdf}{\textsl{#2}}%
       }{%
-        \href{run:./#2.pdf}{#1}%
+        \href{run:./#2.pdf}{\gwiki@display}%
       }%
     }%
   }%
@@ -94,7 +105,19 @@
 %% ----------------------------------------------------------------------------
 \newcommand{\gwiki@title}{}
 \newcommand{\gwiki@tags}{}
+\newcommand{\gwiki@aliases}{}
 \newcommand{\gwiki@summary}{}
+\newcommand{\gwiki@created}{}
+\newcommand{\gwiki@manualmodified}{}
+\newcommand{\gwiki@tagslist}{}
+\newcommand{\gwiki@moddate}{}
+\newcommand{\gwiki@modtime}{}
+\providecommand{\gwiki@refslist}{}
+
+% Default date formatter (user can \renewcommand)
+\newcommand{\GWikiDateFormat}[2]{#1\space #2} % args: date, time
+\newcommand{\CreatedOn}[1]{\renewcommand{\gwiki@created}{#1}}
+\newcommand{\ModifiedOn}[1]{\renewcommand{\gwiki@manualmodified}{#1}}
 
 %% Set title
 \newcommand{\Title}[1]{%
@@ -103,17 +126,37 @@
   \hypersetup{pdftitle={#1}}%
 }
 
-%% Set tags
-\newcommand{\Tags}[1]{\renewcommand{\gwiki@tags}{#1}}
+%% Helper to collect tags from comma lists
+\newcommand{\gwiki@addtags}[1]{%
+  \foreach \t in {#1}{%
+    \ifdefempty{\gwiki@tagslist}%
+      {\global\edef\gwiki@tagslist{\t}}%
+      {\global\edef\gwiki@tagslist{\gwiki@tagslist, \t}}%
+  }%
+}
+
+%% Set tags (supports multiple braced args or comma lists)
+\NewDocumentCommand{\Tags}{m +g +g +g +g}{%
+  \renewcommand{\gwiki@tagslist}{}%
+  \gwiki@addtags{#1}%
+  \IfNoValueF{#2}{\gwiki@addtags{#2}}%
+  \IfNoValueF{#3}{\gwiki@addtags{#3}}%
+  \IfNoValueF{#4}{\gwiki@addtags{#4}}%
+  \IfNoValueF{#5}{\gwiki@addtags{#5}}%
+  \renewcommand{\gwiki@tags}{\gwiki@tagslist}%
+}
+
+%% Set aliases (comma-separated list)
+\newcommand{\Aliases}[1]{\renewcommand{\gwiki@aliases}{#1}}
 
 %% Set summary
 \newcommand{\Summary}[1]{\renewcommand{\gwiki@summary}{#1}}
 
 %% Write metadata to aux for indexing
 \AtEndDocument{%
-  \immediate\write\@auxout{\string\gwiki@meta{\jobname}{\gwiki@title}{\gwiki@tags}}%
+  \immediate\write\@auxout{\string\gwiki@meta{\jobname}{\gwiki@title}{\gwiki@tags}{\gwiki@aliases}}%
 }
-\newcommand{\gwiki@meta}[3]{}
+\newcommand{\gwiki@meta}[4]{}
 
 %% ----------------------------------------------------------------------------
 %% PREREQUISITES AND RELATED
@@ -129,32 +172,127 @@
   \foreach \p in {#1} {\wref{\p}~}%
 }
 
+\newcommand{\SeeAlso}[1]{%
+  \par\medskip\noindent\textbf{See also:}%
+  \begin{itemize}[leftmargin=*]
+    \foreach \p in {#1} {\item \wref{\p}}
+  \end{itemize}
+}
+
+\newcommand{\IncomingLinks}[1]{%
+  \par\medskip\noindent\textbf{Incoming links:}%
+  \begin{itemize}[leftmargin=*]
+    \foreach \p in {#1} {\item \wref{\p}}
+  \end{itemize}
+}
+
+\newcommand{\IncomingLinksSection}[1]{%
+  \par\medskip\noindent\textbf{Incoming links:}%
+  \begin{itemize}[leftmargin=*]
+    \foreach \p in {#1} {\item \wref{\p}}
+  \end{itemize}
+}
+
 %% ----------------------------------------------------------------------------
 %% SIMPLE HEADERS
 %% ----------------------------------------------------------------------------
+\newcount\gwiki@mincount
+\newcommand{\gwiki@twodigits}[1]{\ifnum#1<10 0#1\else#1\fi}
+\newcommand{\gwiki@capturefilemod}[7]{%
+  \def\gwiki@modyear{#1}%
+  \def\gwiki@modmonth{#2}%
+  \def\gwiki@modday{#3}%
+  \def\gwiki@modhour{#4}%
+  \def\gwiki@modminute{#5}%
+  \def\gwiki@modsecond{#6}%
+  \def\gwiki@modzone{#7}%
+}
+
+\AtBeginDocument{%
+  \filemodparse{\gwiki@capturefilemod}{\jobname.tex}%
+  \gwiki@mincount=\gwiki@modminute\relax
+  \divide\gwiki@mincount by 2 % floor to 2-minute bucket
+  \multiply\gwiki@mincount by 2
+  \edef\gwiki@moddate{\gwiki@modyear-\gwiki@modmonth-\gwiki@modday}%
+  \edef\gwiki@modtime{\gwiki@modhour:\gwiki@twodigits{\the\gwiki@mincount}}%
+  \ifdefempty{\gwiki@modyear}{%
+    \edef\gwiki@moddate{\DTMcurrenttime}%
+    \edef\gwiki@modtime{\DTMcurrenttime}%
+  }{}
+  \ifdefempty{\gwiki@created}{%
+    \CreatedOn{\GWikiDateFormat{\gwiki@moddate}{\gwiki@modtime}}%
+  }{}
+}
+
+\newcommand{\gwiki@moddatestring}{%
+  \ifdefempty{\gwiki@manualmodified}%
+    {\GWikiDateFormat{\gwiki@moddate}{\gwiki@modtime}}%
+    {\gwiki@manualmodified}%
+}
 
 %% Article header
 \newcommand{\ArticleHeader}{%
   \maketitle
-  \ifx\gwiki@summary\empty\else
-    \begin{abstract}\gwiki@summary\end{abstract}
-  \fi
+  \ifdefempty{\gwiki@summary}{}{\begin{abstract}\gwiki@summary\end{abstract}}
+  {\small\color{gray!70}
+    \ifdefempty{\gwiki@created}{}{Created: \gwiki@created\quad}
+    Last modified: \gwiki@moddatestring
+    \ifdefempty{\gwiki@tags}{}{\quad Tags: \gwiki@tags}
+  }\par\medskip
 }
 
 %% Wiki note header (minimal)
 \newcommand{\NoteHeader}{%
-  \noindent{\Large\bfseries\gwiki@title}%
+  \noindent{\LARGE\bfseries\color{blue!70!black}\gwiki@title}%
   \par\smallskip
-  \ifx\gwiki@summary\empty\else
-    \noindent\textit{\gwiki@summary}\par\smallskip
-  \fi
+  \noindent{\color{gray!50!black}\rule[2pt]{\linewidth}{0.4pt}}\par\smallskip
+  {\small\color{gray!70}
+    \ifdefempty{\gwiki@created}{}{Created: \gwiki@created\quad}
+    Last modified: \gwiki@moddatestring
+    \ifdefempty{\gwiki@tags}{}{\quad Tags: \gwiki@tags}
+  }\par\smallskip
+  \ifdefempty{\gwiki@summary}{}{\noindent\textit{Summary.} \gwiki@summary\par\smallskip}
 }
 
 %% Footer with tags
 \newcommand{\Footer}{%
-  \ifx\gwiki@tags\empty\else
-    \par\bigskip\noindent\textbf{Tags:}~\gwiki@tags
-  \fi
+}
+
+%% ----------------------------------------------------------------------------
+%% REFERENCES (auto-collected)
+%% ----------------------------------------------------------------------------
+\providecommand{\gwiki@refslist}{}
+\newcommand{\gwiki@addref}[1]{\listadd{\gwiki@refslist}{#1}}
+
+\newcommand{\arxiv}[1]{%
+  \href{https://arxiv.org/abs/#1}{\texttt{\textcolor{blue!60!black}{arXiv:#1}}}%
+  \gwiki@addref{\href{https://arxiv.org/abs/#1}{\texttt{arXiv:#1}}}%
+}
+
+\newcommand{\nlab}[1]{%
+  \href{https://ncatlab.org/nlab/show/#1}{\texttt{\textcolor{blue!60!black}{nLab:#1}}}%
+  \gwiki@addref{\href{https://ncatlab.org/nlab/show/#1}{\texttt{nLab:#1}}}%
+}
+
+\newcommand{\References}{%
+  \makeatletter
+  \ifdefempty{\gwiki@refslist}{}{\relax
+    \section*{References}
+    \begin{itemize}[leftmargin=*]
+      \forlistloop{\item}{\gwiki@refslist}
+    \end{itemize}
+  }%
+  \makeatother
+}
+
+%% ----------------------------------------------------------------------------
+%% SIMPLE INLINE CITES (lightweight, no .bib required)
+%% ----------------------------------------------------------------------------
+\NewDocumentCommand{\wcite}{o m}{%
+  \textup{[}%
+  \IfNoValueTF{#1}{#2}{#2, #1}%
+  \textup{]}%
+  \gwiki@addref{\IfNoValueTF{#1}{[#2]}{[#2, #1]}}%
 }
 
 %% ----------------------------------------------------------------------------
@@ -162,7 +300,7 @@
 %% ----------------------------------------------------------------------------
 \let\wikiref\wref
 \let\articleref\wref
-\newcommand{\GWikiMeta}[4]{\Title{#2}\Tags{#4}}
+\NewDocumentCommand{\GWikiMeta}{m m m O{} O{}}{\Title{#2}\Tags{#4}\Aliases{#5}}
 \let\gwikiarticleheader\ArticleHeader
 \let\gwikinoteheader\NoteHeader
 \let\gwikifooter\Footer

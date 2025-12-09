@@ -1,47 +1,183 @@
 {
-  "wref-my-topic": {
+  "wref-(pseudo-)Riemannian metric": {
     "prefix": [
-      "wrefmy-topic",
-      "my-topic",
-      "test topic"
+      "\\wref{(pseudo-)Riemannian metric",
+      "\\wref{(pseudo-)Riemannian metric}",
+      "\\wref{"
     ],
-    "body": "\\\\wref{my-topic}[${1:Test topic}]$0",
-    "description": "Test topic (notes/my-topic.tex)"
+    "body": "\\\\wref{(pseudo-)Riemannian metric}[${1:(pseudo-)Riemannian metric}]$0",
+    "description": "(pseudo-)Riemannian metric (notes/(pseudo-)Riemannian metric.tex)"
   },
-  "wref-natural-transformation": {
+  "wref-(pseudo-)Riemannian metric-alias-0": {
     "prefix": [
-      "wrefnatural-transformation",
-      "natural-transformation",
-      "natural transformation"
+      "\\wref{pseudo-inner product space}",
+      "\\wref{"
     ],
-    "body": "\\\\wref{natural-transformation}[${1:Natural Transformation}]$0",
-    "description": "Natural Transformation (wiki/natural-transformation.tex)"
+    "body": "\\\\wref{(pseudo-)Riemannian metric}[pseudo-inner product space]$0",
+    "description": "(pseudo-)Riemannian metric (alias: pseudo-inner product space) (notes/(pseudo-)Riemannian metric.tex)"
   },
-  "wref-functor": {
+  "wref-(pseudo-)Riemannian metric-alias-1": {
     "prefix": [
-      "wreffunctor",
-      "functor",
-      "functor"
+      "\\wref{pseudo-Euclidean vector space}",
+      "\\wref{"
     ],
-    "body": "\\\\wref{functor}[${1:Functor}]$0",
-    "description": "Functor (notes/functor.tex)"
+    "body": "\\\\wref{(pseudo-)Riemannian metric}[pseudo-Euclidean vector space]$0",
+    "description": "(pseudo-)Riemannian metric (alias: pseudo-Euclidean vector space) (notes/(pseudo-)Riemannian metric.tex)"
+  },
+  "wref-(pseudo-)Riemannian metric-alias-2": {
+    "prefix": [
+      "\\wref{Euclidean metric}",
+      "\\wref{"
+    ],
+    "body": "\\\\wref{(pseudo-)Riemannian metric}[Euclidean metric]$0",
+    "description": "(pseudo-)Riemannian metric (alias: Euclidean metric) (notes/(pseudo-)Riemannian metric.tex)"
+  },
+  "wref-(pseudo-)Riemannian metric-alias-3": {
+    "prefix": [
+      "\\wref{Poincar\u00e9 metric}",
+      "\\wref{"
+    ],
+    "body": "\\\\wref{(pseudo-)Riemannian metric}[Poincar\u00e9 metric]$0",
+    "description": "(pseudo-)Riemannian metric (alias: Poincar\u00e9 metric) (notes/(pseudo-)Riemannian metric.tex)"
+  },
+  "wref-(pseudo-)Riemannian metric-alias-4": {
+    "prefix": [
+      "\\wref{Poincar\u00e9 disk model}",
+      "\\wref{"
+    ],
+    "body": "\\\\wref{(pseudo-)Riemannian metric}[Poincar\u00e9 disk model]$0",
+    "description": "(pseudo-)Riemannian metric (alias: Poincar\u00e9 disk model) (notes/(pseudo-)Riemannian metric.tex)"
+  },
+  "wref-(pseudo-)Riemannian metric-alias-5": {
+    "prefix": [
+      "\\wref{hyperbolic space}",
+      "\\wref{"
+    ],
+    "body": "\\\\wref{(pseudo-)Riemannian metric}[hyperbolic space]$0",
+    "description": "(pseudo-)Riemannian metric (alias: hyperbolic space) (notes/(pseudo-)Riemannian metric.tex)"
+  },
+  "wref-(pseudo-)Riemannian metric-alias-6": {
+    "prefix": [
+      "\\wref{pseudo-Riemannian manifold}",
+      "\\wref{"
+    ],
+    "body": "\\\\wref{(pseudo-)Riemannian metric}[pseudo-Riemannian manifold]$0",
+    "description": "(pseudo-)Riemannian metric (alias: pseudo-Riemannian manifold) (notes/(pseudo-)Riemannian metric.tex)"
+  },
+  "wref-(pseudo-)Riemannian metric-alias-7": {
+    "prefix": [
+      "\\wref{Riemannian manifold}",
+      "\\wref{"
+    ],
+    "body": "\\\\wref{(pseudo-)Riemannian metric}[Riemannian manifold]$0",
+    "description": "(pseudo-)Riemannian metric (alias: Riemannian manifold) (notes/(pseudo-)Riemannian metric.tex)"
+  },
+  "wref-Birkhoff Duality": {
+    "prefix": [
+      "\\wref{Birkhoff Duality",
+      "\\wref{Birkhoff Duality}",
+      "\\wref{"
+    ],
+    "body": "\\\\wref{Birkhoff Duality}[${1:Birkhoff Duality}]$0",
+    "description": "Birkhoff Duality (notes/Birkhoff Duality.tex)"
+  },
+  "wref-dg-algebra": {
+    "prefix": [
+      "\\wref{dg-algebra",
+      "\\wref{DG-algebra}",
+      "\\wref{"
+    ],
+    "body": "\\\\wref{dg-algebra}[${1:DG-algebra}]$0",
+    "description": "DG-algebra (notes/dg-algebra.tex)"
+  },
+  "wref-Gelfand transform": {
+    "prefix": [
+      "\\wref{Gelfand transform",
+      "\\wref{Gelfand transform}",
+      "\\wref{"
+    ],
+    "body": "\\\\wref{Gelfand transform}[${1:Gelfand transform}]$0",
+    "description": "Gelfand transform (notes/Gelfand transform.tex)"
+  },
+  "wref-Donaldson theory": {
+    "prefix": [
+      "\\wref{Donaldson theory",
+      "\\wref{Donaldson Theory}",
+      "\\wref{"
+    ],
+    "body": "\\\\wref{Donaldson theory}[${1:Donaldson Theory}]$0",
+    "description": "Donaldson Theory (notes/Donaldson theory.tex)"
+  },
+  "wref-Eilenberg\u2013MacLane space": {
+    "prefix": [
+      "\\wref{Eilenberg\u2013MacLane space",
+      "\\wref{Eilenberg\u2013MacLane space}",
+      "\\wref{"
+    ],
+    "body": "\\\\wref{Eilenberg\u2013MacLane space}[${1:Eilenberg\u2013MacLane space}]$0",
+    "description": "Eilenberg\u2013MacLane space (notes/Eilenberg\u2013MacLane space.tex)"
+  },
+  "wref-Drinfeld twist of a Hopf algebra": {
+    "prefix": [
+      "\\wref{Drinfeld twist of a Hopf algebra",
+      "\\wref{Drinfeld twist of a Hopf algebra}",
+      "\\wref{"
+    ],
+    "body": "\\\\wref{Drinfeld twist of a Hopf algebra}[${1:Drinfeld twist of a Hopf algebra}]$0",
+    "description": "Drinfeld twist of a Hopf algebra (notes/Drinfeld twist of a Hopf algebra.tex)"
+  },
+  "wref-Algebraic Bianchi Identity": {
+    "prefix": [
+      "\\wref{Algebraic Bianchi Identity",
+      "\\wref{Algebraic Bianchi Identity}",
+      "\\wref{"
+    ],
+    "body": "\\\\wref{Algebraic Bianchi Identity}[${1:Algebraic Bianchi Identity}]$0",
+    "description": "Algebraic Bianchi Identity (notes/Algebraic Bianchi Identity.tex)"
+  },
+  "wref-Haag Duality": {
+    "prefix": [
+      "\\wref{Haag Duality",
+      "\\wref{Haag duality}",
+      "\\wref{"
+    ],
+    "body": "\\\\wref{Haag Duality}[${1:Haag duality}]$0",
+    "description": "Haag duality (notes/Haag Duality.tex)"
+  },
+  "wref-3-manifold": {
+    "prefix": [
+      "\\wref{3-manifold",
+      "\\wref{3-manifold}",
+      "\\wref{"
+    ],
+    "body": "\\\\wref{3-manifold}[${1:3-manifold}]$0",
+    "description": "3-manifold (notes/3-manifold.tex)"
   },
   "wref-category": {
     "prefix": [
-      "wrefcategory",
-      "category",
-      "category"
+      "\\wref{category",
+      "\\wref{Category}",
+      "\\wref{"
     ],
     "body": "\\\\wref{category}[${1:Category}]$0",
     "description": "Category (notes/category.tex)"
   },
-  "wref-category-theory-intro": {
+  "wref-functor": {
     "prefix": [
-      "wrefcategory-theory-intro",
-      "category-theory-intro",
-      "introduction to category theory"
+      "\\wref{functor",
+      "\\wref{Functor}",
+      "\\wref{"
     ],
-    "body": "\\\\wref{category-theory-intro}[${1:Introduction to Category Theory}]$0",
-    "description": "Introduction to Category Theory (articles/category-theory-intro.tex)"
+    "body": "\\\\wref{functor}[${1:Functor}]$0",
+    "description": "Functor (notes/functor.tex)"
+  },
+  "wref-natural transformation": {
+    "prefix": [
+      "\\wref{natural transformation",
+      "\\wref{Natural Transformation}",
+      "\\wref{"
+    ],
+    "body": "\\\\wref{natural transformation}[${1:Natural Transformation}]$0",
+    "description": "Natural Transformation (notes/natural transformation.tex)"
   }
 }
