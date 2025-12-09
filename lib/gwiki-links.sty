@@ -373,30 +373,29 @@
 %% REFERENCES (auto-collected)
 %% ----------------------------------------------------------------------------
 \providecommand{\gwiki@refslist}{}
-\newcommand{\gwiki@addref}[1]{\listadd{\gwiki@refslist}{#1}}
+\newcommand{\gwiki@addref}[1]{\gappto\gwiki@refslist{\unexpanded{#1}|}}
 
 \newcommand{\gwiki@storekeysources}[1]{%
   \renewcommand{\gwiki@keysources}{#1}%
   \gwiki@keysourcespresenttrue
   \gwiki@keysourcesprintedfalse
-  \ifdefempty{#1}{}{%
-    \foreach \src in {#1} {%
-      \gwiki@addref{\src}%
-    }%
-  }%
 }
 
 \newcommand{\gwiki@printkeysources}{%
   \ifgwiki@keysourcesprinted\else
     \ifgwiki@keysourcespresent
+      \forcsvlist{\gwiki@addref}{\gwiki@keysources}%
       {\color{gray!60}\footnotesize Key sources: \gwiki@keysources\par}%
       \global\gwiki@keysourcesprintedtrue
     \fi
   \fi
 }
 
-\NewDocumentCommand{\KeySources}{m}{%
+\let\KeySources\relax
+\newcommand{\KeySources}[1]{%
   \gwiki@storekeysources{#1}%
+  % Do not typeset anything where the command appears; the header will render it
+  \ignorespaces
 }
 
 \newcommand{\arxiv}[1]{%
