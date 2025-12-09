@@ -360,33 +360,6 @@
 \defineEnunciation{assumption}{Assumption}{Assumptions}{bodyfont=\upshape}{colframe=red, fontupper=\upshape}{theorem}
 \defineEnunciation{algorithm}{Algorithm}{Algorithms}{bodyfont=\upshape}{colframe=red, fontupper=\upshape}{theorem}
 \defineEnunciation{postulate}{Postulate}{Postulates}{bodyfont=\upshape}{colframe=red, fontupper=\upshape}{theorem}
-%% Define all enunciation types
-\tracingmacros=1\tracingcommands=1\typeout{TRACE-ENUNCIATIONS-BEGIN}
-\defineEnunciation{corollary}{Corollary}{Corollaries}{bodyfont=\itshape}{colframe=gray, fontupper=\itshape}{mainctr}
-\defineEnunciation{theorem}{Theorem}{Theorems}{bodyfont=\itshape}{colframe=blue, fontupper=\itshape}{mainctr}
-\defineEnunciation{lemma}{Lemma}{Lemmas}{bodyfont=\itshape}{colframe=Dandelion, fontupper=\itshape}{mainctr}
-\defineEnunciation{proposition}{Proposition}{Propositions}{bodyfont=\itshape}{colframe=purple, fontupper=\itshape}{mainctr}
-\defineEnunciation{claim}{Claim}{Claims}{bodyfont=\itshape}{colframe=teal, fontupper=\itshape}{mainctr}
-\defineEnunciation{step}{Step}{Steps}{bodyfont=\itshape}{colframe=orange, fontupper=\itshape}{mainctr}
-\defineEnunciation{construction}{Construction}{Constructions}{bodyfont=\upshape}{colframe=green, fontupper=\upshape}{mainctr}
-\defineEnunciation{question}{Question}{Questions}{bodyfont=\upshape}{colframe=red, fontupper=\upshape}{mainctr}
-\defineEnunciation{warning}{Warning}{Warnings}{bodyfont=\upshape}{colframe=magenta, fontupper=\upshape}{mainctr}
-\defineEnunciation{exercise}{Exercise}{Exercises}{bodyfont=\upshape}{colframe=violet, fontupper=\upshape}{mainctr}
-\defineEnunciation{example}{Example}{Examples}{bodyfont=\upshape}{colframe=ForestGreen, fontupper=\upshape}{mainctr}
-\defineEnunciation{definition}{Definition}{Definitions}{bodyfont=\upshape}{colframe=olive, fontupper=\upshape}{mainctr}
-\defineEnunciation{fact}{Fact}{Facts}{bodyfont=\upshape}{colframe=olive, fontupper=\upshape}{mainctr}
-\defineEnunciation{observation}{Observation}{Observations}{bodyfont=\upshape}{colframe=brown, fontupper=\upshape}{mainctr}
-\defineEnunciation{convention}{Convention}{Conventions}{bodyfont=\upshape}{colframe=pink, fontupper=\upshape}{mainctr}
-\defineEnunciation{remark}{Remark}{Remarks}{bodyfont=\upshape}{colframe=gray, fontupper=\upshape}{mainctr}
-\defineEnunciation{note}{Note}{Notes}{bodyfont=\upshape}{colframe=yellow, fontupper=\upshape}{mainctr}
-\defineEnunciation{notation}{Notation}{Notations}{bodyfont=\upshape}{colframe=blue!50, fontupper=\upshape}{mainctr}
-\defineEnunciation{idea}{Idea}{Ideas}{bodyfont=\upshape}{colframe=cyan, fontupper=\upshape}{mainctr}
-\defineEnunciation{axiom}{Axiom}{Axioms}{bodyfont=\upshape}{colframe=violet, fontupper=\upshape}{mainctr}
-\defineEnunciation{assumption}{Assumption}{Assumptions}{bodyfont=\upshape}{colframe=red, fontupper=\upshape}{mainctr}
-\defineEnunciation{algorithm}{Algorithm}{Algorithms}{bodyfont=\upshape}{colframe=red, fontupper=\upshape}{mainctr}
-\defineEnunciation{postulate}{Postulate}{Postulates}{bodyfont=\upshape}{colframe=red, fontupper=\upshape}{mainctr}
->>>>>>> Stashed changes
-
 %% Equation numbering linked to theorem counter
 \makeatletter
 \let\c@equation\c@theorem
