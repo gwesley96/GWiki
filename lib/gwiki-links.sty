@@ -54,9 +54,9 @@
     % Internal reference - strip the # and use hyperref
     \StrBehind{#2}{\#}[\gwiki@intlabel]%
     \IfStrEq{\gwiki@display}{}{%
-      \hyperref[\gwiki@intlabel]{\gwiki@intlabel}%
+      \mbox{\hyperref[\gwiki@intlabel]{\gwiki@intlabel}}%
     }{%
-      \hyperref[\gwiki@intlabel]{\gwiki@display}%
+      \mbox{\hyperref[\gwiki@intlabel]{\gwiki@display}}%
     }%
   }{%
     % Check if it contains # (cross-document section reference)
@@ -65,16 +65,16 @@
       \StrBehind{#2}{\#}[\gwiki@xlabel]%
       \IfStrEq{\gwiki@display}{}{%
         % Link to other PDF with named destination
-        \href{run:./\gwiki@xdoc.pdf\#\gwiki@xlabel}{\textsl{\gwiki@xdoc} \S\gwiki@xlabel}%
+        \mbox{\href{run:./\gwiki@xdoc.pdf\#\gwiki@xlabel}{\textsl{\gwiki@xdoc} \S\gwiki@xlabel}}%
       }{%
-        \href{run:./\gwiki@xdoc.pdf\#\gwiki@xlabel}{\gwiki@display}%
+        \mbox{\href{run:./\gwiki@xdoc.pdf\#\gwiki@xlabel}{\gwiki@display}}%
       }%
     }{%
       % Simple document reference - link to PDF file
       \IfStrEq{\gwiki@display}{}{%
-        \href{run:./#2.pdf}{\textsl{#2}}%
+        \mbox{\href{run:./#2.pdf}{\textsl{#2}}}%
       }{%
-        \href{run:./#2.pdf}{\gwiki@display}%
+        \mbox{\href{run:./#2.pdf}{\gwiki@display}}%
       }%
     }%
   }%
@@ -186,13 +186,6 @@
   \end{itemize}
 }
 
-\newcommand{\IncomingLinksSection}[1]{%
-  \par\medskip\noindent\textbf{Incoming links:}%
-  \begin{itemize}[leftmargin=*]
-    \foreach \p in {#1} {\item \wref{\p}}
-  \end{itemize}
-}
-
 %% ----------------------------------------------------------------------------
 %% SIMPLE HEADERS
 %% ----------------------------------------------------------------------------
@@ -243,15 +236,15 @@
 
 %% Wiki note header (minimal)
 \newcommand{\NoteHeader}{%
-  \noindent{\LARGE\bfseries\color{blue!70!black}\gwiki@title}%
-  \par\smallskip
-  \noindent{\color{gray!50!black}\rule[2pt]{\linewidth}{0.4pt}}\par\smallskip
-  {\small\color{gray!70}
-    \ifdefempty{\gwiki@created}{}{Created: \gwiki@created\quad}
-    Last modified: \gwiki@moddatestring
+  \noindent{\Huge\bfseries\sffamily\color{blue!60!black}\gwiki@title}%
+  \par\medskip
+  \noindent{\color{gray!40}\rule[2pt]{\linewidth}{0.6pt}}\par\smallskip
+  \noindent{\small\color{gray!55}
+    \ifdefempty{\gwiki@created}{}{\noindent Created: \gwiki@created\quad}%
+    \noindent Last modified: \gwiki@moddatestring
     \ifdefempty{\gwiki@tags}{}{\quad Tags: \gwiki@tags}
   }\par\smallskip
-  \ifdefempty{\gwiki@summary}{}{\noindent\textit{Summary.} \gwiki@summary\par\smallskip}
+  \ifdefempty{\gwiki@summary}{}{\noindent\textbf{Summary.} \gwiki@summary\par\medskip}
 }
 
 %% Footer with tags
@@ -265,7 +258,7 @@
 \newcommand{\gwiki@addref}[1]{\listadd{\gwiki@refslist}{#1}}
 
 \newcommand{\arxiv}[1]{%
-  \href{https://arxiv.org/abs/#1}{\texttt{\textcolor{blue!60!black}{arXiv:#1}}}%
+  \href{https://arxiv.org/abs/#1}{{\small\texttt{[arXiv:#1]}}}%
   \gwiki@addref{\href{https://arxiv.org/abs/#1}{\texttt{arXiv:#1}}}%
 }
 
