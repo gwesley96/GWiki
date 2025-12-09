@@ -287,16 +287,10 @@
   \ifdefempty{\gwiki@summary}{}{\noindent\textbf{Summary.} \gwiki@summary\par\medskip}
 }
 
-%% Footer with metadata
+%% Footer (metadata now in page footer via fancyhdr)
 \newcommand{\Footer}{%
-  \vfill
-  \par\medskip
-  \noindent{\color{gray!40}\rule[2pt]{\linewidth}{0.4pt}}\par\smallskip
-  \noindent{\scriptsize\color{gray!50}
-    \ifdefempty{\gwiki@created}{}{Created: \gwiki@created\quad}%
-    Last modified: \gwiki@moddatestring
-    \ifdefempty{\gwiki@tags}{}{\quad$\bullet$\quad Tags: \gwiki@tags}
-  }\par
+  % Metadata is automatically shown in first page footer
+  % This command now just marks the end of content
 }
 
 %% ----------------------------------------------------------------------------

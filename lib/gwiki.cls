@@ -335,6 +335,10 @@
   }
 }
 
+%% Alias: \begin{idea} = \begin{framedidea}
+\let\idea\framedidea
+\let\endidea\endframedidea
+
 %% Equation numbering linked to theorem counter
 \makeatletter
 \let\c@equation\c@theorem
@@ -428,17 +432,22 @@
 \makeatletter
 \pagestyle{fancy}
 \fancyhf{} % Clear all
-\fancyhead[L]{\small\sffamily\color{gray!60}\gwiki@title}
-\fancyhead[R]{\small\color{gray!60}\thepage}
+\fancyhead[L]{\scriptsize\sffamily\color{gray!60}\gwiki@title}
+\fancyhead[R]{\scriptsize\color{gray!60}\thepage}
 \fancyfoot{}
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\headrule}{\hbox to\headwidth{\color{gray!30}\leaders\hrule height \headrulewidth\hfill}}
 \setlength{\headheight}{24pt}
 
-% Plain style for first page (no header, just page number)
+% Plain style for first page (no header, metadata in footer)
 \fancypagestyle{plain}{%
   \fancyhf{}%
-  \fancyfoot[C]{\small\color{gray!60}\thepage}%
+  \fancyfoot[C]{\scriptsize\color{gray!60}\thepage}%
+  \fancyfoot[L]{\scriptsize\color{gray!50}%
+    \ifdefempty{\gwiki@created}{}{Created: \gwiki@created\quad}%
+    Last modified: \gwiki@moddatestring
+    \ifdefempty{\gwiki@tags}{}{\quad$\bullet$\quad Tags: \gwiki@tags}%
+  }%
   \renewcommand{\headrulewidth}{0pt}%
 }
 \makeatother
