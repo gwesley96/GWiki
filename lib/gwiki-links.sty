@@ -224,6 +224,12 @@
   \end{itemize}
 }
 
+%% Key sources (for citing primary references at the top of a note)
+\newcommand{\KeySources}[1]{%
+  \par\smallskip\noindent{\small\color{gray!70}\textbf{Key sources:} #1}%
+  \par\medskip
+}
+
 %% ----------------------------------------------------------------------------
 %% SIMPLE HEADERS
 %% ----------------------------------------------------------------------------
@@ -274,7 +280,8 @@
 
 %% Wiki note header (minimal - just title and summary)
 \newcommand{\NoteHeader}{%
-  \noindent{\Huge\bfseries\sffamily\color{blue!60!black}\gwiki@title}%
+  \thispagestyle{plain}% No header on first page
+  \noindent{\LARGE\bfseries\sffamily\color{blue!60!black}\gwiki@title}%
   \par\medskip
   \noindent{\color{gray!40}\rule[2pt]{\linewidth}{0.6pt}}\par\medskip
   \ifdefempty{\gwiki@summary}{}{\noindent\textbf{Summary.} \gwiki@summary\par\medskip}

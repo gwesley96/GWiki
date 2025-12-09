@@ -285,29 +285,55 @@
 }
 
 %% Define all enunciation types
-\defineEnunciation{corollary}{Corollary}{Corollaries}{bodyfont=\itshape}{colframe=gray, fontupper=\itshape}{section}
-\defineEnunciation{theorem}{Theorem}{Theorems}{bodyfont=\itshape}{colframe=blue, fontupper=\itshape}{section}
-\defineEnunciation{lemma}{Lemma}{Lemmas}{bodyfont=\itshape}{colframe=Dandelion, fontupper=\itshape}{section}
-\defineEnunciation{proposition}{Proposition}{Propositions}{bodyfont=\itshape}{colframe=purple, fontupper=\itshape}{section}
-\defineEnunciation{claim}{Claim}{Claims}{bodyfont=\itshape}{colframe=teal, fontupper=\itshape}{section}
-\defineEnunciation{step}{Step}{Steps}{bodyfont=\itshape}{colframe=orange, fontupper=\itshape}{section}
-\defineEnunciation{construction}{Construction}{Constructions}{bodyfont=\upshape}{colframe=green, fontupper=\upshape}{section}
-\defineEnunciation{question}{Question}{Questions}{bodyfont=\upshape}{colframe=red, fontupper=\upshape}{section}
-\defineEnunciation{warning}{Warning}{Warnings}{bodyfont=\upshape}{colframe=magenta, fontupper=\upshape}{section}
-\defineEnunciation{exercise}{Exercise}{Exercises}{bodyfont=\upshape}{colframe=violet, fontupper=\upshape}{section}
-\defineEnunciation{example}{Example}{Examples}{bodyfont=\upshape}{colframe=ForestGreen, fontupper=\upshape}{section}
-\defineEnunciation{definition}{Definition}{Definitions}{bodyfont=\upshape}{colframe=olive, fontupper=\upshape}{section}
-\defineEnunciation{fact}{Fact}{Facts}{bodyfont=\upshape}{colframe=olive, fontupper=\upshape}{section}
-\defineEnunciation{observation}{Observation}{Observations}{bodyfont=\upshape}{colframe=brown, fontupper=\upshape}{section}
-\defineEnunciation{convention}{Convention}{Conventions}{bodyfont=\upshape}{colframe=pink, fontupper=\upshape}{section}
-\defineEnunciation{remark}{Remark}{Remarks}{bodyfont=\upshape}{colframe=gray, fontupper=\upshape}{section}
-\defineEnunciation{note}{Note}{Notes}{bodyfont=\upshape}{colframe=yellow, fontupper=\upshape}{section}
-\defineEnunciation{notation}{Notation}{Notations}{bodyfont=\upshape}{colframe=blue!50, fontupper=\upshape}{section}
-\defineEnunciation{idea}{Idea}{Ideas}{bodyfont=\upshape}{colframe=cyan, fontupper=\upshape}{section}
-\defineEnunciation{axiom}{Axiom}{Axioms}{bodyfont=\upshape}{colframe=violet, fontupper=\upshape}{section}
-\defineEnunciation{assumption}{Assumption}{Assumptions}{bodyfont=\upshape}{colframe=red, fontupper=\upshape}{section}
-\defineEnunciation{algorithm}{Algorithm}{Algorithms}{bodyfont=\upshape}{colframe=red, fontupper=\upshape}{section}
-\defineEnunciation{postulate}{Postulate}{Postulates}{bodyfont=\upshape}{colframe=red, fontupper=\upshape}{section}
+%% Default: continuous numbering (Definition 1, Lemma 2, Theorem 3, etc.)
+%% To change to section-based numbering, replace {} with {section} in all definitions
+%% To have counters reset per section but still share numbers, use {theorem} for all
+\defineEnunciation{theorem}{Theorem}{Theorems}{bodyfont=\itshape}{colframe=blue, fontupper=\itshape}{}
+\defineEnunciation{corollary}{Corollary}{Corollaries}{bodyfont=\itshape}{colframe=gray, fontupper=\itshape}{theorem}
+\defineEnunciation{lemma}{Lemma}{Lemmas}{bodyfont=\itshape}{colframe=Dandelion, fontupper=\itshape}{theorem}
+\defineEnunciation{proposition}{Proposition}{Propositions}{bodyfont=\itshape}{colframe=purple, fontupper=\itshape}{theorem}
+\defineEnunciation{claim}{Claim}{Claims}{bodyfont=\itshape}{colframe=teal, fontupper=\itshape}{theorem}
+\defineEnunciation{step}{Step}{Steps}{bodyfont=\itshape}{colframe=orange, fontupper=\itshape}{theorem}
+\defineEnunciation{construction}{Construction}{Constructions}{bodyfont=\upshape}{colframe=green, fontupper=\upshape}{theorem}
+\defineEnunciation{question}{Question}{Questions}{bodyfont=\upshape}{colframe=red, fontupper=\upshape}{theorem}
+\defineEnunciation{warning}{Warning}{Warnings}{bodyfont=\upshape}{colframe=magenta, fontupper=\upshape}{theorem}
+\defineEnunciation{exercise}{Exercise}{Exercises}{bodyfont=\upshape}{colframe=violet, fontupper=\upshape}{theorem}
+\defineEnunciation{example}{Example}{Examples}{bodyfont=\upshape}{colframe=ForestGreen, fontupper=\upshape}{theorem}
+\defineEnunciation{definition}{Definition}{Definitions}{bodyfont=\upshape}{colframe=olive, fontupper=\upshape}{theorem}
+\defineEnunciation{fact}{Fact}{Facts}{bodyfont=\upshape}{colframe=olive, fontupper=\upshape}{theorem}
+\defineEnunciation{observation}{Observation}{Observations}{bodyfont=\upshape}{colframe=brown, fontupper=\upshape}{theorem}
+\defineEnunciation{convention}{Convention}{Conventions}{bodyfont=\upshape}{colframe=pink, fontupper=\upshape}{theorem}
+\defineEnunciation{remark}{Remark}{Remarks}{bodyfont=\upshape}{colframe=gray, fontupper=\upshape}{theorem}
+\defineEnunciation{note}{Note}{Notes}{bodyfont=\upshape}{colframe=yellow, fontupper=\upshape}{theorem}
+\defineEnunciation{notation}{Notation}{Notations}{bodyfont=\upshape}{colframe=blue!50, fontupper=\upshape}{theorem}
+\defineEnunciation{axiom}{Axiom}{Axioms}{bodyfont=\upshape}{colframe=violet, fontupper=\upshape}{theorem}
+\defineEnunciation{assumption}{Assumption}{Assumptions}{bodyfont=\upshape}{colframe=red, fontupper=\upshape}{theorem}
+\defineEnunciation{algorithm}{Algorithm}{Algorithms}{bodyfont=\upshape}{colframe=red, fontupper=\upshape}{theorem}
+\defineEnunciation{postulate}{Postulate}{Postulates}{bodyfont=\upshape}{colframe=red, fontupper=\upshape}{theorem}
+
+%% Special Idea box (no counter, cleaner styling for note introductions)
+\newtcolorbox{framedidea}[1][Idea]{
+  enhanced,
+  breakable,
+  colback=blue!3,
+  colframe=blue!40,
+  boxrule=0.5pt,
+  arc=2mm,
+  left=8pt,
+  right=8pt,
+  top=6pt,
+  bottom=6pt,
+  fonttitle=\sffamily\bfseries,
+  coltitle=blue!70!black,
+  colbacktitle=blue!10,
+  title={#1},
+  attach boxed title to top left={yshift=-2mm, xshift=4mm},
+  boxed title style={
+    arc=1.5mm,
+    boxrule=0.5pt,
+    colframe=blue!40,
+  }
+}
 
 %% Equation numbering linked to theorem counter
 \makeatletter
@@ -408,6 +434,13 @@
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\headrule}{\hbox to\headwidth{\color{gray!30}\leaders\hrule height \headrulewidth\hfill}}
 \setlength{\headheight}{24pt}
+
+% Plain style for first page (no header, just page number)
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \fancyfoot[C]{\small\color{gray!60}\thepage}%
+  \renewcommand{\headrulewidth}{0pt}%
+}
 \makeatother
 
 \endinput
