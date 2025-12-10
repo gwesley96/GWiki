@@ -458,11 +458,7 @@
 \setlength{\headheight}{24pt}
 \newcommand{\gwiki@firstfooter}{%
   \fancyfoot[C]{\scriptsize\color{gray!60}\thepage}%
-  \fancyfoot[L]{\scriptsize\color{gray!50}%
-    \ifdefempty{\gwiki@created}{}{Created on \gwiki@created}%
-    \hfill{}Last modified on \gwiki@moddatestring
-    \ifdefempty{\gwiki@tags}{}{\hfill{}Tags: \gwiki@tags}%
-  }%
+  \fancyfoot[R]{\scriptsize\color{gray!50}\href{https://greysonwesley.com}{greysonwesley.com}}%
 }
 
 \fancypagestyle{gwiki@first}{%

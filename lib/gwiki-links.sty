@@ -75,7 +75,7 @@
     }{%
       % Simple document reference - link to PDF file
       \IfStrEq{\gwiki@display}{}{%
-        \mbox{\href{run:./#2.pdf}{\textsl{#2}}}%
+        \mbox{\href{run:./#2.pdf}{#2}}%
       }{%
         \mbox{\href{run:./#2.pdf}{\gwiki@display}}%
       }%
@@ -161,8 +161,9 @@
 %% Set aliases (comma-separated list)
 \newcommand{\Aliases}[1]{\renewcommand{\gwiki@aliases}{#1}}
 
-%% Set summary
+%% Set topics/summary
 \newcommand{\Summary}[1]{\renewcommand{\gwiki@summary}{#1}}
+\newcommand{\Topics}[1]{\renewcommand{\gwiki@summary}{#1}}
 
 %% Write metadata to aux for indexing
 \AtEndDocument{%
@@ -249,9 +250,10 @@
 }
 
 \AtBeginDocument{%
+  % Get modification date from file
   \filemodparse{\gwiki@capturefilemod}{\jobname.tex}%
   \gwiki@mincount=\gwiki@modminute\relax
-  \divide\gwiki@mincount by 2 % floor to 2-minute bucket
+  \divide\gwiki@mincount by 2
   \multiply\gwiki@mincount by 2
   \edef\gwiki@moddate{\gwiki@modyear-\gwiki@modmonth-\gwiki@modday}%
   \edef\gwiki@modtime{\gwiki@modhour:\gwiki@twodigits{\the\gwiki@mincount}}%
@@ -259,8 +261,13 @@
     \edef\gwiki@moddate{\DTMcurrenttime}%
     \edef\gwiki@modtime{\DTMcurrenttime}%
   }{}
+  % Set creation date (check for injected date first)
   \ifdefempty{\gwiki@created}{%
-    \CreatedOn{\GWikiDateFormat{\gwiki@moddate}{\gwiki@modtime}}%
+    \ifdefined\gwikicreateddate
+      \edef\gwiki@created{\gwikicreateddate}%
+    \else
+      \edef\gwiki@created{\gwiki@moddate}%
+    \fi
   }{}
 }
 
@@ -282,24 +289,34 @@
   }
 }
 
-%% Wiki note header (minimal - just title and summary)
-%% Wiki note header (minimal - just title and summary)
+%% Wiki note header
 \newcommand{\NoteHeader}{%
   \thispagestyle{gwiki@first}%
   \gwiki@headerprintedtrue
+  %
+  % Title
   \noindent
-  \begin{minipage}[t]{0.72\linewidth}%
-    {\LARGE\bfseries\sffamily\color{blue!55!black}\gwiki@title\par}%
-    \vspace{2pt}%
-    \gwiki@printkeysources
-  \end{minipage}%
-  \hfill
-  \begin{minipage}[b]{0.26\linewidth}%
-    \raggedleft{\color{gray!60}\small \gwiki@author\par}%
-  \end{minipage}%
-  \par\medskip
-  \noindent{\color{gray!40}\rule[2pt]{\linewidth}{0.6pt}}\par\medskip
-  \ifdefempty{\gwiki@summary}{}{\noindent\textbf{Summary.} \gwiki@summary\par\medskip}
+  {\LARGE\bfseries\sffamily\color{blue!55!black}\gwiki@title\par}%
+  \vspace{5pt}%
+  %
+  % Key sources line (if present)
+  \gwiki@printkeysources
+  %
+  % Metadata line: tags, dates
+  \noindent
+  {\scriptsize\ttfamily\color{gray!55}%
+    \ifdefempty{\gwiki@tags}{}{Tags: \gwiki@tags\quad|\quad}%
+    Created \gwiki@created\quad|\quad%
+    Modified \gwiki@moddatestring%
+  \par}%
+  \vspace{2pt}%
+  %
+  % Rule
+  \noindent{\color{gray!25}\rule{\linewidth}{0.4pt}}\par%
+  \vspace{6pt}%
+  %
+  % Topics (if present)
+  \ifdefempty{\gwiki@summary}{}{\noindent\textbf{Topics.} \gwiki@summary\par\medskip}%
 }
 
 %% ----------------------------------------------------------------------------
@@ -311,19 +328,15 @@
     breakable,
     colback=cyan!3,
     colframe=cyan!40!black,
-    coltitle=blue!55!black,
-    colbacktitle=cyan!10,
-    boxrule=0.45pt,
-    arc=1mm,
-    left=9pt,
-    right=9pt,
-    top=7pt,
-    bottom=7pt,
-    borderline west={0.9pt}{0pt}{cyan!60!black},
-    boxed title style={boxrule=0pt, colback=cyan!10, sharp corners},
-    fonttitle=\bfseries\sffamily,
-    before skip=8pt,
-    after skip=10pt,
+    boxrule=0.4pt,
+    arc=0.8mm,
+    left=6pt,
+    right=6pt,
+    top=4pt,
+    bottom=4pt,
+    borderline west={0.8pt}{0pt}{cyan!55!black},
+    before skip=6pt,
+    after skip=8pt,
   },
   gwikiKeySourceBox/.style={
     enhanced,
@@ -347,10 +360,11 @@
 
 \newcommand{\gwiki@ideasuffix}{}
 \NewDocumentEnvironment{framedidea}{o}{%
-  \IfNoValueTF{#1}{\def\gwiki@ideasuffix{}}{%
-    \IfStrEq{#1}{Idea}{\def\gwiki@ideasuffix{}}{\def\gwiki@ideasuffix{\ \textnormal{\footnotesize#1}}}%
+  \IfNoValueTF{#1}{\def\gwiki@ideasuffix{Idea}}{%
+    \IfStrEq{#1}{Idea}{\def\gwiki@ideasuffix{Idea}}{\def\gwiki@ideasuffix{Idea: #1}}%
   }%
-  \begin{tcolorbox}[gwikiIdeaBox,title={Idea\gwiki@ideasuffix}]%
+  \begin{tcolorbox}[gwikiIdeaBox]%
+  \noindent\textbf{\gwiki@ideasuffix.}\space%
 }{\end{tcolorbox}}
 
 \NewDocumentEnvironment{idea}{o}{%
@@ -385,7 +399,8 @@
   \ifgwiki@keysourcesprinted\else
     \ifgwiki@keysourcespresent
       \forcsvlist{\gwiki@addref}{\gwiki@keysources}%
-      {\color{gray!60}\footnotesize Key sources: \gwiki@keysources\par}%
+      \noindent{\footnotesize\color{gray!55}Key sources: \gwiki@keysources\par}%
+      \vspace{2pt}%
       \global\gwiki@keysourcesprintedtrue
     \fi
   \fi
@@ -428,16 +443,6 @@
   \textup{]}%
   \gwiki@addref{\IfNoValueTF{#1}{[#2]}{[#2, #1]}}%
 }
-
-%% ----------------------------------------------------------------------------
-%% LEGACY COMPATIBILITY (maps old commands to new)
-%% ----------------------------------------------------------------------------
-\let\wikiref\wref
-\let\articleref\wref
-\NewDocumentCommand{\GWikiMeta}{m m m O{} O{}}{\Title{#2}\Tags{#4}\Aliases{#5}}
-\let\gwikiarticleheader\ArticleHeader
-\let\gwikinoteheader\NoteHeader
-\let\gwikifooter\Footer
 
 \makeatother
 
