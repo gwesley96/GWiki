@@ -1,0 +1,95 @@
+{
+  "backlinks": {
+    "banach-algebra": [
+      "Gelfand transform"
+    ],
+    "bounded-spread-haag-duality": [
+      "Haag Duality"
+    ],
+    "dehn-surgery": [
+      "3-manifold"
+    ],
+    "functor": [
+      "natural transformation"
+    ],
+    "hopf-algebra": [
+      "Drinfeld twist of a Hopf algebra"
+    ],
+    "jacobi-identity": [
+      "Algebraic Bianchi Identity"
+    ],
+    "knot": [
+      "3-manifold"
+    ],
+    "orientable-manifold": [
+      "3-manifold"
+    ],
+    "partition-of-unity": [
+      "(pseudo-)Riemannian metric"
+    ],
+    "riemann-(04)-curvature-tensor": [
+      "Algebraic Bianchi Identity"
+    ],
+    "seiberg\u2013witten-theory": [
+      "Donaldson theory"
+    ],
+    "twist": [
+      "Drinfeld twist of a Hopf algebra"
+    ]
+  },
+  "creation_dates": {
+    "(pseudo-)Riemannian metric": "2025-12-09",
+    "3-manifold": "2025-12-09",
+    "Algebraic Bianchi Identity": "2025-12-09",
+    "Birkhoff Duality": "2025-12-09",
+    "Donaldson theory": "2025-12-09",
+    "Drinfeld twist of a Hopf algebra": "2025-12-09",
+    "Gelfand transform": "2025-12-09",
+    "Haag Duality": "2025-12-09",
+    "Hstar monad": "2025-12-09",
+    "category": "2025-12-09",
+    "dg algebra": "2025-12-09",
+    "functor": "2025-12-09",
+    "natural transformation": "2025-12-09",
+    "tikz demo": "2025-12-09"
+  },
+  "forward_links": {
+    "(pseudo-)Riemannian metric": [
+      "partition-of-unity"
+    ],
+    "3-manifold": [
+      "dehn-surgery",
+      "dehn-surgery",
+      "orientable-manifold",
+      "knot"
+    ],
+    "Algebraic Bianchi Identity": [
+      "riemann-(04)-curvature-tensor",
+      "jacobi-identity"
+    ],
+    "Birkhoff Duality": [],
+    "Donaldson theory": [
+      "seiberg\u2013witten-theory"
+    ],
+    "Drinfeld twist of a Hopf algebra": [
+      "hopf-algebra",
+      "twist"
+    ],
+    "Gelfand transform": [
+      "banach-algebra",
+      "banach-algebra"
+    ],
+    "Haag Duality": [
+      "bounded-spread-haag-duality"
+    ],
+    "Hstar monad": [],
+    "category": [],
+    "dg algebra": [],
+    "functor": [],
+    "natural transformation": [
+      "functor",
+      "functor"
+    ],
+    "tikz demo": []
+  }
+}

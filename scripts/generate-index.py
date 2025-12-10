@@ -12,6 +12,7 @@ Generates a comprehensive index.tex document showing:
 
 import os
 import re
+import json
 from pathlib import Path
 from datetime import datetime
 from collections import defaultdict
@@ -19,6 +20,17 @@ from collections import defaultdict
 ROOT = Path(__file__).parent.parent
 NOTES_DIR = ROOT / "notes"
 OUTPUT = ROOT / "index.tex"
+METADATA_FILE = ROOT / ".gwiki-metadata.json"
+
+def load_creation_dates():
+    """Load creation dates from metadata file."""
+    if METADATA_FILE.exists():
+        try:
+            data = json.loads(METADATA_FILE.read_text())
+            return data.get('creation_dates', {})
+        except:
+            return {}
+    return {}
 
 def parse_metadata(tex_file: Path) -> dict:
     """Extract metadata from a .tex file."""

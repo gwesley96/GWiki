@@ -1,114 +1,119 @@
-# GWiki Build System - Simplified
-# Just create .tex files in notes/ and run make
+# GWiki Build System
 
 SHELL := /bin/bash
 
 # Directories
 NOTES_DIR := notes
 LIB_DIR := lib
-BUILD_DIR := build/pdf
+BUILD_DIR := build
 PDFS_DIR := pdfs
 
 # LaTeX
 LATEX := pdflatex
-LATEXFLAGS := -interaction=nonstopmode -halt-on-error
+LATEXFLAGS := -interaction=nonstopmode -halt-on-error -output-directory=$(BUILD_DIR)
 
 INDEX_TEX := index.tex
+BIBLIOGRAPHY := references.bib
 
-# Default: build all
-.PHONY: all clean new watch help index vault
+.PHONY: all clean new watch help index vault bibliography validate
 
 all:
-	@mkdir -p $(BUILD_DIR)
+	@mkdir -p $(BUILD_DIR) $(PDFS_DIR)
+	@python3 scripts/track-creation-dates.py > /dev/null 2>&1
+	@chmod +x scripts/build-note.sh
 	@count=0; \
 	for f in $(NOTES_DIR)/*.tex; do \
 		if [ -f "$$f" ]; then \
 			name=$$(basename "$$f" .tex); \
-			echo "Building: $$name"; \
-			(cd $(NOTES_DIR) && TEXINPUTS=../$(LIB_DIR): $(LATEX) $(LATEXFLAGS) -output-directory=../$(BUILD_DIR) "$$(basename "$$f")" > /dev/null 2>&1); \
-			(cd $(NOTES_DIR) && TEXINPUTS=../$(LIB_DIR): $(LATEX) $(LATEXFLAGS) -output-directory=../$(BUILD_DIR) "$$(basename "$$f")" > /dev/null 2>&1); \
-			echo "  → $(BUILD_DIR)/$$name.pdf"; \
-			count=$$((count + 1)); \
+			bash scripts/build-note.sh "$$f" "$(BUILD_DIR)"; \
+			if [ -f "$(BUILD_DIR)/$$name.pdf" ]; then \
+				mv "$(BUILD_DIR)/$$name.pdf" "$(PDFS_DIR)/$$name.pdf"; \
+				echo "$$name"; \
+				count=$$((count + 1)); \
+			fi; \
 		fi; \
 	done; \
-	echo "✓ Built $$count notes"
+	echo ""; \
+	echo "✓ $$count PDFs → $(PDFS_DIR)/"
 
-# Build complete vault (all notes + index)
-vault: all index
-	@mkdir -p $(PDFS_DIR)
-	@cp -f $(BUILD_DIR)/*.pdf $(PDFS_DIR)/
-	@note_count=$$(ls -1 $(BUILD_DIR)/*.pdf 2>/dev/null | wc -l); \
+vault: validate bibliography all index
+	@note_count=$$(ls -1 $(PDFS_DIR)/*.pdf 2>/dev/null | wc -l | xargs); \
 	note_count=$$((note_count - 1)); \
-	echo "✓ Complete vault built → $(PDFS_DIR)/"; \
-	echo "  - $$note_count notes"; \
-	echo "  - 1 index"
+	echo ""; \
+	echo "✓ Complete vault built"; \
+	echo "  Notes: $$note_count PDFs in $(PDFS_DIR)/"; \
+	echo "  Index: $(PDFS_DIR)/index.pdf"; \
+	echo "  Bibliography: $(BIBLIOGRAPHY)"; \
+	echo "  Build artifacts: $(BUILD_DIR)/"
 
-# Generate and build vault index
 index: $(INDEX_TEX)
-	@echo "Building: index"
-	@TEXINPUTS=$(LIB_DIR): $(LATEX) $(LATEXFLAGS) -output-directory=$(BUILD_DIR) $(INDEX_TEX) > /dev/null 2>&1
-	@TEXINPUTS=$(LIB_DIR): $(LATEX) $(LATEXFLAGS) -output-directory=$(BUILD_DIR) $(INDEX_TEX) > /dev/null 2>&1
-	@echo "  → $(BUILD_DIR)/index.pdf"
+	@mkdir -p $(BUILD_DIR) $(PDFS_DIR)
+	@echo "Building index..."
+	@TEXINPUTS=$(LIB_DIR): $(LATEX) $(LATEXFLAGS) $(INDEX_TEX) > /dev/null 2>&1
+	@TEXINPUTS=$(LIB_DIR): $(LATEX) $(LATEXFLAGS) $(INDEX_TEX) > /dev/null 2>&1
+	@mv $(BUILD_DIR)/index.pdf $(PDFS_DIR)/index.pdf 2>/dev/null || true
+	@echo "  → $(PDFS_DIR)/index.pdf"
 
-# Generate index.tex from notes
 $(INDEX_TEX):
+	@python3 scripts/track-creation-dates.py > /dev/null 2>&1
+	@python3 scripts/generate-backlinks.py > /dev/null 2>&1
 	@python3 scripts/generate-index.py
 
-# Create new note (simplest possible)
+bibliography: $(BIBLIOGRAPHY)
+
+$(BIBLIOGRAPHY):
+	@python3 scripts/generate-bibliography.py
+
+validate:
+	@python3 scripts/validate-links.py
+
 new:
 ifndef NAME
-	@echo "Usage: make new NAME=my-note"
-	@echo "       make new NAME=my-note TITLE=\"My Note Title\""
+	@echo "Usage: make new NAME=\"note title\""
 else
 	@mkdir -p $(NOTES_DIR)
+	@python3 scripts/track-creation-dates.py > /dev/null 2>&1
 	@if [ -f "$(NOTES_DIR)/$(NAME).tex" ]; then \
 		echo "Error: $(NOTES_DIR)/$(NAME).tex already exists"; \
 	else \
-		echo '\\documentclass{gwiki}' > $(NOTES_DIR)/$(NAME).tex; \
-		echo '' >> $(NOTES_DIR)/$(NAME).tex; \
-		echo '\\Title{$(or $(TITLE),$(NAME))}' >> $(NOTES_DIR)/$(NAME).tex; \
-		echo '\\Tags{}' >> $(NOTES_DIR)/$(NAME).tex; \
-		echo '' >> $(NOTES_DIR)/$(NAME).tex; \
-		echo '\\begin{document}' >> $(NOTES_DIR)/$(NAME).tex; \
-		echo '' >> $(NOTES_DIR)/$(NAME).tex; \
-		echo '\\NoteHeader' >> $(NOTES_DIR)/$(NAME).tex; \
-		echo '' >> $(NOTES_DIR)/$(NAME).tex; \
-		echo '%% Your content here...' >> $(NOTES_DIR)/$(NAME).tex; \
-		echo '' >> $(NOTES_DIR)/$(NAME).tex; \
-		echo '\\end{document}' >> $(NOTES_DIR)/$(NAME).tex; \
+		echo '\\documentclass{gwiki}' > "$(NOTES_DIR)/$(NAME).tex"; \
+		echo '' >> "$(NOTES_DIR)/$(NAME).tex"; \
+		echo '\\Title{$(NAME)}' >> "$(NOTES_DIR)/$(NAME).tex"; \
+		echo '\\Tags{}' >> "$(NOTES_DIR)/$(NAME).tex"; \
+		echo '' >> "$(NOTES_DIR)/$(NAME).tex"; \
+		echo '\\begin{document}' >> "$(NOTES_DIR)/$(NAME).tex"; \
+		echo '' >> "$(NOTES_DIR)/$(NAME).tex"; \
+		echo '\\NoteHeader' >> "$(NOTES_DIR)/$(NAME).tex"; \
+		echo '' >> "$(NOTES_DIR)/$(NAME).tex"; \
+		echo '%% Content...' >> "$(NOTES_DIR)/$(NAME).tex"; \
+		echo '' >> "$(NOTES_DIR)/$(NAME).tex"; \
+		echo '\\end{document}' >> "$(NOTES_DIR)/$(NAME).tex"; \
+		python3 scripts/track-creation-dates.py > /dev/null 2>&1; \
 		echo "✓ Created: $(NOTES_DIR)/$(NAME).tex"; \
 	fi
 endif
 
-# Watch and rebuild on changes
 watch:
-	@echo "Watching $(NOTES_DIR)/ for changes... (Ctrl+C to stop)"
+	@echo "Watching for changes... (Ctrl+C to stop)"
 	@while true; do \
 		inotifywait -q -e modify,create,delete -r $(NOTES_DIR) $(LIB_DIR) 2>/dev/null || sleep 2; \
 		$(MAKE) all; \
 	done
 
-# Clean
 clean:
-	@rm -rf build pdfs index.tex
-	@rm -f $(NOTES_DIR)/*.aux $(NOTES_DIR)/*.log $(NOTES_DIR)/*.out $(NOTES_DIR)/*.toc
-	@rm -f *.aux *.log *.out *.toc
+	@rm -rf build pdfs index.tex references.bib
+	@rm -f $(NOTES_DIR)/*.aux $(NOTES_DIR)/*.log $(NOTES_DIR)/*.out $(NOTES_DIR)/*.toc $(NOTES_DIR)/*.bbl $(NOTES_DIR)/*.blg
+	@rm -f *.aux *.log *.out *.toc *.bbl *.blg
 	@echo "✓ Cleaned"
 
-# Help
 help:
 	@echo "GWiki - LaTeX Note System"
 	@echo "========================="
 	@echo ""
-	@echo "  make                    Build all notes"
-	@echo "  make vault              Build all notes + index → pdfs/"
-	@echo "  make index              Generate and build vault index"
-	@echo "  make <name>             Build single note (e.g., make functor)"
-	@echo "  make new NAME=xyz       Create new note"
-	@echo "  make watch              Auto-rebuild on changes"
-	@echo "  make clean              Remove build files"
+	@echo "  make              Build all notes → pdfs/"
+	@echo "  make vault        Build everything (auto-validates)"
+	@echo "  make new NAME=\"note title\""
+	@echo "  make clean        Remove all build artifacts"
 	@echo ""
-	@echo "Example workflow:"
-	@echo "  make new NAME=category TITLE=\"Category\""
-	@echo "  # edit notes/category.tex"
-	@echo "  make vault              # Build everything"
+	@echo "  PDFs:      pdfs/"
+	@echo "  Aux files: build/"
