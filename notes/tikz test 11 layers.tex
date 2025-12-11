@@ -1,0 +1,49 @@
+\documentclass{gwiki}
+\usepackage{gwiki-links}
+\usepackage{tz}
+
+\Title{tikz test 11 layers}
+\Tags{tikz, visualization, test}
+
+\begin{document}
+\NoteHeader
+
+Layer system demonstration. \allformats{tikz test 11 layers}
+
+Navigation: \wref{tikz test 10 {}} (previous) | \wref{tikz test 12 {}} (next)
+
+
+\section*{Layer System}
+
+\subsection*{Available Layers}
+
+\begin{center}
+\begin{tikzpicture}
+  \begin{pgfonlayer}{bottom}
+    \fill[gr4] (0,0) rectangle (2,2);
+    \node[white] at (1,1) {bottom};
+  \end{pgfonlayer}
+  \begin{pgfonlayer}{front}
+    \fill[colA, opacity=0.7] (0.5,0.5) circle (0.7);
+    \node at (0.5,0.5) {front};
+  \end{pgfonlayer}
+\end{tikzpicture}
+\end{center}
+
+\subsection*{Strand Crossings with Layers}
+
+\begin{center}
+\tz{
+  \begin{pgfonlayer}{strands}
+    \draw[ultra thick, strA] (0,0) -- (2,2);
+  \end{pgfonlayer}
+  \begin{pgfonlayer}{back}
+    \draw[ultra thick, strB] (0,2) -- (2,0);
+  \end{pgfonlayer}
+}
+\end{center}
+
+
+\SeeAlso{tikz test 01 patterns}
+
+\end{document}

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Untitled</title>
+    <title>Codimension-1 defects, categorified group actions, and condensing fermions - GWiki</title>
     <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
     <script>
     window.MathJax = {
@@ -63,12 +63,35 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         body {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 0 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0;
             font-family: Georgia, serif;
             line-height: 1.6;
-            color: #333;
+            color: #1f2937;
+            background: #f9fafb;
+        }
+        .top-nav {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .top-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        .top-nav a:hover {
+            text-decoration: underline;
+        }
+        .content-wrapper {
+            background: white;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 40px 60px 40px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
         }
         h1 {
             color: #2563eb;
@@ -91,10 +114,40 @@
             margin-bottom: 10px;
         }
         .metadata {
-            font-size: 0.9em;
+            font-size: 0.85em;
             color: #6b7280;
-            margin-bottom: 20px;
-            font-family: monospace;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f9fafb;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+        }
+        .toc {
+            background: #f0f9ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        .toc h3 {
+            margin-top: 0;
+            color: #1e40af;
+            font-size: 1.1em;
+        }
+        .toc ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 10px 0 0 0;
+        }
+        .toc li {
+            margin: 5px 0;
+        }
+        .toc a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+        .toc a:hover {
+            text-decoration: underline;
         }
         .topics {
             background: #f3f4f6;
@@ -106,7 +159,7 @@
             background: #ecfeff;
             border: 1px solid #06b6d4;
             border-left: 4px solid #06b6d4;
-            padding: 8px;
+            padding: 4px 8px;
             margin: 20px 0;
             border-radius: 4px;
         }
@@ -184,67 +237,34 @@
     </style>
 </head>
 <body>
-    <h1>Untitled</h1>
+    <div class="top-nav">
+        <a href="../index.html">← Back to Index</a>
+    </div>
+    <div class="content-wrapper">
+    <h1>Codimension-1 defects, categorified group actions, and condensing fermions</h1>
     <div class="metadata">
-        <strong>Last modified:</strong> 2025-12-11 12:27<br>
-        <strong>Created:</strong> ?<br>
+        <strong>Last modified:</strong> 2025-12-11 18:01<br>
+        <strong>Created:</strong> 2025-12-11<br>
+        <strong>Tags:</strong> talk
     </div>
 
     <div class="content">
-        <script type="text/tikz">
-\usetikzlibrary{arrows.meta,calc,decorations.pathmorphing,patterns,positioning,shapes.geometric,quotes,cd}
+        <p><strong>Abstract.</strong> I will discuss various applications of codimension-1 <a href="defects of a QFT.html">defects</a>, including a <a href="fermion.html">fermionic</a> version of the <a href="Levin–Wen Theory.html">Levin–Wen model</a> and a duality between <a href="premodular fusion category.html">premodular</a> theories and <a href="modular fusion category.html">modular</a> theories equipped with a <a href="categorified group action.html">group action</a>.</p>
 
-% Colors
-\definecolor{colA}{RGB}{200,50,50}
-\definecolor{colB}{RGB}{50,50,200}
-\definecolor{colC}{RGB}{50,200,50}
-\definecolor{colD}{RGB}{200,150,50}
-\definecolor{colE}{RGB}{200,150,50}
-\colorlet{gr1}{gray!20}
+<p>See [here](https://www.ipam.ucla.edu/abstract/?tid=12400&pcode=STQ2015).</p>
+    </div>
 
-% Patterns
-\pgfdeclarepatternformonly{primeddots}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{5pt}{5pt}}{\pgfqpoint{4pt}{4pt}}%
-{
-  \pgfpathcircle{\pgfqpoint{0pt}{0pt}}{.5pt}
-  \pgfusepath{fill}
-}
-
-% Styles
-\tikzset{
-    primedregion/.style={fill=#1, postaction={pattern=primeddots}},
-    boxregion/.style={fill=#1, draw=#1},
-    diagregion/.style={fill=#1, draw=#1},
-    
-    % Arrows
-    arrow at/.style={->},
-    arrow at/.default=0.5,
-    mid>/.style={->},
-    mid>/.default=0.55,
-    Rightarrow/.style={double equal sign distance, >={Implies}, ->},
-    
-    % Knot
-    over/.style={double, draw=white, line width=3pt, double=black},
-    
-    % Nodes
-    coupon/.style={draw=black, fill=white, rounded corners=5pt, thick, inner sep=3pt},
-    bullet/.style={circle, fill=#1, draw=#1, inner sep=0pt, minimum size=3pt},
-    bullet/.default=black,
-}
-
-% Commands
-\newcommand{\cpn}[2]{\node[coupon] at #1 {#2};}
-\newcommand{\blt}[1]{\node[bullet] at #1 {};}
-\newcommand{\wref}[2][]{#2}
-\providecommand{\href}[2]{#2}
-
-\begin{tikzpicture}[]
-
-  \foreach \i/\col in {0/colA,1/colB,2/colC,3/colD,4/colE} {
-    \fill[\col] (\i*1.2,0) circle (0.4);
-    \node[below] at (\i*1.2,-0.5) {\texttt{\col}};
-  }
-
-\end{tikzpicture}</script>
+    <div class="linked-notes">
+        <h2>Linked Notes</h2>
+        <ul>
+            <li><a href="Levin–Wen Theory.html">Levin–Wen Theory</a></li>
+            <li><a href="categorified group action.html">categorified group action</a></li>
+            <li><a href="defects of a QFT.html">defects of a QFT</a></li>
+            <li><a href="fermion.html">fermion</a></li>
+            <li><a href="modular fusion category.html">modular fusion category</a></li>
+            <li><a href="premodular fusion category.html">premodular fusion category</a></li>
+        </ul>
+    </div>
     </div>
 </body>
 </html>

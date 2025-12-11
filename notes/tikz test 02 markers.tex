@@ -1,0 +1,140 @@
+\documentclass{gwiki}
+\usepackage{gwiki-links}
+\usepackage{tz}
+
+\Title{tikz test 02 markers}
+\Tags{tikz, visualization, test}
+
+\begin{document}
+\NoteHeader
+
+Demonstrates marker commands: \texttt{\textbackslash mk}, \texttt{\textbackslash ob}, \texttt{\textbackslash wob}, \texttt{\textbackslash umark}, \texttt{\textbackslash blt}, \texttt{\textbackslash cpn}. \allformats{tikz test 02 markers}
+
+Navigation: \wref{tikz test 01 patterns} (previous) | \wref{tikz test 03 colors} (next)
+
+\section*{Basic Markers}
+
+\subsection*{Filled Marks (\textbackslash mk)}
+
+\begin{center}
+\tz{
+  \mk{(0,0)};
+  \mk{(1,0)};
+  \mk{(2,0)};
+  \draw[->] (-0.5,0) -- (2.5,0) node[right] {$x$};
+  \draw[->] (1,-0.5) -- (1,0.5) node[above] {$y$};
+}
+\end{center}
+
+\subsection*{Object Marks (\textbackslash ob)}
+
+Larger filled circles:
+
+\begin{center}
+\tz{
+  \ob{(0,0)};
+  \ob{(1.5,0)};
+  \ob{(3,0)};
+  \draw[dashed] (0,0) -- (1.5,0) -- (3,0);
+}
+\end{center}
+
+\subsection*{White Object Marks (\textbackslash wob)}
+
+Hollow marks for vertices:
+
+\begin{center}
+\tz{
+  \draw (0,0) -- (2,1) -- (4,0) -- cycle;
+  \wob{(0,0)};
+  \wob{(2,1)};
+  \wob{(4,0)};
+}
+\end{center}
+
+\subsection*{Unfilled Marks (\textbackslash umark)}
+
+Circle outlines:
+
+\begin{center}
+\tz{
+  \draw[thick] (0,0) -- (1,1) -- (2,0) -- (3,1);
+  \umark{(0,0)};
+  \umark{(1,1)};
+  \umark{(2,0)};
+  \umark{(3,1)};
+}
+\end{center}
+
+\subsection*{Bullet Points (\textbackslash blt)}
+
+Tiny filled bullets:
+
+\begin{center}
+\tz[scale=1.2]{
+  \draw[thick, blue] (0,0) .. controls (1,1) and (2,-0.5) .. (3,0.5);
+  \blt{(0,0)};
+  \blt{(1,1)};
+  \blt{(2,-0.5)};
+  \blt{(3,0.5)};
+}
+\end{center}
+
+\subsection*{Component Nodes (\textbackslash cpn)}
+
+Labeled boxes:
+
+\begin{center}
+\tz{
+  \cpn{(0,0)}{$A$};
+  \cpn{(2,1)}{$B$};
+  \cpn{(4,0)}{$C$};
+  \draw[->] (0.3,0) -- (1.7,1);
+  \draw[->] (2.3,1) -- (3.7,0);
+}
+\end{center}
+
+\subsection*{Colored Markers}
+
+Using optional color argument:
+
+\begin{center}
+\tz{
+  \draw[fill=red!10] (0,0) circle (1.5);
+  \mk[red]{(0,0.5)};
+  \mk[blue]{(0.5,0)};
+  \mk[green]{(0,-0.5)};
+  \mk[orange]{(-0.5,0)};
+  \mk[black]{(0,0)};
+}
+\end{center}
+
+\subsection*{Combined Example: Graph}
+
+\begin{center}
+\tz[scale=1.3]{
+  % Vertices
+  \coordinate (v1) at (0,0);
+  \coordinate (v2) at (2,0);
+  \coordinate (v3) at (1,1.5);
+
+  % Edges
+  \draw[thick] (v1) -- (v2) -- (v3) -- cycle;
+  \draw[thick] (v1) -- (1,0.5) -- (v2);
+
+  % Markers
+  \ob[blue]{(v1)};
+  \ob[blue]{(v2)};
+  \ob[red]{(v3)};
+  \mk[green]{(1,0.5)};
+
+  % Labels
+  \node[below] at (v1) {$v_1$};
+  \node[below] at (v2) {$v_2$};
+  \node[above] at (v3) {$v_3$};
+}
+\end{center}
+
+\SeeAlso{tikz test 01 patterns, tikz test 03 colors, tikz test 04 arrows}
+
+\end{document}

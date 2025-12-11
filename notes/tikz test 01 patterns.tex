@@ -1,0 +1,123 @@
+\documentclass{gwiki}
+\usepackage{gwiki-links}
+\usepackage{tz}
+
+\Title{tikz test 01 patterns}
+\Tags{tikz, visualization, test}
+
+\begin{document}
+\NoteHeader
+
+This note demonstrates all custom patterns from \texttt{tz.sty}. \allformats{tikz test 01 patterns}
+
+Navigation: \wref{tikz test 02 markers} (next)
+
+\section*{Pattern Demonstrations}
+
+\subsection*{primeddots Pattern}
+
+The \texttt{primeddots} pattern creates evenly-spaced dots:
+
+\begin{center}
+\tz{
+  \fill[primedregion=blue!20] (0,0) rectangle (3,2);
+  \draw[thick] (0,0) rectangle (3,2);
+  \node at (1.5,1) {primeddots};
+}
+\end{center}
+
+\subsection*{primeddots2 Pattern}
+
+A denser version with smaller spacing:
+
+\begin{center}
+\tz{
+  \fill[primedregion2=red!20] (0,0) rectangle (3,2);
+  \draw[thick] (0,0) rectangle (3,2);
+  \node at (1.5,1) {primeddots2};
+}
+\end{center}
+
+\subsection*{primedbox Pattern}
+
+Square grid pattern:
+
+\begin{center}
+\tz{
+  \fill[boxregion=green!20] (0,0) rectangle (3,2);
+  \draw[thick] (0,0) rectangle (3,2);
+  \node at (1.5,1) {primedbox};
+}
+\end{center}
+
+\subsection*{primedplus Pattern}
+
+Crosshatch pattern:
+
+\begin{center}
+\tz{
+  \fill[plusregion=orange!20] (0,0) rectangle (3,2);
+  \draw[thick] (0,0) rectangle (3,2);
+  \node at (1.5,1) {primedplus};
+}
+\end{center}
+
+\subsection*{primedstar Pattern}
+
+Three-way star pattern:
+
+\begin{center}
+\tz{
+  \fill[starregion=purple!20] (0,0) rectangle (3,2);
+  \draw[thick] (0,0) rectangle (3,2);
+  \node at (1.5,1) {primedstar};
+}
+\end{center}
+
+\subsection*{diaglines Pattern}
+
+Diagonal hatching:
+
+\begin{center}
+\tz{
+  \fill[diagregion=cyan!20] (0,0) rectangle (3,2);
+  \draw[thick] (0,0) rectangle (3,2);
+  \node at (1.5,1) {diaglines};
+}
+\end{center}
+
+\subsection*{hlines Pattern}
+
+Horizontal lines:
+
+\begin{center}
+\tz{
+  \fill[hlineregion=yellow!40] (0,0) rectangle (3,2);
+  \draw[thick] (0,0) rectangle (3,2);
+  \node at (1.5,1) {hlines};
+}
+\end{center}
+
+\subsection*{Combined Patterns}
+
+Multiple regions with different patterns:
+
+\begin{center}
+\tz[scale=0.8]{
+  \fill[primedregion=blue!15] (0,0) circle (1);
+  \fill[boxregion=red!15] (2.5,0) circle (1);
+  \fill[starregion=green!15] (5,0) circle (1);
+  \fill[diagregion=orange!15] (1.25,1.8) circle (1);
+  \fill[hlineregion=purple!15] (3.75,1.8) circle (1);
+
+  \node at (0,0) {dots};
+  \node at (2.5,0) {box};
+  \node at (5,0) {star};
+  \node at (1.25,1.8) {diag};
+  \node at (3.75,1.8) {hlines};
+}
+\end{center}
+
+\SeeAlso{tikz test 02 markers, tikz test 03 colors}
+
+\end{document}

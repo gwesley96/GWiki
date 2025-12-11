@@ -96,6 +96,30 @@
 \newcommand{\gwiki@ref}[2]{}
 
 %% ----------------------------------------------------------------------------
+%% MULTI-FORMAT LINKS (PDF, HTML, MD)
+%% ----------------------------------------------------------------------------
+
+%% Read this note as PDF (local)
+\newcommand{\aspdf}[1]{%
+  \href{run:./pdfs/#1.pdf}{[PDF]}%
+}
+
+%% Read this note as HTML (local)
+\newcommand{\ashtml}[1]{%
+  \href{run:./html/#1.html}{[HTML]}%
+}
+
+%% Read this note in Obsidian (opens .md file)
+\newcommand{\asmd}[1]{%
+  \href{file:///Users/greysonwesley/Desktop/workflow/wiki/#1.md}{[MD]}%
+}
+
+%% All formats together
+\newcommand{\allformats}[1]{%
+  \aspdf{#1} \ashtml{#1} \asmd{#1}%
+}
+
+%% ----------------------------------------------------------------------------
 %% SECTION LABELS FOR CROSS-REFERENCING
 %% ----------------------------------------------------------------------------
 %% Use standard \label for sections, then reference with \wref{doc#label}

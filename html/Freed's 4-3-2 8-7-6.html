@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freed's 4-3-2 8-7-6 - GWiki</title>
+    <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
+    <script>
+    window.MathJax = {
+        tex: {
+            inlineMath: [['$', '$']],
+            displayMath: [['\\[', '\\]']],
+            macros: {
+                // Category theory
+                cC: '\\mathcal{C}',
+                cD: '\\mathcal{D}',
+                cF: '\\mathcal{F}',
+                cG: '\\mathcal{G}',
+                cH: '\\mathcal{H}',
+                cL: '\\mathcal{L}',
+                cM: '\\mathcal{M}',
+                cP: '\\mathcal{P}',
+                cU: '\\mathcal{U}',
+                Obj: '\\operatorname{Obj}',
+                Hom: '\\operatorname{Hom}',
+                Mor: '\\operatorname{Mor}',
+                End: '\\operatorname{End}',
+                Aut: '\\operatorname{Aut}',
+                id: '\\mathrm{id}',
+
+                // Blackboard bold
+                bR: '\\mathbb{R}',
+                bC: '\\mathbb{C}',
+                bZ: '\\mathbb{Z}',
+                bN: '\\mathbb{N}',
+                bQ: '\\mathbb{Q}',
+
+                // Categories
+                Set: '\\mathbf{Set}',
+                Grp: '\\mathbf{Grp}',
+                Top: '\\mathbf{Top}',
+                Vec: '\\mathbf{Vec}',
+
+                // Operators
+                colim: '\\operatorname{colim}',
+                Ext: '\\operatorname{Ext}',
+                Tor: '\\operatorname{Tor}',
+                Spec: '\\operatorname{Spec}',
+                im: '\\operatorname{im}',
+                coker: '\\operatorname{coker}',
+                coloneqq: '\\mathrel{\\vcenter{:}}=',
+                coloneq: '\\mathrel{\\vcenter{:}}=',
+
+                // TikZ-like (limited in HTML)
+                to: '\\rightarrow',
+                injto: '\\hookrightarrow',
+                surjto: '\\twoheadrightarrow'
+            }
+        }
+    };
+    </script>
+    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0;
+            font-family: Georgia, serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f9fafb;
+        }
+        .top-nav {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .top-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        .top-nav a:hover {
+            text-decoration: underline;
+        }
+        .content-wrapper {
+            background: white;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 40px 60px 40px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+        }
+        h1 {
+            color: #2563eb;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #1e40af;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        h3 {
+            color: #1e3a8a;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+        h4 {
+            color: #1e40af;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .metadata {
+            font-size: 0.85em;
+            color: #6b7280;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f9fafb;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+        }
+        .toc {
+            background: #f0f9ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        .toc h3 {
+            margin-top: 0;
+            color: #1e40af;
+            font-size: 1.1em;
+        }
+        .toc ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 10px 0 0 0;
+        }
+        .toc li {
+            margin: 5px 0;
+        }
+        .toc a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        .topics {
+            background: #f3f4f6;
+            padding: 15px;
+            border-left: 4px solid #2563eb;
+            margin: 20px 0;
+        }
+        .idea {
+            background: #ecfeff;
+            border: 1px solid #06b6d4;
+            border-left: 4px solid #06b6d4;
+            padding: 4px 8px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .definition, .theorem, .example, .lemma, .proposition, .corollary, .remark {
+            margin: 20px 0;
+            padding: 8px;
+            border-radius: 4px;
+        }
+        .definition p, .theorem p, .example p, .lemma p, .proposition p, .corollary p, .remark p, .idea p {
+            margin: 0;
+        }
+        .definition {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+        }
+        .theorem, .lemma, .proposition, .corollary {
+            background: #dbeafe;
+            border-left: 4px solid #3b82f6;
+        }
+        .example {
+            background: #f3e8ff;
+            border-left: 4px solid #a855f7;
+        }
+        .remark {
+            background: #f3f4f6;
+            border-left: 4px solid #6b7280;
+        }
+        a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        code {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+        li {
+            margin: 8px 0;
+        }
+        script[type="text/tikz"] {
+            /* display: block; - Hiding this to prevents raw code from showing if TikZJax fails */
+            margin: 20px 0;
+            text-align: center;
+        }
+        svg {
+            display: block;
+            margin: 20px auto;
+            max-width: 100%;
+        }
+        .linked-notes, .backlinks {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+        .linked-notes h2, .backlinks h2 {
+            color: #1e40af;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        .linked-notes ul, .backlinks ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .linked-notes li, .backlinks li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <a href="../index.html">← Back to Index</a>
+    </div>
+    <div class="content-wrapper">
+    <h1>Freed's 4-3-2 8-7-6</h1>
+    <div class="metadata">
+        <strong>Last modified:</strong> 2025-12-11 18:12<br>
+        <strong>Created:</strong> 2025-12-11<br>
+    </div>
+
+    <div class="content">
+        <p>The following contains material pulled from Dan Freed's slides [here](https://people.maths.ox.ac.uk/tillmann/ASPECTSfreed.pdf). #AI-using-source</p>
+<h4>General Information</h4>
+<ul>
+<li><strong>Title:</strong> 4-3-2-8-7-6</li>
+<li><strong>Author:</strong> Dan Freed</li>
+<li><strong>Collaborators:</strong> The work is joint with Constantin Teleman, builds on work with Mike Hopkins and Jacob Lurie, and is dedicated to Graeme Segal.</li>
+</ul>
+<h4>Foundational Concepts</h4>
+<ul>
+<li>"Great theorems are awesome; great definitions are transformational."</li>
+<li>Graeme Segal proposed a definition of 2D conformal field theory arising from joint work with Quillen.</li>
+</ul>
+<h4>Definitions of Quantum Field Theory</h4>
+<ul>
+<li><strong>Segal's Definition:</strong> A 2d conformal field theory is a homomorphism: $F\colon \text{Bord}_{\langle 1,2 \rangle}^{\text{conf}} \to \text{Vect}_{\mathbb{C}}^{\text{top}}$</li>
+<li><strong>Atiyah's Definition:</strong> An nD topological quantum field theory (TQFT) is a homomorphism: $F\colon \text{Bord}_{\langle n-1,n \rangle}^{\mathcal{X}(n)} \to \text{Vect}$ where $\mathcal{X}(n)$ is an nD (topological) tangential structure.</li>
+<li>The bordism category $\text{Bord}_{\langle n-1,n \rangle}^{\mathrm{SO}}$ categorifies the classical bordism group $\Omega_{n-1}^{\mathrm{SO}}$.</li>
+<li>TQFTs categorify classical bordism invariants, for example, the <a href="signature of a manifold.html">signature map</a>: $\text{Sign}\colon \Omega_{4k}^{\mathrm{SO}} \to \mathbb{Z}$</li>
+</ul>
+<h4>Invertible and Extended Field Theories</h4>
+<ul>
+<li>An invertible field theory $\alpha\colon \text{Bord}_{\langle n-1,n \rangle} \to \text{Vect}$ is one where $\alpha(M)$ is invertible for every manifold $M$.</li>
+<li>For a closed n-manifold $X$, $\alpha(X) \in \mathbb{C}^\times$.</li>
+<li>For a closed (n-1)-manifold $Y$, $\alpha(Y)$ is a line.</li>
+<li><strong>Example:</strong> There is a 3D TQFT $\alpha\colon \text{Bord}_{\langle 2,3 \rangle}^{\text{framed}} \to \text{Vect}$ such that $\alpha(X) = \mu^{\Theta(X)}$, where $\mu = e^{2\pi i / 24}$ and $\Theta(X) \in \Omega_3^{\text{framed}} \cong \mathbb{Z}/24\mathbb{Z}$.</li>
+<li>Topological invertible theories factor through a map of spectra.</li>
+<li><strong>Extended Field Theories</strong> were introduced in the early 1990s in connection with topological Chern-Simons theory.</li>
+<li><strong>Domain:</strong> An n-category $\text{Bord}_n$ of bordisms.</li>
+<li><strong>Codomain:</strong> An arbitrary n-category (or $(\infty, n)$-category).</li>
+<li><strong>Example:</strong> For a finite group $G$, let $A = \text{Map}(G, \mathbb{C})$ under convolution. An extended version of 2d Dijkgraaf-Witten theory is a functor $\alpha\colon \text{Bord}_2 \to \text{Alg}$, with $\alpha(\text{pt}) = A$.</li>
+</ul>
+<h4>The Cobordism Hypothesis</h4>
+<ul>
+<li>The Cobordism Hypothesis applies to fully extended topological theories $F\colon \text{Bord}_n^{\mathrm{SO}} \to \mathcal{C}$, where $\mathcal{C}$ is a symmetric monoidal $(\infty, n)$-category.</li>
+<li><strong>Hypothesis (Baez-Dolan-Hopkins-Lurie):</strong> The theory $F$ is fully determined by its value on a point, $F(\text{pt}_+)$. Any \textit{n-dualizable, $\mathrm{SO}_n$-invariant} object $c \in \mathcal{C}$ determines such a theory with $F(\text{pt}_+) = c$.</li>
+<li><strong>n-dualizability:</strong> Data associated with Morse handles exists.</li>
+<li><strong>$\mathrm{SO</strong>_n$-invariance:} Extra data exists on the object $c$.</li>
+<li><strong>Example (n=2):</strong> An algebra $A$ in the Morita 2-category $\text{Alg}_k$ is 2-dualizable if it is finiteD and semisimple. The $\mathrm{SO}_2$-invariance data corresponds to a Frobenius structure (a nondegenerate trace).</li>
+</ul>
+<h4>Invertibility Criteria</h4>
+<ul>
+<li><strong>Theorem:</strong> For a theory $\alpha\colon \text{Bord}_n^{\mathrm{SO}} \to \mathcal{C}$, if either 1.  $\alpha(S^k)$ is invertible for some $k \le n/2$, or 2.  $\alpha(S^n)$ is invertible and $\alpha(S^p \times S^{n-1-p})$ is invertible for all $p$, then $\alpha$ is invertible.</li>
+<li>This is a localization theorem: inverting $\alpha(S^k)$ implies inverting every bordism.</li>
+<li><strong>Example (n=2, k=1):</strong> A theory $\alpha\colon \text{Bord}_2^{\mathrm{SO}} \to \text{Alg}_k$ defined by a 2-dualizable Frobenius algebra $A$ has $\alpha(S^1)$ equal to the center of $A$. The theory $\alpha$ is invertible if the center of $A$ is $k$.</li>
+</ul>
+
+<h4>Relative Quantum Field Theory</h4>
+<ul>
+<li>A quantum field theory $F$ is <strong>relative to</strong> an extended $(n+1)$D QFT $\alpha$ if it is a homomorphism $F\colon \mathbf{1} \to \tau_{\le n}\alpha$ or $\tilde{F}\colon \tau_{\le n}\alpha \to \mathbf{1}$.</li>
+<li>If $\alpha$ is invertible, $F$ is called an <strong>anomalous theory</strong> with anomaly $\alpha$.</li>
+<li>$F(X^n)$ takes values in a line (Lagrangian anomaly).</li>
+<li>$F(Y^{n-1})$ takes values in a gerbe (Hamiltonian anomaly).</li>
+</ul>
+<h4>Chern-Simons and Wess-Zumino-Witten (WZW) Theories</h4>
+<ul>
+<li>A modular tensor category $A \in \text{Cat}_\mathbb{C}^{\otimes}$ defines a 4d invertible theory (the Crane-Yetter theory) $\alpha_A\colon \text{Bord}_4^{\mathrm{SO}} \to \text{Cat}_\mathbb{C}^{\otimes \beta}$.</li>
+<li>Chern-Simons theory ($F_A$) can be viewed as a 3d theory relative to this 4d theory.</li>
+<li>The framing anomaly of Chern-Simons can be trivialized by introducing a signature structure, recovering the Reshetikhin-Turaev 1-2-3-theory.</li>
+<li>Chern-Simons can be defined as an absolute 3d theory on bordisms with a stable tangential structure called a $p_1$-structure.</li>
+<li>Chiral WZW theory is a relative 2d theory, which is a restatement of Segal's weakly conformal CFT.</li>
+</ul>
+<h4>Theories for Tori and a Finite Path Integral</h4>
+<ul>
+<li>For a torus $T = \Pi \otimes \mathbb{R}/\mathbb{Z}$, a class $\lambda \in H^4(BT; \mathbb{Z})$ corresponds to an even, symmetric, non-degenerate bihomomorphism $b\colon \Pi \times \Pi \to \mathbb{Z}$.</li>
+<li>This data defines a Pontrjagin self-dual finite abelian group $\pi$ with a quadratic function $q\colon \pi \to \mathbb{Q}/\mathbb{Z}$.</li>
+<li>The pair $(\pi, q)$ determines a homotopy class of maps $q\colon K(\pi, 2) \to K(\mathbb{Q}/\mathbb{Z}, 4)$.</li>
+<li>A <strong>finite path integral</strong> over $\pi$-gerbes gives a fully extended 4d theory $\alpha$. For a closed, oriented 4-manifold $X$, its value is given by a finite Gauss sum: $\alpha(X) = (\sqrt{\#F})^{\text{Euler } X} \mu^{(\text{sign } b)(\text{Sign } X)}$ where $\mu=e^{2\pi i/8}$.</li>
+</ul>
+<h4>From 4d to Higher Dimensions (Theory X)</h4>
+<ul>
+<li>String theory arguments predict the existence of a 6d superconformal field theory, named <strong>Theory $\mathcal{X</strong>$}, analogous to chiral WZW.</li>
+<li>The same data $(\pi, q)$ that defines the 4-3-2 dimensional theories is expected to define theories in dimensions 8 and 7-8, starting from a homotopy map $q\colon K(\pi, 4) \to K(\mathbb{Q}/\mathbb{Z}, 8)$.</li>
+<li>The construction of a 6-7 dimensional theory requires data of a triple $(\mathfrak{g}, b, \Gamma)$, where $\mathfrak{g}$ is a real Lie algebra, $b$ is an invariant inner product, and $\Gamma$ is a lattice.</li>
+<li>From this data, one expects to derive: 1.  A 7d topological QFT $\alpha_\mathfrak{g}$. 2.  A 6d superconformal QFT $\mathcal{X}_\mathfrak{g}$ relative to $\alpha_\mathfrak{g}$.</li>
+<li>An analogy is drawn between classical PDE and quantum field theory:</li>
+</ul>
+<p>| 4d | 6d | | :--- | :--- | | <strong>Classical PDE:</strong> $F + *F = 0$ | <strong>Quantum Field Theory:</strong> Theory $\mathcal{X}$ | | Riemannian self-duality | Lorentzian self-duality | | Compact Lie group + level | ADE Lie algebra |</p>
+    </div>
+
+    <div class="linked-notes">
+        <h2>Linked Notes</h2>
+        <ul>
+            <li><a href="signature of a manifold.html">signature of a manifold</a></li>
+        </ul>
+    </div>
+    </div>
+</body>
+</html>

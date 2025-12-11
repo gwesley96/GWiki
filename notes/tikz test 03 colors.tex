@@ -1,0 +1,149 @@
+\documentclass{gwiki}
+\usepackage{gwiki-links}
+\usepackage{tz}
+
+\Title{tikz test 03 colors}
+\Tags{tikz, visualization, test}
+
+\begin{document}
+\NoteHeader
+
+Demonstrates the custom color schemes in \texttt{tz.sty}: grayscale (\texttt{gr0--gr4}), object colors (\texttt{colA--colE}), and strand colors (\texttt{strA--strM}). \allformats{tikz test 03 colors}
+
+Navigation: \wref{tikz test 02 markers} (previous) | \wref{tikz test 04 arrows} (next)
+
+\section*{Grayscale Palette}
+
+\subsection*{Gray Levels (gr0 through gr4)}
+
+\begin{center}
+\tz{
+  \foreach \i in {0,...,4} {
+    \fill[gr\i] (\i*1.2,0) rectangle ++(1,1);
+    \draw (\i*1.2,0) rectangle ++(1,1);
+    \node at (\i*1.2+0.5,-0.4) {\texttt{gr\i}};
+  }
+}
+\end{center}
+
+\subsection*{Grayscale Gradients}
+
+\begin{center}
+\tz{
+  \foreach \i in {0,...,4} {
+    \fill[gr\i] (0,\i*0.6) rectangle (5,\i*0.6+0.5);
+  }
+  \node[right] at (5.2,1.2) {Light to Dark};
+}
+\end{center}
+
+\section*{Object Colors}
+
+\subsection*{Standard Object Palette}
+
+\begin{center}
+\tz{
+  \fill[colA] (0,0) circle (0.5) node[white] {A};
+  \fill[colB] (1.5,0) circle (0.5) node[white] {B};
+  \fill[colC] (3,0) circle (0.5) node[white] {C};
+  \fill[colD] (4.5,0) circle (0.5) node[white] {D};
+  \fill[colE] (6,0) circle (0.5) node[white] {E};
+
+  \node at (0,-1) {\texttt{colA}};
+  \node at (1.5,-1) {\texttt{colB}};
+  \node at (3,-1) {\texttt{colC}};
+  \node at (4.5,-1) {\texttt{colD}};
+  \node at (6,-1) {\texttt{colE}};
+}
+\end{center}
+
+\subsection*{Object Colors in Diagram}
+
+\begin{center}
+\tz[scale=0.9]{
+  % Boxes
+  \draw[fill=colA] (0,0) rectangle (1,1);
+  \draw[fill=colB] (1.5,0) rectangle (2.5,1);
+  \draw[fill=colC] (3,0) rectangle (4,1);
+
+  % Arrows
+  \draw[->, thick] (1,0.5) -- (1.5,0.5);
+  \draw[->, thick] (2.5,0.5) -- (3,0.5);
+
+  % Labels
+  \node[white] at (0.5,0.5) {$f$};
+  \node[white] at (2,0.5) {$g$};
+  \node[white] at (3.5,0.5) {$h$};
+}
+\end{center}
+
+\section*{Strand Colors}
+
+\subsection*{String Diagram Strands}
+
+The \texttt{str} colors are designed for string diagrams:
+
+\begin{center}
+\tz{
+  \draw[thick, strA] (0,0) -- (0,2) node[right] {\texttt{strA}};
+  \draw[thick, strB] (1,0) -- (1,2) node[right] {\texttt{strB}};
+  \draw[thick, strC] (2,0) -- (2,2) node[right] {\texttt{strC}};
+  \draw[thick, strD] (3,0) -- (3,2) node[right] {\texttt{strD}};
+  \draw[thick, strM] (4,0) -- (4,2) node[right] {\texttt{strM}};
+}
+\end{center}
+
+\subsection*{Braiding with Strand Colors}
+
+\begin{center}
+\tz[scale=1.2]{
+  % Left strand
+  \draw[ultra thick, strA] (0,0) .. controls (0,0.5) and (1,1.5) .. (1,2);
+  % Right strand (with knot over)
+  \draw[ultra thick, strB, knot] (1,0) .. controls (1,0.5) and (0,1.5) .. (0,2);
+
+  % Markers
+  \mk[strA]{(0,0)};
+  \mk[strA]{(1,2)};
+  \mk[strB]{(1,0)};
+  \mk[strB]{(0,2)};
+}
+\end{center}
+
+\section*{Combined Color Usage}
+
+\subsection*{Layered Regions}
+
+\begin{center}
+\tz{
+  % Background
+  \fill[gr1] (-1,-1) rectangle (5,3);
+
+  % Colored regions
+  \fill[colA, opacity=0.7] (0,0) circle (1.2);
+  \fill[colB, opacity=0.7] (2,0) circle (1.2);
+  \fill[colC, opacity=0.7] (1,1.5) circle (1.2);
+
+  % Objects
+  \mk[strM]{(0,0)};
+  \mk[strM]{(2,0)};
+  \mk[strM]{(1,1.5)};
+}
+\end{center}
+
+\subsection*{Color Mixing Example}
+
+\begin{center}
+\tz{
+  \foreach \i in {0,...,9} {
+    \pgfmathsetmacro{\colmix}{10*\i}
+    \fill[colA!\colmix!colB] (\i*0.6,0) rectangle ++(0.5,1.5);
+  }
+  \node at (0,-0.5) {\texttt{colA}};
+  \node at (5.4,-0.5) {\texttt{colB}};
+}
+\end{center}
+
+\SeeAlso{tikz test 02 markers, tikz test 04 arrows, tikz test 06 string diagrams}
+
+\end{document}

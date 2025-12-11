@@ -1,0 +1,56 @@
+\documentclass{gwiki}
+\usepackage{gwiki-links}
+\usepackage{tz}
+
+\Title{tikz test 09 positioning}
+\Tags{tikz, visualization, test}
+
+\begin{document}
+\NoteHeader
+
+coord, relpos, directional shifts. \allformats{tikz test 09 positioning}
+
+Navigation: \wref{tikz test 08 {}} (previous) | \wref{tikz test 10 {}} (next)
+
+
+\section*{Coordinate System}
+
+\subsection*{Named Coordinates}
+
+\begin{center}
+\tz{
+  \coord{(A) at (0,0)};
+  \coord{(B) at (2,1)};
+  \coord{(C) at (3,-0.5)};
+  \draw[->] (A) -- (B) -- (C);
+  \mk{(A)}; \mk{(B)}; \mk{(C)};
+}
+\end{center}
+
+\subsection*{Relative Positioning}
+
+\begin{center}
+\tz{
+  \mk{(0,0)};
+  \mk{\relpos{(0,0)}{45}{1}};
+  \mk{\relpos{(0,0)}{90}{1.5}};
+  \mk{\relpos{(0,0)}{135}{1}};
+  \draw (0,0) circle (1.5);
+}
+\end{center}
+
+\subsection*{Directional Shifts}
+
+\begin{center}
+\tz{
+  \node[up=5mm] at (0,0) {up};
+  \node[down=5mm] at (1,0) {down};
+  \node[left=5mm] at (2,0) {left};
+  \node[right=5mm] at (3,0) {right};
+}
+\end{center}
+
+
+\SeeAlso{tikz test 01 patterns}
+
+\end{document}

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TikZ Debugging</title>
+    <title>tikz test 03 colors - GWiki</title>
     <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
     <script>
     window.MathJax = {
@@ -63,12 +63,35 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         body {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 0 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0;
             font-family: Georgia, serif;
             line-height: 1.6;
-            color: #333;
+            color: #1f2937;
+            background: #f9fafb;
+        }
+        .top-nav {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .top-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        .top-nav a:hover {
+            text-decoration: underline;
+        }
+        .content-wrapper {
+            background: white;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 40px 60px 40px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
         }
         h1 {
             color: #2563eb;
@@ -91,10 +114,40 @@
             margin-bottom: 10px;
         }
         .metadata {
-            font-size: 0.9em;
+            font-size: 0.85em;
             color: #6b7280;
-            margin-bottom: 20px;
-            font-family: monospace;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f9fafb;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+        }
+        .toc {
+            background: #f0f9ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        .toc h3 {
+            margin-top: 0;
+            color: #1e40af;
+            font-size: 1.1em;
+        }
+        .toc ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 10px 0 0 0;
+        }
+        .toc li {
+            margin: 5px 0;
+        }
+        .toc a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+        .toc a:hover {
+            text-decoration: underline;
         }
         .topics {
             background: #f3f4f6;
@@ -184,16 +237,42 @@
     </style>
 </head>
 <body>
-    <h1>TikZ Debugging</h1>
+    <div class="top-nav">
+        <a href="../index.html">← Back to Index</a>
+    </div>
+    <div class="content-wrapper">
+    <h1>tikz test 03 colors</h1>
     <div class="metadata">
-        <strong>Last modified:</strong> 2025-12-11 16:54<br>
-        <strong>Created:</strong> ?<br>
+        <strong>Last modified:</strong> 2025-12-11 18:14<br>
+        <strong>Created:</strong> 2025-12-11<br>
+        <strong>Tags:</strong> tikz, visualization, test
+    </div>
+    <div class="toc">
+        <h3>Contents</h3>
+        <ul>
+            <li><a href="#grayscale-palette">Grayscale Palette</a></li>
+            <li><a href="#object-colors">Object Colors</a></li>
+            <li><a href="#strand-colors">Strand Colors</a></li>
+            <li><a href="#combined-color-usage">Combined Color Usage</a></li>
+        </ul>
     </div>
 
     <div class="content">
-        <p>{TikZ Debugging}</p>
+        <p>Demonstrates the custom color schemes in \texttt{tz.sty}: grayscale (\texttt{gr0--gr4}), object colors (\texttt{colA--colE}), and strand colors (\texttt{strA--strM}). \allformats{tikz test 03 colors}</p>
 
-<h2>Test 1: Simple Line</h2>
+<p>Navigation: <a href="tikz test 02 markers.html">tikz test 02 markers</a> (previous) | <a href="tikz test 04 arrows.html">tikz test 04 arrows</a> (next)</p>
+
+<h2 id="grayscale-palette">Grayscale Palette</h2>
+
+<h3>Gray Levels (gr0 through gr4)</h3>
+
+<div style="text-align: center;">
+<p>\tz{ \foreach \i in {0,...,4} { \fill[gr\i] (\i*1.2,0) rectangle ++(1,1); \draw (\i*1.2,0) rectangle ++(1,1); \node at (\i*1.2+0.5,-0.4) {\texttt{gr\i}}; } }</p>
+</div>
+
+<h3>Grayscale Gradients</h3>
+
+<div style="text-align: center;">
 <script type="text/tikz">
 
 %% ============================================================================
@@ -531,10 +610,27 @@
 
 \begin{tikzpicture}[]
 
-  \draw (0,0) -- (1,1);
+  \foreach \i in {0,...,4} {
+    \fill[gr\i] (0,\i*0.6) rectangle (5,\i*0.6+0.5);
+  }
+  \node[right] at (5.2,1.2) {Light to Dark};
 
 \end{tikzpicture}</script>
+</div>
 
+<h2 id="object-colors">Object Colors</h2>
+
+<h3>Standard Object Palette</h3>
+
+<div style="text-align: center;">
+<p>\tz{ \fill[colA] (0,0) circle (0.5) node[white] {A}; \fill[colB] (1.5,0) circle (0.5) node[white] {B}; \fill[colC] (3,0) circle (0.5) node[white] {C}; \fill[colD] (4.5,0) circle (0.5) node[white] {D}; \fill[colE] (6,0) circle (0.5) node[white] {E};</p>
+
+<p>\node at (0,-1) {\texttt{colA}}; \node at (1.5,-1) {\texttt{colB}}; \node at (3,-1) {\texttt{colC}}; \node at (4.5,-1) {\texttt{colD}}; \node at (6,-1) {\texttt{colE}}; }</p>
+</div>
+
+<h3>Object Colors in Diagram</h3>
+
+<div style="text-align: center;">
 <script type="text/tikz">
 
 %% ============================================================================
@@ -870,13 +966,394 @@
 
 \newcommand{\wref}[2][]{#2}
 
-\begin{tikzpicture}
+\begin{tikzpicture}[scale=0.9]
 
-  \draw (0,0) circle (1cm);
+  % Boxes
+  \draw[fill=colA] (0,0) rectangle (1,1);
+  \draw[fill=colB] (1.5,0) rectangle (2.5,1);
+  \draw[fill=colC] (3,0) rectangle (4,1);
+
+  % Arrows
+  \draw[->, thick] (1,0.5) -- (1.5,0.5);
+  \draw[->, thick] (2.5,0.5) -- (3,0.5);
+
+  % Labels
+  \node[white] at (0.5,0.5) {$f$};
+  \node[white] at (2,0.5) {$g$};
+  \node[white] at (3.5,0.5) {$h$};
 
 \end{tikzpicture}</script>
+</div>
 
-<h2>Test 2: Basic Macros</h2>
+<h2 id="strand-colors">Strand Colors</h2>
+
+<h3>String Diagram Strands</h3>
+
+<p>The \texttt{str} colors are designed for string diagrams:</p>
+
+<div style="text-align: center;">
+<p>\tz{ \draw[thick, strA] (0,0) -- (0,2) node[right] {\texttt{strA}}; \draw[thick, strB] (1,0) -- (1,2) node[right] {\texttt{strB}}; \draw[thick, strC] (2,0) -- (2,2) node[right] {\texttt{strC}}; \draw[thick, strD] (3,0) -- (3,2) node[right] {\texttt{strD}}; \draw[thick, strM] (4,0) -- (4,2) node[right] {\texttt{strM}}; }</p>
+</div>
+
+<h3>Braiding with Strand Colors</h3>
+
+<div style="text-align: center;">
+<script type="text/tikz">
+
+%% ============================================================================
+%% TZ.STY - TIKZ EXTENSIONS FOR STRING DIAGRAMS AND MATHEMATICS
+%% Based on user's custom TikZ macros
+%% ============================================================================
+%% ----------------------------------------------------------------------------
+%% INLINE MACRO
+%% ----------------------------------------------------------------------------
+%% Environment: Standard wrap
+%% ----------------------------------------------------------------------------
+%% TIKZ LIBRARIES
+%% ----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
+%% LAYER CONFIGURATION FOR STRING DIAGRAMS
+%% ----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
+%% PATTERN DEFINITIONS
+%% ----------------------------------------------------------------------------
+%% Region styles
+\tikzset{
+  primedregion/.style={preaction={fill=#1}, pattern=primeddots, draw=#1},
+  primedregion2/.style={preaction={fill=#1}, pattern=primeddots2, draw=#1},
+  boxregion/.style={preaction={fill=#1}, pattern=primedbox, draw=#1},
+  plusregion/.style={preaction={fill=#1}, pattern=primedplus, draw=#1},
+  starregion/.style={preaction={fill=#1}, pattern=primedstar, draw=#1},
+  diagregion/.style={preaction={fill=#1}, pattern=diaglines, draw=#1},
+  hlineregion/.style={preaction={fill=#1}, pattern=hlines, draw=#1},
+}
+%% ----------------------------------------------------------------------------
+%% POSITIONING
+%% ----------------------------------------------------------------------------
+\newcommand{\coord}[1]{coordinate #1}
+\newcommand{\relpos}[3]{([shift={(#2:#3)}]#1)}
+\tikzset{%
+  up/.style={yshift=#1},
+  down/.style={yshift=-#1},
+  left/.style={xshift=-#1},
+  right/.style={xshift=#1},
+}
+%% ----------------------------------------------------------------------------
+%% COLOR SCHEME
+%% ----------------------------------------------------------------------------
+\colorlet{gr0}{white}
+\colorlet{gr1}{gray!20}
+\colorlet{gr2}{gray!40}
+\colorlet{gr3}{gray!60}
+\colorlet{gr4}{gray!80}
+\colorlet{colA}{red!75}
+\colorlet{colB}{blue!75}
+\colorlet{colC}{green!95}
+\colorlet{colD}{orange!75}
+\colorlet{colE}{orange!75}
+\colorlet{strA}{red!80!black}
+\colorlet{strB}{blue!80!black}
+\colorlet{strC}{green!60!black}
+\colorlet{strD}{orange!80!black}
+\colorlet{strM}{black}
+%% ----------------------------------------------------------------------------
+%% PATH STYLES
+%% ----------------------------------------------------------------------------
+\tikzset{
+  s/.style={out=90,in=-90},
+  -s/.style={out=-90,in=90},
+  % cupto/.style={out=90,in=90,looseness=1.5},
+  % capto/.style={out=-90,in=-90,looseness=1.5},
+}
+%% Knot styles
+\tikzset{
+  knot/.style={preaction={draw=white, solid, line width=#1}},
+  knot/.default=\dimexpr2\pgflinewidth+2pt\relax,
+  over/.style={double, draw=white, line width=3pt, double=},
+  crossing gap/.style={preaction={draw=white, line width=#1}},
+  crossing gap/.default=4pt,
+}
+%% Decorative paths
+\tikzset{
+  snake/.style={decorate, decoration={snake, segment length=1mm, amplitude=.3mm}},
+  saw/.style={decorate, decoration={saw, segment length=.7mm, amplitude=.25mm}},
+  squiggly/.style={decorate, decoration={snake, segment length=2mm, amplitude=.5mm}},
+  zigzag/.style={decorate, decoration={zigzag, segment length=1.5mm, amplitude=.4mm}},
+  coil/.style={decorate, decoration={coil, segment length=2mm, amplitude=.5mm}},
+  bumps/.style={decorate, decoration={bumps, segment length=2mm}},
+}
+%% Arrow styles
+\tikzset{
+  arrow at/.style={
+    decoration={markings, mark=at position #1 with {\arrow{>}}},
+    postaction={decorate}
+  },
+  arrow at/.default=0.5,
+  rev arrow at/.style={
+    decoration={markings, mark=at position #1 with {\arrow{<}}},
+    postaction={decorate}
+  },
+  rev arrow at/.default=0.5,
+  mid>/.style={arrow at=#1},
+  mid</.style={rev arrow at=#1},
+  mid>/.default=0.55,
+  mid</.default=0.55,
+}
+%% Multi-line styles
+\tikzset{
+  tripleline/.style args={[#1] in [#2] in [#3]}{
+    #1,
+    preaction={preaction={draw,#3}, draw,#2}
+  },
+  quadrupleline/.style args={[#1] in [#2] in [#3] in [#4]}{
+    #1,
+    preaction={preaction={preaction={draw,#4}, draw,#3}, draw,#2}
+  },
+  double strand/.style={double, double distance=#1},
+  double strand/.default=2pt,
+}
+%% Category theory arrows
+\tikzset{
+  Rightarrow/.style={double equal sign distance, >={Implies}, ->},
+  Leftarrow/.style={double equal sign distance, >={Implies}, <-},
+  Leftrightarrow/.style={double equal sign distance, >={Implies}, <->},
+  triplecd/.style={-, preaction={draw, Rightarrow}},
+  quadruplecd/.style={
+    preaction={draw, Rightarrow, shorten >=0pt},
+    shorten >=1pt, -, double, double distance=0.2pt
+  }
+}
+%% ----------------------------------------------------------------------------
+%% NODE STYLES
+%% ----------------------------------------------------------------------------
+%% Size parameters
+\newcommand{\mkrad}{0.05cm}
+\newcommand{\obrad}{0.1cm}
+\tikzset{
+  vertex/.style={
+    shape=circle,
+    draw,
+    fill=black,
+    inner sep=0pt,
+    minimum size=3pt
+  },
+  object/.style={
+    circle,
+    draw,
+    thick,
+    fill=white,
+    inner sep=0pt,
+    minimum size=2*\obrad
+  },
+  coupon/.style={
+    draw=black,
+    fill=white,
+    rounded corners=5pt,
+    very thick,
+    inner sep=3pt,
+    minimum size=2.1*height("Hg"),
+    on layer=top,
+  },
+  bullet/.style={
+    circle,
+    fill=#1,
+    draw=#1,
+    inner sep=0pt,
+    minimum size=2*\mkrad
+  },
+  bullet/.default=black,
+}
+%% Coupon macro
+%% ----------------------------------------------------------------------------
+%% DRAWING MACROS
+%% ----------------------------------------------------------------------------
+%% Legacy aliases
+%% Strand macros
+\newcommand{\vstrand}[2]{%
+  \draw[thick] (#1) -- ++(0,#2);%
+  \fill (#1) circle (1.5pt);%
+  \fill ([yshift=#2]#1) circle (1.5pt);%
+}
+\newcommand{\hstrand}[2]{%
+  \draw[thick] (#1) -- ++(#2,0);%
+  \fill (#1) circle (1.5pt);%
+  \fill ([xshift=#2]#1) circle (1.5pt);%
+}
+%% Region box
+\newcommand{\regionbox}[3][black]{%
+  \draw[dashed, rounded corners=5pt, draw=#1] #2 rectangle #3;%
+}
+\newcommand{\rregionbox}[2]{\regionbox[red]{#1}{#2}}
+\newcommand{\bregionbox}[2]{\regionbox[blue]{#1}{#2}}
+\newcommand{\oregionbox}[2]{\regionbox[orange]{#1}{#2}}
+\newcommand{\gregionbox}[2]{\regionbox[green!60!black]{#1}{#2}}
+%% Bubble/circle
+\newcommand{\bubble}[3][]{\draw[#1] #2 circle (#3);}
+%% Arc macros
+\newcommand{\capto}[1]{arc(180:0:#1)}
+\newcommand{\cupto}[1]{arc(-180:0:#1)}
+\newcommand{\capfrom}[1]{arc(0:180:#1)}
+\newcommand{\cupfrom}[1]{arc(0:-180:#1)}
+%% ----------------------------------------------------------------------------
+%% UTILITY STYLES
+%% ----------------------------------------------------------------------------
+\tikzset{
+  horizontal gradient/.style 2 args={left color=#1, right color=#2},
+  vertical gradient/.style 2 args={top color=#1, bottom color=#2},
+  super thick/.style={line width=3pt},
+  ultra super thick/.style={line width=4pt},
+  hair/.style={line width=0.1pt},
+  strand/.style={thick},
+  boundary/.style={very thick},
+  sep/.style={inner sep=#1, outer sep=#1},
+  tight/.style={inner sep=0pt, outer sep=0pt},
+  boxed/.style={
+    execute at end picture={
+      \begin{pgfonlayer}{bottom}
+        \node[
+          minimum size=0pt,
+          inner ysep=0,
+          outer sep=0pt,
+          rounded corners,
+          fit=(current bounding box),
+          inner xsep=5pt,
+          #1,
+          draw=none,
+        ]{};
+      \end{pgfonlayer}
+      \begin{pgfonlayer}{top}
+        \node[
+          minimum size=0pt,
+          inner ysep=0,
+          outer sep=0pt,
+          rounded corners,
+          fit=(current bounding box),
+          inner xsep=5pt,
+          #1,
+          fill=none
+        ]{};
+      \end{pgfonlayer}
+    }
+  },
+  boxed/.default = {draw=black, very thick},
+  invclip/.style={
+    clip,
+    overlay,
+    insert path={[reset cm] (-100cm,-100cm) rectangle (100cm,100cm)}
+  },
+  xy/.style={canvas is xy plane at z=#1},
+  yx/.style={canvas is yx plane at z=#1},
+  yz/.style={canvas is yz plane at x=#1},
+  zy/.style={canvas is zy plane at x=#1},
+  zx/.style={canvas is zx plane at y=#1},
+  xz/.style={canvas is xz plane at y=#1},
+  frameR/.style={
+    preaction={draw=#1, super thick, opacity=.2, decorate, decoration={curveto, amplitude=0, raise=-1.5pt}},
+    thick, #1
+  },
+  frameL/.style={
+    preaction={draw=#1, super thick, opacity=.2, decorate, decoration={curveto, amplitude=0, raise=1.5pt}},
+    thick, #1
+  }
+}
+\newcommand{\invclip}{\path[invclip]}
+%% Last coordinate access
+%% ----------------------------------------------------------------------------
+%% EXTENDED ANCHORS FOR RECTANGLE NODES
+%% ----------------------------------------------------------------------------
+
+\usetikzlibrary{arrows.meta,calc,decorations.markings,shapes.geometric,patterns}
+
+\tikzset{
+  on layer/.code={}
+}
+
+
+\pgfdeclarepatternformonly{primeddots}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{5pt}{5pt}}{\pgfqpoint{4pt}{4pt}}%
+{
+  \pgfpathcircle{\pgfqpoint{0pt}{0pt}}{.5pt}
+  \pgfusepath{fill}
+}
+\pgfdeclarepatternformonly{primeddots2}{\pgfqpoint{-.3pt}{-.3pt}}{\pgfqpoint{.3pt}{.3pt}}{\pgfqpoint{2.5pt}{2.5pt}}%
+{
+  \pgfpathcircle{\pgfqpoint{0pt}{0pt}}{.35pt}
+  \pgfusepath{fill}
+}
+\pgfdeclarepatternformonly{primedbox}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{1pt}{1pt}}{\pgfqpoint{5pt}{5pt}}%
+{
+  \pgfpathrectangle{\pgfqpoint{-.9pt}{-.9pt}}{\pgfqpoint{1.8pt}{1.8pt}}
+  \pgfusepath{stroke}
+}
+\pgfdeclarepatternformonly{primedplus}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{1pt}{1pt}}{\pgfqpoint{5pt}{5pt}}%
+{
+  \pgftransformrotate{30}
+  \pgfpathmoveto{\pgfqpoint{-.9pt}{-.9pt}}
+  \pgfpathlineto{\pgfqpoint{.9pt}{.9pt}}
+  \pgfpathmoveto{\pgfqpoint{.9pt}{-.9pt}}
+  \pgfpathlineto{\pgfqpoint{-.9pt}{.9pt}}
+  \pgfusepath{stroke}
+}
+\pgfdeclarepatternformonly{primedstar}{\pgfqpoint{-1.2pt}{-1.2pt}}{\pgfqpoint{1.2pt}{1.2pt}}{\pgfqpoint{5pt}{5pt}}%
+{
+  \pgftransformrotate{30}
+  \pgfpathmoveto{\pgfqpoint{-1.2pt}{0pt}}
+  \pgfpathlineto{\pgfqpoint{1.2pt}{0pt}}
+  \pgfpathmoveto{\pgfqpoint{-.6pt}{-1.04pt}}
+  \pgfpathlineto{\pgfqpoint{.6pt}{1.04pt}}
+  \pgfpathmoveto{\pgfqpoint{-.6pt}{1.04pt}}
+  \pgfpathlineto{\pgfqpoint{.6pt}{-1.04pt}}
+  \pgfusepath{stroke}
+}
+\pgfdeclarepatternformonly{diaglines}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{1pt}{1pt}}{\pgfqpoint{4pt}{4pt}}%
+{
+  \pgfpathmoveto{\pgfqpoint{-1pt}{-1pt}}
+  \pgfpathlineto{\pgfqpoint{1pt}{1pt}}
+  \pgfusepath{stroke}
+}
+\pgfdeclarepatternformonly{hlines}{\pgfqpoint{-1pt}{-.5pt}}{\pgfqpoint{1pt}{.5pt}}{\pgfqpoint{4pt}{3pt}}%
+{
+  \pgfpathmoveto{\pgfqpoint{-1pt}{0pt}}
+  \pgfpathlineto{\pgfqpoint{1pt}{0pt}}
+  \pgfusepath{stroke}
+}
+
+
+% Simplified \drawmark[color]{coord}[label][pos]
+\newcommand{\drawmark}[2][black]{\fill[#1] (#2) circle (\mkrad);}
+\newcommand{\drawobject}[2][black]{\draw[thick, fill=#1] (#2) circle (\obrad);}
+\newcommand{\mk}[1]{\drawmark{#1}}
+\newcommand{\ob}[1]{\drawobject[black]{#1}}
+\newcommand{\wob}[1]{\drawobject[white]{#1}}
+\newcommand{\umark}[1]{\draw (#1) circle (\mkrad);}
+\newcommand{\labmark}[3]{\drawmark{#1}[#2]{#3}}
+\newcommand{\labob}[3]{\drawobject[black]{#1}[#2]{#3}}
+\newcommand{\blt}[2][]{\node[circle, fill, inner sep=0pt, minimum size=0.1cm, #1] at #2 {};}
+\newcommand{\cpn}[3][]{\node[draw, thick, fill=white, rounded corners=3pt, #1] at #2 {#3};}
+
+
+\newcommand{\wref}[2][]{#2}
+
+\begin{tikzpicture}[scale=1.2]
+
+  % Left strand
+  \draw[ultra thick, strA] (0,0) .. controls (0,0.5) and (1,1.5) .. (1,2);
+  % Right strand (with knot over)
+  \draw[ultra thick, strB, knot] (1,0) .. controls (1,0.5) and (0,1.5) .. (0,2);
+
+  % Markers
+  \mk[strA]{(0,0)};
+  \mk[strA]{(1,2)};
+  \mk[strB]{(1,0)};
+  \mk[strB]{(0,2)};
+
+\end{tikzpicture}</script>
+</div>
+
+<h2 id="combined-color-usage">Combined Color Usage</h2>
+
+<h3>Layered Regions</h3>
+
+<div style="text-align: center;">
 <script type="text/tikz">
 
 %% ============================================================================
@@ -1214,698 +1691,46 @@
 
 \begin{tikzpicture}[]
 
-  \mk{0,0}
-  \ob{1,0}
-  \wob{2,0}
+  % Background
+  \fill[gr1] (-1,-1) rectangle (5,3);
+
+  % Colored regions
+  \fill[colA, opacity=0.7] (0,0) circle (1.2);
+  \fill[colB, opacity=0.7] (2,0) circle (1.2);
+  \fill[colC, opacity=0.7] (1,1.5) circle (1.2);
+
+  % Objects
+  \mk[strM]{(0,0)};
+  \mk[strM]{(2,0)};
+  \mk[strM]{(1,1.5)};
 
 \end{tikzpicture}</script>
+</div>
 
-<h2>Test 3: Labeled Macros</h2>
-<script type="text/tikz">
+<h3>Color Mixing Example</h3>
 
-%% ============================================================================
-%% TZ.STY - TIKZ EXTENSIONS FOR STRING DIAGRAMS AND MATHEMATICS
-%% Based on user's custom TikZ macros
-%% ============================================================================
-%% ----------------------------------------------------------------------------
-%% INLINE MACRO
-%% ----------------------------------------------------------------------------
-%% Environment: Standard wrap
-%% ----------------------------------------------------------------------------
-%% TIKZ LIBRARIES
-%% ----------------------------------------------------------------------------
-%% ----------------------------------------------------------------------------
-%% LAYER CONFIGURATION FOR STRING DIAGRAMS
-%% ----------------------------------------------------------------------------
-%% ----------------------------------------------------------------------------
-%% PATTERN DEFINITIONS
-%% ----------------------------------------------------------------------------
-%% Region styles
-\tikzset{
-  primedregion/.style={preaction={fill=#1}, pattern=primeddots, draw=#1},
-  primedregion2/.style={preaction={fill=#1}, pattern=primeddots2, draw=#1},
-  boxregion/.style={preaction={fill=#1}, pattern=primedbox, draw=#1},
-  plusregion/.style={preaction={fill=#1}, pattern=primedplus, draw=#1},
-  starregion/.style={preaction={fill=#1}, pattern=primedstar, draw=#1},
-  diagregion/.style={preaction={fill=#1}, pattern=diaglines, draw=#1},
-  hlineregion/.style={preaction={fill=#1}, pattern=hlines, draw=#1},
-}
-%% ----------------------------------------------------------------------------
-%% POSITIONING
-%% ----------------------------------------------------------------------------
-\newcommand{\coord}[1]{coordinate #1}
-\newcommand{\relpos}[3]{([shift={(#2:#3)}]#1)}
-\tikzset{%
-  up/.style={yshift=#1},
-  down/.style={yshift=-#1},
-  left/.style={xshift=-#1},
-  right/.style={xshift=#1},
-}
-%% ----------------------------------------------------------------------------
-%% COLOR SCHEME
-%% ----------------------------------------------------------------------------
-\colorlet{gr0}{white}
-\colorlet{gr1}{gray!20}
-\colorlet{gr2}{gray!40}
-\colorlet{gr3}{gray!60}
-\colorlet{gr4}{gray!80}
-\colorlet{colA}{red!75}
-\colorlet{colB}{blue!75}
-\colorlet{colC}{green!95}
-\colorlet{colD}{orange!75}
-\colorlet{colE}{orange!75}
-\colorlet{strA}{red!80!black}
-\colorlet{strB}{blue!80!black}
-\colorlet{strC}{green!60!black}
-\colorlet{strD}{orange!80!black}
-\colorlet{strM}{black}
-%% ----------------------------------------------------------------------------
-%% PATH STYLES
-%% ----------------------------------------------------------------------------
-\tikzset{
-  s/.style={out=90,in=-90},
-  -s/.style={out=-90,in=90},
-  % cupto/.style={out=90,in=90,looseness=1.5},
-  % capto/.style={out=-90,in=-90,looseness=1.5},
-}
-%% Knot styles
-\tikzset{
-  knot/.style={preaction={draw=white, solid, line width=#1}},
-  knot/.default=\dimexpr2\pgflinewidth+2pt\relax,
-  over/.style={double, draw=white, line width=3pt, double=},
-  crossing gap/.style={preaction={draw=white, line width=#1}},
-  crossing gap/.default=4pt,
-}
-%% Decorative paths
-\tikzset{
-  snake/.style={decorate, decoration={snake, segment length=1mm, amplitude=.3mm}},
-  saw/.style={decorate, decoration={saw, segment length=.7mm, amplitude=.25mm}},
-  squiggly/.style={decorate, decoration={snake, segment length=2mm, amplitude=.5mm}},
-  zigzag/.style={decorate, decoration={zigzag, segment length=1.5mm, amplitude=.4mm}},
-  coil/.style={decorate, decoration={coil, segment length=2mm, amplitude=.5mm}},
-  bumps/.style={decorate, decoration={bumps, segment length=2mm}},
-}
-%% Arrow styles
-\tikzset{
-  arrow at/.style={
-    decoration={markings, mark=at position #1 with {\arrow{>}}},
-    postaction={decorate}
-  },
-  arrow at/.default=0.5,
-  rev arrow at/.style={
-    decoration={markings, mark=at position #1 with {\arrow{<}}},
-    postaction={decorate}
-  },
-  rev arrow at/.default=0.5,
-  mid>/.style={arrow at=#1},
-  mid</.style={rev arrow at=#1},
-  mid>/.default=0.55,
-  mid</.default=0.55,
-}
-%% Multi-line styles
-\tikzset{
-  tripleline/.style args={[#1] in [#2] in [#3]}{
-    #1,
-    preaction={preaction={draw,#3}, draw,#2}
-  },
-  quadrupleline/.style args={[#1] in [#2] in [#3] in [#4]}{
-    #1,
-    preaction={preaction={preaction={draw,#4}, draw,#3}, draw,#2}
-  },
-  double strand/.style={double, double distance=#1},
-  double strand/.default=2pt,
-}
-%% Category theory arrows
-\tikzset{
-  Rightarrow/.style={double equal sign distance, >={Implies}, ->},
-  Leftarrow/.style={double equal sign distance, >={Implies}, <-},
-  Leftrightarrow/.style={double equal sign distance, >={Implies}, <->},
-  triplecd/.style={-, preaction={draw, Rightarrow}},
-  quadruplecd/.style={
-    preaction={draw, Rightarrow, shorten >=0pt},
-    shorten >=1pt, -, double, double distance=0.2pt
-  }
-}
-%% ----------------------------------------------------------------------------
-%% NODE STYLES
-%% ----------------------------------------------------------------------------
-%% Size parameters
-\newcommand{\mkrad}{0.05cm}
-\newcommand{\obrad}{0.1cm}
-\tikzset{
-  vertex/.style={
-    shape=circle,
-    draw,
-    fill=black,
-    inner sep=0pt,
-    minimum size=3pt
-  },
-  object/.style={
-    circle,
-    draw,
-    thick,
-    fill=white,
-    inner sep=0pt,
-    minimum size=2*\obrad
-  },
-  coupon/.style={
-    draw=black,
-    fill=white,
-    rounded corners=5pt,
-    very thick,
-    inner sep=3pt,
-    minimum size=2.1*height("Hg"),
-    on layer=top,
-  },
-  bullet/.style={
-    circle,
-    fill=#1,
-    draw=#1,
-    inner sep=0pt,
-    minimum size=2*\mkrad
-  },
-  bullet/.default=black,
-}
-%% Coupon macro
-%% ----------------------------------------------------------------------------
-%% DRAWING MACROS
-%% ----------------------------------------------------------------------------
-%% Legacy aliases
-%% Strand macros
-\newcommand{\vstrand}[2]{%
-  \draw[thick] (#1) -- ++(0,#2);%
-  \fill (#1) circle (1.5pt);%
-  \fill ([yshift=#2]#1) circle (1.5pt);%
-}
-\newcommand{\hstrand}[2]{%
-  \draw[thick] (#1) -- ++(#2,0);%
-  \fill (#1) circle (1.5pt);%
-  \fill ([xshift=#2]#1) circle (1.5pt);%
-}
-%% Region box
-\newcommand{\regionbox}[3][black]{%
-  \draw[dashed, rounded corners=5pt, draw=#1] #2 rectangle #3;%
-}
-\newcommand{\rregionbox}[2]{\regionbox[red]{#1}{#2}}
-\newcommand{\bregionbox}[2]{\regionbox[blue]{#1}{#2}}
-\newcommand{\oregionbox}[2]{\regionbox[orange]{#1}{#2}}
-\newcommand{\gregionbox}[2]{\regionbox[green!60!black]{#1}{#2}}
-%% Bubble/circle
-\newcommand{\bubble}[3][]{\draw[#1] #2 circle (#3);}
-%% Arc macros
-\newcommand{\capto}[1]{arc(180:0:#1)}
-\newcommand{\cupto}[1]{arc(-180:0:#1)}
-\newcommand{\capfrom}[1]{arc(0:180:#1)}
-\newcommand{\cupfrom}[1]{arc(0:-180:#1)}
-%% ----------------------------------------------------------------------------
-%% UTILITY STYLES
-%% ----------------------------------------------------------------------------
-\tikzset{
-  horizontal gradient/.style 2 args={left color=#1, right color=#2},
-  vertical gradient/.style 2 args={top color=#1, bottom color=#2},
-  super thick/.style={line width=3pt},
-  ultra super thick/.style={line width=4pt},
-  hair/.style={line width=0.1pt},
-  strand/.style={thick},
-  boundary/.style={very thick},
-  sep/.style={inner sep=#1, outer sep=#1},
-  tight/.style={inner sep=0pt, outer sep=0pt},
-  boxed/.style={
-    execute at end picture={
-      \begin{pgfonlayer}{bottom}
-        \node[
-          minimum size=0pt,
-          inner ysep=0,
-          outer sep=0pt,
-          rounded corners,
-          fit=(current bounding box),
-          inner xsep=5pt,
-          #1,
-          draw=none,
-        ]{};
-      \end{pgfonlayer}
-      \begin{pgfonlayer}{top}
-        \node[
-          minimum size=0pt,
-          inner ysep=0,
-          outer sep=0pt,
-          rounded corners,
-          fit=(current bounding box),
-          inner xsep=5pt,
-          #1,
-          fill=none
-        ]{};
-      \end{pgfonlayer}
-    }
-  },
-  boxed/.default = {draw=black, very thick},
-  invclip/.style={
-    clip,
-    overlay,
-    insert path={[reset cm] (-100cm,-100cm) rectangle (100cm,100cm)}
-  },
-  xy/.style={canvas is xy plane at z=#1},
-  yx/.style={canvas is yx plane at z=#1},
-  yz/.style={canvas is yz plane at x=#1},
-  zy/.style={canvas is zy plane at x=#1},
-  zx/.style={canvas is zx plane at y=#1},
-  xz/.style={canvas is xz plane at y=#1},
-  frameR/.style={
-    preaction={draw=#1, super thick, opacity=.2, decorate, decoration={curveto, amplitude=0, raise=-1.5pt}},
-    thick, #1
-  },
-  frameL/.style={
-    preaction={draw=#1, super thick, opacity=.2, decorate, decoration={curveto, amplitude=0, raise=1.5pt}},
-    thick, #1
-  }
-}
-\newcommand{\invclip}{\path[invclip]}
-%% Last coordinate access
-%% ----------------------------------------------------------------------------
-%% EXTENDED ANCHORS FOR RECTANGLE NODES
-%% ----------------------------------------------------------------------------
+<div style="text-align: center;">
+<p>\tz{ \foreach \i in {0,...,9} { \pgfmathsetmacro{\colmix}{10*\i} \fill[colA!\colmix!colB] (\i*0.6,0) rectangle ++(0.5,1.5); } \node at (0,-0.5) {\texttt{colA}}; \node at (5.4,-0.5) {\texttt{colB}}; }</p>
+</div>
 
-\usetikzlibrary{arrows.meta,calc,decorations.markings,shapes.geometric,patterns}
+<p><strong>See also:</strong> <a href="tikz test 02 markers.html">tikz test 02 markers</a>, <a href="tikz test 04 arrows.html">tikz test 04 arrows</a>, <a href="tikz test 06 string diagrams.html">tikz test 06 string diagrams</a></p>
+    </div>
 
-\tikzset{
-  on layer/.code={}
-}
+    <div class="linked-notes">
+        <h2>Linked Notes</h2>
+        <ul>
+            <li><a href="tikz test 02 markers.html">tikz test 02 markers</a></li>
+            <li><a href="tikz test 04 arrows.html">tikz test 04 arrows</a></li>
+        </ul>
+    </div>
 
-
-\pgfdeclarepatternformonly{primeddots}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{5pt}{5pt}}{\pgfqpoint{4pt}{4pt}}%
-{
-  \pgfpathcircle{\pgfqpoint{0pt}{0pt}}{.5pt}
-  \pgfusepath{fill}
-}
-\pgfdeclarepatternformonly{primeddots2}{\pgfqpoint{-.3pt}{-.3pt}}{\pgfqpoint{.3pt}{.3pt}}{\pgfqpoint{2.5pt}{2.5pt}}%
-{
-  \pgfpathcircle{\pgfqpoint{0pt}{0pt}}{.35pt}
-  \pgfusepath{fill}
-}
-\pgfdeclarepatternformonly{primedbox}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{1pt}{1pt}}{\pgfqpoint{5pt}{5pt}}%
-{
-  \pgfpathrectangle{\pgfqpoint{-.9pt}{-.9pt}}{\pgfqpoint{1.8pt}{1.8pt}}
-  \pgfusepath{stroke}
-}
-\pgfdeclarepatternformonly{primedplus}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{1pt}{1pt}}{\pgfqpoint{5pt}{5pt}}%
-{
-  \pgftransformrotate{30}
-  \pgfpathmoveto{\pgfqpoint{-.9pt}{-.9pt}}
-  \pgfpathlineto{\pgfqpoint{.9pt}{.9pt}}
-  \pgfpathmoveto{\pgfqpoint{.9pt}{-.9pt}}
-  \pgfpathlineto{\pgfqpoint{-.9pt}{.9pt}}
-  \pgfusepath{stroke}
-}
-\pgfdeclarepatternformonly{primedstar}{\pgfqpoint{-1.2pt}{-1.2pt}}{\pgfqpoint{1.2pt}{1.2pt}}{\pgfqpoint{5pt}{5pt}}%
-{
-  \pgftransformrotate{30}
-  \pgfpathmoveto{\pgfqpoint{-1.2pt}{0pt}}
-  \pgfpathlineto{\pgfqpoint{1.2pt}{0pt}}
-  \pgfpathmoveto{\pgfqpoint{-.6pt}{-1.04pt}}
-  \pgfpathlineto{\pgfqpoint{.6pt}{1.04pt}}
-  \pgfpathmoveto{\pgfqpoint{-.6pt}{1.04pt}}
-  \pgfpathlineto{\pgfqpoint{.6pt}{-1.04pt}}
-  \pgfusepath{stroke}
-}
-\pgfdeclarepatternformonly{diaglines}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{1pt}{1pt}}{\pgfqpoint{4pt}{4pt}}%
-{
-  \pgfpathmoveto{\pgfqpoint{-1pt}{-1pt}}
-  \pgfpathlineto{\pgfqpoint{1pt}{1pt}}
-  \pgfusepath{stroke}
-}
-\pgfdeclarepatternformonly{hlines}{\pgfqpoint{-1pt}{-.5pt}}{\pgfqpoint{1pt}{.5pt}}{\pgfqpoint{4pt}{3pt}}%
-{
-  \pgfpathmoveto{\pgfqpoint{-1pt}{0pt}}
-  \pgfpathlineto{\pgfqpoint{1pt}{0pt}}
-  \pgfusepath{stroke}
-}
-
-
-% Simplified \drawmark[color]{coord}[label][pos]
-\newcommand{\drawmark}[2][black]{\fill[#1] (#2) circle (\mkrad);}
-\newcommand{\drawobject}[2][black]{\draw[thick, fill=#1] (#2) circle (\obrad);}
-\newcommand{\mk}[1]{\drawmark{#1}}
-\newcommand{\ob}[1]{\drawobject[black]{#1}}
-\newcommand{\wob}[1]{\drawobject[white]{#1}}
-\newcommand{\umark}[1]{\draw (#1) circle (\mkrad);}
-\newcommand{\labmark}[3]{\drawmark{#1}[#2]{#3}}
-\newcommand{\labob}[3]{\drawobject[black]{#1}[#2]{#3}}
-\newcommand{\blt}[2][]{\node[circle, fill, inner sep=0pt, minimum size=0.1cm, #1] at #2 {};}
-\newcommand{\cpn}[3][]{\node[draw, thick, fill=white, rounded corners=3pt, #1] at #2 {#3};}
-
-
-\newcommand{\wref}[2][]{#2}
-
-\begin{tikzpicture}[]
-
-  \labmark{black}{0,0}{A}
-  \labob{black}{1,0}{B}
-  \labmark{red}{2,0}{C}[below]
-
-\end{tikzpicture}</script>
-
-<h2>Test 4: Coupon</h2>
-<script type="text/tikz">
-
-%% ============================================================================
-%% TZ.STY - TIKZ EXTENSIONS FOR STRING DIAGRAMS AND MATHEMATICS
-%% Based on user's custom TikZ macros
-%% ============================================================================
-%% ----------------------------------------------------------------------------
-%% INLINE MACRO
-%% ----------------------------------------------------------------------------
-%% Environment: Standard wrap
-%% ----------------------------------------------------------------------------
-%% TIKZ LIBRARIES
-%% ----------------------------------------------------------------------------
-%% ----------------------------------------------------------------------------
-%% LAYER CONFIGURATION FOR STRING DIAGRAMS
-%% ----------------------------------------------------------------------------
-%% ----------------------------------------------------------------------------
-%% PATTERN DEFINITIONS
-%% ----------------------------------------------------------------------------
-%% Region styles
-\tikzset{
-  primedregion/.style={preaction={fill=#1}, pattern=primeddots, draw=#1},
-  primedregion2/.style={preaction={fill=#1}, pattern=primeddots2, draw=#1},
-  boxregion/.style={preaction={fill=#1}, pattern=primedbox, draw=#1},
-  plusregion/.style={preaction={fill=#1}, pattern=primedplus, draw=#1},
-  starregion/.style={preaction={fill=#1}, pattern=primedstar, draw=#1},
-  diagregion/.style={preaction={fill=#1}, pattern=diaglines, draw=#1},
-  hlineregion/.style={preaction={fill=#1}, pattern=hlines, draw=#1},
-}
-%% ----------------------------------------------------------------------------
-%% POSITIONING
-%% ----------------------------------------------------------------------------
-\newcommand{\coord}[1]{coordinate #1}
-\newcommand{\relpos}[3]{([shift={(#2:#3)}]#1)}
-\tikzset{%
-  up/.style={yshift=#1},
-  down/.style={yshift=-#1},
-  left/.style={xshift=-#1},
-  right/.style={xshift=#1},
-}
-%% ----------------------------------------------------------------------------
-%% COLOR SCHEME
-%% ----------------------------------------------------------------------------
-\colorlet{gr0}{white}
-\colorlet{gr1}{gray!20}
-\colorlet{gr2}{gray!40}
-\colorlet{gr3}{gray!60}
-\colorlet{gr4}{gray!80}
-\colorlet{colA}{red!75}
-\colorlet{colB}{blue!75}
-\colorlet{colC}{green!95}
-\colorlet{colD}{orange!75}
-\colorlet{colE}{orange!75}
-\colorlet{strA}{red!80!black}
-\colorlet{strB}{blue!80!black}
-\colorlet{strC}{green!60!black}
-\colorlet{strD}{orange!80!black}
-\colorlet{strM}{black}
-%% ----------------------------------------------------------------------------
-%% PATH STYLES
-%% ----------------------------------------------------------------------------
-\tikzset{
-  s/.style={out=90,in=-90},
-  -s/.style={out=-90,in=90},
-  % cupto/.style={out=90,in=90,looseness=1.5},
-  % capto/.style={out=-90,in=-90,looseness=1.5},
-}
-%% Knot styles
-\tikzset{
-  knot/.style={preaction={draw=white, solid, line width=#1}},
-  knot/.default=\dimexpr2\pgflinewidth+2pt\relax,
-  over/.style={double, draw=white, line width=3pt, double=},
-  crossing gap/.style={preaction={draw=white, line width=#1}},
-  crossing gap/.default=4pt,
-}
-%% Decorative paths
-\tikzset{
-  snake/.style={decorate, decoration={snake, segment length=1mm, amplitude=.3mm}},
-  saw/.style={decorate, decoration={saw, segment length=.7mm, amplitude=.25mm}},
-  squiggly/.style={decorate, decoration={snake, segment length=2mm, amplitude=.5mm}},
-  zigzag/.style={decorate, decoration={zigzag, segment length=1.5mm, amplitude=.4mm}},
-  coil/.style={decorate, decoration={coil, segment length=2mm, amplitude=.5mm}},
-  bumps/.style={decorate, decoration={bumps, segment length=2mm}},
-}
-%% Arrow styles
-\tikzset{
-  arrow at/.style={
-    decoration={markings, mark=at position #1 with {\arrow{>}}},
-    postaction={decorate}
-  },
-  arrow at/.default=0.5,
-  rev arrow at/.style={
-    decoration={markings, mark=at position #1 with {\arrow{<}}},
-    postaction={decorate}
-  },
-  rev arrow at/.default=0.5,
-  mid>/.style={arrow at=#1},
-  mid</.style={rev arrow at=#1},
-  mid>/.default=0.55,
-  mid</.default=0.55,
-}
-%% Multi-line styles
-\tikzset{
-  tripleline/.style args={[#1] in [#2] in [#3]}{
-    #1,
-    preaction={preaction={draw,#3}, draw,#2}
-  },
-  quadrupleline/.style args={[#1] in [#2] in [#3] in [#4]}{
-    #1,
-    preaction={preaction={preaction={draw,#4}, draw,#3}, draw,#2}
-  },
-  double strand/.style={double, double distance=#1},
-  double strand/.default=2pt,
-}
-%% Category theory arrows
-\tikzset{
-  Rightarrow/.style={double equal sign distance, >={Implies}, ->},
-  Leftarrow/.style={double equal sign distance, >={Implies}, <-},
-  Leftrightarrow/.style={double equal sign distance, >={Implies}, <->},
-  triplecd/.style={-, preaction={draw, Rightarrow}},
-  quadruplecd/.style={
-    preaction={draw, Rightarrow, shorten >=0pt},
-    shorten >=1pt, -, double, double distance=0.2pt
-  }
-}
-%% ----------------------------------------------------------------------------
-%% NODE STYLES
-%% ----------------------------------------------------------------------------
-%% Size parameters
-\newcommand{\mkrad}{0.05cm}
-\newcommand{\obrad}{0.1cm}
-\tikzset{
-  vertex/.style={
-    shape=circle,
-    draw,
-    fill=black,
-    inner sep=0pt,
-    minimum size=3pt
-  },
-  object/.style={
-    circle,
-    draw,
-    thick,
-    fill=white,
-    inner sep=0pt,
-    minimum size=2*\obrad
-  },
-  coupon/.style={
-    draw=black,
-    fill=white,
-    rounded corners=5pt,
-    very thick,
-    inner sep=3pt,
-    minimum size=2.1*height("Hg"),
-    on layer=top,
-  },
-  bullet/.style={
-    circle,
-    fill=#1,
-    draw=#1,
-    inner sep=0pt,
-    minimum size=2*\mkrad
-  },
-  bullet/.default=black,
-}
-%% Coupon macro
-%% ----------------------------------------------------------------------------
-%% DRAWING MACROS
-%% ----------------------------------------------------------------------------
-%% Legacy aliases
-%% Strand macros
-\newcommand{\vstrand}[2]{%
-  \draw[thick] (#1) -- ++(0,#2);%
-  \fill (#1) circle (1.5pt);%
-  \fill ([yshift=#2]#1) circle (1.5pt);%
-}
-\newcommand{\hstrand}[2]{%
-  \draw[thick] (#1) -- ++(#2,0);%
-  \fill (#1) circle (1.5pt);%
-  \fill ([xshift=#2]#1) circle (1.5pt);%
-}
-%% Region box
-\newcommand{\regionbox}[3][black]{%
-  \draw[dashed, rounded corners=5pt, draw=#1] #2 rectangle #3;%
-}
-\newcommand{\rregionbox}[2]{\regionbox[red]{#1}{#2}}
-\newcommand{\bregionbox}[2]{\regionbox[blue]{#1}{#2}}
-\newcommand{\oregionbox}[2]{\regionbox[orange]{#1}{#2}}
-\newcommand{\gregionbox}[2]{\regionbox[green!60!black]{#1}{#2}}
-%% Bubble/circle
-\newcommand{\bubble}[3][]{\draw[#1] #2 circle (#3);}
-%% Arc macros
-\newcommand{\capto}[1]{arc(180:0:#1)}
-\newcommand{\cupto}[1]{arc(-180:0:#1)}
-\newcommand{\capfrom}[1]{arc(0:180:#1)}
-\newcommand{\cupfrom}[1]{arc(0:-180:#1)}
-%% ----------------------------------------------------------------------------
-%% UTILITY STYLES
-%% ----------------------------------------------------------------------------
-\tikzset{
-  horizontal gradient/.style 2 args={left color=#1, right color=#2},
-  vertical gradient/.style 2 args={top color=#1, bottom color=#2},
-  super thick/.style={line width=3pt},
-  ultra super thick/.style={line width=4pt},
-  hair/.style={line width=0.1pt},
-  strand/.style={thick},
-  boundary/.style={very thick},
-  sep/.style={inner sep=#1, outer sep=#1},
-  tight/.style={inner sep=0pt, outer sep=0pt},
-  boxed/.style={
-    execute at end picture={
-      \begin{pgfonlayer}{bottom}
-        \node[
-          minimum size=0pt,
-          inner ysep=0,
-          outer sep=0pt,
-          rounded corners,
-          fit=(current bounding box),
-          inner xsep=5pt,
-          #1,
-          draw=none,
-        ]{};
-      \end{pgfonlayer}
-      \begin{pgfonlayer}{top}
-        \node[
-          minimum size=0pt,
-          inner ysep=0,
-          outer sep=0pt,
-          rounded corners,
-          fit=(current bounding box),
-          inner xsep=5pt,
-          #1,
-          fill=none
-        ]{};
-      \end{pgfonlayer}
-    }
-  },
-  boxed/.default = {draw=black, very thick},
-  invclip/.style={
-    clip,
-    overlay,
-    insert path={[reset cm] (-100cm,-100cm) rectangle (100cm,100cm)}
-  },
-  xy/.style={canvas is xy plane at z=#1},
-  yx/.style={canvas is yx plane at z=#1},
-  yz/.style={canvas is yz plane at x=#1},
-  zy/.style={canvas is zy plane at x=#1},
-  zx/.style={canvas is zx plane at y=#1},
-  xz/.style={canvas is xz plane at y=#1},
-  frameR/.style={
-    preaction={draw=#1, super thick, opacity=.2, decorate, decoration={curveto, amplitude=0, raise=-1.5pt}},
-    thick, #1
-  },
-  frameL/.style={
-    preaction={draw=#1, super thick, opacity=.2, decorate, decoration={curveto, amplitude=0, raise=1.5pt}},
-    thick, #1
-  }
-}
-\newcommand{\invclip}{\path[invclip]}
-%% Last coordinate access
-%% ----------------------------------------------------------------------------
-%% EXTENDED ANCHORS FOR RECTANGLE NODES
-%% ----------------------------------------------------------------------------
-
-\usetikzlibrary{arrows.meta,calc,decorations.markings,shapes.geometric,patterns}
-
-\tikzset{
-  on layer/.code={}
-}
-
-
-\pgfdeclarepatternformonly{primeddots}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{5pt}{5pt}}{\pgfqpoint{4pt}{4pt}}%
-{
-  \pgfpathcircle{\pgfqpoint{0pt}{0pt}}{.5pt}
-  \pgfusepath{fill}
-}
-\pgfdeclarepatternformonly{primeddots2}{\pgfqpoint{-.3pt}{-.3pt}}{\pgfqpoint{.3pt}{.3pt}}{\pgfqpoint{2.5pt}{2.5pt}}%
-{
-  \pgfpathcircle{\pgfqpoint{0pt}{0pt}}{.35pt}
-  \pgfusepath{fill}
-}
-\pgfdeclarepatternformonly{primedbox}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{1pt}{1pt}}{\pgfqpoint{5pt}{5pt}}%
-{
-  \pgfpathrectangle{\pgfqpoint{-.9pt}{-.9pt}}{\pgfqpoint{1.8pt}{1.8pt}}
-  \pgfusepath{stroke}
-}
-\pgfdeclarepatternformonly{primedplus}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{1pt}{1pt}}{\pgfqpoint{5pt}{5pt}}%
-{
-  \pgftransformrotate{30}
-  \pgfpathmoveto{\pgfqpoint{-.9pt}{-.9pt}}
-  \pgfpathlineto{\pgfqpoint{.9pt}{.9pt}}
-  \pgfpathmoveto{\pgfqpoint{.9pt}{-.9pt}}
-  \pgfpathlineto{\pgfqpoint{-.9pt}{.9pt}}
-  \pgfusepath{stroke}
-}
-\pgfdeclarepatternformonly{primedstar}{\pgfqpoint{-1.2pt}{-1.2pt}}{\pgfqpoint{1.2pt}{1.2pt}}{\pgfqpoint{5pt}{5pt}}%
-{
-  \pgftransformrotate{30}
-  \pgfpathmoveto{\pgfqpoint{-1.2pt}{0pt}}
-  \pgfpathlineto{\pgfqpoint{1.2pt}{0pt}}
-  \pgfpathmoveto{\pgfqpoint{-.6pt}{-1.04pt}}
-  \pgfpathlineto{\pgfqpoint{.6pt}{1.04pt}}
-  \pgfpathmoveto{\pgfqpoint{-.6pt}{1.04pt}}
-  \pgfpathlineto{\pgfqpoint{.6pt}{-1.04pt}}
-  \pgfusepath{stroke}
-}
-\pgfdeclarepatternformonly{diaglines}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{1pt}{1pt}}{\pgfqpoint{4pt}{4pt}}%
-{
-  \pgfpathmoveto{\pgfqpoint{-1pt}{-1pt}}
-  \pgfpathlineto{\pgfqpoint{1pt}{1pt}}
-  \pgfusepath{stroke}
-}
-\pgfdeclarepatternformonly{hlines}{\pgfqpoint{-1pt}{-.5pt}}{\pgfqpoint{1pt}{.5pt}}{\pgfqpoint{4pt}{3pt}}%
-{
-  \pgfpathmoveto{\pgfqpoint{-1pt}{0pt}}
-  \pgfpathlineto{\pgfqpoint{1pt}{0pt}}
-  \pgfusepath{stroke}
-}
-
-
-% Simplified \drawmark[color]{coord}[label][pos]
-\newcommand{\drawmark}[2][black]{\fill[#1] (#2) circle (\mkrad);}
-\newcommand{\drawobject}[2][black]{\draw[thick, fill=#1] (#2) circle (\obrad);}
-\newcommand{\mk}[1]{\drawmark{#1}}
-\newcommand{\ob}[1]{\drawobject[black]{#1}}
-\newcommand{\wob}[1]{\drawobject[white]{#1}}
-\newcommand{\umark}[1]{\draw (#1) circle (\mkrad);}
-\newcommand{\labmark}[3]{\drawmark{#1}[#2]{#3}}
-\newcommand{\labob}[3]{\drawobject[black]{#1}[#2]{#3}}
-\newcommand{\blt}[2][]{\node[circle, fill, inner sep=0pt, minimum size=0.1cm, #1] at #2 {};}
-\newcommand{\cpn}[3][]{\node[draw, thick, fill=white, rounded corners=3pt, #1] at #2 {#3};}
-
-
-\newcommand{\wref}[2][]{#2}
-
-\begin{tikzpicture}[]
-
-  \cpn{3,0}{A}
-  \cpn[fill=red!20]{4,0}{B}
-
-\end{tikzpicture}</script>
+    <div class="backlinks">
+        <h2>Backlinks</h2>
+        <ul>
+            <li><a href="tikz test 02 markers.html">tikz test 02 markers</a></li>
+            <li><a href="tikz test 04 arrows.html">tikz test 04 arrows</a></li>
+        </ul>
+    </div>
     </div>
 </body>
 </html>

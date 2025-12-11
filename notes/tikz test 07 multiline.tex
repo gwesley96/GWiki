@@ -1,0 +1,64 @@
+\documentclass{gwiki}
+\usepackage{gwiki-links}
+\usepackage{tz}
+
+\Title{tikz test 07 multiline}
+\Tags{tikz, visualization, test}
+
+\begin{document}
+\NoteHeader
+
+Multi-line path styles: \texttt{tripleline}, \texttt{quadrupleline}, \texttt{double strand}. \allformats{tikz test 07 multiline}
+
+Navigation: \wref{tikz test 06 string diagrams} (previous) | \wref{tikz test 08 knots} (next)
+
+\section*{Triple Line Style}
+
+\begin{center}
+\tz{
+  \draw[tripleline=[thick,blue] in [very thick,white] in [thick,red]] (0,0) -- (4,0);
+  \node[below] at (2,-0.5) {Blue-White-Red triple};
+}
+\end{center}
+
+\subsection*{Curved Triple Line}
+
+\begin{center}
+\tz{
+  \draw[tripleline=[thick,strA] in [ultra thick,white] in [thick,strB]]
+    (0,0) to[bend left=45] (4,0);
+}
+\end{center}
+
+\section*{Quadruple Line Style}
+
+\begin{center}
+\tz{
+  \draw[quadrupleline=[thin,black] in [thick,yellow] in [ultra thick,white] in [very thick,red]]
+    (0,0) .. controls (1,1) and (3,-1) .. (4,0);
+}
+\end{center}
+
+\subsection*{Double Strand}
+
+\begin{center}
+\tz{
+  \draw[double strand=3pt, colA] (0,0) -- (3,0);
+  \draw[double strand=5pt, colB] (0,0.7) -- (3,0.7);
+  \draw[double strand=7pt, colC] (0,1.4) -- (3,1.4);
+}
+\end{center}
+
+\subsection*{Multi-strand Diagram}
+
+\begin{center}
+\tz[scale=1.2]{
+  \draw[double strand=4pt, strA] (0,0) to[s] (1,1.5) to[-s] (2,3);
+  \draw[double strand=4pt, strB] (2,0) to[s] (1,1.5) to[-s] (0,3);
+  \mk{(0,0)}; \mk{(2,0)}; \mk{(0,3)}; \mk{(2,3)};
+}
+\end{center}
+
+\SeeAlso{tikz test 08 knots, tikz test 12 double strands}
+
+\end{document}

@@ -1,0 +1,33 @@
+\documentclass{gwiki}
+\usepackage{gwiki-links}
+\usepackage{tz}
+
+\Title{tikz test 10 inline diagrams}
+\Tags{tikz, visualization, test}
+
+\begin{document}
+\NoteHeader
+
+Using \\tz for inline TikZ. \allformats{tikz test 10 inline diagrams}
+
+Navigation: \wref{tikz test 09 {}} (previous) | \wref{tikz test 11 {}} (next)
+
+
+\section*{Inline TikZ}
+
+The \verb|\tz| command allows inline diagrams like \tz{\fill[red] (0,0) circle (2pt);} within text.
+
+\subsection*{Inline Arrows}
+
+We can show morphisms \tz{\draw[->] (0,0) -- (0.5,0);} inline, or objects \tz{\fill[blue] (0,0) circle (3pt);} as needed.
+
+\subsection*{Mathematical Symbols}
+
+Tensor products: $A \otimes B$ \tz{\draw (0,-0.1) -- (0,0.1); \draw (-0.1,0) -- (0.1,0);} $C$
+
+Compositions: $f$ \tz{\draw[->] (0,0) -- (0.3,0);} $g$ \tz{\draw[->] (0,0) -- (0.3,0);} $h$
+
+
+\SeeAlso{tikz test 01 patterns}
+
+\end{document}

@@ -1,0 +1,127 @@
+\documentclass{gwiki}
+\usepackage{gwiki-links}
+\usepackage{tz}
+
+\Title{tikz test 04 arrows}
+\Tags{tikz, visualization, test}
+
+\begin{document}
+\NoteHeader
+
+Arrow decoration styles: \texttt{mid>}, \texttt{mid<}, \texttt{arrow at}, \texttt{rev arrow at}. \allformats{tikz test 04 arrows}
+
+Navigation: \wref{tikz test 03 colors} (previous) | \wref{tikz test 05 decorations} (next)
+
+\section*{Basic Arrow Placement}
+
+\subsection*{Mid-arrow (mid>)}
+
+\begin{center}
+\tz{
+  \draw[thick, mid>] (0,0) -- (3,0);
+  \node[below] at (1.5,-0.3) {Default position (0.55)};
+}
+\end{center}
+
+\subsection*{Reverse Mid-arrow (mid<)}
+
+\begin{center}
+\tz{
+  \draw[thick, mid<] (0,0) -- (3,0);
+  \node[below] at (1.5,-0.3) {Reversed direction};
+}
+\end{center}
+
+\subsection*{Custom Position Arrows}
+
+\begin{center}
+\tz{
+  \draw[thick, mid>=0.25] (0,0) -- (4,0);
+  \draw[thick, mid>=0.5] (0,0.5) -- (4,0.5);
+  \draw[thick, mid>=0.75] (0,1) -- (4,1);
+
+  \node[right] at (4.1,0) {0.25};
+  \node[right] at (4.1,0.5) {0.5};
+  \node[right] at (4.1,1) {0.75};
+}
+\end{center}
+
+\subsection*{Multiple Arrows}
+
+\begin{center}
+\tz{
+  \draw[thick, arrow at=0.3, arrow at=0.7] (0,0) to[bend left] (3,0);
+  \node[above] at (1.5,0.5) {Two arrows};
+}
+\end{center}
+
+\section*{Curved Paths}
+
+\subsection*{Arrows on Bezier Curves}
+
+\begin{center}
+\tz[scale=1.2]{
+  \draw[ultra thick, mid>=0.5, blue]
+    (0,0) .. controls (1,1) and (2,-1) .. (3,0);
+  \mk{(0,0)};
+  \mk{(3,0)};
+  \mk[red]{(1,1)};
+  \mk[red]{(2,-1)};
+}
+\end{center}
+
+\subsection*{Arrows on Circular Arcs}
+
+\begin{center}
+\tz{
+  \draw[thick, mid>=0.3] (0,0) arc (180:90:2);
+  \draw[thick, mid>=0.5] (0,-0.5) arc (180:45:2.5);
+  \draw[thick, mid>=0.7] (0,-1) arc (180:0:3);
+}
+\end{center}
+
+\section*{String Diagram Applications}
+
+\subsection*{Morphisms with Direction}
+
+\begin{center}
+\tz{
+  \fill[colA] (0,0) circle (0.3) node[white] {$A$};
+  \fill[colB] (3,0) circle (0.3) node[white] {$B$};
+  \fill[colC] (1.5,1.5) circle (0.3) node[white] {$C$};
+
+  \draw[thick, mid>] (0.3,0) -- (1.35,1.35) node[midway, above left] {$f$};
+  \draw[thick, mid>] (1.65,1.35) -- (2.7,0) node[midway, above right] {$g$};
+}
+\end{center}
+
+\subsection*{Commutative Diagram}
+
+\begin{center}
+\tz[scale=1.3]{
+  \node (A) at (0,2) {$A$};
+  \node (B) at (2,2) {$B$};
+  \node (C) at (0,0) {$C$};
+  \node (D) at (2,0) {$D$};
+
+  \draw[->, mid>] (A) -- (B) node[midway, above] {$f$};
+  \draw[->, mid>] (A) -- (C) node[midway, left] {$g$};
+  \draw[->, mid>] (B) -- (D) node[midway, right] {$h$};
+  \draw[->, mid>] (C) -- (D) node[midway, below] {$k$};
+}
+\end{center}
+
+\subsection*{Dual Arrows}
+
+\begin{center}
+\tz{
+  \draw[ultra thick, mid>, strA] (0,0) to[bend left=20] (4,0);
+  \draw[ultra thick, mid<, strB] (0,0) to[bend right=20] (4,0);
+  \node[above] at (2,0.5) {forward};
+  \node[below] at (2,-0.5) {backward};
+}
+\end{center}
+
+\SeeAlso{tikz test 05 decorations, tikz test 06 string diagrams, tikz test 08 knots}
+
+\end{document}
