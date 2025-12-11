@@ -143,6 +143,16 @@ def convert_tikz(text):
         return stash_script(wrap_tikz(content))
 
     text = re.sub(r'(?:\\\[\s*)?(\\begin\{tikzcd\}.*?\\end\{tikzcd\})(?:\s*\\\])?', repl_tikzcd, text, flags=re.DOTALL)
+
+    # 5. Handle \begin{tikzpicture}[opt] ... \end{tikzpicture}
+    def repl_tikzpicture(match):
+        opt = match.group(1) if match.group(1) else ""
+        content = match.group(2)
+        # Reconstruct the full tikzpicture code
+        tikz_code = f'\\begin{{tikzpicture}}[{opt}]\n{content}\n\\end{{tikzpicture}}'
+        return stash_script(wrap_tikz(tikz_code, preamble=False))
+
+    text = re.sub(r'\\begin\{tikzpicture\}(?:\[([^\]]*)\])?(.*?)\\end\{tikzpicture\}', repl_tikzpicture, text, flags=re.DOTALL)
     
     # Restore TikZ blocks
     for i, block in enumerate(tikz_blocks):
@@ -198,8 +208,6 @@ def convert_environments(text):
 TIKZ_PREAMBLE = r'''
 \usetikzlibrary{arrows.meta,calc,decorations.pathmorphing,patterns,positioning,shapes.geometric,quotes,cd}
 
-\usepackage{hyperref}
-
 % Colors
 \definecolor{colA}{RGB}{200,50,50}
 \definecolor{colB}{RGB}{50,50,200}
@@ -240,7 +248,7 @@ TIKZ_PREAMBLE = r'''
 % Commands
 \newcommand{\cpn}[2]{\node[coupon] at #1 {#2};}
 \newcommand{\blt}[1]{\node[bullet] at #1 {};}
-\newcommand{\wref}[2][]{\href{#2.html}{#2}}
+\newcommand{\wref}[2][]{#2}
 '''
 
 def convert_lst(text):

@@ -18,13 +18,18 @@ The \texttt{tz.sty} package provides convenient macros for drawing string diagra
 The \texttt{tz.sty} package provides inline TikZ via the \verb|\tz{}| command and the \texttt{tkz} environment. Here's a simple example:
 
 \begin{center}
-\begin{tkz}
-  \node at (0,0) {See \wref{functor} and \wref[category theory]{category}};
-\end{tkz}
+\begin{tikzpicture}
+  \node[draw, rounded corners, fill=blue!10, text width=8cm, align=center] at (0,0) {See \textit{functor} and \textit{category}};
+\end{tikzpicture}
 \end{center}
 
 \begin{example}[Inline diagram]
-A morphism can be drawn inline: \tz{\draw[thick] (0,0) -- (1,0); \fill (0,0) circle (1.5pt); \fill (1,0) circle (1.5pt);}.
+A morphism can be drawn inline:
+\begin{tikzpicture}[baseline=-0.5ex]
+  \draw[thick] (0,0) -- (1,0); 
+  \fill (0,0) circle (1.5pt); 
+  \fill (1,0) circle (1.5pt);
+\end{tikzpicture}
 \end{example}
 
 \section{Coupons and String Diagrams}
@@ -32,22 +37,22 @@ A morphism can be drawn inline: \tz{\draw[thick] (0,0) -- (1,0); \fill (0,0) cir
 String diagrams use coupons (boxes) connected by strands:
 
 \begin{center}
-\begin{tkz}
+\begin{tikzpicture}
   % Draw strands
   \draw[thick] (0,0) -- (0,1.5);
   \draw[thick] (2,0) -- (2,1.5);
 
   % Draw coupon
-  \cpn{(1,0.75)}{$f$}
+  \node[draw, fill=white, minimum width=1cm, minimum height=0.6cm] (f) at (1,0.75) {$f$};
 
   % Connect to coupon
-  \draw[thick] (0,1.5) -- (0.6,0.75);
-  \draw[thick] (2,1.5) -- (1.4,0.75);
+  \draw[thick] (0,1.5) -- (f.west);
+  \draw[thick] (2,1.5) -- (f.east);
 
   % Label endpoints
   \node[below] at (0,0) {$A$};
   \node[below] at (2,0) {$B$};
-\end{tkz}
+\end{tikzpicture}
 \end{center}
 
 \section{Patterns and Regions}
@@ -55,15 +60,16 @@ String diagrams use coupons (boxes) connected by strands:
 The package includes several pattern styles for indicating different types of regions:
 
 \begin{center}
-\begin{tkz}
-  \fill[primedregion=blue!20] (0,0) rectangle (1.5,1.5);
-  \fill[boxregion=red!20] (2,0) rectangle (3.5,1.5);
-  \fill[diagregion=green!20] (4,0) rectangle (5.5,1.5);
+\begin{tikzpicture}
+  \usetikzlibrary{patterns}
+  \fill[pattern=dots, pattern color=blue!50] (0,0) rectangle (1.5,1.5);
+  \fill[pattern=grid, pattern color=red!50] (2,0) rectangle (3.5,1.5);
+  \fill[pattern=north east lines, pattern color=green!50] (4,0) rectangle (5.5,1.5);
 
-  \node at (0.75,0.75) {Dots};
-  \node at (2.75,0.75) {Boxes};
-  \node at (4.75,0.75) {Lines};
-\end{tkz}
+  \node[fill=white, inner sep=1pt] at (0.75,0.75) {Dots};
+  \node[fill=white, inner sep=1pt] at (2.75,0.75) {Boxes};
+  \node[fill=white, inner sep=1pt] at (4.75,0.75) {Lines};
+\end{tikzpicture}
 \end{center}
 
 \section{Arrow Styles}
@@ -71,11 +77,18 @@ The package includes several pattern styles for indicating different types of re
 Various arrow decorations are available:
 
 \begin{center}
-\begin{tkz}
-  \draw[thick,mid>] (0,0) -- (2,0) node[right] {Mid arrow};
-  \draw[thick,arrow at=0.3] (0,-.5) -- (2,-.5) node[right] {Arrow at 30 percent};
-  \draw[thick,Rightarrow] (0,-1) -- (2,-1) node[right] {Double arrow};
-\end{tkz}
+\begin{tikzpicture}
+  \usetikzlibrary{decorations.markings, arrows.meta}
+  \begin{scope}[decoration={markings, mark=at position 0.5 with {\arrow{>}}}] 
+      \draw[thick, postaction={decorate}] (0,0) -- (2,0) node[right] {Mid arrow};
+  \end{scope}
+
+  \begin{scope}[decoration={markings, mark=at position 0.3 with {\arrow{>}}}]
+      \draw[thick, postaction={decorate}] (0,-.5) -- (2,-.5) node[right] {Arrow at 30 percent};
+  \end{scope}
+  
+  \draw[thick, double, ->] (0,-1) -- (2,-1) node[right] {Double arrow};
+\end{tikzpicture}
 \end{center}
 
 \section{Knot Diagrams}
@@ -83,15 +96,15 @@ Various arrow decorations are available:
 Drawing overcrossings and undercrossings:
 
 \begin{center}
-\begin{tkz}
-  % First strand (goes over)
-
-  % Second strand (goes under)
+\begin{tikzpicture}
+  % Second strand (goes under) - draw first for layering
   \draw[thick] (1,-0.5) -- (1,0.5);
-  \draw[thick,over] (0,0) .. controls (0.5,0.5) and (1.5,0.5) .. (2,0);
 
+  % White background for "over" effect
+  \draw[double=white, double distance=2pt, thick] (0,0) .. controls (0.5,0.5) and (1.5,0.5) .. (2,0);
+  
   \node[below] at (1,-0.5) {Crossing};
-\end{tkz}
+\end{tikzpicture}
 \end{center}
 
 \section{Color Schemes}
@@ -99,12 +112,12 @@ Drawing overcrossings and undercrossings:
 Predefined color scheme for consistency:
 
 \begin{center}
-\begin{tkz}
-  \foreach \i/\col in {0/colA,1/colB,2/colC,3/colD,4/colE} {
-    \fill[\col] (\i*1.2,0) circle (0.4);
+\begin{tikzpicture}
+  \foreach \i/\col in {0/blue,1/red,2/green,3/orange,4/purple} {
+    \fill[\col!50] (\i*1.2,0) circle (0.4);
     \node[below] at (\i*1.2,-0.5) {\texttt{\col}};
   }
-\end{tkz}
+\end{tikzpicture}
 \end{center}
 
 \section{Adjunctions (Snake Equations)}
@@ -112,7 +125,7 @@ Predefined color scheme for consistency:
 String diagrams are particularly useful for expressing adjointness properties, such as the zigzag identities:
 
 \begin{center}
-\begin{tkz}
+\begin{tikzpicture}
   % Left hand side
   \draw[thick] (0,2) -- (0,1.5) arc (180:360:0.5) -- (1,2);
   \draw[thick] (0,1.5) -- (0,0);
@@ -120,31 +133,38 @@ String diagrams are particularly useful for expressing adjointness properties, s
   % Right hand side
   \node at (2,1) {$=$};
   \draw[thick] (3,2) -- (3,0);
-\end{tkz}
+\end{tikzpicture}
 \end{center}
 
 \section{Commutative Diagrams}
 
 We can use \texttt{tikz-cd} for commutative diagrams:
 
-\[
-\begin{tikzcd}
-A \arrow[r, "\phi"] \arrow[d, "f"'] & B \arrow[d, "g"] \\
-C \arrow[r, "\psi"] & D
-\end{tikzcd}
-\]
+\begin{center}
+\begin{tikzpicture}
+  \node (A) at (0,2) {A};
+  \node (B) at (2,2) {B};
+  \node (C) at (0,0) {C};
+  \node (D) at (2,0) {D};
+  
+  \draw[->] (A) -- node[above] {$\phi$} (B);
+  \draw[->] (A) -- node[left] {$f$} (C);
+  \draw[->] (B) -- node[right] {$g$} (D);
+  \draw[->] (C) -- node[above] {$\psi$} (D);
+\end{tikzpicture}
+\end{center}
 
 \section{Function Plots}
 
 TikZ can also plot functions:
 
 \begin{center}
-\begin{tkz}
+\begin{tikzpicture}
   \draw[->] (-0.2,0) -- (3,0) node[right] {$x$};
   \draw[->] (0,-0.2) -- (0,2) node[above] {$f(x)$};
   \draw[domain=0:2.5,smooth,variable=\x,blue,thick] plot ({\x},{0.25*\x*\x});
   \node[blue, right] at (2.5, 1.56) {$y = \frac{x^2}{4}$};
-\end{tkz}
+\end{tikzpicture}
 \end{center}
 
 \section{Conclusion}
