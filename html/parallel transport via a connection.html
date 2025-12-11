@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Parallel Transport via a Connection</title>
+    <title>Parallel Transport via a Connection - GWiki</title>
     <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
     <script>
     window.MathJax = {
@@ -48,8 +48,8 @@
                 Spec: '\\operatorname{Spec}',
                 im: '\\operatorname{im}',
                 coker: '\\operatorname{coker}',
-                coloneqq: '\\mathrel{\\vcenter{\\hbox{.}\\hbox{.}}}=',
-                coloneq: '\\mathrel{\\vcenter{\\hbox{.}\\hbox{.}}}=',
+                coloneqq: '\\mathrel{\\vcenter{:}}=',
+                coloneq: '\\mathrel{\\vcenter{:}}=',
 
                 // TikZ-like (limited in HTML)
                 to: '\\rightarrow',
@@ -63,12 +63,35 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         body {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 0 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0;
             font-family: Georgia, serif;
             line-height: 1.6;
-            color: #333;
+            color: #1f2937;
+            background: #f9fafb;
+        }
+        .top-nav {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .top-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        .top-nav a:hover {
+            text-decoration: underline;
+        }
+        .content-wrapper {
+            background: white;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 40px 60px 40px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
         }
         h1 {
             color: #2563eb;
@@ -91,10 +114,40 @@
             margin-bottom: 10px;
         }
         .metadata {
-            font-size: 0.9em;
+            font-size: 0.85em;
             color: #6b7280;
-            margin-bottom: 20px;
-            font-family: monospace;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f9fafb;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+        }
+        .toc {
+            background: #f0f9ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        .toc h3 {
+            margin-top: 0;
+            color: #1e40af;
+            font-size: 1.1em;
+        }
+        .toc ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 10px 0 0 0;
+        }
+        .toc li {
+            margin: 5px 0;
+        }
+        .toc a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+        .toc a:hover {
+            text-decoration: underline;
         }
         .topics {
             background: #f3f4f6;
@@ -106,14 +159,17 @@
             background: #ecfeff;
             border: 1px solid #06b6d4;
             border-left: 4px solid #06b6d4;
-            padding: 15px;
+            padding: 4px 8px;
             margin: 20px 0;
             border-radius: 4px;
         }
         .definition, .theorem, .example, .lemma, .proposition, .corollary, .remark {
             margin: 20px 0;
-            padding: 15px;
+            padding: 8px;
             border-radius: 4px;
+        }
+        .definition p, .theorem p, .example p, .lemma p, .proposition p, .corollary p, .remark p, .idea p {
+            margin: 0;
         }
         .definition {
             background: #fef3c7;
@@ -152,7 +208,7 @@
             margin: 8px 0;
         }
         script[type="text/tikz"] {
-            display: block;
+            /* display: block; - Hiding this to prevents raw code from showing if TikZJax fails */
             margin: 20px 0;
             text-align: center;
         }
@@ -181,10 +237,15 @@
     </style>
 </head>
 <body>
+    <div class="top-nav">
+        <a href="../index.html">← Back to Index</a>
+    </div>
+    <div class="content-wrapper">
     <h1>Parallel Transport via a Connection</h1>
     <div class="metadata">
-        <strong>Topics:</strong> differential-geometry, gauge-theory, physics<br>
-        <strong>Last modified:</strong> 2025-12-11
+        <strong>Last modified:</strong> 2025-12-11 09:35<br>
+        <strong>Created:</strong> 2025-12-10<br>
+        <strong>Tags:</strong> differential-geometry, gauge-theory, physics
     </div>
 
     <div class="content">
@@ -192,7 +253,7 @@
 
 <p>Without loss of generality, we may suppose that $\gamma\subset M$ is contained entirely in a single local trivialization of $E$ on $M$, say $E|_{U}\cong U\times V$ for some $k$-vector space $V$, then such a section $w$ as discussed earlier exists and is unique by the <a href="Existence and Uniqueness Theorem for ODEs.html">Existence and Uniqueness Theorem for ODEs</a>. Indeed, if not (and more generally if $\gamma$ is only piecewise smooth), then we can find the points at which it is not smooth, break it up into maximal smooth pieces $(t_i, t_{i+1}] \subset M$, where $1 \leq i < n$, and define the holonomy by \[ \mathrm{hol}_{\nabla}(\gamma) = \mathrm{hol}_{\nabla}(\gamma_n) \cdots \mathrm{hol}_{\nabla}(\gamma_1). \] In other words, we parallel translate a vector along a piecewise smooth path by parallel translating it along one piece at a time. As $M$ (or at least the closure of an open neighborhood of $\gamma$) is compact, there are finitely many open sets covering $\gamma$, so we can always do this.</p>
 
-<p>\section{Deriving the Path-Ordered Exponential}</p>
+<h2>Deriving the Path-Ordered Exponential</h2>
 
 <p>Using the <a href="linear connection in a vector bundle.html">local expression of connections</a> $\nabla =\mathrm{d}+A$, where $\mathrm{d}$ is the (standard Euclidean) <a href="exterior derivative.html">exterior derivative</a> and $A$ is the <a href="linear connection 1-form.html">linear connection 1-form</a> in this local trivialization, the defining equation $\nabla_{\dot\gamma(t)}w=0$ becomes \[ \dot w_{t}=-A(\dot \gamma(t))\,w_{t}. \]</p>
 
@@ -204,11 +265,12 @@
 
 <p>\item Remarkably, by repeating this process \emph{infinitely} many times, the formula we get for $w_{t}$ actually converges to the correct answer: \begin{align*} w_{t}&=\sum_{n=0}^\infty(-1)^{n}\!\left[\int_0^t \!\!\mathrm{d}t_1\,A(\dot\gamma(t_1))\right]\left[\int_0^{t_1}\!\!\mathrm{d}t_{2}\,A(\dot\gamma(t_{2}))\right]\cdots \left[\int_0^{t_{n-1}} \!\!\mathrm{d}t_n \,A(\dot\gamma(t_n))\right]w_{0} \end{align*} \end{itemize}</p>
 
-<p>Recall that the \textbf{path-ordering operator} $\mathcal{P}$ arranges a product of $t$-dependent operators in chronological order (with the shortest indices acting first): \[ \mathcal{P}\Big\{\!O_{1}(t_{1})O_{2}(t_{2})\cdots O_{N}(t_{N})\!\Big\} \coloneqq  O_{p_{1}}(t_{p_{1}})O_{p_{2}}(t_{p_{2}})\cdots O_{p_{N}}(t_{p_{N}}), \] where $t_{p_{1}} \geq t_{p_{2}} \geq \dots \geq t_{p_{N}}$.</p>
+<p>Recall that the <strong>path-ordering operator</strong> $\mathcal{P}$ arranges a product of $t$-dependent operators in chronological order (with the shortest indices acting first): \[ \mathcal{P}\Big\{\!O_{1}(t_{1})O_{2}(t_{2})\cdots O_{N}(t_{N})\!\Big\} \coloneqq  O_{p_{1}}(t_{p_{1}})O_{p_{2}}(t_{p_{2}})\cdots O_{p_{N}}(t_{p_{N}}), \] where $t_{p_{1}} \geq t_{p_{2}} \geq \dots \geq t_{p_{N}}$.</p>
 
-<p>Notice that the formula we found for $w_{t}$ above is essentially integrating over an $n$-simplex. As there are $n!$ simplexes in the cube, by the symmetry of relabeling the dummy integration variables, the integral over each simplex after reordering the bracketed operators is the same, so \begin{align*} w_{t}&=\sum_{n=0}^\infty(-1)^{n}\!\left[\int_0^t \!\!\mathrm{d}t_1\,A(\dot\gamma(t_1))\right]\left[\int_0^{t_1}\!\!\mathrm{d}t_{2}\,A(\dot\gamma(t_{2}))\right]\cdots \left[\int_0^{t_{n-1}} \!\!\mathrm{d}t_n \,A(\dot\gamma(t_n))\right]w_{0} \\ &=\sum_{n=0}^{\infty}\frac{(-1)^{n}}{n!}\left[\int_{(t_1,\dots,t_{n-1})\in [0,t]^n}\!\!\mathrm{d}\mathrm{vol} \, \mathcal{P}\left\{A(\dot\gamma(t_{1}))\cdots A(\dot\gamma(t_{n}))\right\}\right]w_{0} \\ &=\sum_{n=0}^{\infty}\frac{(-1)^{n}}{n!}\mathcal{P} \left\{\left[\int_0^t A(\dot\gamma (s))\,\mathrm{d}s \right]^{n}\right\} \\ &\eqqcolon\mathcal{P}\exp\left[-\!\int_{0}^{t}A(\dot\gamma(s))\,\mathrm{d}s\right] \end{align*} where the power of $n$ in the penultimate line means we take $n$ copies of the operator in brackets, put them side-by-side, and then $\mathcal{P}$-order the factors in the parameter $s$ over $t_1,\dots,t_{n-1}\in [0,t]$. We call $\mathcal{P}\exp\left[-\!\int_{0}^{t}A(\dot\gamma(s))\,\mathrm{d}s\right]$ the \textbf{path-ordered exponential} of $A$ along $\gamma$.</p>
+<p>Notice that the formula we found for $w_{t}$ above is essentially integrating over an $n$-simplex. As there are $n!$ simplexes in the cube, by the symmetry of relabeling the dummy integration variables, the integral over each simplex after reordering the bracketed operators is the same, so \begin{align*} w_{t}&=\sum_{n=0}^\infty(-1)^{n}\!\left[\int_0^t \!\!\mathrm{d}t_1\,A(\dot\gamma(t_1))\right]\left[\int_0^{t_1}\!\!\mathrm{d}t_{2}\,A(\dot\gamma(t_{2}))\right]\cdots \left[\int_0^{t_{n-1}} \!\!\mathrm{d}t_n \,A(\dot\gamma(t_n))\right]w_{0} \\ &=\sum_{n=0}^{\infty}\frac{(-1)^{n}}{n!}\left[\int_{(t_1,\dots,t_{n-1})\in [0,t]^n}\!\!\mathrm{d}\mathrm{vol} \, \mathcal{P}\left\{A(\dot\gamma(t_{1}))\cdots A(\dot\gamma(t_{n}))\right\}\right]w_{0} \\ &=\sum_{n=0}^{\infty}\frac{(-1)^{n}}{n!}\mathcal{P} \left\{\left[\int_0^t A(\dot\gamma (s))\,\mathrm{d}s \right]^{n}\right\} \\ &\eqqcolon\mathcal{P}\exp\left[-\!\int_{0}^{t}A(\dot\gamma(s))\,\mathrm{d}s\right] \end{align*} where the power of $n$ in the penultimate line means we take $n$ copies of the operator in brackets, put them side-by-side, and then $\mathcal{P}$-order the factors in the parameter $s$ over $t_1,\dots,t_{n-1}\in [0,t]$. We call $\mathcal{P}\exp\left[-\!\int_{0}^{t}A(\dot\gamma(s))\,\mathrm{d}s\right]$ the <strong>path-ordered exponential</strong> of $A$ along $\gamma$.</p>
 
-<p>\section{Special cases of \texorpdfstring{$\mathcal{P}\exp$}{Pexp}} The path-ordered exponential $\mathcal{P}\exp$ reduces to the ordinary exponential $\exp$ in special cases. \begin{itemize}[nosep] \item If $A(\dot\gamma(t))$ is independent of $t$, so that it equals a fixed element $A\in\mathrm{End}(V)$, then our original differential equation $\dot w_{t}=-A(\dot \gamma(t))w(t)$ is just $\dot w_{t}=-Aw_{t}$, whose solution is just the ordinary exponential \[ w_{t}=\mathrm{e}^{-tA}w_{0}=1-tA+\frac{(tA)^{2}}{2!}-\cdots. \]</p>
+<h2>Special cases of \texorpdfstring{$\mathcal{P</h2>\exp$}{Pexp}}
+<p>The path-ordered exponential $\mathcal{P}\exp$ reduces to the ordinary exponential $\exp$ in special cases. \begin{itemize}[nosep] \item If $A(\dot\gamma(t))$ is independent of $t$, so that it equals a fixed element $A\in\mathrm{End}(V)$, then our original differential equation $\dot w_{t}=-A(\dot \gamma(t))w(t)$ is just $\dot w_{t}=-Aw_{t}$, whose solution is just the ordinary exponential \[ w_{t}=\mathrm{e}^{-tA}w_{0}=1-tA+\frac{(tA)^{2}}{2!}-\cdots. \]</p>
 
 <p>\item If $[A(\dot\gamma(t)),A(\dot\gamma(t'))]=0$ for all $t$ and $t'$, then path-ordering has no effect (since the ``order'' the operators are applied in becomes irrelevant, as they commute!). This just means \[ w_{t}=\mathrm{e}^{-\!\oint_{\kern-.3ex\scriptscriptstyle\gamma}{\scriptstyle\kern-.2ex A}}\,w_{0} \] where $\oint_{\gamma}A\coloneqq \int_{0}^{1}\!A(\dot\gamma(s))\mathrm{d}s$. This occurs, of course, whenever the gauge group $G$ is abelian, as the entries of the connection 1-form $A$ then take values in the Lie algebra $\mathfrak{g}$ of $G$, which is then also commutative. For example, when $G=\mathrm{U}(1)$, e.g., for electromagnetism, if we choose units so that $q/\hbar= 1$ where $q$ is the fundamental unit of charge in nature, then the wavefunction of a particle with this charge will be a section of a $\mathrm{U}(1)$-bundle with standard fiber given by the fundamental representation of $\mathrm{U}(1)$ ($\mathrm{e}^{i\theta}\cdot z\coloneqq \mathrm{e}^{i\theta}z$). Similarly, the wavefunction of a particle of $n$ times this charge will correspond to a section of a $\mathrm{U}(1)$-bundle with standard fiber given by the representation $\rho_{n}$ of $\mathrm{U}(1)$ ($\mathrm{e}^{i\theta}\cdot z\coloneqq \mathrm{e}^{in\theta}z$). \end{itemize}</p>
 
@@ -225,6 +287,7 @@
             <li><a href="linear connection 1-form.html">linear connection 1-form</a></li>
             <li><a href="linear connection in a vector bundle.html">linear connection in a vector bundle</a></li>
         </ul>
+    </div>
     </div>
 </body>
 </html>

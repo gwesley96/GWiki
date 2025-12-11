@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Functor</title>
+    <title>Functor - GWiki</title>
     <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
     <script>
     window.MathJax = {
@@ -63,12 +63,35 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         body {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 0 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0;
             font-family: Georgia, serif;
             line-height: 1.6;
-            color: #333;
+            color: #1f2937;
+            background: #f9fafb;
+        }
+        .top-nav {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .top-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        .top-nav a:hover {
+            text-decoration: underline;
+        }
+        .content-wrapper {
+            background: white;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 40px 60px 40px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
         }
         h1 {
             color: #2563eb;
@@ -91,10 +114,40 @@
             margin-bottom: 10px;
         }
         .metadata {
-            font-size: 0.9em;
+            font-size: 0.85em;
             color: #6b7280;
-            margin-bottom: 20px;
-            font-family: monospace;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f9fafb;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+        }
+        .toc {
+            background: #f0f9ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        .toc h3 {
+            margin-top: 0;
+            color: #1e40af;
+            font-size: 1.1em;
+        }
+        .toc ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 10px 0 0 0;
+        }
+        .toc li {
+            margin: 5px 0;
+        }
+        .toc a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+        .toc a:hover {
+            text-decoration: underline;
         }
         .topics {
             background: #f3f4f6;
@@ -106,14 +159,17 @@
             background: #ecfeff;
             border: 1px solid #06b6d4;
             border-left: 4px solid #06b6d4;
-            padding: 15px;
+            padding: 4px 8px;
             margin: 20px 0;
             border-radius: 4px;
         }
         .definition, .theorem, .example, .lemma, .proposition, .corollary, .remark {
             margin: 20px 0;
-            padding: 15px;
+            padding: 8px;
             border-radius: 4px;
+        }
+        .definition p, .theorem p, .example p, .lemma p, .proposition p, .corollary p, .remark p, .idea p {
+            margin: 0;
         }
         .definition {
             background: #fef3c7;
@@ -152,7 +208,7 @@
             margin: 8px 0;
         }
         script[type="text/tikz"] {
-            display: block;
+            /* display: block; - Hiding this to prevents raw code from showing if TikZJax fails */
             margin: 20px 0;
             text-align: center;
         }
@@ -181,6 +237,10 @@
     </style>
 </head>
 <body>
+    <div class="top-nav">
+        <a href="../index.html">← Back to Index</a>
+    </div>
+    <div class="content-wrapper">
     <h1>Functor</h1>
     <div class="metadata">
         <strong>Last modified:</strong> 2025-12-09 01:40<br>
@@ -189,24 +249,31 @@
     </div>
 
     <div class="content">
-        <p>\begin{idea}[Idea] Functors are to categories what homomorphisms are to groups: they send objects to objects and morphisms to morphisms while respecting identities and composition, letting us compare different mathematical contexts. \end{idea}</p>
-
-<div class="definition"><strong>Definition (Functor).</strong> 
-<p>Let $\cC, \cD$ be <a href="category.html">category</a>. A \textbf{functor} $F : \cC \to \cD$ consists of: \begin{lst} \item Object mapping: $A \mapsto F(A)$ \item Morphism mapping: $(f : A \to B) \mapsto (F(f) : F(A) \to F(B))$ \end{lst} preserving identities and composition: \[ F(\id_A) = \id_{F(A)}, \qquad F(g \circ f) = F(g) \circ F(f) \]</p>
+        <div class="idea">
+<p><strong>Idea.</strong> Functors are to categories what homomorphisms are to groups: they send objects to objects and morphisms to morphisms while respecting identities and composition, letting us compare different mathematical contexts.</p>
 </div>
 
-<p>\section{Examples}</p>
-
-<div class="example"><strong>Example (Forgetful functor).</strong> 
-<p>$U : \Grp \to \Set$ sends each group to its underlying set.</p>
+<div class="definition">
+<p><strong>Definition (Functor).</strong> Let $\cC, \cD$ be <a href="category.html">category</a>. A <strong>functor</strong> $F \colon \cC \to \cD$ consists of:</p>
+<ul>
+<li>Object mapping: $A \mapsto F(A)$</li>
+<li>Morphism mapping: $(f \colon A \to B) \mapsto (F(f) \colon F(A) \to F(B))$</li>
+</ul>
+<p>preserving identities and composition: \[ F(\id_A) = \id_{F(A)}, \qquad F(g \circ f) = F(g) \circ F(f) \]</p>
 </div>
 
-<div class="example"><strong>Example (Free functor).</strong> 
-<p>$F : \Set \to \Grp$ sends $X$ to the free group on $X$.</p>
+<h2>Examples</h2>
+
+<div class="example">
+<p><strong>Example (Forgetful functor).</strong> $U \colon \Grp \to \Set$ sends each group to its underlying set.</p>
 </div>
 
-<div class="example"><strong>Example (Hom functor).</strong> 
-<p>For any $A \in \cC$: $\Hom(A, -) : \cC \to \Set$ is covariant.</p>
+<div class="example">
+<p><strong>Example (Free functor).</strong> $F \colon \Set \to \Grp$ sends $X$ to the free group on $X$.</p>
+</div>
+
+<div class="example">
+<p><strong>Example (Hom functor).</strong> For any $A \in \cC$: $\Hom(A, -) \colon \cC \to \Set$ is covariant.</p>
 </div>
 
 <p><strong>See also:</strong> <a href="category.html">category</a>, <a href="natural transformation.html">natural transformation</a></p>
@@ -223,8 +290,8 @@
         <h2>Backlinks</h2>
         <ul>
             <li><a href="natural transformation.html">natural transformation</a></li>
-            <li><a href="tikz demo.html">tikz demo</a></li>
         </ul>
+    </div>
     </div>
 </body>
 </html>

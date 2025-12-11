@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GWiki - Master Index</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Georgia, serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 60px;
+        }
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+        .search-box {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .search-box input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1em;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-family: inherit;
+        }
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab {
+            background: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .tab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .content-panel {
+            display: none;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .content-panel.active {
+            display: block;
+        }
+        .note-list {
+            list-style: none;
+        }
+        .note-item {
+            padding: 15px;
+            border-bottom: 1px solid #e5e7eb;
+            transition: background 0.2s;
+        }
+        .note-item:last-child {
+            border-bottom: none;
+        }
+        .note-item:hover {
+            background: #f9fafb;
+        }
+        .note-link {
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+        .note-link:hover {
+            text-decoration: underline;
+        }
+        .note-tags {
+            display: inline-flex;
+            gap: 6px;
+            margin-left: 10px;
+            flex-wrap: wrap;
+        }
+        .tag {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-family: monospace;
+        }
+        .note-summary {
+            color: #6b7280;
+            font-size: 0.95em;
+            margin-top: 5px;
+        }
+        .tag-section {
+            margin-bottom: 30px;
+        }
+        .tag-section h3 {
+            color: #1e40af;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        .alpha-section {
+            margin-bottom: 25px;
+        }
+        .alpha-section h3 {
+            color: #1e40af;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .stat-label {
+            color: #6b7280;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        .recent-date {
+            color: #6b7280;
+            font-size: 0.9em;
+            font-family: monospace;
+            margin-right: 10px;
+        }
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 60px;
+            padding: 20px;
+            opacity: 0.9;
+        }
+        footer a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>GWiki</h1>
+            <p>A mathematical knowledge base</p>
+        </header>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number">19</div>
+                <div class="stat-label">Total Notes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">17</div>
+                <div class="stat-label">Tags</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">15</div>
+                <div class="stat-label">Total Links</div>
+            </div>
+        </div>
+
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search notes by title, tags, or content..." />
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('all')">All Notes</button>
+            <button class="tab" onclick="showTab('tags')">By Tag</button>
+            <button class="tab" onclick="showTab('recent')">Recent</button>
+        </div>
+
+        <div id="all-panel" class="content-panel active">
+            <h2 style="margin-bottom: 20px; color: #1e40af;">All Notes (Alphabetical)</h2>
+            <div class="alpha-section">
+                <h3>$</h3>
+                <ul class="note-list">
+                    <li class="note-item">
+                        <a href="html/(n+epsilon)D TQFT.html" class="note-link">$(n+\varepsilon)$-Dimensional TQFT</a>
+                        <div class="note-tags">
+                            <span class="tag">TQFT</span>
+                            <span class="tag">skein-modules</span>
+                            <span class="tag">higher-categories</span>
+                        </div>
+                        <div class="note-summary">Definition of $(n+\varepsilon)$-dimensional TQFTs via systems of topological fields and local relations, and the construction of skein modules and skein categories.</div>
+                    </li>
+            </ul>
+            </div>
+            <div class="alpha-section">
+                <h3>(</h3>
+                <ul class="note-list">
+                    <li class="note-item">
+                        <a href="html/(pseudo-)Riemannian metric.html" class="note-link">(pseudo-)Riemannian metric</a>
+                        <div class="note-tags">
+                            <span class="tag">differential-geometry</span>
+                        </div>
+                        <div class="note-summary">Positive-semidefinite and positive-definite quadratic data on vector spaces and manifolds, including canonical models.</div>
+                    </li>
+            </ul>
+            </div>
+            <div class="alpha-section">
+                <h3>3</h3>
+                <ul class="note-list">
+                    <li class="note-item">
+                        <a href="html/3-manifold.html" class="note-link">3-manifold</a>
+                        <div class="note-tags">
+                            <span class="tag">low-dimensional-topology</span>
+                            <span class="tag">3-manifolds</span>
+                        </div>
+                        <div class="note-summary">Orientable 3-manifolds can be built by Dehn surgery on framed links in $S^3$, so surgery data presents every example.</div>
+                    </li>
+            </ul>
+            </div>
+            <div class="alpha-section">
+                <h3>A</h3>
+                <ul class="note-list">
+                    <li class="note-item">
+                        <a href="html/abelian category.html" class="note-link">abelian category</a>
+                    </li>
+                    <li class="note-item">
+                        <a href="html/Algebraic Bianchi Identity.html" class="note-link">Algebraic Bianchi Identity</a>
+                        <div class="note-summary">The first Bianchi identity symmetrically sums the curvature tensor to zero over its first three slots.</div>
+                    </li>
+            </ul>
+            </div>
+            <div class="alpha-section">
+                <h3>B</h3>
+                <ul class="note-list">
+                    <li class="note-item">
+                        <a href="html/Birkhoff Duality.html" class="note-link">Birkhoff Duality</a>
+                        <div class="note-tags">
+                            <span class="tag">order-theory</span>
+                        </div>
+                        <div class="note-summary">Finite distributive lattices are dual to finite posets via ideals and sets of join-irreducibles.</div>
+                    </li>
+            </ul>
+            </div>
+            <div class="alpha-section">
+                <h3>C</h3>
+                <ul class="note-list">
+                    <li class="note-item">
+                        <a href="html/category.html" class="note-link">Category</a>
+                        <div class="note-tags">
+                            <span class="tag">category-theory</span>
+                            <span class="tag">definition</span>
+                        </div>
+                        <div class="note-summary">A category consists of objects and morphisms with composition satisfying associativity and identity laws.</div>
+                    </li>
+                    <li class="note-item">
+                        <a href="html/cochain complex.html" class="note-link">cochain complex</a>
+                    </li>
+                    <li class="note-item">
+                        <a href="html/cohomology.html" class="note-link">Cohomology</a>
+                        <div class="note-tags">
+                            <span class="tag">higher-category-theory</span>
+                            <span class="tag">homotopy-theory</span>
+                            <span class="tag">nPOV</span>
+                        </div>
+                    </li>
+            </ul>
+            </div>
+            <div class="alpha-section">
+                <h3>D</h3>
+                <ul class="note-list">
+                    <li class="note-item">
+                        <a href="html/dg algebra.html" class="note-link">DG-algebra</a>
+                        <div class="note-tags">
+                            <span class="tag">algebra</span>
+                        </div>
+                        <div class="note-summary">Differential graded algebras as monoids in chain complexes and their module theory.</div>
+                    </li>
+                    <li class="note-item">
+                        <a href="html/Donaldson theory.html" class="note-link">Donaldson Theory</a>
+                    </li>
+                    <li class="note-item">
+                        <a href="html/Drinfeld twist of a Hopf algebra.html" class="note-link">Drinfeld twist of a Hopf algebra</a>
+                    </li>
+            </ul>
+            </div>
+            <div class="alpha-section">
+                <h3>F</h3>
+                <ul class="note-list">
+                    <li class="note-item">
+                        <a href="html/functor.html" class="note-link">Functor</a>
+                        <div class="note-tags">
+                            <span class="tag">category-theory</span>
+                            <span class="tag">definition</span>
+                        </div>
+                        <div class="note-summary">A functor transports objects and morphisms between categories while preserving identities and composition; it is the structure-preserving map between categories.</div>
+                    </li>
+            </ul>
+            </div>
+            <div class="alpha-section">
+                <h3>G</h3>
+                <ul class="note-list">
+                    <li class="note-item">
+                        <a href="html/Gelfand transform.html" class="note-link">Gelfand transform</a>
+                        <div class="note-tags">
+                            <span class="tag">functional-analysis</span>
+                            <span class="tag">operator-algebras</span>
+                        </div>
+                        <div class="note-summary">The Gelfand transform embeds a commutative Banach algebra into continuous functions on its character space, exposing spectral data as evaluation.</div>
+                    </li>
+            </ul>
+            </div>
+            <div class="alpha-section">
+                <h3>H</h3>
+                <ul class="note-list">
+                    <li class="note-item">
+                        <a href="html/Hstar monad.html" class="note-link">H*-monads and completions of pre-3-Hilbert spaces</a>
+                    </li>
+                    <li class="note-item">
+                        <a href="html/Haag Duality.html" class="note-link">Haag duality</a>
+                    </li>
+            </ul>
+            </div>
+            <div class="alpha-section">
+                <h3>L</h3>
+                <ul class="note-list">
+                    <li class="note-item">
+                        <a href="html/looping and delooping.html" class="note-link">looping and delooping</a>
+                    </li>
+            </ul>
+            </div>
+            <div class="alpha-section">
+                <h3>N</h3>
+                <ul class="note-list">
+                    <li class="note-item">
+                        <a href="html/natural transformation.html" class="note-link">Natural Transformation</a>
+                        <div class="note-tags">
+                            <span class="tag">category-theory</span>
+                            <span class="tag">definition</span>
+                        </div>
+                        <div class="note-summary">A natural transformation compares two functors by providing componentwise morphisms that commute with every arrow in the source category, so one functor transforms into the other uniformly.</div>
+                    </li>
+            </ul>
+            </div>
+            <div class="alpha-section">
+                <h3>P</h3>
+                <ul class="note-list">
+                    <li class="note-item">
+                        <a href="html/parallel transport via a connection.html" class="note-link">Parallel Transport via a Connection</a>
+                        <div class="note-tags">
+                            <span class="tag">differential-geometry</span>
+                            <span class="tag">gauge-theory</span>
+                            <span class="tag">physics</span>
+                        </div>
+                        <div class="note-summary">Explicit formula for parallel transport using a linear connection, deriving the path-ordered exponential and holonomy formula.</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="tags-panel" class="content-panel">
+            <h2 style="margin-bottom: 20px; color: #1e40af;">Notes by Tag</h2>
+            <div class="tag-section">
+                <h3>3-manifolds (1)</h3>
+                <ul class="note-list">
+                    <li class="note-item">
+                        <a href="html/3-manifold.html" class="note-link">3-manifold</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tag-section">
+                <h3>TQFT (1)</h3>
+                <ul class="note-list">
+                    <li class="note-item">
+                        <a href="html/(n+epsilon)D TQFT.html" class="note-link">$(n+\varepsilon)$-Dimensional TQFT</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tag-section">
+                <h3>algebra (1)</h3>
+                <ul class="note-list">
+                    <li class="note-item">
+                        <a href="html/dg algebra.html" class="note-link">DG-algebra</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tag-section">
+                <h3>category-theory (3)</h3>
+                <ul class="note-list">
+                    <li class="note-item">
+                        <a href="html/category.html" class="note-link">Category</a>
+                    </li>
+                    <li class="note-item">
+                        <a href="html/functor.html" class="note-link">Functor</a>
+                    </li>
+                    <li class="note-item">
+                        <a href="html/natural transformation.html" class="note-link">Natural Transformation</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tag-section">
+                <h3>definition (3)</h3>
+                <ul class="note-list">
+                    <li class="note-item">
+                        <a href="html/category.html" class="note-link">Category</a>
+                    </li>
+                    <li class="note-item">
+                        <a href="html/functor.html" class="note-link">Functor</a>
+                    </li>
+                    <li class="note-item">
+                        <a href="html/natural transformation.html" class="note-link">Natural Transformation</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tag-section">
+                <h3>differential-geometry (2)</h3>
+                <ul class="note-list">
+                    <li class="note-item">
+                        <a href="html/(pseudo-)Riemannian metric.html" class="note-link">(pseudo-)Riemannian metric</a>
+                    </li>
+                    <li class="note-item">
+                        <a href="html/parallel transport via a connection.html" class="note-link">Parallel Transport via a Connection</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tag-section">
+                <h3>functional-analysis (1)</h3>
+                <ul class="note-list">
+                    <li class="note-item">
+                        <a href="html/Gelfand transform.html" class="note-link">Gelfand transform</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tag-section">
+                <h3>gauge-theory (1)</h3>
+                <ul class="note-list">
+                    <li class="note-item">
+                        <a href="html/parallel transport via a connection.html" class="note-link">Parallel Transport via a Connection</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tag-section">
+                <h3>higher-categories (1)</h3>
+                <ul class="note-list">
+                    <li class="note-item">
+                        <a href="html/(n+epsilon)D TQFT.html" class="note-link">$(n+\varepsilon)$-Dimensional TQFT</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tag-section">
+                <h3>higher-category-theory (1)</h3>
+                <ul class="note-list">
+                    <li class="note-item">
+                        <a href="html/cohomology.html" class="note-link">Cohomology</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tag-section">
+                <h3>homotopy-theory (1)</h3>
+                <ul class="note-list">
+                    <li class="note-item">
+                        <a href="html/cohomology.html" class="note-link">Cohomology</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tag-section">
+                <h3>low-dimensional-topology (1)</h3>
+                <ul class="note-list">
+                    <li class="note-item">
+                        <a href="html/3-manifold.html" class="note-link">3-manifold</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tag-section">
+                <h3>nPOV (1)</h3>
+                <ul class="note-list">
+                    <li class="note-item">
+                        <a href="html/cohomology.html" class="note-link">Cohomology</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tag-section">
+                <h3>operator-algebras (1)</h3>
+                <ul class="note-list">
+                    <li class="note-item">
+                        <a href="html/Gelfand transform.html" class="note-link">Gelfand transform</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tag-section">
+                <h3>order-theory (1)</h3>
+                <ul class="note-list">
+                    <li class="note-item">
+                        <a href="html/Birkhoff Duality.html" class="note-link">Birkhoff Duality</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tag-section">
+                <h3>physics (1)</h3>
+                <ul class="note-list">
+                    <li class="note-item">
+                        <a href="html/parallel transport via a connection.html" class="note-link">Parallel Transport via a Connection</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tag-section">
+                <h3>skein-modules (1)</h3>
+                <ul class="note-list">
+                    <li class="note-item">
+                        <a href="html/(n+epsilon)D TQFT.html" class="note-link">$(n+\varepsilon)$-Dimensional TQFT</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="recent-panel" class="content-panel">
+            <h2 style="margin-bottom: 20px; color: #1e40af;">Recently Created</h2>
+            <ul class="note-list">
+                <li class="note-item">
+                    <span class="recent-date">2025-12-11</span>
+                    <a href="html/abelian category.html" class="note-link">abelian category</a>
+                </li>
+                <li class="note-item">
+                    <span class="recent-date">2025-12-11</span>
+                    <a href="html/cochain complex.html" class="note-link">cochain complex</a>
+                </li>
+                <li class="note-item">
+                    <span class="recent-date">2025-12-11</span>
+                    <a href="html/looping and delooping.html" class="note-link">looping and delooping</a>
+                </li>
+                <li class="note-item">
+                    <span class="recent-date">2025-12-10</span>
+                    <a href="html/(n+epsilon)D TQFT.html" class="note-link">$(n+\varepsilon)$-Dimensional TQFT</a>
+                    <div class="note-tags">
+                        <span class="tag">TQFT</span>
+                        <span class="tag">skein-modules</span>
+                        <span class="tag">higher-categories</span>
+                    </div>
+                </li>
+                <li class="note-item">
+                    <span class="recent-date">2025-12-10</span>
+                    <a href="html/cohomology.html" class="note-link">Cohomology</a>
+                    <div class="note-tags">
+                        <span class="tag">higher-category-theory</span>
+                        <span class="tag">homotopy-theory</span>
+                        <span class="tag">nPOV</span>
+                    </div>
+                </li>
+                <li class="note-item">
+                    <span class="recent-date">2025-12-10</span>
+                    <a href="html/parallel transport via a connection.html" class="note-link">Parallel Transport via a Connection</a>
+                    <div class="note-tags">
+                        <span class="tag">differential-geometry</span>
+                        <span class="tag">gauge-theory</span>
+                        <span class="tag">physics</span>
+                    </div>
+                </li>
+                <li class="note-item">
+                    <span class="recent-date">2025-12-09</span>
+                    <a href="html/(pseudo-)Riemannian metric.html" class="note-link">(pseudo-)Riemannian metric</a>
+                    <div class="note-tags">
+                        <span class="tag">differential-geometry</span>
+                    </div>
+                </li>
+                <li class="note-item">
+                    <span class="recent-date">2025-12-09</span>
+                    <a href="html/3-manifold.html" class="note-link">3-manifold</a>
+                    <div class="note-tags">
+                        <span class="tag">low-dimensional-topology</span>
+                        <span class="tag">3-manifolds</span>
+                    </div>
+                </li>
+                <li class="note-item">
+                    <span class="recent-date">2025-12-09</span>
+                    <a href="html/Algebraic Bianchi Identity.html" class="note-link">Algebraic Bianchi Identity</a>
+                </li>
+                <li class="note-item">
+                    <span class="recent-date">2025-12-09</span>
+                    <a href="html/Birkhoff Duality.html" class="note-link">Birkhoff Duality</a>
+                    <div class="note-tags">
+                        <span class="tag">order-theory</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <footer>
+            <p>Generated by GWiki | <a href="https://greysonwesley.com">greysonwesley.com</a></p>
+        </footer>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all panels
+            document.querySelectorAll('.content-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            // Deactivate all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            // Show selected panel
+            document.getElementById(tabName + '-panel').classList.add('active');
+            // Activate clicked tab
+            event.target.classList.add('active');
+        }
+
+        // Simple search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const noteItems = document.querySelectorAll('.note-item');
+
+            noteItems.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

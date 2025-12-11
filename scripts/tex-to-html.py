@@ -229,11 +229,58 @@ LEGACY_PATTERNS = r'''
   \pgfpathrectangle{\pgfqpoint{-.9pt}{-.9pt}}{\pgfqpoint{1.8pt}{1.8pt}}
   \pgfusepath{stroke}
 }
+\pgfdeclarepatternformonly{primedplus}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{1pt}{1pt}}{\pgfqpoint{5pt}{5pt}}%
+{
+  \pgftransformrotate{30}
+  \pgfpathmoveto{\pgfqpoint{-.9pt}{-.9pt}}
+  \pgfpathlineto{\pgfqpoint{.9pt}{.9pt}}
+  \pgfpathmoveto{\pgfqpoint{.9pt}{-.9pt}}
+  \pgfpathlineto{\pgfqpoint{-.9pt}{.9pt}}
+  \pgfusepath{stroke}
+}
+\pgfdeclarepatternformonly{primedstar}{\pgfqpoint{-1.2pt}{-1.2pt}}{\pgfqpoint{1.2pt}{1.2pt}}{\pgfqpoint{5pt}{5pt}}%
+{
+  \pgftransformrotate{30}
+  \pgfpathmoveto{\pgfqpoint{-1.2pt}{0pt}}
+  \pgfpathlineto{\pgfqpoint{1.2pt}{0pt}}
+  \pgfpathmoveto{\pgfqpoint{-.6pt}{-1.04pt}}
+  \pgfpathlineto{\pgfqpoint{.6pt}{1.04pt}}
+  \pgfpathmoveto{\pgfqpoint{-.6pt}{1.04pt}}
+  \pgfpathlineto{\pgfqpoint{.6pt}{-1.04pt}}
+  \pgfusepath{stroke}
+}
 \pgfdeclarepatternformonly{diaglines}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{1pt}{1pt}}{\pgfqpoint{4pt}{4pt}}%
 {
   \pgfpathmoveto{\pgfqpoint{-1pt}{-1pt}}
   \pgfpathlineto{\pgfqpoint{1pt}{1pt}}
   \pgfusepath{stroke}
+}
+\pgfdeclarepatternformonly{hlines}{\pgfqpoint{-1pt}{-.5pt}}{\pgfqpoint{1pt}{.5pt}}{\pgfqpoint{4pt}{3pt}}%
+{
+  \pgfpathmoveto{\pgfqpoint{-1pt}{0pt}}
+  \pgfpathlineto{\pgfqpoint{1pt}{0pt}}
+  \pgfusepath{stroke}
+}
+'''
+
+# Legacy commands replacing xparse \NewDocumentCommand
+LEGACY_COMMANDS = r'''
+% Simplified \drawmark[color]{coord}[label][pos]
+\newcommand{\drawmark}[2][black]{\fill[#1] (#2) circle (\mkrad);}
+\newcommand{\drawobject}[2][black]{\draw[thick, fill=#1] (#2) circle (\obrad);}
+\newcommand{\mk}[1]{\drawmark{#1}}
+\newcommand{\ob}[1]{\drawobject[black]{#1}}
+\newcommand{\wob}[1]{\drawobject[white]{#1}}
+\newcommand{\umark}[1]{\draw (#1) circle (\mkrad);}
+\newcommand{\labmark}[3]{\drawmark{#1}[#2]{#3}}
+\newcommand{\labob}[3]{\drawobject[black]{#1}[#2]{#3}}
+\newcommand{\blt}[2][]{\node[circle, fill, inner sep=0pt, minimum size=0.1cm, #1] at #2 {};}
+\newcommand{\cpn}[3][]{\node[draw, thick, fill=white, rounded corners=3pt, #1] at #2 {#3};}
+'''
+
+SAFE_ON_LAYER = r'''
+\tikzset{
+  on layer/.code={}
 }
 '''
 
@@ -339,8 +386,66 @@ def strip_command(text, cmd):
             text = pre + current_post
         else:
              # Failed to match, abort stripping this instance
+             if 'NewDocumentCommand' in cmd:
+                 # Backup plan: regex replace the command itself and hopefully braces balance out later or don't matter?
+                 # No, that's dangerous.
+                 # Let's just try to be more robust.
+                 # If we can't strip it, maybe we just replace the command name with empty?
+                 # text = pre + post # NO - leaves args
+                 break
              break
              
+    return text
+
+def consume_group(s, open_char='{', close_char='}'):
+    start = s.find(open_char)
+    if start == -1: return 0, False
+    balance = 1
+    i = start + 1
+    while i < len(s) and balance > 0:
+        if s[i] == open_char: balance += 1
+        elif s[i] == close_char: balance -= 1
+        i += 1
+    return i, (balance == 0)
+
+def remove_newcommand(text, cmd_name):
+    """Remove a specific \\newcommand definition from text."""
+    escaped_cmd = re.escape(cmd_name)
+    
+    while True:
+        # Find \\newcommand followed by {cmd_name} or cmd_name
+        match = re.search(r'\\newcommand\s*(?:\{' + escaped_cmd + r'\}|' + escaped_cmd + r'(?![a-zA-Z]))', text)
+        if not match:
+            break
+            
+        start_idx = match.start()
+        end_idx = match.end()
+        
+        current_pos = end_idx
+        # Consume whitespace
+        while current_pos < len(text) and text[current_pos].isspace():
+            current_pos += 1
+            
+        # Optional args (up to 2) - usually [n] and [default]
+        for _ in range(2):
+            if current_pos < len(text) and text[current_pos] == '[':
+                 length, ok = consume_group(text[current_pos:], '[', ']')
+                 if ok: 
+                     current_pos += length
+                 else:
+                     break
+            # Consume whitespace
+            while current_pos < len(text) and text[current_pos].isspace():
+                current_pos += 1
+
+        # Mandatory arg (body)
+        if current_pos < len(text) and text[current_pos] == '{':
+             length, ok = consume_group(text[current_pos:], '{', '}')
+             if ok: current_pos += length
+             
+        # Remove the whole block
+        text = text[:start_idx] + text[current_pos:]
+        
     return text
 
 def load_tz_sty():
@@ -367,16 +472,62 @@ def load_tz_sty():
         # Remove leftover specific xparse stuff
         content = re.sub(r'\\IfValueT', '', content) # Crude but likely sufficient if args are just braces
         
+        
         # Libraries
         content = re.sub(r'\\usetikzlibrary\{.*?\}', '', content, flags=re.DOTALL)
-        content = re.sub(r'\\pgfdeclarelayer\{.*?\}', '', content)
-        content = re.sub(r'\\pgfsetlayers\{.*?\}', '', content)
+        # content = re.sub(r'\\pgfdeclarelayer\{.*?\}', '', content)
+        # content = re.sub(r'\\pgfsetlayers\{.*?\}', '', content)
+        
+        SAFE_LIBRARIES = r'\usetikzlibrary{arrows.meta,calc,decorations.markings,shapes.geometric,patterns}'
 
-        return content + "\n" + LEGACY_PATTERNS
+        # Custom cleaning for specific tz.sty constructs
+        
+        # 1. Remove \tz and \tkz definitions - we handle these in Python
+        #    They are likely \NewDocumentCommand{\tz}...
+        #    Our strip_command logic should handle them if they use \NewDocumentCommand
+        
+        # 2. Remove unsafe layer configuration if present (pgfdeclarelayer etc)
+        # Use simple recursive braced stripper for these too just to be safe?
+        # Or just robust regex
+        content = re.sub(r'\\pgfdeclarelayer\s*\{.*?\}', '', content)
+        content = re.sub(r'\\pgfsetlayers\s*\{.*?\}', '', content)
+        
+        # 3. Strip makeatletter blocks (handles on layer, pgfaddtoshape, etc)
+        # This removes unsafe internals
+        content = re.sub(r'\\makeatletter.*?\\makeatother', '', content, flags=re.DOTALL)
+        
+        # 4. Strip commands that we replace with legacy versions to prevent "Command already defined" errors
+        # List: \mk, \ob, \wob, \umark, \labmark, \labob, \cpn, \blt
+        content = remove_newcommand(content, r'\mk')
+        content = remove_newcommand(content, r'\ob')
+        content = remove_newcommand(content, r'\wob')
+        content = remove_newcommand(content, r'\umark')
+        content = remove_newcommand(content, r'\labmark')
+        content = remove_newcommand(content, r'\labob')
+        content = remove_newcommand(content, r'\cpn')
+        content = remove_newcommand(content, r'\blt')
+        
+        # Also clean empty lines left behind
+        content = re.sub(r'\n\s*\n', '\n', content)
+
+        # 6. Remove \endinput
+        content = re.sub(r'\\endinput', '', content)
+
+
+        # 5. Explicitly remove on layer style definition if it wasn't stripped so we can override it
+        #    It's usually: \tikzset{ on layer/.code={...} }
+        #    But it might be complex. SAFE_ON_LAYER will be appended after, so it should override.
+
+        return content + "\n" + SAFE_LIBRARIES + "\n" + SAFE_ON_LAYER + "\n" + LEGACY_PATTERNS + "\n" + LEGACY_COMMANDS
         
     except Exception as e:
         print(f"Warning: Could not load tz.sty: {e}")
         return ""
+
+# TikZJax safe libraries
+# Note: matrix, fit, positioning often work but heavy shapes/decorations might fail.
+# shapes.misc, shapes.symbols, shapes.multipart are often problematic.
+SAFE_LIBRARIES = r'\usetikzlibrary{arrows.meta,calc,decorations.markings,shapes.geometric,patterns,positioning,fit}'
 
 TIKZ_PREAMBLE = r'''
 ''' + load_tz_sty() + r'''
@@ -759,13 +910,16 @@ def convert_to_html(tex_path, backlinks_map=None):
 
     body = wrap_paragraphs(body)
 
+    # Extract sections for table of contents
+    sections = re.findall(r'<h2>(.*?)</h2>', body)
+
     # Generate HTML
     html = f'''<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{title}</title>
+    <title>{title} - GWiki</title>
     <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
     <script>
     window.MathJax = {{
@@ -825,12 +979,35 @@ def convert_to_html(tex_path, backlinks_map=None):
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         body {{
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 0 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0;
             font-family: Georgia, serif;
             line-height: 1.6;
-            color: #333;
+            color: #1f2937;
+            background: #f9fafb;
+        }}
+        .top-nav {{
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }}
+        .top-nav a {{
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1em;
+        }}
+        .top-nav a:hover {{
+            text-decoration: underline;
+        }}
+        .content-wrapper {{
+            background: white;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 40px 60px 40px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
         }}
         h1 {{
             color: #2563eb;
@@ -853,10 +1030,40 @@ def convert_to_html(tex_path, backlinks_map=None):
             margin-bottom: 10px;
         }}
         .metadata {{
-            font-size: 0.9em;
+            font-size: 0.85em;
             color: #6b7280;
-            margin-bottom: 20px;
-            font-family: monospace;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f9fafb;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+        }}
+        .toc {{
+            background: #f0f9ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+        }}
+        .toc h3 {{
+            margin-top: 0;
+            color: #1e40af;
+            font-size: 1.1em;
+        }}
+        .toc ul {{
+            list-style: none;
+            padding-left: 0;
+            margin: 10px 0 0 0;
+        }}
+        .toc li {{
+            margin: 5px 0;
+        }}
+        .toc a {{
+            color: #2563eb;
+            text-decoration: none;
+        }}
+        .toc a:hover {{
+            text-decoration: underline;
         }}
         .topics {{
             background: #f3f4f6;
@@ -946,6 +1153,10 @@ def convert_to_html(tex_path, backlinks_map=None):
     </style>
 </head>
 <body>
+    <div class="top-nav">
+        <a href="../index.html">← Back to Index</a>
+    </div>
+    <div class="content-wrapper">
     <h1>{title}</h1>
     <div class="metadata">
         <strong>Last modified:</strong> {last_modified}<br>
@@ -956,7 +1167,30 @@ def convert_to_html(tex_path, backlinks_map=None):
         <strong>Tags:</strong> {", ".join(tags)}'''
 
     html += f'''
-    </div>
+    </div>'''
+
+    # Add table of contents if sections exist
+    if sections and len(sections) > 2:
+        html += '''
+    <div class="toc">
+        <h3>Contents</h3>
+        <ul>'''
+        for section in sections:
+            # Create anchor from section title
+            anchor = re.sub(r'[^a-z0-9]+', '-', section.lower()).strip('-')
+            html += f'''
+            <li><a href="#{anchor}">{section}</a></li>'''
+        html += '''
+        </ul>
+    </div>'''
+
+    # Add anchors to sections in body
+    if sections and len(sections) > 2:
+        for section in sections:
+            anchor = re.sub(r'[^a-z0-9]+', '-', section.lower()).strip('-')
+            body = body.replace(f'<h2>{section}</h2>', f'<h2 id="{anchor}">{section}</h2>')
+
+    html += f'''
 
     <div class="content">
         {body}
@@ -991,6 +1225,7 @@ def convert_to_html(tex_path, backlinks_map=None):
     </div>'''
 
     html += '''
+    </div>
 </body>
 </html>
 '''

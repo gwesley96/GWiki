@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>(pseudo-)Riemannian metric</title>
+    <title>(pseudo-)Riemannian metric - GWiki</title>
     <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
     <script>
     window.MathJax = {
@@ -48,8 +48,8 @@
                 Spec: '\\operatorname{Spec}',
                 im: '\\operatorname{im}',
                 coker: '\\operatorname{coker}',
-                coloneqq: '\\mathrel{\\vcenter{\\hbox{.}\\hbox{.}}}=',
-                coloneq: '\\mathrel{\\vcenter{\\hbox{.}\\hbox{.}}}=',
+                coloneqq: '\\mathrel{\\vcenter{:}}=',
+                coloneq: '\\mathrel{\\vcenter{:}}=',
 
                 // TikZ-like (limited in HTML)
                 to: '\\rightarrow',
@@ -63,12 +63,35 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         body {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 0 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0;
             font-family: Georgia, serif;
             line-height: 1.6;
-            color: #333;
+            color: #1f2937;
+            background: #f9fafb;
+        }
+        .top-nav {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .top-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        .top-nav a:hover {
+            text-decoration: underline;
+        }
+        .content-wrapper {
+            background: white;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 40px 60px 40px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
         }
         h1 {
             color: #2563eb;
@@ -91,10 +114,40 @@
             margin-bottom: 10px;
         }
         .metadata {
-            font-size: 0.9em;
+            font-size: 0.85em;
             color: #6b7280;
-            margin-bottom: 20px;
-            font-family: monospace;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f9fafb;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+        }
+        .toc {
+            background: #f0f9ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        .toc h3 {
+            margin-top: 0;
+            color: #1e40af;
+            font-size: 1.1em;
+        }
+        .toc ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 10px 0 0 0;
+        }
+        .toc li {
+            margin: 5px 0;
+        }
+        .toc a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+        .toc a:hover {
+            text-decoration: underline;
         }
         .topics {
             background: #f3f4f6;
@@ -106,14 +159,17 @@
             background: #ecfeff;
             border: 1px solid #06b6d4;
             border-left: 4px solid #06b6d4;
-            padding: 15px;
+            padding: 4px 8px;
             margin: 20px 0;
             border-radius: 4px;
         }
         .definition, .theorem, .example, .lemma, .proposition, .corollary, .remark {
             margin: 20px 0;
-            padding: 15px;
+            padding: 8px;
             border-radius: 4px;
+        }
+        .definition p, .theorem p, .example p, .lemma p, .proposition p, .corollary p, .remark p, .idea p {
+            margin: 0;
         }
         .definition {
             background: #fef3c7;
@@ -152,7 +208,7 @@
             margin: 8px 0;
         }
         script[type="text/tikz"] {
-            display: block;
+            /* display: block; - Hiding this to prevents raw code from showing if TikZJax fails */
             margin: 20px 0;
             text-align: center;
         }
@@ -181,43 +237,50 @@
     </style>
 </head>
 <body>
+    <div class="top-nav">
+        <a href="../index.html">← Back to Index</a>
+    </div>
+    <div class="content-wrapper">
     <h1>(pseudo-)Riemannian metric</h1>
     <div class="metadata">
-        <strong>Topics:</strong> differential-geometry<br>
-        <strong>Last modified:</strong> 2025-12-08
+        <strong>Last modified:</strong> 2025-12-08 22:55<br>
+        <strong>Created:</strong> 2025-12-09<br>
+        <strong>Tags:</strong> differential-geometry
     </div>
 
     <div class="content">
-        <p>\begin{idea}[Idea] Metrics capture the quadratic data needed to measure lengths and angles; pseudo-Riemannian metrics relax positivity to accommodate signatures such as Lorentzian geometries while retaining smooth variation over the manifold. \end{idea}</p>
-
-<div class="definition"><strong>Definition (Pseudo-inner product).</strong> 
-<p>A \textbf{pseudo-inner product} (resp. \textbf{inner product}) on a vector space $V$ is a <a href="positive-definite-form.html">positive-semidefinite form</a> (resp. <a href="positive-definite-form.html">positive-definite form</a>) symmetric bilinear form $\bkt{-}{-}\colon V\times V\to\bbR$.</p>
+        <div class="idea">
+<p><strong>Idea.</strong> Metrics capture the quadratic data needed to measure lengths and angles; pseudo-Riemannian metrics relax positivity to accommodate signatures such as Lorentzian geometries while retaining smooth variation over the manifold.</p>
 </div>
 
-<div class="definition"><strong>Definition ((Pseudo-)Euclidean vector spaces).</strong> 
-<p>A \textbf{pseudo-Euclidean vector space} (resp. \textbf{Euclidean vector space}) is a finite-dimensional $\bbR$-vector space $V$ equipped with a positive-semidefinite (resp. positive-definite) <a href="quadratic-form.html">quadratic form</a> $Q\colon V\to\bbR$.</p>
+<div class="definition">
+<p><strong>Definition (Pseudo-inner product).</strong> A <strong>pseudo-inner product</strong> (resp. <strong>inner product</strong>) on a vector space $V$ is a <a href="positive-definite-form.html">positive-semidefinite form</a> (resp. <a href="positive-definite-form.html">positive-definite form</a>) symmetric bilinear form $\bkt{-}{-}\colon V\times V\to\bbR$.</p>
 </div>
 
-<div class="remark"><strong>Remark ((Pseudo-)norms from quadratic forms).</strong> 
-<p>A (pseudo-)Euclidean vector space $(V,Q)$ has \textbf{(pseudo-)norm} $\|-\|\coloneqq \sqrt{Q(-)}$.</p>
+<div class="definition">
+<p><strong>Definition ((Pseudo-)Euclidean vector spaces).</strong> A <strong>pseudo-Euclidean vector space</strong> (resp. <strong>Euclidean vector space</strong>) is a finite-dimensional $\bbR$-vector space $V$ equipped with a positive-semidefinite (resp. positive-definite) <a href="quadratic-form.html">quadratic form</a> $Q\colon V\to\bbR$.</p>
 </div>
 
-<p>\section{(Pseudo-)Riemannian metrics}</p>
-
-<div class="definition"><strong>Definition.</strong> 
-<p>A \textbf{pseudo-Riemannian metric} on a smooth manifold $M$ is a $(0,2)$-<a href="tensor-field.html">tensor field</a> $\mathrm{g}$ such that for each $p\in M$, the bilinear form $\mathrm{g}_p\coloneqq \bkt{-}{-}_p\colon T_pM\times T_pM\to \bbR$ is symmetric and nondegenerate. If $\mathrm{g}$ is positive-definite, it is a \textbf{Riemannian metric}.</p>
+<div class="remark">
+<p><strong>Remark ((Pseudo-)norms from quadratic forms).</strong> A (pseudo-)Euclidean vector space $(V,Q)$ has <strong>(pseudo-)norm</strong> $\|-\|\coloneqq \sqrt{Q(-)}$.</p>
 </div>
 
-<div class="definition"><strong>Definition ((Pseudo-)Riemannian manifolds).</strong> 
-<p>A \textbf{(pseudo-)Riemannian manifold} is a <a href="smooth-manifold.html">smooth manifold</a> $M$ equipped with a (pseudo-)Riemannian metric $\mathrm{g} \coloneqq \bkt{-}{-}$.</p>
+<h2>(Pseudo-)Riemannian metrics</h2>
+
+<div class="definition">
+<p><strong>Definition.</strong> A <strong>pseudo-Riemannian metric</strong> on a smooth manifold $M$ is a $(0,2)$-<a href="tensor-field.html">tensor field</a> $\mathrm{g}$ such that for each $p\in M$, the bilinear form $\mathrm{g}_p\coloneqq \bkt{-}{-}_p\colon T_pM\times T_pM\to \bbR$ is symmetric and nondegenerate. If $\mathrm{g}$ is positive-definite, it is a <strong>Riemannian metric</strong>.</p>
 </div>
 
-<div class="example"><strong>Example (Euclidean metric).</strong> 
-<p>For $M = \bbR^n$ with global coordinates $x^i$, the \textbf{Euclidean metric} $\overline{\mathrm{g}} \coloneqq (\mathrm{d} x^1)^2 + \cdots + (\mathrm{d} x^n)^2$ makes $\bbR^n$ into a Riemannian manifold, the standard Euclidean vector space of dimension $n$.</p>
+<div class="definition">
+<p><strong>Definition ((Pseudo-)Riemannian manifolds).</strong> A <strong>(pseudo-)Riemannian manifold</strong> is a <a href="smooth-manifold.html">smooth manifold</a> $M$ equipped with a (pseudo-)Riemannian metric $\mathrm{g} \coloneqq \bkt{-}{-}$.</p>
 </div>
 
-<div class="example"><strong>Example (Poincaré disk model).</strong> 
-<p>For $M = \overset\circ D{}^n \subset \bbR^n$, the \textbf{Poincaré metric} $\mathrm{g}_{\small\mathbb{H}}\coloneqq \dfrac{4\overline{\mathrm{g}}}{1-\overline{\mathrm{g}}}$ yields the Poincaré disk model of $n$-dimensional \textbf{hyperbolic space} $\mathbb{H}^n$.</p>
+<div class="example">
+<p><strong>Example (Euclidean metric).</strong> For $M = \bbR^n$ with global coordinates $x^i$, the <strong>Euclidean metric</strong> $\overline{\mathrm{g}} \coloneqq (\mathrm{d} x^1)^2 + \cdots + (\mathrm{d} x^n)^2$ makes $\bbR^n$ into a Riemannian manifold, the standard Euclidean vector space of dimension $n$.</p>
+</div>
+
+<div class="example">
+<p><strong>Example (Poincaré disk model).</strong> For $M = \overset\circ D{}^n \subset \bbR^n$, the <strong>Poincaré metric</strong> $\mathrm{g}_{\small\mathbb{H}}\coloneqq \dfrac{4\overline{\mathrm{g}}}{1-\overline{\mathrm{g}}}$ yields the Poincaré disk model of $n$-dimensional <strong>hyperbolic space</strong> $\mathbb{H}^n$.</p>
 </div>
 
 <p>\begin{framedproposition}[{(Lee18, Prop. 2.4)}] Every smooth manifold admits a Riemannian metric; one proof uses a <a href="partition-of-unity.html">partition-of-unity</a>. \end{framedproposition}</p>
@@ -237,6 +300,7 @@
             <li><a href="smooth-manifold.html">smooth-manifold</a></li>
             <li><a href="tensor-field.html">tensor-field</a></li>
         </ul>
+    </div>
     </div>
 </body>
 </html>

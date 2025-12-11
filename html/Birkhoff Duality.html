@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Birkhoff Duality</title>
+    <title>Birkhoff Duality - GWiki</title>
     <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
     <script>
     window.MathJax = {
@@ -48,8 +48,8 @@
                 Spec: '\\operatorname{Spec}',
                 im: '\\operatorname{im}',
                 coker: '\\operatorname{coker}',
-                coloneqq: '\\mathrel{\\vcenter{\\hbox{.}\\hbox{.}}}=',
-                coloneq: '\\mathrel{\\vcenter{\\hbox{.}\\hbox{.}}}=',
+                coloneqq: '\\mathrel{\\vcenter{:}}=',
+                coloneq: '\\mathrel{\\vcenter{:}}=',
 
                 // TikZ-like (limited in HTML)
                 to: '\\rightarrow',
@@ -63,12 +63,35 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         body {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 0 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0;
             font-family: Georgia, serif;
             line-height: 1.6;
-            color: #333;
+            color: #1f2937;
+            background: #f9fafb;
+        }
+        .top-nav {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .top-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        .top-nav a:hover {
+            text-decoration: underline;
+        }
+        .content-wrapper {
+            background: white;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 40px 60px 40px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
         }
         h1 {
             color: #2563eb;
@@ -91,10 +114,40 @@
             margin-bottom: 10px;
         }
         .metadata {
-            font-size: 0.9em;
+            font-size: 0.85em;
             color: #6b7280;
-            margin-bottom: 20px;
-            font-family: monospace;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f9fafb;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+        }
+        .toc {
+            background: #f0f9ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        .toc h3 {
+            margin-top: 0;
+            color: #1e40af;
+            font-size: 1.1em;
+        }
+        .toc ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 10px 0 0 0;
+        }
+        .toc li {
+            margin: 5px 0;
+        }
+        .toc a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+        .toc a:hover {
+            text-decoration: underline;
         }
         .topics {
             background: #f3f4f6;
@@ -106,14 +159,17 @@
             background: #ecfeff;
             border: 1px solid #06b6d4;
             border-left: 4px solid #06b6d4;
-            padding: 15px;
+            padding: 4px 8px;
             margin: 20px 0;
             border-radius: 4px;
         }
         .definition, .theorem, .example, .lemma, .proposition, .corollary, .remark {
             margin: 20px 0;
-            padding: 15px;
+            padding: 8px;
             border-radius: 4px;
+        }
+        .definition p, .theorem p, .example p, .lemma p, .proposition p, .corollary p, .remark p, .idea p {
+            margin: 0;
         }
         .definition {
             background: #fef3c7;
@@ -152,7 +208,7 @@
             margin: 8px 0;
         }
         script[type="text/tikz"] {
-            display: block;
+            /* display: block; - Hiding this to prevents raw code from showing if TikZJax fails */
             margin: 20px 0;
             text-align: center;
         }
@@ -181,21 +237,29 @@
     </style>
 </head>
 <body>
+    <div class="top-nav">
+        <a href="../index.html">← Back to Index</a>
+    </div>
+    <div class="content-wrapper">
     <h1>Birkhoff Duality</h1>
     <div class="metadata">
-        <strong>Topics:</strong> order-theory<br>
-        <strong>Last modified:</strong> 2025-12-09
+        <strong>Last modified:</strong> 2025-12-09 19:20<br>
+        <strong>Created:</strong> 2025-12-09<br>
+        <strong>Tags:</strong> order-theory
     </div>
 
     <div class="content">
-        <p>\begin{idea}[Idea] Birkhoff duality identifies a finite distributive lattice with the poset of its join-irreducible elements, while the lattice itself is recovered as the lattice of order ideals of that poset. Morphisms become order-preserving maps in the opposite direction. \end{idea}</p>
+        <div class="idea">
+<p><strong>Idea.</strong> Birkhoff duality identifies a finite distributive lattice with the poset of its join-irreducible elements, while the lattice itself is recovered as the lattice of order ideals of that poset. Morphisms become order-preserving maps in the opposite direction.</p>
+</div>
 
-<div class="definition"><strong>Definition (Duality statement).</strong> 
-<p>Let $\mathsf{FDLat}$ be the category of finite distributive lattices and $\mathsf{FPos}$ the category of finite posets. The functor sending $L$ to its poset of join-irreducibles $J(L)$ and $P$ to its lattice of ideals $\mathrm{Idl}(P)$ yields an equivalence $\mathsf{FDLat} \simeq \mathsf{FPos}^{\mathrm{op}}$.</p>
+<div class="definition">
+<p><strong>Definition (Duality statement).</strong> Let $\mathsf{FDLat}$ be the category of finite distributive lattices and $\mathsf{FPos}$ the category of finite posets. The functor sending $L$ to its poset of join-irreducibles $J(L)$ and $P$ to its lattice of ideals $\mathrm{Idl}(P)$ yields an equivalence $\mathsf{FDLat} \simeq \mathsf{FPos}^{\mathrm{op}}$.</p>
 </div>
 
 <p><strong>See also:</strong> <a href="category.html">category</a>, <a href="functor.html">functor</a>, <a href="natural transformation.html">natural transformation</a></p>
 <p>\IncomingLinks{dg algebra}</p>
+    </div>
     </div>
 </body>
 </html>

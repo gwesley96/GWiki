@@ -9,34 +9,52 @@
 
 \section{Step 1: Basic Tkz Environment}
 
-Testing if the basic environment works with the definitions.
+Testing the \texttt{tkz} environment with a simple node.
 
 \begin{center}
 \begin{tkz}
-  \node[draw, rounded corners, fill=blue!10] at (0,0) {Basic Node};
+  \node[draw, fill=blue!10] at (0,0) {Step 1};
 \end{tkz}
 \end{center}
 
-\section{Step 2: Custom Macros}
+\section{Step 2: Inline Tz Command}
 
-Testing the custom \verb|\cpn| macro.
+Testing the inline \verb|\tz| command.
+
+\begin{center}
+  Inline: \tz{\draw (0,0) -- (1,0) node[right] {Line};}
+\end{center}
+
+\section{Step 3: Custom Macros}
+
+Testing \verb|\cpn| and layers.
 
 \begin{center}
 \begin{tkz}
-  % Draw coupon using macro
-  \cpn{(1,0.75)}{$f$}
-  \node at (0,0) {Test};
+  \cpn{(0,0)}{$f$}
+  \node at (0,-1) {Coupon};
 \end{tkz}
 \end{center}
 
-\section{Step 3: Patterns}
+\section{Step 4: Patterns}
 
-Testing \texttt{primedregion} style.
+Testing \verb|primedregion| style.
 
 \begin{center}
 \begin{tkz}
-  \fill[primedregion=blue!20] (0,0) rectangle (1.5,1.5);
-  \node at (0.75,0.75) {Dots};
+  \fill[primedregion=blue!20] (0,0) rectangle (2,1);
+  \node at (1,0.5) {Pattern};
+\end{tkz}
+\end{center}
+
+\section{Step 5: Arrow Styles}
+
+Testing \verb|mid>| and \verb|arrow at| styles.
+
+\begin{center}
+\begin{tkz}
+  \draw[mid>] (0,0) -- (2,0);
+  \draw[mid<] (0,1) -- (2,1);
 \end{tkz}
 \end{center}
 
