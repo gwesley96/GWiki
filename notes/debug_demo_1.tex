@@ -1,0 +1,10 @@
+\documentclass{gwiki}
+\begin{document}
+\NoteHeader
+\begin{tkz}
+  \foreach \i/\col in {0/colA,1/colB,2/colC,3/colD,4/colE} {
+    \fill[\col] (\i*1.2,0) circle (0.4);
+    \node[below] at (\i*1.2,-0.5) {\texttt{\col}};
+  }
+\end{tkz}
+\end{document}

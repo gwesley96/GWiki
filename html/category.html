@@ -48,8 +48,8 @@
                 Spec: '\\operatorname{Spec}',
                 im: '\\operatorname{im}',
                 coker: '\\operatorname{coker}',
-                coloneqq: '\\mathrel{\\vcenter{\\hbox{.}\\hbox{.}}}=',
-                coloneq: '\\mathrel{\\vcenter{\\hbox{.}\\hbox{.}}}=',
+                coloneqq: '\\mathrel{\\vcenter{:}}=',
+                coloneq: '\\mathrel{\\vcenter{:}}=',
 
                 // TikZ-like (limited in HTML)
                 to: '\\rightarrow',
@@ -112,8 +112,11 @@
         }
         .definition, .theorem, .example, .lemma, .proposition, .corollary, .remark {
             margin: 20px 0;
-            padding: 15px;
+            padding: 8px;
             border-radius: 4px;
+        }
+        .definition p, .theorem p, .example p, .lemma p, .proposition p, .corollary p, .remark p {
+            margin: 0;
         }
         .definition {
             background: #fef3c7;
@@ -183,21 +186,39 @@
 <body>
     <h1>Category</h1>
     <div class="metadata">
-        <strong>Topics:</strong> category-theory, definition<br>
-        <strong>Last modified:</strong> 2025-12-09
+        <strong>Last modified:</strong> 2025-12-11 11:28<br>
+        <strong>Created:</strong> 2025-12-09<br>
+        <strong>Tags:</strong> category-theory, definition
     </div>
 
     <div class="content">
-        <p>\begin{idea}[Idea] Categories abstract the common structure shared by mathematical contexts: objects (like sets, groups, topological spaces) and structure-preserving maps between them (functions, homomorphisms, continuous maps), formalized through composition and identities. \end{idea}</p>
+        <div class="idea">
+<p><strong>Idea.</strong> Categories abstract the common structure shared by mathematical contexts: objects (like sets, groups, topological spaces) and structure-preserving maps between them (functions, homomorphisms, continuous maps), formalized through composition and identities.</p>
 
-<div class="definition"><strong>Definition (Category).</strong> 
-<p>A \textbf{category} $\cC$ consists of: \begin{lst} \item A class $\Obj(\cC)$ of \emph{objects} \item For each pair $A, B$, a set $\Hom(A, B)$ of \emph{morphisms} \item An identity $\id_A : A \to A$ for each object \item Composition $\circ : \Hom(B,C) \times \Hom(A,B) \to \Hom(A,C)$ \end{lst} satisfying associativity and unit laws.</p>
+<p>test</p>
 </div>
 
-<p>\section{Examples}</p>
+<div class="definition">
+<p><strong>Definition (Category).</strong> A <strong>category</strong> $\cC$ consists of:</p>
+<ul>
+<li>A class $\Obj(\cC)$ of \emph{objects}</li>
+<li>For each pair $A, B$, a set $\Hom(A, B)$ of \emph{morphisms}</li>
+<li>An identity $\id_A \colon A \to A$ for each object</li>
+<li>Composition $\circ \colon \Hom(B,C) \times \Hom(A,B) \to \Hom(A,C)$</li>
+</ul>
+<p>satisfying associativity and unit laws.</p>
+</div>
 
-<div class="example"><strong>Example.</strong> 
-<p>Standard categories: \begin{lst} \item $\Set$: sets and functions \item $\Grp$: groups and homomorphisms \item $\Top$: topological spaces and continuous maps \item $\Vec_k$: vector spaces and linear maps \end{lst}</p>
+<h2>Examples</h2>
+
+<div class="example">
+<p><strong>Example.</strong> Standard categories:</p>
+<ul>
+<li>$\Set$: sets and functions</li>
+<li>$\Grp$: groups and homomorphisms</li>
+<li>$\Top$: topological spaces and continuous maps</li>
+<li>$\Vec_k$: vector spaces and linear maps</li>
+</ul>
 </div>
 
 <p><strong>See also:</strong> <a href="functor.html">functor</a>, <a href="natural transformation.html">natural transformation</a></p>

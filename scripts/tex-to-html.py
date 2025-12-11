@@ -44,6 +44,15 @@ def extract_body(content):
             return body[:last_end].strip()
         return body.strip()
 
+    # Fallback: Extraction between \begin{document} and \end{document}
+    match = re.search(r'\\begin\{document\}(.*)', content, re.DOTALL)
+    if match:
+        body = match.group(1)
+        last_end = body.rfind(r'\end{document}')
+        if last_end != -1:
+            return body[:last_end].strip()
+        return body.strip()
+
     return ""
 
 def convert_wikilinks(text):
@@ -63,6 +72,11 @@ def convert_bold(text):
     text = re.sub(r'\*\*([^*]+)\*\*', r'<strong>\1</strong>', text)
     return text
 
+def convert_latex_bold(text):
+    """Convert \\textbf{...} to <strong>...</strong>"""
+    text = re.sub(r'\\textbf\{([^}]+)\}', r'<strong>\1</strong>', text)
+    return text
+
 def convert_italic(text):
     """Convert *italic* to <em>italic</em>"""
     # Be careful not to match ** patterns or single * that are terminal objects
@@ -71,51 +85,72 @@ def convert_italic(text):
     return text
 
 def convert_tikz(text):
-    """Convert tikz code blocks and inline tikzcd diagrams to TikZJax script tags."""
-    tikz_blocks = []
+    """Convert tikz code blocks, inline tikzcd, tkz environment, and \tz command to TikZJax."""
+    
+    # helper to stash content to protect from regexes
+    verb_blocks = []
+    def stash_verb(match):
+        verb_blocks.append(match.group(0))
+        return f'__VERB_BLOCK_{len(verb_blocks) - 1}__'
 
-    def stash_block(match):
-        tikz_blocks.append(match.group(0))
+    # Stash \verb|...|
+    text = re.sub(r'\\verb(?P<delim>[^a-zA-Z]).*?(?P=delim)', stash_verb, text, flags=re.DOTALL)
+    # Stash \begin{verbatim}...\end{verbatim}
+    text = re.sub(r'\\begin\{verbatim\}.*?\\end\{verbatim\}', stash_verb, text, flags=re.DOTALL)
+    # Stash \begin{lstlisting}...\end{lstlisting}
+    text = re.sub(r'\\begin\{lstlisting\}.*?\\end\{lstlisting\}', stash_verb, text, flags=re.DOTALL)
+
+    tikz_blocks = []
+    def stash_script(script_content):
+        tikz_blocks.append(script_content)
         return f'__TIKZ_BLOCK_{len(tikz_blocks) - 1}__'
 
-    # Temporarily remove fenced TikZ blocks so inline replacements don't see them
-    text = re.sub(r'```tikz\s*(.*?)\s*```', stash_block, text, flags=re.DOTALL)
+    # Helper to wrap content in script tag with preamble
+    def wrap_tikz(content, preamble=True):
+        full_content = (TIKZ_PREAMBLE + "\n" + content) if preamble else content
+        return f'<script type="text/tikz">{full_content}</script>'
 
-    def render_tikzcd(inner):
-        inner = inner.strip()
-        script = f'<script type="text/tikz">\\begin{{tikzpicture}}\\begin{{tikzcd}}{inner}\\end{{tikzcd}}\\end{{tikzpicture}}</script>'
-        return script.replace('\\begin{tikzcd}', '__TIKZCD_BEGIN__').replace('\\end{tikzcd}', '__TIKZCD_END__')
+    # 1. Handle ```tikz ... ``` blocks
+    def repl_block(match):
+        content = match.group(1)
+        return stash_script(wrap_tikz(content))
+    
+    text = re.sub(r'```tikz\s*(.*?)\s*```', repl_block, text, flags=re.DOTALL)
 
-    # Replace display math wrapped tikzcd environments
-    text = re.sub(
-        r'\\\[\s*\\begin\{tikzcd\}(.*?)\\end\{tikzcd\}\s*\\\]',
-        lambda m: render_tikzcd(m.group(1)),
-        text,
-        flags=re.DOTALL
-    )
-    text = re.sub(
-        r'\\begin\{tikzcd\}(.*?)\\end\{tikzcd\}',
-        lambda m: render_tikzcd(m.group(1)),
-        text,
-        flags=re.DOTALL
-    )
+    # 2. Handle \begin{tkz}[opt] ... \end{tkz}
+    def repl_tkz(match):
+        opt = match.group(1) if match.group(1) else ""
+        content = match.group(2)
+        tikz_code = f'\\begin{{tikzpicture}}[{opt}]\n{content}\n\\end{{tikzpicture}}'
+        return stash_script(wrap_tikz(tikz_code))
 
-    def convert_block(block_text):
-        tikzcd_match = re.search(r'\\begin\{tikzcd\}(.*?)\\end\{tikzcd\}', block_text, re.DOTALL)
-        if tikzcd_match:
-            tikzcd_content = tikzcd_match.group(1).strip()
-            return render_tikzcd(tikzcd_content)
-        return block_text
+    text = re.sub(r'\\begin\{tkz\}(?:\[([^\]]*)\])?(.*?)\\end\{tkz\}', repl_tkz, text, flags=re.DOTALL)
 
-    # Restore fencing placeholders with converted content
-    for idx, block in enumerate(tikz_blocks):
-        placeholder = f'__TIKZ_BLOCK_{idx}__'
-        converted = convert_block(block)
-        text = text.replace(placeholder, converted)
+    # 3. Handle \tz[opt]{content}
+    def repl_tz(match):
+        opt = match.group(1) if match.group(1) else ""
+        content = match.group(2)
+        tikz_code = f'\\begin{{tikzpicture}}[{opt}]\n{content}\n\\end{{tikzpicture}}'
+        return stash_script(wrap_tikz(tikz_code))
+        
+    text = re.sub(r'\\tz(?:\[([^\]]*)\])?\{((?:[^{}]|{[^{}]*})*)\}', repl_tz, text, flags=re.DOTALL)
 
-    # Revert temporary placeholders so the TikZ code is valid again
-    text = text.replace('__TIKZCD_BEGIN__', '\\begin{tikzcd}')
-    text = text.replace('__TIKZCD_END__', '\\end{tikzcd}')
+    # 4. Handle \begin{tikzcd} ... \end{tikzcd}
+    # Matches optional \[ wrapper, then the environment
+    def repl_tikzcd(match):
+        content = match.group(1)
+        # Verify content starts with \begin{tikzcd} to be safe, though regex ensures it
+        return stash_script(wrap_tikz(content))
+
+    text = re.sub(r'(?:\\\[\s*)?(\\begin\{tikzcd\}.*?\\end\{tikzcd\})(?:\s*\\\])?', repl_tikzcd, text, flags=re.DOTALL)
+    
+    # Restore TikZ blocks
+    for i, block in enumerate(tikz_blocks):
+        text = text.replace(f'__TIKZ_BLOCK_{i}__', block)
+    
+    # Restore verb blocks
+    for i, block in enumerate(verb_blocks):
+        text = text.replace(f'__VERB_BLOCK_{i}__', block)
 
     return text
 
@@ -125,28 +160,105 @@ def convert_environments(text):
     def replace_env(match):
         env_name = match.group(1)
         optional = match.group(2) if match.group(2) else ""
-        body = match.group(3)
+        body = match.group(3).strip()
 
         # Remove \label{...} commands
         body = re.sub(r'\\label\{[^}]+\}', '', body)
 
         # Handle optional argument (usually the title)
         title = ""
-        if optional:
-            title = f"<strong>{env_name.capitalize()} ({optional}).</strong> "
+        # Special case for Idea: if optional is "Idea", don't repeat it.
+        if env_name == "idea" and optional == "Idea":
+             title = f"<strong>{env_name.capitalize()}.</strong>"
+        elif optional:
+            title = f"<strong>{env_name.capitalize()} ({optional}).</strong>"
         else:
-            title = f"<strong>{env_name.capitalize()}.</strong> "
+            title = f"<strong>{env_name.capitalize()}.</strong>"
 
-        return f'<div class="{env_name}">{title}{body}</div>'
+        # Content placement logic
+        # If body starts with a list (<ul> or <ol>), title goes on separate line/paragraph
+        if body.startswith('<ul>') or body.startswith('<ol>'):
+             content = f'<p>{title}</p>\n{body}'
+        else:
+             # Inline title - we rely on wrap_paragraphs to keep this together if it's text
+             content = f'{title} {body}'
+
+        return f'<div class="{env_name}">\n{content}\n</div>'
 
     # Match \begin{env}[optional]{body}\end{env} or \begin{env}{body}\end{env}
     text = re.sub(
-        r'\\begin\{(definition|theorem|lemma|proposition|corollary|example|remark)\}(?:\[([^\]]+)\])?(.*?)\\end\{\1\}',
+        r'\\begin\{(definition|theorem|lemma|proposition|corollary|example|remark|idea)\}(?:\[([^\]]+)\])?(.*?)\\end\{\1\}',
         replace_env,
         text,
         flags=re.DOTALL
     )
 
+    return text
+
+TIKZ_PREAMBLE = r'''
+\usetikzlibrary{arrows.meta,calc,decorations.pathmorphing,patterns,positioning,shapes.geometric,quotes,cd}
+
+\usepackage{hyperref}
+
+% Colors
+\definecolor{colA}{RGB}{200,50,50}
+\definecolor{colB}{RGB}{50,50,200}
+\definecolor{colC}{RGB}{50,200,50}
+\definecolor{colD}{RGB}{200,150,50}
+\definecolor{colE}{RGB}{200,150,50}
+\colorlet{gr1}{gray!20}
+
+% Patterns
+\pgfdeclarepatternformonly{primeddots}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{5pt}{5pt}}{\pgfqpoint{4pt}{4pt}}%
+{
+  \pgfpathcircle{\pgfqpoint{0pt}{0pt}}{.5pt}
+  \pgfusepath{fill}
+}
+
+% Styles
+\tikzset{
+    primedregion/.style={fill=#1, postaction={pattern=primeddots}},
+    boxregion/.style={fill=#1, draw=#1},
+    diagregion/.style={fill=#1, draw=#1},
+    
+    % Arrows
+    arrow at/.style={->},
+    arrow at/.default=0.5,
+    mid>/.style={->},
+    mid>/.default=0.55,
+    Rightarrow/.style={double equal sign distance, >={Implies}, ->},
+    
+    % Knot
+    over/.style={double, draw=white, line width=3pt, double=black},
+    
+    % Nodes
+    coupon/.style={draw=black, fill=white, rounded corners=5pt, thick, inner sep=3pt},
+    bullet/.style={circle, fill=#1, draw=#1, inner sep=0pt, minimum size=3pt},
+    bullet/.default=black,
+}
+
+% Commands
+\newcommand{\cpn}[2]{\node[coupon] at #1 {#2};}
+\newcommand{\blt}[1]{\node[bullet] at #1 {};}
+\newcommand{\wref}[2][]{\href{#2.html}{#2}}
+'''
+
+def convert_lst(text):
+    """Convert LaTeX lst environment to HTML lists"""
+    def replace_lst(match):
+        content = match.group(1)
+        # Split by \item
+        items = re.split(r'\s*\\item\s+', content)
+        # Filter empty items
+        items = [item.strip() for item in items if item.strip()]
+        
+        list_html = "<ul>\n"
+        for item in items:
+            list_html += f"<li>{item}</li>\n"
+        list_html += "</ul>"
+        return list_html
+
+    text = re.sub(r'\\begin\{lst\}(.*?)\\end\{lst\}', replace_lst, text, flags=re.DOTALL)
     return text
 
 def convert_itemize(text):
@@ -269,12 +381,39 @@ def convert_itemize(text):
 
 def convert_sections(text):
     """Convert markdown-style headers and LaTeX sections to HTML"""
-    # Convert #### to h4
+    # LaTeX sections
+    text = re.sub(r'\\section\*?\{([^}]+)\}', r'<h2>\1</h2>', text)
+    text = re.sub(r'\\subsection\*?\{([^}]+)\}', r'<h3>\1</h3>', text)
+    text = re.sub(r'\\subsubsection\*?\{([^}]+)\}', r'<h4>\1</h4>', text)
+
+    # Markdown headers
     text = re.sub(r'^####\s+(.+)$', r'<h4>\1</h4>', text, flags=re.MULTILINE)
-    # Convert ### to h3
     text = re.sub(r'^###\s+(.+)$', r'<h3>\1</h3>', text, flags=re.MULTILINE)
-    # Convert ## to h2
     text = re.sub(r'^##\s+(.+)$', r'<h2>\1</h2>', text, flags=re.MULTILINE)
+    return text
+
+def fix_math_colons(text):
+    """Replace : with \colon in math expressions like f : A -> B"""
+    def replace_colon(match):
+        content = match.group(1)
+        # Look for : followed by something then an arrow
+        # We search for : followed by non-punct chars until an arrow
+        # Use simple heuristic: if we see : ... \to without intermediate : or = or ;
+        # Capturing group 1 is the content between : and arrow
+        content = re.sub(r':([^:=;]*?)(?=\\(?:to|rightarrow|longrightarrow|longmapsto|hookrightarrow|twoheadrightarrow)\b)', r'\\colon\1', content)
+        return f'${content}$'
+
+    # Match inline math. Display math is harder (\[...\])
+    text = re.sub(r'\$([^$]+)\$', replace_colon, text)
+    
+    # Simple display math (\[...\])
+    def replace_colon_display(match):
+        content = match.group(1)
+        content = re.sub(r':([^:=;]*?)(?=\\(?:to|rightarrow|longrightarrow|longmapsto|hookrightarrow|twoheadrightarrow)\b)', r'\\colon\1', content)
+        return f'\\[{content}\\]'
+        
+    text = re.sub(r'\\\[(.*?)\\\]', replace_colon_display, text, flags=re.DOTALL)
+    
     return text
 
 def convert_seealso(text):
@@ -298,36 +437,51 @@ def wrap_paragraphs(text):
     in_script = False
     para_buffer = []
 
+    # Tags that should definitely NOT be wrapped in <p>
+    BLOCK_TAGS = (
+        '<div', '<p', '<script', '<ul', '<ol', '<li', 
+        '<h1', '<h2', '<h3', '<h4', '<h5', '<h6', 
+        '<table', '<blockquote', '<section', '<header', '<footer', '<style'
+    )
+
     for line in lines:
         stripped = line.strip()
 
-        # Check if we're starting or ending a script tag
-        if '<script' in stripped:
-            # Flush paragraph buffer
+        # Check if we're starting or ending a script/style tag (bypass logic)
+        if '<script' in stripped or '<style' in stripped:
             if para_buffer:
                 result.append('<p>' + ' '.join(para_buffer) + '</p>')
                 para_buffer = []
             in_script = True
             result.append(line)
-            if '</script>' in stripped:
+            if '</script>' in stripped or '</style>' in stripped:
                 in_script = False
             continue
 
         if in_script:
             result.append(line)
-            if '</script>' in stripped:
+            if '</script>' in stripped or '</style>' in stripped:
                 in_script = False
             continue
 
-        # Check if line starts an HTML tag (but not script, we handled that above)
-        if stripped.startswith('<'):
+        # Check if line starts with a block tag
+        start_is_block = stripped.startswith(BLOCK_TAGS)
+        
+        # Check if line seems to be a closing block tag (simple heuristic)
+        end_is_block = stripped.startswith('</') and (
+            stripped.startswith('</div') or stripped.startswith('</ul') or 
+            stripped.startswith('</ol') or stripped.startswith('</table')
+        )
+
+        if start_is_block or end_is_block:
             # Flush paragraph buffer
             if para_buffer:
                 result.append('<p>' + ' '.join(para_buffer) + '</p>')
                 para_buffer = []
             result.append(line)
-            # Track if we're in a multi-line tag
-            if not '>' in stripped or stripped.count('<') > stripped.count('>'):
+            
+            # Simple multi-line tag tracking (imperfect but helps with divs)
+            if start_is_block and (not '>' in stripped or stripped.count('<') > stripped.count('>')):
                 in_tag = True
             else:
                 in_tag = False
@@ -342,7 +496,7 @@ def wrap_paragraphs(text):
                 para_buffer = []
             result.append(line)
         else:
-            # Regular text - add to paragraph buffer
+            # Regular text OR inline tags (<strong>, <a>, etc.) -> add to paragraph
             para_buffer.append(stripped)
 
     # Flush final paragraph
@@ -403,24 +557,65 @@ def convert_to_html(tex_path, backlinks_map=None):
     # Extract metadata
     title, tags = extract_metadata(content)
     body = extract_body(content)
-    last_modified = get_last_modified(tex_path)
+
+    # Get note name for metadata lookups
+    note_name = Path(tex_path).stem
+
+    # Load creation dates
+    root_dir = Path(__file__).resolve().parent.parent
+    metadata_file = root_dir / ".gwiki-metadata.json"
+    created_date = "?"
+    if metadata_file.exists():
+        try:
+            import json
+            data = json.loads(metadata_file.read_text())
+            created_date = data.get('creation_dates', {}).get(note_name, "?")
+        except:
+            pass
+
+    # Refine Last Modified
+    if os.path.exists(tex_path):
+        mtime = os.path.getmtime(tex_path)
+        last_modified = datetime.fromtimestamp(mtime).strftime('%Y-%m-%d %H:%M')
+    else:
+        last_modified = datetime.now().strftime('%Y-%m-%d %H:%M')
 
     # Get outgoing links and backlinks
     outgoing_links = extract_wikilinks(content)
-    note_name = Path(tex_path).stem
     backlinks = backlinks_map.get(note_name, []) if backlinks_map else []
 
     # Convert body
     # Important: Do tikz/bold/italic/wikilinks BEFORE environments
     # to avoid issues with nested conversions
     body = convert_tikz(body)
+
+    # Stash scripts to protect them from wikilinks and other regexes
+    script_blocks = []
+    def stash_all_scripts(match):
+        script_blocks.append(match.group(0))
+        return f'__SCRIPT_BLOCK_{len(script_blocks) - 1}__'
+    
+    body = re.sub(r'<script.*?>.*?</script>', stash_all_scripts, body, flags=re.DOTALL)
+
+    body = fix_math_colons(body)  # Fix : to \colon in math
     body = convert_wikilinks(body)
     body = convert_bold(body)
+    body = convert_latex_bold(body) # Add \textbf support
     body = convert_italic(body)
-    body = convert_environments(body)  # This should come after basic conversions
-    body = convert_itemize(body)  # Lists must come before sections
+    body = convert_lst(body)           # Handle LaTeX lists (Moved before environments!)
+    body = convert_itemize(body)       # Handle markdown lists
+    body = convert_environments(body)  # Environments now see HTML lists
     body = convert_sections(body)
     body = convert_seealso(body)
+    
+    # Convert center environment (do this late to avoid interfering with other blocks)
+    # Match \begin{center} ... \end{center}
+    body = re.sub(r'\\begin\{center\}(.*?)\\end\{center\}', r'<div style="text-align: center;">\1</div>', body, flags=re.DOTALL)
+
+    # Restore scripts
+    for i, block in enumerate(script_blocks):
+        body = body.replace(f'__SCRIPT_BLOCK_{i}__', block)
+
     body = wrap_paragraphs(body)
 
     # Generate HTML
@@ -474,8 +669,8 @@ def convert_to_html(tex_path, backlinks_map=None):
                 Spec: '\\\\operatorname{{Spec}}',
                 im: '\\\\operatorname{{im}}',
                 coker: '\\\\operatorname{{coker}}',
-                coloneqq: '\\\\mathrel{{\\\\vcenter{{\\\\hbox{{.}}\\\\hbox{{.}}}}}}=',
-                coloneq: '\\\\mathrel{{\\\\vcenter{{\\\\hbox{{.}}\\\\hbox{{.}}}}}}=',
+                coloneqq: '\\\\mathrel{{\\\\vcenter{{:}}}}=',
+                coloneq: '\\\\mathrel{{\\\\vcenter{{:}}}}=',
 
                 // TikZ-like (limited in HTML)
                 to: '\\\\rightarrow',
@@ -532,14 +727,17 @@ def convert_to_html(tex_path, backlinks_map=None):
             background: #ecfeff;
             border: 1px solid #06b6d4;
             border-left: 4px solid #06b6d4;
-            padding: 15px;
+            padding: 4px 8px;
             margin: 20px 0;
             border-radius: 4px;
         }}
         .definition, .theorem, .example, .lemma, .proposition, .corollary, .remark {{
             margin: 20px 0;
-            padding: 15px;
+            padding: 8px;
             border-radius: 4px;
+        }}
+        .definition p, .theorem p, .example p, .lemma p, .proposition p, .corollary p, .remark p, .idea p {{
+            margin: 0;
         }}
         .definition {{
             background: #fef3c7;
@@ -578,7 +776,7 @@ def convert_to_html(tex_path, backlinks_map=None):
             margin: 8px 0;
         }}
         script[type="text/tikz"] {{
-            display: block;
+            /* display: block; - Hiding this to prevents raw code from showing if TikZJax fails */
             margin: 20px 0;
             text-align: center;
         }}
@@ -608,14 +806,15 @@ def convert_to_html(tex_path, backlinks_map=None):
 </head>
 <body>
     <h1>{title}</h1>
-    <div class="metadata">'''
+    <div class="metadata">
+        <strong>Last modified:</strong> {last_modified}<br>
+        <strong>Created:</strong> {created_date}<br>'''
 
     if tags:
         html += f'''
-        <strong>Topics:</strong> {", ".join(tags)}<br>'''
+        <strong>Tags:</strong> {", ".join(tags)}'''
 
     html += f'''
-        <strong>Last modified:</strong> {last_modified}
     </div>
 
     <div class="content">

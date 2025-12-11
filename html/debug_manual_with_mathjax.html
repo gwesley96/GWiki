@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Debug: Manual with MathJax</title>
+    <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
+    
+    <!-- MATHJAX BLOCKS START -->
+    <script>
+    window.MathJax = {
+        tex: {
+            inlineMath: [['$', '$']],
+            displayMath: [['\\[', '\\]']],
+            macros: {
+                cC: '\\mathcal{C}',
+                to: '\\rightarrow'
+            }
+        }
+    };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- MATHJAX BLOCKS END -->
+
+    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
+    <style> .test-case { border: 1px solid #ccc; margin: 20px; padding: 10px; } </style>
+</head>
+<body>
+    <h1>Manual Debug + MathJax</h1>
+
+    <div class="test-case">
+        <script type="text/tikz">
+\usetikzlibrary{arrows.meta,calc,decorations.pathmorphing,patterns,positioning,shapes.geometric,quotes,cd}
+\definecolor{colA}{RGB}{200,50,50}
+\definecolor{colB}{RGB}{50,50,200}
+\definecolor{colC}{RGB}{50,200,50}
+\definecolor{colD}{RGB}{200,150,50}
+\definecolor{colE}{RGB}{200,150,50}
+\colorlet{gr1}{gray!20}
+\pgfdeclarepatternformonly{primeddots}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{5pt}{5pt}}{\pgfqpoint{4pt}{4pt}}%
+{ \pgfpathcircle{\pgfqpoint{0pt}{0pt}}{.5pt} \pgfusepath{fill} }
+\tikzset{
+    primedregion/.style={fill=#1, postaction={pattern=primeddots}},
+    boxregion/.style={fill=#1, draw=#1},
+    diagregion/.style={fill=#1, draw=#1},
+    arrow at/.style={->},
+    mid>/.style={->},
+    Rightarrow/.style={double equal sign distance, >={Implies}, ->},
+}
+
+\begin{tikzpicture}[]
+    \foreach \i/\col in {0/colA,1/colB,2/colC,3/colD,4/colE} {
+        \fill[\col] (\i*1.2,0) circle (0.4);
+        \node[below] at (\i*1.2,-0.5) {\texttt{\col}};
+    }
+\end{tikzpicture}
+        </script>
+    </div>
+</body>
+</html>

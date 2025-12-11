@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Step 2: Preamble</title>
+    <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
+    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
+    <style>
+        /* Ensure we can see if it fails (script would be visible if block, but better to just look for SVG) */
+    </style>
+</head>
+<body>
+    <h1>Step 2: Red Dot with Preamble</h1>
+    <p>If this fails, the Preamble is the culprit.</p>
+    <script type="text/tikz">
+        \usetikzlibrary{arrows.meta,calc,decorations.pathmorphing,decorations.markings,patterns,positioning,shapes.geometric,quotes,cd}
+
+        % Colors
+        \definecolor{colA}{RGB}{200,50,50}
+        \definecolor{colB}{RGB}{50,50,200}
+        \definecolor{colC}{RGB}{50,200,50}
+        \definecolor{colD}{RGB}{200,150,50}
+        \definecolor{colE}{RGB}{200,150,50}
+        \colorlet{gr1}{gray!20}
+
+        % Patterns
+        \pgfdeclarepatternformonly{primeddots}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{5pt}{5pt}}{\pgfqpoint{4pt}{4pt}}%
+        {
+          \pgfpathcircle{\pgfqpoint{0pt}{0pt}}{.5pt}
+          \pgfusepath{fill}
+        }
+
+        % Styles
+        \tikzset{
+            primedregion/.style={preaction={fill=#1}, pattern=primeddots},
+            boxregion/.style={preaction={fill=#1}, draw=#1},
+            diagregion/.style={preaction={fill=#1}, draw=#1},
+            
+            % Arrows
+            arrow at/.style={decoration={markings, mark=at position #1 with {\arrow{>}}}, postaction={decorate}},
+            arrow at/.default=0.5,
+            mid>/.style={arrow at=#1},
+            mid>/.default=0.55,
+            Rightarrow/.style={double equal sign distance, >={Implies}, ->},
+            
+            % Knot
+            over/.style={double, draw=white, line width=3pt, double=black},
+            
+            % Nodes
+            coupon/.style={draw=black, fill=white, rounded corners=5pt, thick, inner sep=3pt},
+            bullet/.style={circle, fill=#1, draw=#1, inner sep=0pt, minimum size=3pt},
+            bullet/.default=black,
+        }
+
+        % Commands
+        \newcommand{\cpn}[2]{\node[coupon] at #1 {#2};}
+        \newcommand{\blt}[1]{\node[bullet] at #1 {};}
+        \newcommand{\wref}[2][]{#2}
+        \providecommand{\href}[2]{#2}
+
+        \begin{tikzpicture}
+            \fill[red] (0,0) circle (1cm);
+        \end{tikzpicture}
+    </script>
+</body>
+</html>

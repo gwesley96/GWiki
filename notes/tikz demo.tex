@@ -107,6 +107,46 @@ Predefined color scheme for consistency:
 \end{tkz}
 \end{center}
 
+\section{Adjunctions (Snake Equations)}
+
+String diagrams are particularly useful for expressing adjointness properties, such as the zigzag identities:
+
+\begin{center}
+\begin{tkz}
+  % Left hand side
+  \draw[thick] (0,2) -- (0,1.5) arc (180:360:0.5) -- (1,2);
+  \draw[thick] (0,1.5) -- (0,0);
+  
+  % Right hand side
+  \node at (2,1) {$=$};
+  \draw[thick] (3,2) -- (3,0);
+\end{tkz}
+\end{center}
+
+\section{Commutative Diagrams}
+
+We can use \texttt{tikz-cd} for commutative diagrams:
+
+\[
+\begin{tikzcd}
+A \arrow[r, "\phi"] \arrow[d, "f"'] & B \arrow[d, "g"] \\
+C \arrow[r, "\psi"] & D
+\end{tikzcd}
+\]
+
+\section{Function Plots}
+
+TikZ can also plot functions:
+
+\begin{center}
+\begin{tkz}
+  \draw[->] (-0.2,0) -- (3,0) node[right] {$x$};
+  \draw[->] (0,-0.2) -- (0,2) node[above] {$f(x)$};
+  \draw[domain=0:2.5,smooth,variable=\x,blue,thick] plot ({\x},{0.25*\x*\x});
+  \node[blue, right] at (2.5, 1.56) {$y = \frac{x^2}{4}$};
+\end{tkz}
+\end{center}
+
 \section{Conclusion}
 
 The \texttt{tz.sty} package integrates seamlessly with GWiki's document class, providing powerful tools for mathematical visualization while maintaining clean, readable source code.

@@ -48,8 +48,8 @@
                 Spec: '\\operatorname{Spec}',
                 im: '\\operatorname{im}',
                 coker: '\\operatorname{coker}',
-                coloneqq: '\\mathrel{\\vcenter{\\hbox{.}\\hbox{.}}}=',
-                coloneq: '\\mathrel{\\vcenter{\\hbox{.}\\hbox{.}}}=',
+                coloneqq: '\\mathrel{\\vcenter{:}}=',
+                coloneq: '\\mathrel{\\vcenter{:}}=',
 
                 // TikZ-like (limited in HTML)
                 to: '\\rightarrow',
@@ -106,14 +106,17 @@
             background: #ecfeff;
             border: 1px solid #06b6d4;
             border-left: 4px solid #06b6d4;
-            padding: 15px;
+            padding: 8px;
             margin: 20px 0;
             border-radius: 4px;
         }
         .definition, .theorem, .example, .lemma, .proposition, .corollary, .remark {
             margin: 20px 0;
-            padding: 15px;
+            padding: 8px;
             border-radius: 4px;
+        }
+        .definition p, .theorem p, .example p, .lemma p, .proposition p, .corollary p, .remark p, .idea p {
+            margin: 0;
         }
         .definition {
             background: #fef3c7;
@@ -152,7 +155,7 @@
             margin: 8px 0;
         }
         script[type="text/tikz"] {
-            display: block;
+            /* display: block; - Hiding this to prevents raw code from showing if TikZJax fails */
             margin: 20px 0;
             text-align: center;
         }
@@ -183,66 +186,627 @@
 <body>
     <h1>TikZ string diagrams demo</h1>
     <div class="metadata">
-        <strong>Topics:</strong> tikz, visualization, category theory<br>
-        <strong>Last modified:</strong> 2025-12-09
+        <strong>Last modified:</strong> 2025-12-11 11:56<br>
+        <strong>Created:</strong> 2025-12-09<br>
+        <strong>Tags:</strong> tikz, visualization, category theory
     </div>
 
     <div class="content">
-        <p>\begin{idea} The \texttt{tz.sty} package provides convenient macros for drawing string diagrams, commutative diagrams, and other mathematical visualizations using TikZ, with support for layers, patterns, and specialized node styles. \end{idea}</p>
+        <div class="idea">
+<p><strong>Idea.</strong> The \texttt{tz.sty} package provides convenient macros for drawing string diagrams, commutative diagrams, and other mathematical visualizations using TikZ, with support for layers, patterns, and specialized node styles.</p>
+</div>
 
-<p>\section{Basic String Diagrams}</p>
+<h2>Basic String Diagrams</h2>
 
 <p>The \texttt{tz.sty} package provides inline TikZ via the \verb|\tz{}| command and the \texttt{tkz} environment. Here's a simple example:</p>
 
-<p>\begin{center} \begin{tkz} \node at (0,0) {See <a href="functor.html">functor</a> and <a href="category.html">category theory</a>}; \end{tkz} \end{center}</p>
+<div style="text-align: center;">
+<script type="text/tikz">
+\usetikzlibrary{arrows.meta,calc,decorations.pathmorphing,patterns,positioning,shapes.geometric,quotes,cd}
 
-<div class="example"><strong>Example (Inline diagram).</strong> 
-<p>A morphism can be drawn inline: \tz{\draw[thick] (0,0) -- (1,0); \fill (0,0) circle (1.5pt); \fill (1,0) circle (1.5pt);}.</p>
+% Colors
+\definecolor{colA}{RGB}{200,50,50}
+\definecolor{colB}{RGB}{50,50,200}
+\definecolor{colC}{RGB}{50,200,50}
+\definecolor{colD}{RGB}{200,150,50}
+\definecolor{colE}{RGB}{200,150,50}
+\colorlet{gr1}{gray!20}
+
+% Patterns
+\pgfdeclarepatternformonly{primeddots}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{5pt}{5pt}}{\pgfqpoint{4pt}{4pt}}%
+{
+  \pgfpathcircle{\pgfqpoint{0pt}{0pt}}{.5pt}
+  \pgfusepath{fill}
+}
+
+% Styles
+\tikzset{
+    primedregion/.style={fill=#1, postaction={pattern=primeddots}},
+    boxregion/.style={fill=#1, draw=#1},
+    diagregion/.style={fill=#1, draw=#1},
+    
+    % Arrows
+    arrow at/.style={->},
+    arrow at/.default=0.5,
+    mid>/.style={->},
+    mid>/.default=0.55,
+    Rightarrow/.style={double equal sign distance, >={Implies}, ->},
+    
+    % Knot
+    over/.style={double, draw=white, line width=3pt, double=black},
+    
+    % Nodes
+    coupon/.style={draw=black, fill=white, rounded corners=5pt, thick, inner sep=3pt},
+    bullet/.style={circle, fill=#1, draw=#1, inner sep=0pt, minimum size=3pt},
+    bullet/.default=black,
+}
+
+% Commands
+\newcommand{\cpn}[2]{\node[coupon] at #1 {#2};}
+\newcommand{\blt}[1]{\node[bullet] at #1 {};}
+\newcommand{\wref}[2][]{#2}
+\providecommand{\href}[2]{#2}
+
+\begin{tikzpicture}[]
+
+  \node at (0,0) {See \wref{functor} and \wref[category theory]{category}};
+
+\end{tikzpicture}</script>
 </div>
 
-<p>\section{Coupons and String Diagrams}</p>
+<div class="example">
+<strong>Example (Inline diagram).</strong> A morphism can be drawn inline: <script type="text/tikz">
+\usetikzlibrary{arrows.meta,calc,decorations.pathmorphing,patterns,positioning,shapes.geometric,quotes,cd}
+
+% Colors
+\definecolor{colA}{RGB}{200,50,50}
+\definecolor{colB}{RGB}{50,50,200}
+\definecolor{colC}{RGB}{50,200,50}
+\definecolor{colD}{RGB}{200,150,50}
+\definecolor{colE}{RGB}{200,150,50}
+\colorlet{gr1}{gray!20}
+
+% Patterns
+\pgfdeclarepatternformonly{primeddots}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{5pt}{5pt}}{\pgfqpoint{4pt}{4pt}}%
+{
+  \pgfpathcircle{\pgfqpoint{0pt}{0pt}}{.5pt}
+  \pgfusepath{fill}
+}
+
+% Styles
+\tikzset{
+    primedregion/.style={fill=#1, postaction={pattern=primeddots}},
+    boxregion/.style={fill=#1, draw=#1},
+    diagregion/.style={fill=#1, draw=#1},
+    
+    % Arrows
+    arrow at/.style={->},
+    arrow at/.default=0.5,
+    mid>/.style={->},
+    mid>/.default=0.55,
+    Rightarrow/.style={double equal sign distance, >={Implies}, ->},
+    
+    % Knot
+    over/.style={double, draw=white, line width=3pt, double=black},
+    
+    % Nodes
+    coupon/.style={draw=black, fill=white, rounded corners=5pt, thick, inner sep=3pt},
+    bullet/.style={circle, fill=#1, draw=#1, inner sep=0pt, minimum size=3pt},
+    bullet/.default=black,
+}
+
+% Commands
+\newcommand{\cpn}[2]{\node[coupon] at #1 {#2};}
+\newcommand{\blt}[1]{\node[bullet] at #1 {};}
+\newcommand{\wref}[2][]{#2}
+\providecommand{\href}[2]{#2}
+
+\begin{tikzpicture}[]
+\draw[thick] (0,0) -- (1,0); \fill (0,0) circle (1.5pt); \fill (1,0) circle (1.5pt);
+\end{tikzpicture}</script>.
+</div>
+
+<h2>Coupons and String Diagrams</h2>
 
 <p>String diagrams use coupons (boxes) connected by strands:</p>
 
-<p>\begin{center} \begin{tkz} % Draw strands \draw[thick] (0,0) -- (0,1.5); \draw[thick] (2,0) -- (2,1.5);</p>
+<div style="text-align: center;">
+<script type="text/tikz">
+\usetikzlibrary{arrows.meta,calc,decorations.pathmorphing,patterns,positioning,shapes.geometric,quotes,cd}
 
-<p>% Draw coupon \cpn{(1,0.75)}{$f$}</p>
+% Colors
+\definecolor{colA}{RGB}{200,50,50}
+\definecolor{colB}{RGB}{50,50,200}
+\definecolor{colC}{RGB}{50,200,50}
+\definecolor{colD}{RGB}{200,150,50}
+\definecolor{colE}{RGB}{200,150,50}
+\colorlet{gr1}{gray!20}
 
-<p>% Connect to coupon \draw[thick] (0,1.5) -- (0.6,0.75); \draw[thick] (2,1.5) -- (1.4,0.75);</p>
+% Patterns
+\pgfdeclarepatternformonly{primeddots}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{5pt}{5pt}}{\pgfqpoint{4pt}{4pt}}%
+{
+  \pgfpathcircle{\pgfqpoint{0pt}{0pt}}{.5pt}
+  \pgfusepath{fill}
+}
 
-<p>% Label endpoints \node[below] at (0,0) {$A$}; \node[below] at (2,0) {$B$}; \end{tkz} \end{center}</p>
+% Styles
+\tikzset{
+    primedregion/.style={fill=#1, postaction={pattern=primeddots}},
+    boxregion/.style={fill=#1, draw=#1},
+    diagregion/.style={fill=#1, draw=#1},
+    
+    % Arrows
+    arrow at/.style={->},
+    arrow at/.default=0.5,
+    mid>/.style={->},
+    mid>/.default=0.55,
+    Rightarrow/.style={double equal sign distance, >={Implies}, ->},
+    
+    % Knot
+    over/.style={double, draw=white, line width=3pt, double=black},
+    
+    % Nodes
+    coupon/.style={draw=black, fill=white, rounded corners=5pt, thick, inner sep=3pt},
+    bullet/.style={circle, fill=#1, draw=#1, inner sep=0pt, minimum size=3pt},
+    bullet/.default=black,
+}
 
-<p>\section{Patterns and Regions}</p>
+% Commands
+\newcommand{\cpn}[2]{\node[coupon] at #1 {#2};}
+\newcommand{\blt}[1]{\node[bullet] at #1 {};}
+\newcommand{\wref}[2][]{#2}
+\providecommand{\href}[2]{#2}
+
+\begin{tikzpicture}[]
+
+  % Draw strands
+  \draw[thick] (0,0) -- (0,1.5);
+  \draw[thick] (2,0) -- (2,1.5);
+
+  % Draw coupon
+  \cpn{(1,0.75)}{$f$}
+
+  % Connect to coupon
+  \draw[thick] (0,1.5) -- (0.6,0.75);
+  \draw[thick] (2,1.5) -- (1.4,0.75);
+
+  % Label endpoints
+  \node[below] at (0,0) {$A$};
+  \node[below] at (2,0) {$B$};
+
+\end{tikzpicture}</script>
+</div>
+
+<h2>Patterns and Regions</h2>
 
 <p>The package includes several pattern styles for indicating different types of regions:</p>
 
-<p>\begin{center} \begin{tkz} \fill[primedregion=blue!20] (0,0) rectangle (1.5,1.5); \fill[boxregion=red!20] (2,0) rectangle (3.5,1.5); \fill[diagregion=green!20] (4,0) rectangle (5.5,1.5);</p>
+<div style="text-align: center;">
+<script type="text/tikz">
+\usetikzlibrary{arrows.meta,calc,decorations.pathmorphing,patterns,positioning,shapes.geometric,quotes,cd}
 
-<p>\node at (0.75,0.75) {Dots}; \node at (2.75,0.75) {Boxes}; \node at (4.75,0.75) {Lines}; \end{tkz} \end{center}</p>
+% Colors
+\definecolor{colA}{RGB}{200,50,50}
+\definecolor{colB}{RGB}{50,50,200}
+\definecolor{colC}{RGB}{50,200,50}
+\definecolor{colD}{RGB}{200,150,50}
+\definecolor{colE}{RGB}{200,150,50}
+\colorlet{gr1}{gray!20}
 
-<p>\section{Arrow Styles}</p>
+% Patterns
+\pgfdeclarepatternformonly{primeddots}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{5pt}{5pt}}{\pgfqpoint{4pt}{4pt}}%
+{
+  \pgfpathcircle{\pgfqpoint{0pt}{0pt}}{.5pt}
+  \pgfusepath{fill}
+}
+
+% Styles
+\tikzset{
+    primedregion/.style={fill=#1, postaction={pattern=primeddots}},
+    boxregion/.style={fill=#1, draw=#1},
+    diagregion/.style={fill=#1, draw=#1},
+    
+    % Arrows
+    arrow at/.style={->},
+    arrow at/.default=0.5,
+    mid>/.style={->},
+    mid>/.default=0.55,
+    Rightarrow/.style={double equal sign distance, >={Implies}, ->},
+    
+    % Knot
+    over/.style={double, draw=white, line width=3pt, double=black},
+    
+    % Nodes
+    coupon/.style={draw=black, fill=white, rounded corners=5pt, thick, inner sep=3pt},
+    bullet/.style={circle, fill=#1, draw=#1, inner sep=0pt, minimum size=3pt},
+    bullet/.default=black,
+}
+
+% Commands
+\newcommand{\cpn}[2]{\node[coupon] at #1 {#2};}
+\newcommand{\blt}[1]{\node[bullet] at #1 {};}
+\newcommand{\wref}[2][]{#2}
+\providecommand{\href}[2]{#2}
+
+\begin{tikzpicture}[]
+
+  \fill[primedregion=blue!20] (0,0) rectangle (1.5,1.5);
+  \fill[boxregion=red!20] (2,0) rectangle (3.5,1.5);
+  \fill[diagregion=green!20] (4,0) rectangle (5.5,1.5);
+
+  \node at (0.75,0.75) {Dots};
+  \node at (2.75,0.75) {Boxes};
+  \node at (4.75,0.75) {Lines};
+
+\end{tikzpicture}</script>
+</div>
+
+<h2>Arrow Styles</h2>
 
 <p>Various arrow decorations are available:</p>
 
-<p>\begin{center} \begin{tkz} \draw[thick,mid>] (0,0) -- (2,0) node[right] {Mid arrow}; \draw[thick,arrow at=0.3] (0,-.5) -- (2,-.5) node[right] {Arrow at 30 percent}; \draw[thick,Rightarrow] (0,-1) -- (2,-1) node[right] {Double arrow}; \end{tkz} \end{center}</p>
+<div style="text-align: center;">
+<script type="text/tikz">
+\usetikzlibrary{arrows.meta,calc,decorations.pathmorphing,patterns,positioning,shapes.geometric,quotes,cd}
 
-<p>\section{Knot Diagrams}</p>
+% Colors
+\definecolor{colA}{RGB}{200,50,50}
+\definecolor{colB}{RGB}{50,50,200}
+\definecolor{colC}{RGB}{50,200,50}
+\definecolor{colD}{RGB}{200,150,50}
+\definecolor{colE}{RGB}{200,150,50}
+\colorlet{gr1}{gray!20}
+
+% Patterns
+\pgfdeclarepatternformonly{primeddots}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{5pt}{5pt}}{\pgfqpoint{4pt}{4pt}}%
+{
+  \pgfpathcircle{\pgfqpoint{0pt}{0pt}}{.5pt}
+  \pgfusepath{fill}
+}
+
+% Styles
+\tikzset{
+    primedregion/.style={fill=#1, postaction={pattern=primeddots}},
+    boxregion/.style={fill=#1, draw=#1},
+    diagregion/.style={fill=#1, draw=#1},
+    
+    % Arrows
+    arrow at/.style={->},
+    arrow at/.default=0.5,
+    mid>/.style={->},
+    mid>/.default=0.55,
+    Rightarrow/.style={double equal sign distance, >={Implies}, ->},
+    
+    % Knot
+    over/.style={double, draw=white, line width=3pt, double=black},
+    
+    % Nodes
+    coupon/.style={draw=black, fill=white, rounded corners=5pt, thick, inner sep=3pt},
+    bullet/.style={circle, fill=#1, draw=#1, inner sep=0pt, minimum size=3pt},
+    bullet/.default=black,
+}
+
+% Commands
+\newcommand{\cpn}[2]{\node[coupon] at #1 {#2};}
+\newcommand{\blt}[1]{\node[bullet] at #1 {};}
+\newcommand{\wref}[2][]{#2}
+\providecommand{\href}[2]{#2}
+
+\begin{tikzpicture}[]
+
+  \draw[thick,mid>] (0,0) -- (2,0) node[right] {Mid arrow};
+  \draw[thick,arrow at=0.3] (0,-.5) -- (2,-.5) node[right] {Arrow at 30 percent};
+  \draw[thick,Rightarrow] (0,-1) -- (2,-1) node[right] {Double arrow};
+
+\end{tikzpicture}</script>
+</div>
+
+<h2>Knot Diagrams</h2>
 
 <p>Drawing overcrossings and undercrossings:</p>
 
-<p>\begin{center} \begin{tkz} % First strand (goes over)</p>
+<div style="text-align: center;">
+<script type="text/tikz">
+\usetikzlibrary{arrows.meta,calc,decorations.pathmorphing,patterns,positioning,shapes.geometric,quotes,cd}
 
-<p>% Second strand (goes under) \draw[thick] (1,-0.5) -- (1,0.5); \draw[thick,over] (0,0) .. controls (0.5,0.5) and (1.5,0.5) .. (2,0);</p>
+% Colors
+\definecolor{colA}{RGB}{200,50,50}
+\definecolor{colB}{RGB}{50,50,200}
+\definecolor{colC}{RGB}{50,200,50}
+\definecolor{colD}{RGB}{200,150,50}
+\definecolor{colE}{RGB}{200,150,50}
+\colorlet{gr1}{gray!20}
 
-<p>\node[below] at (1,-0.5) {Crossing}; \end{tkz} \end{center}</p>
+% Patterns
+\pgfdeclarepatternformonly{primeddots}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{5pt}{5pt}}{\pgfqpoint{4pt}{4pt}}%
+{
+  \pgfpathcircle{\pgfqpoint{0pt}{0pt}}{.5pt}
+  \pgfusepath{fill}
+}
 
-<p>\section{Color Schemes}</p>
+% Styles
+\tikzset{
+    primedregion/.style={fill=#1, postaction={pattern=primeddots}},
+    boxregion/.style={fill=#1, draw=#1},
+    diagregion/.style={fill=#1, draw=#1},
+    
+    % Arrows
+    arrow at/.style={->},
+    arrow at/.default=0.5,
+    mid>/.style={->},
+    mid>/.default=0.55,
+    Rightarrow/.style={double equal sign distance, >={Implies}, ->},
+    
+    % Knot
+    over/.style={double, draw=white, line width=3pt, double=black},
+    
+    % Nodes
+    coupon/.style={draw=black, fill=white, rounded corners=5pt, thick, inner sep=3pt},
+    bullet/.style={circle, fill=#1, draw=#1, inner sep=0pt, minimum size=3pt},
+    bullet/.default=black,
+}
+
+% Commands
+\newcommand{\cpn}[2]{\node[coupon] at #1 {#2};}
+\newcommand{\blt}[1]{\node[bullet] at #1 {};}
+\newcommand{\wref}[2][]{#2}
+\providecommand{\href}[2]{#2}
+
+\begin{tikzpicture}[]
+
+  % First strand (goes over)
+
+  % Second strand (goes under)
+  \draw[thick] (1,-0.5) -- (1,0.5);
+  \draw[thick,over] (0,0) .. controls (0.5,0.5) and (1.5,0.5) .. (2,0);
+
+  \node[below] at (1,-0.5) {Crossing};
+
+\end{tikzpicture}</script>
+</div>
+
+<h2>Color Schemes</h2>
 
 <p>Predefined color scheme for consistency:</p>
 
-<p>\begin{center} \begin{tkz} \foreach \i/\col in {0/colA,1/colB,2/colC,3/colD,4/colE} { \fill[\col] (\i*1.2,0) circle (0.4); \node[below] at (\i*1.2,-0.5) {\texttt{\col}}; } \end{tkz} \end{center}</p>
+<div style="text-align: center;">
+<script type="text/tikz">
+\usetikzlibrary{arrows.meta,calc,decorations.pathmorphing,patterns,positioning,shapes.geometric,quotes,cd}
 
-<p>\section{Conclusion}</p>
+% Colors
+\definecolor{colA}{RGB}{200,50,50}
+\definecolor{colB}{RGB}{50,50,200}
+\definecolor{colC}{RGB}{50,200,50}
+\definecolor{colD}{RGB}{200,150,50}
+\definecolor{colE}{RGB}{200,150,50}
+\colorlet{gr1}{gray!20}
+
+% Patterns
+\pgfdeclarepatternformonly{primeddots}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{5pt}{5pt}}{\pgfqpoint{4pt}{4pt}}%
+{
+  \pgfpathcircle{\pgfqpoint{0pt}{0pt}}{.5pt}
+  \pgfusepath{fill}
+}
+
+% Styles
+\tikzset{
+    primedregion/.style={fill=#1, postaction={pattern=primeddots}},
+    boxregion/.style={fill=#1, draw=#1},
+    diagregion/.style={fill=#1, draw=#1},
+    
+    % Arrows
+    arrow at/.style={->},
+    arrow at/.default=0.5,
+    mid>/.style={->},
+    mid>/.default=0.55,
+    Rightarrow/.style={double equal sign distance, >={Implies}, ->},
+    
+    % Knot
+    over/.style={double, draw=white, line width=3pt, double=black},
+    
+    % Nodes
+    coupon/.style={draw=black, fill=white, rounded corners=5pt, thick, inner sep=3pt},
+    bullet/.style={circle, fill=#1, draw=#1, inner sep=0pt, minimum size=3pt},
+    bullet/.default=black,
+}
+
+% Commands
+\newcommand{\cpn}[2]{\node[coupon] at #1 {#2};}
+\newcommand{\blt}[1]{\node[bullet] at #1 {};}
+\newcommand{\wref}[2][]{#2}
+\providecommand{\href}[2]{#2}
+
+\begin{tikzpicture}[]
+
+  \foreach \i/\col in {0/colA,1/colB,2/colC,3/colD,4/colE} {
+    \fill[\col] (\i*1.2,0) circle (0.4);
+    \node[below] at (\i*1.2,-0.5) {\texttt{\col}};
+  }
+
+\end{tikzpicture}</script>
+</div>
+
+<h2>Adjunctions (Snake Equations)</h2>
+
+<p>String diagrams are particularly useful for expressing adjointness properties, such as the zigzag identities:</p>
+
+<div style="text-align: center;">
+<script type="text/tikz">
+\usetikzlibrary{arrows.meta,calc,decorations.pathmorphing,patterns,positioning,shapes.geometric,quotes,cd}
+
+% Colors
+\definecolor{colA}{RGB}{200,50,50}
+\definecolor{colB}{RGB}{50,50,200}
+\definecolor{colC}{RGB}{50,200,50}
+\definecolor{colD}{RGB}{200,150,50}
+\definecolor{colE}{RGB}{200,150,50}
+\colorlet{gr1}{gray!20}
+
+% Patterns
+\pgfdeclarepatternformonly{primeddots}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{5pt}{5pt}}{\pgfqpoint{4pt}{4pt}}%
+{
+  \pgfpathcircle{\pgfqpoint{0pt}{0pt}}{.5pt}
+  \pgfusepath{fill}
+}
+
+% Styles
+\tikzset{
+    primedregion/.style={fill=#1, postaction={pattern=primeddots}},
+    boxregion/.style={fill=#1, draw=#1},
+    diagregion/.style={fill=#1, draw=#1},
+    
+    % Arrows
+    arrow at/.style={->},
+    arrow at/.default=0.5,
+    mid>/.style={->},
+    mid>/.default=0.55,
+    Rightarrow/.style={double equal sign distance, >={Implies}, ->},
+    
+    % Knot
+    over/.style={double, draw=white, line width=3pt, double=black},
+    
+    % Nodes
+    coupon/.style={draw=black, fill=white, rounded corners=5pt, thick, inner sep=3pt},
+    bullet/.style={circle, fill=#1, draw=#1, inner sep=0pt, minimum size=3pt},
+    bullet/.default=black,
+}
+
+% Commands
+\newcommand{\cpn}[2]{\node[coupon] at #1 {#2};}
+\newcommand{\blt}[1]{\node[bullet] at #1 {};}
+\newcommand{\wref}[2][]{#2}
+\providecommand{\href}[2]{#2}
+
+\begin{tikzpicture}[]
+
+  % Left hand side
+  \draw[thick] (0,2) -- (0,1.5) arc (180:360:0.5) -- (1,2);
+  \draw[thick] (0,1.5) -- (0,0);
+  
+  % Right hand side
+  \node at (2,1) {$=$};
+  \draw[thick] (3,2) -- (3,0);
+
+\end{tikzpicture}</script>
+</div>
+
+<h2>Commutative Diagrams</h2>
+
+<p>We can use \texttt{tikz-cd} for commutative diagrams:</p>
+
+<script type="text/tikz">
+\usetikzlibrary{arrows.meta,calc,decorations.pathmorphing,patterns,positioning,shapes.geometric,quotes,cd}
+
+% Colors
+\definecolor{colA}{RGB}{200,50,50}
+\definecolor{colB}{RGB}{50,50,200}
+\definecolor{colC}{RGB}{50,200,50}
+\definecolor{colD}{RGB}{200,150,50}
+\definecolor{colE}{RGB}{200,150,50}
+\colorlet{gr1}{gray!20}
+
+% Patterns
+\pgfdeclarepatternformonly{primeddots}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{5pt}{5pt}}{\pgfqpoint{4pt}{4pt}}%
+{
+  \pgfpathcircle{\pgfqpoint{0pt}{0pt}}{.5pt}
+  \pgfusepath{fill}
+}
+
+% Styles
+\tikzset{
+    primedregion/.style={fill=#1, postaction={pattern=primeddots}},
+    boxregion/.style={fill=#1, draw=#1},
+    diagregion/.style={fill=#1, draw=#1},
+    
+    % Arrows
+    arrow at/.style={->},
+    arrow at/.default=0.5,
+    mid>/.style={->},
+    mid>/.default=0.55,
+    Rightarrow/.style={double equal sign distance, >={Implies}, ->},
+    
+    % Knot
+    over/.style={double, draw=white, line width=3pt, double=black},
+    
+    % Nodes
+    coupon/.style={draw=black, fill=white, rounded corners=5pt, thick, inner sep=3pt},
+    bullet/.style={circle, fill=#1, draw=#1, inner sep=0pt, minimum size=3pt},
+    bullet/.default=black,
+}
+
+% Commands
+\newcommand{\cpn}[2]{\node[coupon] at #1 {#2};}
+\newcommand{\blt}[1]{\node[bullet] at #1 {};}
+\newcommand{\wref}[2][]{#2}
+\providecommand{\href}[2]{#2}
+
+\begin{tikzcd}
+A \arrow[r, "\phi"] \arrow[d, "f"'] & B \arrow[d, "g"] \\
+C \arrow[r, "\psi"] & D
+\end{tikzcd}</script>
+
+<h2>Function Plots</h2>
+
+<p>TikZ can also plot functions:</p>
+
+<div style="text-align: center;">
+<script type="text/tikz">
+\usetikzlibrary{arrows.meta,calc,decorations.pathmorphing,patterns,positioning,shapes.geometric,quotes,cd}
+
+% Colors
+\definecolor{colA}{RGB}{200,50,50}
+\definecolor{colB}{RGB}{50,50,200}
+\definecolor{colC}{RGB}{50,200,50}
+\definecolor{colD}{RGB}{200,150,50}
+\definecolor{colE}{RGB}{200,150,50}
+\colorlet{gr1}{gray!20}
+
+% Patterns
+\pgfdeclarepatternformonly{primeddots}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{5pt}{5pt}}{\pgfqpoint{4pt}{4pt}}%
+{
+  \pgfpathcircle{\pgfqpoint{0pt}{0pt}}{.5pt}
+  \pgfusepath{fill}
+}
+
+% Styles
+\tikzset{
+    primedregion/.style={fill=#1, postaction={pattern=primeddots}},
+    boxregion/.style={fill=#1, draw=#1},
+    diagregion/.style={fill=#1, draw=#1},
+    
+    % Arrows
+    arrow at/.style={->},
+    arrow at/.default=0.5,
+    mid>/.style={->},
+    mid>/.default=0.55,
+    Rightarrow/.style={double equal sign distance, >={Implies}, ->},
+    
+    % Knot
+    over/.style={double, draw=white, line width=3pt, double=black},
+    
+    % Nodes
+    coupon/.style={draw=black, fill=white, rounded corners=5pt, thick, inner sep=3pt},
+    bullet/.style={circle, fill=#1, draw=#1, inner sep=0pt, minimum size=3pt},
+    bullet/.default=black,
+}
+
+% Commands
+\newcommand{\cpn}[2]{\node[coupon] at #1 {#2};}
+\newcommand{\blt}[1]{\node[bullet] at #1 {};}
+\newcommand{\wref}[2][]{#2}
+\providecommand{\href}[2]{#2}
+
+\begin{tikzpicture}[]
+
+  \draw[->] (-0.2,0) -- (3,0) node[right] {$x$};
+  \draw[->] (0,-0.2) -- (0,2) node[above] {$f(x)$};
+  \draw[domain=0:2.5,smooth,variable=\x,blue,thick] plot ({\x},{0.25*\x*\x});
+  \node[blue, right] at (2.5, 1.56) {$y = \frac{x^2}{4}$};
+
+\end{tikzpicture}</script>
+</div>
+
+<h2>Conclusion</h2>
 
 <p>The \texttt{tz.sty} package integrates seamlessly with GWiki's document class, providing powerful tools for mathematical visualization while maintaining clean, readable source code.</p>
 

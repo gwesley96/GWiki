@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Natural Transformation</title>
+    <title>Untitled</title>
     <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
     <script>
     window.MathJax = {
@@ -106,14 +106,17 @@
             background: #ecfeff;
             border: 1px solid #06b6d4;
             border-left: 4px solid #06b6d4;
-            padding: 15px;
+            padding: 8px;
             margin: 20px 0;
             border-radius: 4px;
         }
         .definition, .theorem, .example, .lemma, .proposition, .corollary, .remark {
             margin: 20px 0;
-            padding: 15px;
+            padding: 8px;
             border-radius: 4px;
+        }
+        .definition p, .theorem p, .example p, .lemma p, .proposition p, .corollary p, .remark p, .idea p {
+            margin: 0;
         }
         .definition {
             background: #fef3c7;
@@ -152,7 +155,7 @@
             margin: 8px 0;
         }
         script[type="text/tikz"] {
-            display: block;
+            /* display: block; - Hiding this to prevents raw code from showing if TikZJax fails */
             margin: 20px 0;
             text-align: center;
         }
@@ -181,43 +184,67 @@
     </style>
 </head>
 <body>
-    <h1>Natural Transformation</h1>
+    <h1>Untitled</h1>
     <div class="metadata">
-        <strong>Last modified:</strong> 2025-12-09 01:40<br>
-        <strong>Created:</strong> 2025-12-09<br>
-        <strong>Tags:</strong> category-theory, definition
+        <strong>Last modified:</strong> 2025-12-11 12:27<br>
+        <strong>Created:</strong> ?<br>
     </div>
 
     <div class="content">
-        <p>\begin{idea}[Idea] Natural transformations are the morphisms between functors: they assign component maps that commute with every arrow in the source category, making the transformation uniform and functorial. \end{idea}</p>
+        <script type="text/tikz">
+\usetikzlibrary{arrows.meta,calc,decorations.pathmorphing,patterns,positioning,shapes.geometric,quotes,cd}
 
-<p>\prereq{functor, category}</p>
+% Colors
+\definecolor{colA}{RGB}{200,50,50}
+\definecolor{colB}{RGB}{50,50,200}
+\definecolor{colC}{RGB}{50,200,50}
+\definecolor{colD}{RGB}{200,150,50}
+\definecolor{colE}{RGB}{200,150,50}
+\colorlet{gr1}{gray!20}
 
-<div class="definition"><strong>Definition (Natural Transformation).</strong> 
-<p>Let $F, G : \cC \to \cD$ be <a href="functor.html">functors</a>. A \textbf{natural transformation} $\eta : F \Rightarrow G$ assigns to each object $A \in \cC$ a morphism $\eta_A : F(A) \to G(A)$ such that for every $f : A \to B$ in $\cC$:</p>
-<script type="text/tikz">\begin{tikzpicture}\begin{tikzcd}F(A) \ar[r, "\eta_A"] \ar[d, "F(f)"'] & G(A) \ar[d, "G(f)"] \\
-  F(B) \ar[r, "\eta_B"'] & G(B)\end{tikzcd}\end{tikzpicture}</script>
-<p>commutes. The morphisms $\eta_A$ are called the \emph{components} of $\eta$.</p>
-</div>
+% Patterns
+\pgfdeclarepatternformonly{primeddots}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{5pt}{5pt}}{\pgfqpoint{4pt}{4pt}}%
+{
+  \pgfpathcircle{\pgfqpoint{0pt}{0pt}}{.5pt}
+  \pgfusepath{fill}
+}
 
-<p>\section{Examples}</p>
+% Styles
+\tikzset{
+    primedregion/.style={fill=#1, postaction={pattern=primeddots}},
+    boxregion/.style={fill=#1, draw=#1},
+    diagregion/.style={fill=#1, draw=#1},
+    
+    % Arrows
+    arrow at/.style={->},
+    arrow at/.default=0.5,
+    mid>/.style={->},
+    mid>/.default=0.55,
+    Rightarrow/.style={double equal sign distance, >={Implies}, ->},
+    
+    % Knot
+    over/.style={double, draw=white, line width=3pt, double=black},
+    
+    % Nodes
+    coupon/.style={draw=black, fill=white, rounded corners=5pt, thick, inner sep=3pt},
+    bullet/.style={circle, fill=#1, draw=#1, inner sep=0pt, minimum size=3pt},
+    bullet/.default=black,
+}
 
-<div class="example"><strong>Example (Double dual).</strong> 
-<p>For finite-dimensional vector spaces, there is a natural isomorphism $V \to V^{**}$ given by $v \mapsto (\varphi \mapsto \varphi(v))$.</p>
-</div>
+% Commands
+\newcommand{\cpn}[2]{\node[coupon] at #1 {#2};}
+\newcommand{\blt}[1]{\node[bullet] at #1 {};}
+\newcommand{\wref}[2][]{#2}
+\providecommand{\href}[2]{#2}
 
-<div class="example"><strong>Example (Determinant).</strong> 
-<p>$\det : \GL_n \Rightarrow (-)^\times$ is a natural transformation of functors $\Ring \to \Grp$.</p>
-</div>
+\begin{tikzpicture}[]
 
-<p><strong>See also:</strong> <a href="functor.html">functor</a>, <a href="category.html">category</a></p>
-    </div>
+  \foreach \i/\col in {0/colA,1/colB,2/colC,3/colD,4/colE} {
+    \fill[\col] (\i*1.2,0) circle (0.4);
+    \node[below] at (\i*1.2,-0.5) {\texttt{\col}};
+  }
 
-    <div class="linked-notes">
-        <h2>Linked Notes</h2>
-        <ul>
-            <li><a href="functor.html">functor</a></li>
-        </ul>
+\end{tikzpicture}</script>
     </div>
 </body>
 </html>

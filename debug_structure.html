@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Debug: Structure</title>
+    <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
+    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
+    <style>
+        .test-case { border: 1px solid #ccc; margin: 20px; padding: 10px; }
+        .label { font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Debug: Structure</h1>
+    <p>Testing valid TikZ-CD usage (no nesting in tikzpicture).</p>
+
+    <div class="test-case">
+        <div class="label">1. TikZ-CD (Native)</div>
+        <script type="text/tikz">
+% PREAMBLE
+\usetikzlibrary{arrows.meta,calc,patterns,positioning,shapes.geometric,quotes,cd}
+
+% Colors
+\definecolor{colA}{RGB}{200,50,50}
+\colorlet{gr1}{gray!20}
+
+% Patterns
+\pgfdeclarepatternformonly{primeddots}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{5pt}{5pt}}{\pgfqpoint{4pt}{4pt}}%
+{
+  \pgfpathcircle{\pgfqpoint{0pt}{0pt}}{.5pt}
+  \pgfusepath{fill}
+}
+
+% Styles
+\tikzset{
+    primedregion/.style={fill=#1, postaction={pattern=primeddots}},
+    boxregion/.style={fill=#1, draw=#1},
+    diagregion/.style={fill=#1, draw=#1},
+    arrow at/.style={->},
+    mid>/.style={->},
+    Rightarrow/.style={double equal sign distance, >={Implies}, ->},
+}
+
+\begin{tikzcd}
+A \arrow[r, "\phi"] \arrow[d, "f"'] & B \arrow[d, "g"] \\
+C \arrow[r, "\psi"] & D
+\end{tikzcd}
+        </script>
+    </div>
+
+    <div class="test-case">
+        <div class="label">2. Standard TikZ (Native)</div>
+        <script type="text/tikz">
+% PREAMBLE (Same as above)
+\usetikzlibrary{arrows.meta,calc,patterns,positioning,shapes.geometric,quotes,cd}
+\definecolor{colA}{RGB}{200,50,50}
+\colorlet{gr1}{gray!20}
+\pgfdeclarepatternformonly{primeddots}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{5pt}{5pt}}{\pgfqpoint{4pt}{4pt}}%
+{ \pgfpathcircle{\pgfqpoint{0pt}{0pt}}{.5pt} \pgfusepath{fill} }
+\tikzset{ primedregion/.style={fill=#1, postaction={pattern=primeddots}}, boxregion/.style={fill=#1, draw=#1}, diagregion/.style={fill=#1, draw=#1}, arrow at/.style={->}, mid>/.style={->}, Rightarrow/.style={double equal sign distance, >={Implies}, ->} }
+
+\begin{tikzpicture}
+    \fill[primedregion=colA] (0,0) circle (1cm);
+\end{tikzpicture}
+        </script>
+    </div>
+</body>
+</html>
