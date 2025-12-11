@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cohomology</title>
+    <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
+    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$']],
+            displayMath: [['\\[', '\\]']],
+            macros: {
+                // Category theory
+                cC: '\\mathcal{C}',
+                cD: '\\mathcal{D}',
+                cF: '\\mathcal{F}',
+                cG: '\\mathcal{G}',
+                cH: '\\mathcal{H}',
+                cL: '\\mathcal{L}',
+                cM: '\\mathcal{M}',
+                cP: '\\mathcal{P}',
+                cU: '\\mathcal{U}',
+                Obj: '\\operatorname{Obj}',
+                Hom: '\\operatorname{Hom}',
+                Mor: '\\operatorname{Mor}',
+                End: '\\operatorname{End}',
+                Aut: '\\operatorname{Aut}',
+                id: '\\mathrm{id}',
+
+                // Blackboard bold
+                bR: '\\mathbb{R}',
+                bC: '\\mathbb{C}',
+                bZ: '\\mathbb{Z}',
+                bN: '\\mathbb{N}',
+                bQ: '\\mathbb{Q}',
+
+                // Categories
+                Set: '\\mathbf{Set}',
+                Grp: '\\mathbf{Grp}',
+                Top: '\\mathbf{Top}',
+                Vec: '\\mathbf{Vec}',
+
+                // Operators
+                colim: '\\operatorname{colim}',
+                Ext: '\\operatorname{Ext}',
+                Tor: '\\operatorname{Tor}',
+                Spec: '\\operatorname{Spec}',
+                im: '\\operatorname{im}',
+                coker: '\\operatorname{coker}',
+                coloneqq: '\\mathrel{\\vcenter{\\hbox{.}\\hbox{.}}}=',
+                coloneq: '\\mathrel{\\vcenter{\\hbox{.}\\hbox{.}}}=',
+
+                // TikZ-like (limited in HTML)
+                to: '\\rightarrow',
+                injto: '\\hookrightarrow',
+                surjto: '\\twoheadrightarrow'
+            }
+        }
+    };
+    </script>
+    <style>
+        body {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            font-family: Georgia, serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        h1 {
+            color: #2563eb;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #1e40af;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        h3 {
+            color: #1e3a8a;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+        h4 {
+            color: #1e40af;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .metadata {
+            font-size: 0.9em;
+            color: #6b7280;
+            margin-bottom: 20px;
+            font-family: monospace;
+        }
+        .topics {
+            background: #f3f4f6;
+            padding: 15px;
+            border-left: 4px solid #2563eb;
+            margin: 20px 0;
+        }
+        .idea {
+            background: #ecfeff;
+            border: 1px solid #06b6d4;
+            border-left: 4px solid #06b6d4;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .definition, .theorem, .example, .lemma, .proposition, .corollary, .remark {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        .definition {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+        }
+        .theorem, .lemma, .proposition, .corollary {
+            background: #dbeafe;
+            border-left: 4px solid #3b82f6;
+        }
+        .example {
+            background: #f3e8ff;
+            border-left: 4px solid #a855f7;
+        }
+        .remark {
+            background: #f3f4f6;
+            border-left: 4px solid #6b7280;
+        }
+        a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        code {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+        li {
+            margin: 8px 0;
+        }
+        script[type="text/tikz"] {
+            display: block;
+            margin: 20px 0;
+            text-align: center;
+        }
+        svg {
+            display: block;
+            margin: 20px auto;
+            max-width: 100%;
+        }
+        .linked-notes, .backlinks {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+        .linked-notes h2, .backlinks h2 {
+            color: #1e40af;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        .linked-notes ul, .backlinks ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .linked-notes li, .backlinks li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cohomology</h1>
+    <div class="metadata">
+        <strong>Topics:</strong> higher-category-theory, homotopy-theory, nPOV<br>
+        <strong>Last modified:</strong> 2025-12-11
+    </div>
+
+    <div class="content">
+        <p>The nPOV (homotopy-theoretic) definition of cohomology in an ambient $(\infty,1)$-category, emphasizing cocycles, coboundaries, and cohomology classes.</p>
+
+<p>Let $\mathcal{C}$ be an ambient $(\infty,1)$-category (most often an $(\infty,1)$-topos or a stable $(\infty,1)$-category).</p>
+
+<p>Fix objects $X$ (the <strong>domain object</strong>) and $A$ (the <strong>coefficient object</strong>) in $\mathcal{C}$.</p>
+
+<div class="definition"><strong>Definition (Cohomology).</strong> 
+
+<ul>
+<li>The $A$<strong>-cocycle space</strong> on $X$ is the space $\mathcal{C}(X\to A)$, often denoted $\mathrm{Z}(X;A)$.</li>
+<li>An $A$<strong>-cocycle</strong> on $X$ is an element $\omega\in \mathcal{C}(X\to A)$.</li>
+<li>The <strong>$A$-cohomology set</strong> of $X$ (AKA the <strong>cohomology</strong> of $X$ with $A$<strong>-coefficients</strong>) is the <em>set</em> of connected components of the $A$-cocycle space \[ \mathrm{H}(X;A)\coloneqq\pi_{0}\mathcal{C}(X\to A). \]</li>
+  
+<li>The <strong>cohomology class</strong> of an $A$-cocycle $\omega$ is its component $[\omega]\in\mathrm{H}(X;A)$.</li>
+  
+<li>If $\mathcal{C}$ has a terminal object $*$ and $A$ is equipped with a pointing $a_0\colon *\to A$, then the <strong>trivial $A$-cocycle</strong> $\omega_{\mathrm{triv}}$ on $X$ is the $A$-cocycle $X\to *\mathbin{\smash{\overset{a_0}{\to}}} A\in\mathcal{C}(X\to A)$.</li>
+<li>An $A$<strong>-coboundary</strong> is a 2-morphism $\eta\in \mathcal{C}(\omega_{1}\Rightarrow\omega_{2})$.</li>
+  
+<li>Two cocycles $\omega_{1},\omega_{2}$ on $X$ are $A$<strong>-cohomologous</strong> if they are connected by an $A$-coboundary, or equivalently if $[\omega_{1}]=[\omega_{2}]$ in $\mathrm{H}(X;A)$.</li>
+  
+<li>If $A$ is equipped with a pointing $a_0\colon *\to A$, then a cocycle $\omega$ is an $A$-<strong>coboundary</strong> if it is cohomologous to the trivial cocycle $\omega_{\mathrm{triv}}$.</li>
+<li>For an object $K\in \mathcal{C}$, an $A$-cocycle $\mathscr{c}$ on $K$, and a $K$-cocycle $\omega$ on $X$, the <strong>characteristic class of $\omega$ with respect to $\mathscr{c</strong>$} is the $A$-cohomology class of the composite cocycle \[ \mathscr{c}(\omega)\coloneqq [\mathscr{c}\circ \omega]\in\mathrm{H}(X;A). \]</li>
+  
+<li>For a $K$-cocycle $g\colon X\to K$, one says that its homotopy fiber $P\to X$ (meaning $(\infty,1)$-pullback of the cospan $X\mathbin{\smash{\overset{g}{\to}}}K\leftarrow *$), is the object <strong>classified by the $K$-cohomology class</strong> $[g]\in\mathrm{H}(X;K)$.</li>
+<li>When $\mathcal{C}$ is an $(\infty,1)$-topos and $K$ is pointed, such an object usually has the interpretation of a principal $\infty$-bundle (e.g., principal bundles, gerbes, principal 2-bundles, and so on).</li>
+<li>If the domain object $X$ itself is a group object, then $P\to X$ is a group extension, and in this case we often write $\mathrm{Ext}(X;A)$ instead of $\mathrm{H}(X;A)$, and refer to elements of $\mathrm{Ext}(X;A)$ as extensions instead of cocycles.</li>
+</ul>
+  
+
+</div>
+
+
+<h2>Examples</h2>
+
+
+<div class="example"><strong>Example (Degree-$n$ cohomology).</strong> 
+<p>If $A$ admits an $n$-fold <a href="looping and delooping.html">delooping</a> $\mathrm{B}^{n}A$, then the <strong>degree-$n$ $A$-cohomology of $X$</strong> is the $\mathrm{B}^{n}\kern-.25exA$-cohomology set \[ \mathrm{H}^{n}(X;A)\coloneqq\mathrm{H}(X;\mathrm{B}^{n}\kern-.25exA). \]</p>
+</div>
+
+<div class="example"><strong>Example (Cochain complex cohomology).</strong> 
+<p>If $C^\bullet$ is a <a href="cochain complex.html">cochain complex</a> in an <a href="abelian category.html">abelian category</a> $\mathcal{A}$, then the $q$th <strong>cohomology group</strong> is defined by \[ \mathrm{H}^q(C^\bullet)\coloneqq \mathrm{ker}(C^q\overset{\delta}{\to} C^{q+1})/\mathrm{im}(C^{q-1}\overset{\delta}{\to} C^q). \] The numerator consists of <strong>$q$-cocycles</strong>, and the denominator consists of <strong>$q$-coboundaries</strong>.</p>
+</div>
+
+<p><strong>See also:</strong> <a href="twisted cohomology.html">twisted cohomology</a>, <a href="de Rham cohomology.html">de Rham cohomology</a>, <a href="singular (co)homology.html">singular (co)homology</a>, <a href="abelian cohomology.html">abelian cohomology</a>, <a href="nonabelian cohomology.html">nonabelian cohomology</a>, <a href="differential cohomology.html">differential cohomology</a>, <a href="characteristic class.html">characteristic class</a></p>
+    </div>
+
+    <div class="linked-notes">
+        <h2>Linked Notes</h2>
+        <ul>
+            <li><a href="abelian category.html">abelian category</a></li>
+            <li><a href="cochain complex.html">cochain complex</a></li>
+            <li><a href="looping and delooping.html">looping and delooping</a></li>
+        </ul>
+    </div>
+</body>
+</html>

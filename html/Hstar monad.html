@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>H*-monads and completions of pre-3-Hilbert spaces</title>
+    <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
+    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$']],
+            displayMath: [['\\[', '\\]']],
+            macros: {
+                // Category theory
+                cC: '\\mathcal{C}',
+                cD: '\\mathcal{D}',
+                cF: '\\mathcal{F}',
+                cG: '\\mathcal{G}',
+                cH: '\\mathcal{H}',
+                cL: '\\mathcal{L}',
+                cM: '\\mathcal{M}',
+                cP: '\\mathcal{P}',
+                cU: '\\mathcal{U}',
+                Obj: '\\operatorname{Obj}',
+                Hom: '\\operatorname{Hom}',
+                Mor: '\\operatorname{Mor}',
+                End: '\\operatorname{End}',
+                Aut: '\\operatorname{Aut}',
+                id: '\\mathrm{id}',
+
+                // Blackboard bold
+                bR: '\\mathbb{R}',
+                bC: '\\mathbb{C}',
+                bZ: '\\mathbb{Z}',
+                bN: '\\mathbb{N}',
+                bQ: '\\mathbb{Q}',
+
+                // Categories
+                Set: '\\mathbf{Set}',
+                Grp: '\\mathbf{Grp}',
+                Top: '\\mathbf{Top}',
+                Vec: '\\mathbf{Vec}',
+
+                // Operators
+                colim: '\\operatorname{colim}',
+                Ext: '\\operatorname{Ext}',
+                Tor: '\\operatorname{Tor}',
+                Spec: '\\operatorname{Spec}',
+                im: '\\operatorname{im}',
+                coker: '\\operatorname{coker}',
+                coloneqq: '\\mathrel{\\vcenter{\\hbox{.}\\hbox{.}}}=',
+                coloneq: '\\mathrel{\\vcenter{\\hbox{.}\\hbox{.}}}=',
+
+                // TikZ-like (limited in HTML)
+                to: '\\rightarrow',
+                injto: '\\hookrightarrow',
+                surjto: '\\twoheadrightarrow'
+            }
+        }
+    };
+    </script>
+    <style>
+        body {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            font-family: Georgia, serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        h1 {
+            color: #2563eb;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #1e40af;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        h3 {
+            color: #1e3a8a;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+        h4 {
+            color: #1e40af;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .metadata {
+            font-size: 0.9em;
+            color: #6b7280;
+            margin-bottom: 20px;
+            font-family: monospace;
+        }
+        .topics {
+            background: #f3f4f6;
+            padding: 15px;
+            border-left: 4px solid #2563eb;
+            margin: 20px 0;
+        }
+        .idea {
+            background: #ecfeff;
+            border: 1px solid #06b6d4;
+            border-left: 4px solid #06b6d4;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .definition, .theorem, .example, .lemma, .proposition, .corollary, .remark {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        .definition {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+        }
+        .theorem, .lemma, .proposition, .corollary {
+            background: #dbeafe;
+            border-left: 4px solid #3b82f6;
+        }
+        .example {
+            background: #f3e8ff;
+            border-left: 4px solid #a855f7;
+        }
+        .remark {
+            background: #f3f4f6;
+            border-left: 4px solid #6b7280;
+        }
+        a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        code {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+        li {
+            margin: 8px 0;
+        }
+        script[type="text/tikz"] {
+            display: block;
+            margin: 20px 0;
+            text-align: center;
+        }
+        svg {
+            display: block;
+            margin: 20px auto;
+            max-width: 100%;
+        }
+        .linked-notes, .backlinks {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+        .linked-notes h2, .backlinks h2 {
+            color: #1e40af;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        .linked-notes ul, .backlinks ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .linked-notes li, .backlinks li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>H*-monads and completions of pre-3-Hilbert spaces</h1>
+    <div class="metadata">
+        <strong>Last modified:</strong> 2025-12-09
+    </div>
+
+    <div class="content">
+        <p>% \subsection{\texorpdfstring{$\mathrm{H}^*$}{H*}-monads in pre-3-Hilbert spaces}</p>
+
+<div class="definition"><strong>Definition.</strong> 
+<p>An \defn{$\mathrm{H}^*$-monad} in a pre-3-Hilbert space $(\mathfrak{X},\vee,\Psi)$ consists of an object $a\in\fX$ and a 1-morphism ${}_aA_a\in \Omega_a$ equipped with an associative multiplication $\mu\colon {}_aA\otimes_aA_a\to {}_aA_a$ with unit $\iota\colon 1_a\to {}_aA_a$ satisfying the following axioms. \begin{lst}[label=(H$^*$\arabic*)] \item ($\rC^*$-Frobenius) $\mu^\dag$ is an $A$--$A$-bimodule map, i.e., \[ \begin{tkz}[scale=0.3] \coordinate (O) at (0,0); \fill[regA] (O) rectangle ++(6,4);                  % Background \draw[strA] (O) ++(1,0) -- ++(0,2) \capto{1} \cupto{1} -- ++(0,2); \draw[strA] (O) ++(2,4) -- ++(0,-1);                % Top line \draw[strA] (O) ++(4,0) -- ++(0,1);                 % Bottom line \end{tkz} = \begin{tkz}[scale=0.3] \coordinate (O) at (0,0); \fill[regA] (O) rectangle ++(4,4);                  % Background \draw[strA] (O) ++(1,4) \cupto{1};                  % Top cup \draw[strA] (O) ++(1,0) \capto{1};                  % Bottom cap \draw[strA] (O) ++(2,1) -- ++(0,2); \end{tkz} = \begin{tkz}[scale=0.3, xscale=-1]                        % Flipped horizontally \coordinate (O) at (0,0); \fill[regA] (O) rectangle ++(6,4);                  % Background \draw[strA] (O) ++(1,0) -- ++(0,2)  \capto{1} \cupto{1} -- ++(0,2); \draw[strA] (O) ++(2,4) -- ++(0,-1); \draw[strA] (O) ++(4,0) -- ++(0,1); \end{tkz} \qquad\quad\text{where}\quad\quad a=\tz[scale=.7]{ \coordinate(O) at (0,0); \fill[regA](O) rectangle ++(1,1); }, \quad A=\tz[scale=.7]{ \coordinate(O) at (0,0); \fill[regA](O) rectangle ++(1,1); \draw[strA](O)++(0.5,0)--++(0,1); }, \quad \mu=\tz[scale=.7]{ \coordinate(O) at (0,0); \fill[regA](O)++(-0.25,0) rectangle ++(1.5,1); \draw[strA](O)++(0.5,0.5)--++(0,0.5); \draw[strA] (O)++(1,0) \capfrom{0.5}; }. \] \item (Separable) The endomorphism $\mu\mu^\dag$ of ${}_aA_a$ is invertible, i.e., \[ \begin{tkz}[scale=0.3] \coordinate (O) at (0,0); \fill[regA] (O) rectangle ++(4,4);                  % Background \bubble[very thick,fill=colA!10, draw=colA]{(O)++(2,2)}{1};        % Bubble (very thick) \draw[strA] (O) ++(2,3) -- ++(0,1);                 % Top wire \draw[strA] (O) ++(2,1) -- ++(0,-1);                % Bottom wire \end{tkz} \in \Aut_\fX(A). \] \item (Standard) For all endomorphisms $f \in \End_{\fX}({}_aA_a)$, \[ \Psi_a \left( \begin{tkz}[scale=0.3] \coordinate (O) at (0,0); \fill[regA] (O) rectangle ++(5,6);                  % Background \draw[strA] (O) ++(1.5,2) -- ++(0,2);                 % Left vertical \draw[strA] (O) ++(3.5,2) -- coordinate(f) ++(0,2);   % Right vertical \draw[strA] (O) ++(1.5,4) \capto{1};                  % Top arc \draw[strA] (O) ++(2.5,5) -- ++(0,1);                 % Top antenna \draw[strA] (O) ++(3.5,2) \cupfrom{1};                 % Bottom arc \draw[strA] (O) ++(2.5,1) -- ++(0,-1);                % Bottom antenna \cpn{(f)}{$f$}                                       % Coupon \end{tkz} \right) = \Psi_a \left( \begin{tkz}[scale=0.3,xscale=-1] \coordinate (O) at (0,0); \fill[regA] (O) rectangle ++(5,6);                  % Background \draw[strA] (O) ++(1.5,2) -- ++(0,2);                 % Logic flipped \draw[strA] (O) ++(3.5,2) -- coordinate(f) ++(0,2); \draw[strA] (O) ++(1.5,4) \capto{1}; \draw[strA] (O) ++(2.5,5) -- ++(0,1); \draw[strA] (O) ++(3.5,2) \cupfrom{1}; \draw[strA] (O) ++(2.5,1) -- ++(0,-1); \cpn{(f)}{$f$} \end{tkz} \right). \] \end{lst} An $\rH^*$-monad is \defn{trivial} when it has the form $A=1_a$, $m\colon 1_a\otimes_a 1_a\to 1_a$ is the unitor, and $i\colon 1_a\to 1_a$ is the identity.</p>
+</div>
+
+<div class="definition"><strong>Definition.</strong> 
+<p>A \defn{splitting} of an $\rH^*$-monad $({}_aA_a,\mu,\iota)$ in $\fX$ is a pair $({}_aX_b,\gamma)$ consisting of a 1-morphism ${}_aX_b\in\fX(a\to b)$ such that $\ev_X\ev_X^\dag \in \End_\fX(1_b)$ is invertible and a unitary monad isomorphism $\gamma\colon {}_aA_a\Rightarrow {}_aX\otimes_b X^\vee_a$.</p>
+</div>
+
+<p>Diagrammatically, if we write \[ b=\tz[scale=.7]{ \coordinate(O) at (0,0); \fill[regB, rounded corners=5pt](O)rectangle ++(1,1); % Object b }, \qquad\qquad X=\tz[scale=.7]{ \coordinate(O) at (0,0); \clip[rounded corners](O)rectangle ++(1,1); \fill[regA](O)rectangle ++(1,1);                    % 1-morph X (Red) \fill[regB](O)++(0.5,0)rectangle ++(0.5,1);              % 1-morph X (Blue side) \draw[strC](O)++(0.5,0)--++(0,1);                       % Separator }, \qquad\qquad \gamma=\tz[scale=.7,yscale=-1]{ \coordinate(O) at (0,0); \fill[regA](O)++(-0.25,0)rectangle ++(1.5,1);         % Gamma map \draw[strA](O)++(0.5,0.5)--++(0,0.5); \fill[regB](O)++(1,0) \capfrom{0.5} --cycle; \draw[strC] (O)++(1,0) \capfrom{0.5}; }, \] then to say $(X,\gamma)$ splits $(A,\mu,\iota)$ means that \[ \begin{tkz}[scale=0.4] \coordinate (O) at (0,0); \fill[regB, rounded corners=5pt] (O) rectangle ++(3,3); % Background \bubble[very thick,fill=colA!10, draw=colC]{(O)++(1.5,1.5)}{0.8};              % Bubble \end{tkz} \in (\Omega^2_b)^\times \] and that $\gamma$ satisfies \[ \begin{tkz}[scale=0.4] \coordinate (O) at (0,0); \fill[regA] (O) rectangle ++(3,4);                  % Background \draw[strA] (O) ++(1.5,0) -- ++(0,1);                 % Bottom wire \draw[strA] (O) ++(1.5,3) -- ++(0,1);                 % Top wire \bubble[very thick,fill=colB!15, draw=colC]{(O)++(1.5,2)}{1};        % Bubble \end{tkz} = \begin{tkz}[scale=0.4] \coordinate (O) at (0,0); \fill[regA] (O) rectangle ++(2,4);                  % Background \draw[strA] (O) ++(1,0) -- ++(0,4);                  % Identity wire \end{tkz}, \qquad\qquad \begin{tkz}[scale=0.4] \coordinate (O) at (0,0); \fill[regA] (O) rectangle ++(4,4);                  % Background \fill[regB] (O) ++(1,4) \cupto{1} -- cycle;        % Top blue cup \fill[regB] (O) ++(1,0) \capto{1} -- cycle;        % Bottom blue cap \draw[strA] (O) ++(2,1)--++(0,2);                 % Red wire \draw[strC] (O) ++(1,4) \cupto{1};                  % Black cup \draw[strC] (O) ++(1,0) \capto{1};                  % Black cap \end{tkz} = \begin{tkz}[scale=0.4] \coordinate (O) at (0,0); \fill[regA] (O) rectangle ++(4,4);                  % Background \fill[regB] (O) ++(1.2,0) rectangle ++(1.6,4);        % Blue strip \draw[strC] (O) ++(1.2,0) -- ++(0,4);                  % Left separator \draw[strC] (O) ++(2.8,0) -- ++(0,4);                  % Right separator \end{tkz}, \qquad\text{and}\qquad \begin{tkz}[scale=0.4] \coordinate (O) at (0,0); \fill[regA] (O) rectangle ++(4,4);                  % Background \fill[regB] (O) ++(1,4) \cupto{1} --cycle;         % Blue cup \draw[strA] (O) ++(1,0) \capto{1};                  % Red cap \draw[strA] (O) ++(2,1)--++(0,2);                 % Red wire \draw[strC] (O) ++(1,4) \cupto{1};                  % Black cup \end{tkz} = \begin{tkz}[scale=0.325] \coordinate (O) at (0,0); \fill[regA] (O) rectangle ++(6,5);                  % Main Background</p>
+    
+<p>% Unified Blue Region \fill[regB] (O) ++(1.8,5) to[-s] ++(-1, -3.2)                               % Left leg down (adjusted) \cupto{0.7}                                         % Left cup bottom -- ++(0, 0.2) \capto{0.8} -- ++(0, -0.2) \cupto{0.7} to[s] ++(-1, 3.2) -- cycle;</p>
+    
+<p>% Wires \draw[strA] (O) ++(1.5,0) -- ++(0,1.1); \draw[strA] (O) ++(4.5,0) -- ++(0,1.1); \draw[strC] (O) ++(1.8,5) to[-s] ++(-1, -3.2) \cupto{0.7} -- ++(0,0.2); \draw[strC] (O) ++(4.2,5) to[-s] ++(1, -3.2) \cupfrom{0.7} -- ++(0,0.2); \draw[strC] (O) ++(2.2,2.0) \capto{0.8}; \end{tkz} . \]</p>
+
+<p>\subsection{\texorpdfstring{$\mathrm{H}^*$}{H*}-monad completion of pre-3-Hilbert spaces} Given a pre-3-Hilbert space $\fX$, define the \defn{$\mathrm{H}^*$-monad completion} of $\fX$ by the pre-3-Hilbert space $\mathsf{H^<em>Alg}(\fX)$ whose \begin{itemize} \item objects are $\mathrm{H}^</em>$-monads in $X$, \item 1-morphisms are $\mathrm{H}^*$-bimodules, and \item 2-morphisms are intertwiners, \item UAF is \greyson{todo}, \item spherical trace is \greyson{todo} \end{itemize}</p>
+
+<p><strong>See also:</strong> <a href="spectrum (Banach algebra).html">spectrum (Banach algebra)</a></p>
+    </div>
+</body>
+</html>

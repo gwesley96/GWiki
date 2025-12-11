@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>(pseudo-)Riemannian metric</title>
+    <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
+    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$']],
+            displayMath: [['\\[', '\\]']],
+            macros: {
+                // Category theory
+                cC: '\\mathcal{C}',
+                cD: '\\mathcal{D}',
+                cF: '\\mathcal{F}',
+                cG: '\\mathcal{G}',
+                cH: '\\mathcal{H}',
+                cL: '\\mathcal{L}',
+                cM: '\\mathcal{M}',
+                cP: '\\mathcal{P}',
+                cU: '\\mathcal{U}',
+                Obj: '\\operatorname{Obj}',
+                Hom: '\\operatorname{Hom}',
+                Mor: '\\operatorname{Mor}',
+                End: '\\operatorname{End}',
+                Aut: '\\operatorname{Aut}',
+                id: '\\mathrm{id}',
+
+                // Blackboard bold
+                bR: '\\mathbb{R}',
+                bC: '\\mathbb{C}',
+                bZ: '\\mathbb{Z}',
+                bN: '\\mathbb{N}',
+                bQ: '\\mathbb{Q}',
+
+                // Categories
+                Set: '\\mathbf{Set}',
+                Grp: '\\mathbf{Grp}',
+                Top: '\\mathbf{Top}',
+                Vec: '\\mathbf{Vec}',
+
+                // Operators
+                colim: '\\operatorname{colim}',
+                Ext: '\\operatorname{Ext}',
+                Tor: '\\operatorname{Tor}',
+                Spec: '\\operatorname{Spec}',
+                im: '\\operatorname{im}',
+                coker: '\\operatorname{coker}',
+                coloneqq: '\\mathrel{\\vcenter{\\hbox{.}\\hbox{.}}}=',
+                coloneq: '\\mathrel{\\vcenter{\\hbox{.}\\hbox{.}}}=',
+
+                // TikZ-like (limited in HTML)
+                to: '\\rightarrow',
+                injto: '\\hookrightarrow',
+                surjto: '\\twoheadrightarrow'
+            }
+        }
+    };
+    </script>
+    <style>
+        body {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            font-family: Georgia, serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        h1 {
+            color: #2563eb;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #1e40af;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        h3 {
+            color: #1e3a8a;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+        h4 {
+            color: #1e40af;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .metadata {
+            font-size: 0.9em;
+            color: #6b7280;
+            margin-bottom: 20px;
+            font-family: monospace;
+        }
+        .topics {
+            background: #f3f4f6;
+            padding: 15px;
+            border-left: 4px solid #2563eb;
+            margin: 20px 0;
+        }
+        .idea {
+            background: #ecfeff;
+            border: 1px solid #06b6d4;
+            border-left: 4px solid #06b6d4;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .definition, .theorem, .example, .lemma, .proposition, .corollary, .remark {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        .definition {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+        }
+        .theorem, .lemma, .proposition, .corollary {
+            background: #dbeafe;
+            border-left: 4px solid #3b82f6;
+        }
+        .example {
+            background: #f3e8ff;
+            border-left: 4px solid #a855f7;
+        }
+        .remark {
+            background: #f3f4f6;
+            border-left: 4px solid #6b7280;
+        }
+        a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        code {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+        li {
+            margin: 8px 0;
+        }
+        script[type="text/tikz"] {
+            display: block;
+            margin: 20px 0;
+            text-align: center;
+        }
+        svg {
+            display: block;
+            margin: 20px auto;
+            max-width: 100%;
+        }
+        .linked-notes, .backlinks {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+        .linked-notes h2, .backlinks h2 {
+            color: #1e40af;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        .linked-notes ul, .backlinks ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .linked-notes li, .backlinks li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>(pseudo-)Riemannian metric</h1>
+    <div class="metadata">
+        <strong>Topics:</strong> differential-geometry<br>
+        <strong>Last modified:</strong> 2025-12-08
+    </div>
+
+    <div class="content">
+        <p>\begin{idea}[Idea] Metrics capture the quadratic data needed to measure lengths and angles; pseudo-Riemannian metrics relax positivity to accommodate signatures such as Lorentzian geometries while retaining smooth variation over the manifold. \end{idea}</p>
+
+<div class="definition"><strong>Definition (Pseudo-inner product).</strong> 
+<p>A \textbf{pseudo-inner product} (resp. \textbf{inner product}) on a vector space $V$ is a <a href="positive-definite-form.html">positive-semidefinite form</a> (resp. <a href="positive-definite-form.html">positive-definite form</a>) symmetric bilinear form $\bkt{-}{-}\colon V\times V\to\bbR$.</p>
+</div>
+
+<div class="definition"><strong>Definition ((Pseudo-)Euclidean vector spaces).</strong> 
+<p>A \textbf{pseudo-Euclidean vector space} (resp. \textbf{Euclidean vector space}) is a finite-dimensional $\bbR$-vector space $V$ equipped with a positive-semidefinite (resp. positive-definite) <a href="quadratic-form.html">quadratic form</a> $Q\colon V\to\bbR$.</p>
+</div>
+
+<div class="remark"><strong>Remark ((Pseudo-)norms from quadratic forms).</strong> 
+<p>A (pseudo-)Euclidean vector space $(V,Q)$ has \textbf{(pseudo-)norm} $\|-\|\coloneqq \sqrt{Q(-)}$.</p>
+</div>
+
+<p>\section{(Pseudo-)Riemannian metrics}</p>
+
+<div class="definition"><strong>Definition.</strong> 
+<p>A \textbf{pseudo-Riemannian metric} on a smooth manifold $M$ is a $(0,2)$-<a href="tensor-field.html">tensor field</a> $\mathrm{g}$ such that for each $p\in M$, the bilinear form $\mathrm{g}_p\coloneqq \bkt{-}{-}_p\colon T_pM\times T_pM\to \bbR$ is symmetric and nondegenerate. If $\mathrm{g}$ is positive-definite, it is a \textbf{Riemannian metric}.</p>
+</div>
+
+<div class="definition"><strong>Definition ((Pseudo-)Riemannian manifolds).</strong> 
+<p>A \textbf{(pseudo-)Riemannian manifold} is a <a href="smooth-manifold.html">smooth manifold</a> $M$ equipped with a (pseudo-)Riemannian metric $\mathrm{g} \coloneqq \bkt{-}{-}$.</p>
+</div>
+
+<div class="example"><strong>Example (Euclidean metric).</strong> 
+<p>For $M = \bbR^n$ with global coordinates $x^i$, the \textbf{Euclidean metric} $\overline{\mathrm{g}} \coloneqq (\mathrm{d} x^1)^2 + \cdots + (\mathrm{d} x^n)^2$ makes $\bbR^n$ into a Riemannian manifold, the standard Euclidean vector space of dimension $n$.</p>
+</div>
+
+<div class="example"><strong>Example (Poincaré disk model).</strong> 
+<p>For $M = \overset\circ D{}^n \subset \bbR^n$, the \textbf{Poincaré metric} $\mathrm{g}_{\small\mathbb{H}}\coloneqq \dfrac{4\overline{\mathrm{g}}}{1-\overline{\mathrm{g}}}$ yields the Poincaré disk model of $n$-dimensional \textbf{hyperbolic space} $\mathbb{H}^n$.</p>
+</div>
+
+<p>\begin{framedproposition}[{(Lee18, Prop. 2.4)}] Every smooth manifold admits a Riemannian metric; one proof uses a <a href="partition-of-unity.html">partition-of-unity</a>. \end{framedproposition}</p>
+
+<p><strong>See also:</strong> <a href="smooth-manifold.html">smooth-manifold</a>, <a href="quadratic-form.html">quadratic-form</a>, <a href="tensor-field.html">tensor-field</a></p>
+<p>\IncomingLinks{dg algebra}</p>
+
+<p>Further reading: \nlab{pseudo-Riemannian manifold}.</p>
+    </div>
+
+    <div class="linked-notes">
+        <h2>Linked Notes</h2>
+        <ul>
+            <li><a href="partition-of-unity.html">partition-of-unity</a></li>
+            <li><a href="positive-definite-form.html">positive-definite-form</a></li>
+            <li><a href="quadratic-form.html">quadratic-form</a></li>
+            <li><a href="smooth-manifold.html">smooth-manifold</a></li>
+            <li><a href="tensor-field.html">tensor-field</a></li>
+        </ul>
+    </div>
+</body>
+</html>

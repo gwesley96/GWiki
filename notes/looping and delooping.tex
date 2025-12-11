@@ -1,0 +1,36 @@
+\documentclass{gwiki}
+
+\Title{looping and delooping}
+\Tags{}
+
+\begin{document}
+
+\NoteHeader
+
+#### In $(\infty,1)$-categories
+Let $C$ be an \wref{(∞,1)-category} with a \wref[terminal object]{terminal object in an (∞,1)-category} $*$.
+
+For any \wref{pointed object} $X$ in $C$, its **loop space object** (AKA **looping**) of $X$, denoted $\Omega X$, is defined as the \wref[(∞,1)-pullback]{(∞,1)-pullback in an (∞,1)-category} of the point $x_{0}$ along itself in $C$:
+```tikz
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz-cd}
+\begin{document}
+\huge
+\begin{tikzcd}
+\Omega X \arrow[r] \arrow[d] & * \arrow[d, "x_0"] \\
+* \arrow[r, "x_0"'] & X
+\end{tikzcd}
+\end{document}
+```
+A **delooping** of an object $A\in C$ is a pointed object $\mathrm{B}A$ such that there is an \wref[equivalence]{equivalence in an (∞,n)-category} $A \simeq \Omega(\mathrm{B}A)$ in $C$.
+
+#### In $(\infty,n)$-categories
+
+See \wref[Remark 4.4.6]{LurieTQFTClassification2009.pdf#page=160&selection=133,0,133,12&color=yellow}.
+
+\References
+
+\Footer
+
+\end{document}

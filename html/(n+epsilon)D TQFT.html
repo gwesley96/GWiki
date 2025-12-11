@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$(n+\varepsilon)$-Dimensional TQFT</title>
+    <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
+    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$']],
+            displayMath: [['\\[', '\\]']],
+            macros: {
+                // Category theory
+                cC: '\\mathcal{C}',
+                cD: '\\mathcal{D}',
+                cF: '\\mathcal{F}',
+                cG: '\\mathcal{G}',
+                cH: '\\mathcal{H}',
+                cL: '\\mathcal{L}',
+                cM: '\\mathcal{M}',
+                cP: '\\mathcal{P}',
+                cU: '\\mathcal{U}',
+                Obj: '\\operatorname{Obj}',
+                Hom: '\\operatorname{Hom}',
+                Mor: '\\operatorname{Mor}',
+                End: '\\operatorname{End}',
+                Aut: '\\operatorname{Aut}',
+                id: '\\mathrm{id}',
+
+                // Blackboard bold
+                bR: '\\mathbb{R}',
+                bC: '\\mathbb{C}',
+                bZ: '\\mathbb{Z}',
+                bN: '\\mathbb{N}',
+                bQ: '\\mathbb{Q}',
+
+                // Categories
+                Set: '\\mathbf{Set}',
+                Grp: '\\mathbf{Grp}',
+                Top: '\\mathbf{Top}',
+                Vec: '\\mathbf{Vec}',
+
+                // Operators
+                colim: '\\operatorname{colim}',
+                Ext: '\\operatorname{Ext}',
+                Tor: '\\operatorname{Tor}',
+                Spec: '\\operatorname{Spec}',
+                im: '\\operatorname{im}',
+                coker: '\\operatorname{coker}',
+                coloneqq: '\\mathrel{\\vcenter{\\hbox{.}\\hbox{.}}}=',
+                coloneq: '\\mathrel{\\vcenter{\\hbox{.}\\hbox{.}}}=',
+
+                // TikZ-like (limited in HTML)
+                to: '\\rightarrow',
+                injto: '\\hookrightarrow',
+                surjto: '\\twoheadrightarrow'
+            }
+        }
+    };
+    </script>
+    <style>
+        body {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            font-family: Georgia, serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        h1 {
+            color: #2563eb;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #1e40af;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        h3 {
+            color: #1e3a8a;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+        h4 {
+            color: #1e40af;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .metadata {
+            font-size: 0.9em;
+            color: #6b7280;
+            margin-bottom: 20px;
+            font-family: monospace;
+        }
+        .topics {
+            background: #f3f4f6;
+            padding: 15px;
+            border-left: 4px solid #2563eb;
+            margin: 20px 0;
+        }
+        .idea {
+            background: #ecfeff;
+            border: 1px solid #06b6d4;
+            border-left: 4px solid #06b6d4;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .definition, .theorem, .example, .lemma, .proposition, .corollary, .remark {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        .definition {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+        }
+        .theorem, .lemma, .proposition, .corollary {
+            background: #dbeafe;
+            border-left: 4px solid #3b82f6;
+        }
+        .example {
+            background: #f3e8ff;
+            border-left: 4px solid #a855f7;
+        }
+        .remark {
+            background: #f3f4f6;
+            border-left: 4px solid #6b7280;
+        }
+        a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        code {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+        li {
+            margin: 8px 0;
+        }
+        script[type="text/tikz"] {
+            display: block;
+            margin: 20px 0;
+            text-align: center;
+        }
+        svg {
+            display: block;
+            margin: 20px auto;
+            max-width: 100%;
+        }
+        .linked-notes, .backlinks {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+        .linked-notes h2, .backlinks h2 {
+            color: #1e40af;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        .linked-notes ul, .backlinks ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .linked-notes li, .backlinks li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>$(n+\varepsilon)$-Dimensional TQFT</h1>
+    <div class="metadata">
+        <strong>Topics:</strong> TQFT, skein-modules, higher-categories<br>
+        <strong>Last modified:</strong> 2025-12-11
+    </div>
+
+    <div class="content">
+        <div class="definition"><strong>Definition ($(n+\varepsilon)$-dimensional TQFT).</strong> 
+<p>An \textbf{$(n+\varepsilon)$-dimensional TQFT} $(\mathcal{F},\mathcal{U})$ is just an $n$<a href="system of topological fields.html">system of topological fields</a>[-dimensional system of topological fields] and <a href="extended isotopy.html">extended isotopy</a>[local relations].</p>
+</div>
+
+<p>The reason for this terminology is that although an $(n+\varepsilon)$-dimensional TQFT does not have the data of the path integral/partition function of a typical $(n+1)$-dimensional manifold, it does have this data for <a href="mapping class group.html">mapping class group</a>[mapping cylinders] between $n$-manifolds.</p>
+
+<p>\section{Skein Modules and Categories}</p>
+
+<p>\begin{construction}[Skein module from an $(n+\varepsilon)$-dimensional TQFT]\label{const:skein-module} Let $(\mathcal{F},\mathcal{U})$ be an $(n+\varepsilon)$D TQFT and consider an $n$-manifold $X$ with boundary condition $c\in\mathcal{F}(\partial X)$. Let $R$ be any unital <a href="ring (nPOV).html">ring</a>. We define the \textbf{skein module} associated to $(X,c)$ by the free $R$-module generated by fields on $X$ (in this context, often called base fields) modulo local relations on $(X,c)$, i.e., \[ \mathrm{Sk}_{\mathcal{F},\mathcal{U}}(X,c;R)\coloneqq R[\mathcal{F}(X,c)]/\mathcal{U}(X,c). \] By a slight abuse of terminology, we will often refer to elements of $\mathrm{Sk}_{\mathcal{F},\mathcal{U}}(X,c;R)$ again as fields. \end{construction}</p>
+
+<p>More generally, for any $1 \leq k \leq n$ we can consider $(W,c)$ for any $(n - k)$-manifold $W$ and any boundary condition $d\in\mathcal{F}(\partial Y)$. We define the \textbf{skein $k$-category} $\mathrm{Sk}_{\mathcal{F},\mathcal{U}}(W;d;R)$ to be the following (traditional, algebraic, linear) $R$-linear $k$-category whose morphisms we define recursively as follows. \begin{itemize}[nosep] \item \textbf{0-morphisms.} The objects of $\mathrm{Sk}_{\mathcal{F},\mathcal{U}}(W,d;R)$ are elements of the subset $\mathcal{F}(W;d)\coloneqq \partial^{-1}(d)$ of $\mathcal{F}(W)$. \item \textbf{$j$-morphisms for $1\leq j\leq n-1$.} For any two compatible $(j-1)$-morphisms $a,b$ in $\mathrm{Sk}_{\mathcal{F},\mathcal{U}}(W,d;R)$, we set $\mathrm{Sk}_{\mathcal{F},\mathcal{U}}(W,d;R)(a\to b)\coloneqq \mathcal{F}(W\times D^j,(\widehat a, b);R)$. \item \textbf{$n$-morphisms.} For any two compatible $(n-1)$-morphisms $a,b$ in $\mathrm{Sk}_{\mathcal{F},\mathcal{U}}(W,d;R)$, we set $\mathrm{Sk}_{\mathcal{F},\mathcal{U}}(W,d;R)(a\to b)\coloneqq \mathrm{Sk}_{\mathcal{F},\mathcal{U}}(W\times D^j,(\widehat a, b);R)$. \end{itemize} As usual, in this construction, unless $\partial W=\varnothing$, every product $W\times D^j$ has a ``pinched'' boundary so that $\partial (W\times D^{j})\cong \Delta W\coloneqq \overline{W}\cup_{\partial W} W$, the <a href="double of a manifold.html">double of a manifold</a>[double] of $Y$.</p>
+
+<p>(Note that we have not showed how $j$-composition works in general, but composition is given by gluing.)</p>
+
+<p>We will be more interested in the dual space (representations) of $\mathrm{Sk}_{\mathcal{F},\mathcal{U}}(X,c;R)$, which we denote by $Z_{\mathcal{F},\mathcal{U}}(X,c;R)$. This is because $Z_{\mathcal{F},\mathcal{U}}(X,c;R)$ turn out to have nicer algebraic structure than the $\mathrm{Sk}_{\mathcal{F},\mathcal{U}}(X,c;R)$-invariants; in particular, at least for $n=1,2$, the former are always <a href="Cauchy complete n-category.html">Cauchy complete</a> even when the latter are not.</p>
+
+<p>\textbf{Notation.} Often the system of fields and local relations $(\mathcal{F},\mathcal{U})$ that define $\mathrm{Sk}_{\mathcal{F},\mathcal{U}}$ and $Z_{\mathcal{F},\mathcal{U}}$ are should be clear from context, and we simply write $\mathrm{Sk}$ and $Z$ respectively.</p>
+
+<p>\section{Examples}</p>
+
+<p>Our main example of an $n$-dimensional system of fields will be $\mathcal{C}$-labeled string diagrams for some ``traditional $n$-category with strong duality'' $\mathcal{C}$.</p>
+
+<p>Recall that a $\mathcal{C}$-\textbf{labeled string diagram} on a $k$-manifold $Y$ is an embedded cell complex of $Y$ whose codimension-$j$ cells are labeled by $j$-morphisms of $\mathcal{C}$. (We will give the precise definition of a $\mathcal{C}$-labeled string diagram after providing the full definition of a system of fields.) It will be helpful to think of string diagrams as the ``fields'' in the following definition.</p>
+
+<p>\section{(Unitary) $n$-Categories with Strong Duality}</p>
+
+<p>% TODO: expand this section</p>
+
+<p><strong>See also:</strong> <a href="(n+1)D TQFT.html">(n+1)D TQFT</a>, <a href="system of topological fields.html">system of topological fields</a>, <a href="local relations for a system of topological fields.html">local relations for a system of topological fields</a>, <a href="extended isotopy.html">extended isotopy</a></p>
+    </div>
+
+    <div class="linked-notes">
+        <h2>Linked Notes</h2>
+        <ul>
+            <li><a href="Cauchy complete n-category.html">Cauchy complete n-category</a></li>
+            <li><a href="double of a manifold.html">double of a manifold</a></li>
+            <li><a href="extended isotopy.html">extended isotopy</a></li>
+            <li><a href="mapping class group.html">mapping class group</a></li>
+            <li><a href="ring (nPOV).html">ring (nPOV)</a></li>
+            <li><a href="system of topological fields.html">system of topological fields</a></li>
+        </ul>
+    </div>
+</body>
+</html>
