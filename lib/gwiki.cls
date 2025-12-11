@@ -128,8 +128,19 @@
 \RequirePackage[footnotesize,bf]{caption}
 \captionsetup{margin=0.75cm}
 \RequirePackage[dvipsnames,svgnames]{xcolor}
-\RequirePackage[final]{microtype}
-\microtypecontext{spacing=nonfrench}
+\RequirePackage[protrusion=true,expansion=true,activate={true,nocompatibility}]{microtype}
+
+% More aggressive reductions
+\microtypesetup{
+  tracking=true,
+  spacing=true,
+  stretch=10,     % allow more expansion
+  shrink=20       % allow more shrinkage
+}
+
+\SetTracking{encoding=*}{-20}
+
+% \microtypecontext{spacing=nonfrench}
 
 
 \iftoggle{enableParskip}{\RequirePackage{parskip}}{}

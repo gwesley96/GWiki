@@ -1,0 +1,97 @@
+\documentclass{gwiki}
+
+\Title{Parallel Transport via a Connection}
+\Tags{differential-geometry, gauge-theory, physics}
+\Topics{Explicit formula for parallel transport using a linear connection, deriving the path-ordered exponential and holonomy formula.}
+
+\begin{document}
+
+\KeySources{Baez–Muniain \textit{Gauge Fields, Knots and Gravity} (1994)}
+
+\NoteHeader
+
+From a \wref{linear connection in a vector bundle}[connection] we can give an explicit formula for a parallel transporter associated to any curve $\gamma$ in $M$. Namely, from $\nabla$ we define $\parallel^{\gamma}w_{0}$ for a vector in the fiber, $w_{0}\in E_{\gamma(0)}$, so that $\nabla_{\dot\gamma(t)}w=0$ for all $t$, subject to the constraint $w$ at $t=0$ is the given vector $w_{0}$. That is, we desire a vector field $w\in \mathfrak{X}(\gamma)$ satisfying these conditions.
+
+Without loss of generality, we may suppose that $\gamma\subset M$ is contained entirely in a single local trivialization of $E$ on $M$, say $E|_{U}\cong U\times V$ for some $k$-vector space $V$, then such a section $w$ as discussed earlier exists and is unique by the \wref{Existence and Uniqueness Theorem for ODEs}. Indeed, if not (and more generally if $\gamma$ is only piecewise smooth), then we can find the points at which it is not smooth, break it up into maximal smooth pieces $(t_i, t_{i+1}] \subset M$, where $1 \leq i < n$, and define the holonomy by
+\[
+  \mathrm{hol}_{\nabla}(\gamma) = \mathrm{hol}_{\nabla}(\gamma_n) \cdots \mathrm{hol}_{\nabla}(\gamma_1).
+\]
+In other words, we parallel translate a vector along a piecewise smooth path by parallel translating it along one piece at a time. As $M$ (or at least the closure of an open neighborhood of $\gamma$) is compact, there are finitely many open sets covering $\gamma$, so we can always do this.
+
+\section{Deriving the Path-Ordered Exponential}
+
+Using the \wref{linear connection in a vector bundle}[local expression of connections] $\nabla =\mathrm{d}+A$, where $\mathrm{d}$ is the (standard Euclidean) \wref{exterior derivative} and $A$ is the \wref{linear connection 1-form} in this local trivialization, the defining equation $\nabla_{\dot\gamma(t)}w=0$ becomes
+\[
+  \dot w_{t}=-A(\dot \gamma(t))\,w_{t}.
+\]
+
+\begin{itemize}[leftmargin=*]
+\item Replacing $t$ with $0\leq t_{1}\leq t$ and then integrating both sides from $t_1=0$ to $t_1=t$, we find
+\[
+  w_{t}=w_{0}-\int_{0}^{t}\mathrm{d}t_{1}\,A(\dot\gamma(t_{1}))w_{t_{1}}=w_{0}-\left[\int_{0}^{t}\mathrm{d}t_{1}\,A(\dot\gamma(t_{1}))\right]w_{t_{1}}
+\]
+where we are using the notation of an integral as an operator (which is here acting on $w_{t_{2}}$) that is common in physics.
+
+\item Changing $t_{1}$ to $t_{2}$ and $t$ to $t_{1}$ and then plugging in the LHS to the RHS, we get
+\begin{align*}
+w_{t}
+&=w_{0}-\left[\int_{0}^{t}\!\!\mathrm{d}t_{1}\,A(\dot\gamma(t_{1}))\right]w_{0} \\
+&\quad +
+\left[\int_{0}^{t}\mathrm{d}t_{1}\,A(\dot\gamma(t_1))\right]\left[\int_{0}^{t_{1}}\!\!\mathrm{d}t_{2}\;A(\dot\gamma(t_{2}))\right]w_{t_{2}}.
+\end{align*}
+
+\item Repeating again similarly, we get
+\begin{align*}
+w_{t} &= w_{0} - \left[\int_{0}^{t}\mathrm{d}t_{1}\,A(\dot\gamma(t_{1}))\right]w_{0} \\
+&\quad + \left[\int_{0}^{t}\mathrm{d}t_{1}\,A(\dot\gamma(t_1))\right]\left[\int_{0}^{t_{1}}\mathrm{d}t_{2}\,A(\dot\gamma(t_{2}))\right]w_{0} \\
+&\quad - \left[\int_{0}^{t}\mathrm{d}t_{1}\,A(\dot\gamma(t_1))\right]\left[\int_{0}^{t_{1}}\mathrm{d}t_{2}\,A(\dot\gamma(t_{2}))\right]\left[\int_{0}^{t_{2}}\mathrm{d}t_{3}\,A(\dot\gamma(t_{3}))\right]w_{t_{3}}.
+\end{align*}
+
+\item Remarkably, by repeating this process \emph{infinitely} many times, the formula we get for $w_{t}$ actually converges to the correct answer:
+\begin{align*}
+w_{t}&=\sum_{n=0}^\infty(-1)^{n}\!\left[\int_0^t \!\!\mathrm{d}t_1\,A(\dot\gamma(t_1))\right]\left[\int_0^{t_1}\!\!\mathrm{d}t_{2}\,A(\dot\gamma(t_{2}))\right]\cdots \left[\int_0^{t_{n-1}} \!\!\mathrm{d}t_n \,A(\dot\gamma(t_n))\right]w_{0}
+\end{align*}
+\end{itemize}
+
+Recall that the \textbf{path-ordering operator} $\mathcal{P}$ arranges a product of $t$-dependent operators in chronological order (with the shortest indices acting first):
+\[
+  \mathcal{P}\Big\{\!O_{1}(t_{1})O_{2}(t_{2})\cdots O_{N}(t_{N})\!\Big\} \coloneqq  O_{p_{1}}(t_{p_{1}})O_{p_{2}}(t_{p_{2}})\cdots O_{p_{N}}(t_{p_{N}}),
+\]
+where $t_{p_{1}} \geq t_{p_{2}} \geq \dots \geq t_{p_{N}}$.
+
+Notice that the formula we found for $w_{t}$ above is essentially integrating over an $n$-simplex. As there are $n!$ simplexes in the cube, by the symmetry of relabeling the dummy integration variables, the integral over each simplex after reordering the bracketed operators is the same, so
+\begin{align*}
+w_{t}&=\sum_{n=0}^\infty(-1)^{n}\!\left[\int_0^t \!\!\mathrm{d}t_1\,A(\dot\gamma(t_1))\right]\left[\int_0^{t_1}\!\!\mathrm{d}t_{2}\,A(\dot\gamma(t_{2}))\right]\cdots \left[\int_0^{t_{n-1}} \!\!\mathrm{d}t_n \,A(\dot\gamma(t_n))\right]w_{0} \\
+&=\sum_{n=0}^{\infty}\frac{(-1)^{n}}{n!}\left[\int_{(t_1,\dots,t_{n-1})\in [0,t]^n}\!\!\mathrm{d}\mathrm{vol} \, \mathcal{P}\left\{A(\dot\gamma(t_{1}))\cdots A(\dot\gamma(t_{n}))\right\}\right]w_{0} \\
+&=\sum_{n=0}^{\infty}\frac{(-1)^{n}}{n!}\mathcal{P} \left\{\left[\int_0^t A(\dot\gamma (s))\,\mathrm{d}s \right]^{n}\right\} \\
+&\eqqcolon\mathcal{P}\exp\left[-\!\int_{0}^{t}A(\dot\gamma(s))\,\mathrm{d}s\right]
+\end{align*}
+where the power of $n$ in the penultimate line means we take $n$ copies of the operator in brackets, put them side-by-side, and then $\mathcal{P}$-order the factors in the parameter $s$ over $t_1,\dots,t_{n-1}\in [0,t]$. We call $\mathcal{P}\exp\left[-\!\int_{0}^{t}A(\dot\gamma(s))\,\mathrm{d}s\right]$ the \textbf{path-ordered exponential} of $A$ along $\gamma$.
+
+\section{Special cases of \texorpdfstring{$\mathcal{P}\exp$}{Pexp}}
+The path-ordered exponential $\mathcal{P}\exp$ reduces to the ordinary exponential $\exp$ in special cases.
+\begin{itemize}[nosep]
+\item If $A(\dot\gamma(t))$ is independent of $t$, so that it equals a fixed element $A\in\mathrm{End}(V)$, then our original differential equation $\dot w_{t}=-A(\dot \gamma(t))w(t)$ is just $\dot w_{t}=-Aw_{t}$, whose solution is just the ordinary exponential
+\[
+  w_{t}=\mathrm{e}^{-tA}w_{0}=1-tA+\frac{(tA)^{2}}{2!}-\cdots.
+\]
+
+\item If $[A(\dot\gamma(t)),A(\dot\gamma(t'))]=0$ for all $t$ and $t'$, then path-ordering has no effect (since the ``order'' the operators are applied in becomes irrelevant, as they commute!). This just means
+\[
+  w_{t}=\mathrm{e}^{-\!\oint_{\kern-.3ex\scriptscriptstyle\gamma}{\scriptstyle\kern-.2ex A}}\,w_{0}
+\]
+where $\oint_{\gamma}A\coloneqq \int_{0}^{1}\!A(\dot\gamma(s))\mathrm{d}s$. This occurs, of course, whenever the gauge group $G$ is abelian, as the entries of the connection 1-form $A$ then take values in the Lie algebra $\mathfrak{g}$ of $G$, which is then also commutative. For example, when $G=\mathrm{U}(1)$, e.g., for electromagnetism, if we choose units so that $q/\hbar= 1$ where $q$ is the fundamental unit of charge in nature, then the wavefunction of a particle with this charge will be a section of a $\mathrm{U}(1)$-bundle with standard fiber given by the fundamental representation of $\mathrm{U}(1)$ ($\mathrm{e}^{i\theta}\cdot z\coloneqq \mathrm{e}^{i\theta}z$). Similarly, the wavefunction of a particle of $n$ times this charge will correspond to a section of a $\mathrm{U}(1)$-bundle with standard fiber given by the representation $\rho_{n}$ of $\mathrm{U}(1)$ ($\mathrm{e}^{i\theta}\cdot z\coloneqq \mathrm{e}^{in\theta}z$).
+\end{itemize}
+
+We can finally conclude that for a smooth vector bundle $E\to M$ and a smooth curve $\gamma\subset M$ contained in a local trivialization of $E$ over $U$ wherein $\nabla=\mathrm{d}+A$, we have
+\[
+  \mathrm{hol}_{\nabla}(\gamma)=\mathcal{P}\mathrm{e}^{-\!\oint_{\kern-.3ex\scriptscriptstyle\gamma}{\scriptstyle\kern-.2ex A}}\,w_{0}.
+\]
+
+\SeeAlso{holonomy, covariant derivative, vector fields on curves and parallelism, geodesic, torsion of a connection}
+
+\References
+
+\Footer
+
+\end{document}

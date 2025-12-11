@@ -1,0 +1,69 @@
+\documentclass{gwiki}
+
+\Title{Cohomology}
+\Tags{higher-category-theory, homotopy-theory, nPOV}
+\Topics{The nPOV (homotopy-theoretic) definition of cohomology in an ambient $(\infty,1)$-category, emphasizing cocycles, coboundaries, and cohomology classes.}
+
+\begin{document}
+
+\KeySources{\nlab{cohomology}}
+
+\NoteHeader
+
+Let $\mathcal{C}$ be an ambient $(\infty,1)$-category (most often an $(\infty,1)$-topos or a stable $(\infty,1)$-category).
+
+Fix objects $X$ (the \textbf{domain object}) and $A$ (the \textbf{coefficient object}) in $\mathcal{C}$.
+
+\begin{definition}[Cohomology]\label{def:cohomology}
+\begin{itemize}[nosep]
+  \item The $A$\textbf{-cocycle space} on $X$ is the space $\mathcal{C}(X\to A)$, often denoted $\mathrm{Z}(X;A)$.
+  \item An $A$\textbf{-cocycle} on $X$ is an element $\omega\in \mathcal{C}(X\to A)$.
+  \item The \textbf{$A$-cohomology set} of $X$ (AKA the \textbf{cohomology} of $X$ with $A$\textbf{-coefficients}) is the \emph{set} of connected components of the $A$-cocycle space
+  \[
+    \mathrm{H}(X;A)\coloneqq\pi_{0}\mathcal{C}(X\to A).
+  \]
+  \item The \textbf{cohomology class} of an $A$-cocycle $\omega$ is its component $[\omega]\in\mathrm{H}(X;A)$.
+  \begin{itemize}[nosep]
+    \item If $\mathcal{C}$ has a terminal object $*$ and $A$ is equipped with a pointing $a_0\colon *\to A$, then the \textbf{trivial $A$-cocycle} $\omega_{\mathrm{triv}}$ on $X$ is the $A$-cocycle $X\to *\mathbin{\smash{\overset{a_0}{\to}}} A\in\mathcal{C}(X\to A)$.
+  \end{itemize}
+  \item An $A$\textbf{-coboundary} is a 2-morphism $\eta\in \mathcal{C}(\omega_{1}\Rightarrow\omega_{2})$.
+  \item Two cocycles $\omega_{1},\omega_{2}$ on $X$ are $A$\textbf{-cohomologous} if they are connected by an $A$-coboundary, or equivalently if $[\omega_{1}]=[\omega_{2}]$ in $\mathrm{H}(X;A)$.
+  \begin{itemize}[nosep]
+    \item If $A$ is equipped with a pointing $a_0\colon *\to A$, then a cocycle $\omega$ is an $A$-\textbf{coboundary} if it is cohomologous to the trivial cocycle $\omega_{\mathrm{triv}}$.
+  \end{itemize}
+  \item For an object $K\in \mathcal{C}$, an $A$-cocycle $\mathscr{c}$ on $K$, and a $K$-cocycle $\omega$ on $X$, the \textbf{characteristic class of $\omega$ with respect to $\mathscr{c}$} is the $A$-cohomology class of the composite cocycle
+  \[
+    \mathscr{c}(\omega)\coloneqq [\mathscr{c}\circ \omega]\in\mathrm{H}(X;A).
+  \]
+  \item For a $K$-cocycle $g\colon X\to K$, one says that its homotopy fiber $P\to X$ (meaning $(\infty,1)$-pullback of the cospan $X\mathbin{\smash{\overset{g}{\to}}}K\leftarrow *$), is the object \textbf{classified by the $K$-cohomology class} $[g]\in\mathrm{H}(X;K)$.
+  \begin{itemize}[nosep]
+    \item When $\mathcal{C}$ is an $(\infty,1)$-topos and $K$ is pointed, such an object usually has the interpretation of a principal $\infty$-bundle (e.g., principal bundles, gerbes, principal 2-bundles, and so on).
+    \item If the domain object $X$ itself is a group object, then $P\to X$ is a group extension, and in this case we often write $\mathrm{Ext}(X;A)$ instead of $\mathrm{H}(X;A)$, and refer to elements of $\mathrm{Ext}(X;A)$ as extensions instead of cocycles.
+  \end{itemize}
+\end{itemize}
+\end{definition}
+
+\section{Examples}
+
+\begin{example}[Degree-$n$ cohomology]
+If $A$ admits an $n$-fold \wref[delooping]{looping and delooping} $\mathrm{B}^{n}A$, then the \textbf{degree-$n$ $A$-cohomology of $X$} is the $\mathrm{B}^{n}\kern-.25exA$-cohomology set
+\[
+  \mathrm{H}^{n}(X;A)\coloneqq\mathrm{H}(X;\mathrm{B}^{n}\kern-.25exA).
+\]
+\end{example}
+
+\begin{example}[Cochain complex cohomology]
+If $C^\bullet$ is a \wref{cochain complex} in an \wref{abelian category} $\mathcal{A}$, then the $q$th \textbf{cohomology group} is defined by
+\[
+  \mathrm{H}^q(C^\bullet)\coloneqq \mathrm{ker}(C^q\overset{\delta}{\to} C^{q+1})/\mathrm{im}(C^{q-1}\overset{\delta}{\to} C^q).
+\]
+The numerator consists of \textbf{$q$-cocycles}, and the denominator consists of \textbf{$q$-coboundaries}.
+\end{example}
+
+\SeeAlso{twisted cohomology, de Rham cohomology, singular (co)homology, abelian cohomology, nonabelian cohomology, differential cohomology, characteristic class}
+
+\References
+
+\Footer
+
+\end{document}
