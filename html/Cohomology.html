@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cohomology</title>
     <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
-    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>
-    MathJax = {
+    window.MathJax = {
         tex: {
             inlineMath: [['$', '$']],
             displayMath: [['\\[', '\\]']],
@@ -61,6 +59,8 @@
         }
     };
     </script>
+    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         body {
             max-width: 800px;
@@ -209,7 +209,7 @@
 <li>Two cocycles $\omega_{1},\omega_{2}$ on $X$ are $A$<strong>-cohomologous</strong> if they are connected by an $A$-coboundary, or equivalently if $[\omega_{1}]=[\omega_{2}]$ in $\mathrm{H}(X;A)$.</li>
   
 <li>If $A$ is equipped with a pointing $a_0\colon *\to A$, then a cocycle $\omega$ is an $A$-<strong>coboundary</strong> if it is cohomologous to the trivial cocycle $\omega_{\mathrm{triv}}$.</li>
-<li>For an object $K\in \mathcal{C}$, an $A$-cocycle $\mathscr{c}$ on $K$, and a $K$-cocycle $\omega$ on $X$, the <strong>characteristic class of $\omega$ with respect to $\mathscr{c</strong>$} is the $A$-cohomology class of the composite cocycle \[ \mathscr{c}(\omega)\coloneqq [\mathscr{c}\circ \omega]\in\mathrm{H}(X;A). \]</li>
+<li>For an object $K\in \mathcal{C}$, an $A$-cocycle $\mathscr{c}$ on $K$, and a $K$-cocycle $\omega$ on $X$, the <strong>characteristic class of $\omega$ with respect to $\mathscr{c}$</strong> is the $A$-cohomology class of the composite cocycle \[ \mathscr{c}(\omega)\coloneqq [\mathscr{c}\circ \omega]\in\mathrm{H}(X;A). \]</li>
   
 <li>For a $K$-cocycle $g\colon X\to K$, one says that its homotopy fiber $P\to X$ (meaning $(\infty,1)$-pullback of the cospan $X\mathbin{\smash{\overset{g}{\to}}}K\leftarrow *$), is the object <strong>classified by the $K$-cohomology class</strong> $[g]\in\mathrm{H}(X;K)$.</li>
 <li>When $\mathcal{C}$ is an $(\infty,1)$-topos and $K$ is pointed, such an object usually has the interpretation of a principal $\infty$-bundle (e.g., principal bundles, gerbes, principal 2-bundles, and so on).</li>

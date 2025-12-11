@@ -47,12 +47,16 @@ def extract_body(content):
     return ""
 
 def convert_wikilinks(text):
-    """Convert \wref links to HTML links"""
-    # \wref[display]{target} -> <a href="target.html">display</a>
-    text = re.sub(r'\\wref\[([^\]]+)\]\{([^}]+)\}', r'<a href="\2.html">\1</a>', text)
-    # \wref{target} -> <a href="target.html">target</a>
-    text = re.sub(r'\\wref\{([^}]+)\}', r'<a href="\1.html">\1</a>', text)
-    return text
+    """Convert \wref links to HTML links (supports optional display moved before or after)."""
+    def repl(match):
+        display = match.group('display') or match.group('display_after') or match.group('target')
+        target = match.group('target')
+        return f'<a href="{target}.html">{display}</a>'
+
+    pattern = re.compile(
+        r'\\wref(?:\[(?P<display>[^\]]+)\])?\{(?P<target>[^}]+)\}(?:\[(?P<display_after>[^\]]+)\])?'
+    )
+    return pattern.sub(repl, text)
 
 def convert_bold(text):
     """Convert **bold** to <strong>bold</strong>"""
@@ -67,19 +71,52 @@ def convert_italic(text):
     return text
 
 def convert_tikz(text):
-    """Convert tikz code blocks to TikZJax script tags"""
-    def replace_tikz(match):
-        tikz_content = match.group(1).strip()
-        # Remove document preamble and just keep the tikzcd content
-        # Extract just the tikzcd environment
-        tikzcd_match = re.search(r'\\begin\{tikzcd\}(.*?)\\end\{tikzcd\}', tikz_content, re.DOTALL)
+    """Convert tikz code blocks and inline tikzcd diagrams to TikZJax script tags."""
+    tikz_blocks = []
+
+    def stash_block(match):
+        tikz_blocks.append(match.group(0))
+        return f'__TIKZ_BLOCK_{len(tikz_blocks) - 1}__'
+
+    # Temporarily remove fenced TikZ blocks so inline replacements don't see them
+    text = re.sub(r'```tikz\s*(.*?)\s*```', stash_block, text, flags=re.DOTALL)
+
+    def render_tikzcd(inner):
+        inner = inner.strip()
+        script = f'<script type="text/tikz">\\begin{{tikzpicture}}\\begin{{tikzcd}}{inner}\\end{{tikzcd}}\\end{{tikzpicture}}</script>'
+        return script.replace('\\begin{tikzcd}', '__TIKZCD_BEGIN__').replace('\\end{tikzcd}', '__TIKZCD_END__')
+
+    # Replace display math wrapped tikzcd environments
+    text = re.sub(
+        r'\\\[\s*\\begin\{tikzcd\}(.*?)\\end\{tikzcd\}\s*\\\]',
+        lambda m: render_tikzcd(m.group(1)),
+        text,
+        flags=re.DOTALL
+    )
+    text = re.sub(
+        r'\\begin\{tikzcd\}(.*?)\\end\{tikzcd\}',
+        lambda m: render_tikzcd(m.group(1)),
+        text,
+        flags=re.DOTALL
+    )
+
+    def convert_block(block_text):
+        tikzcd_match = re.search(r'\\begin\{tikzcd\}(.*?)\\end\{tikzcd\}', block_text, re.DOTALL)
         if tikzcd_match:
             tikzcd_content = tikzcd_match.group(1).strip()
-            # Return properly formatted TikZJax script tag
-            return f'<script type="text/tikz">\\begin{{tikzpicture}}\\begin{{tikzcd}}{tikzcd_content}\\end{{tikzcd}}\\end{{tikzpicture}}</script>'
-        return match.group(0)  # Return original if can't parse
+            return render_tikzcd(tikzcd_content)
+        return block_text
 
-    text = re.sub(r'```tikz\s*(.*?)\s*```', replace_tikz, text, flags=re.DOTALL)
+    # Restore fencing placeholders with converted content
+    for idx, block in enumerate(tikz_blocks):
+        placeholder = f'__TIKZ_BLOCK_{idx}__'
+        converted = convert_block(block)
+        text = text.replace(placeholder, converted)
+
+    # Revert temporary placeholders so the TikZ code is valid again
+    text = text.replace('__TIKZCD_BEGIN__', '\\begin{tikzcd}')
+    text = text.replace('__TIKZCD_END__', '\\end{tikzcd}')
+
     return text
 
 def convert_environments(text):
@@ -394,10 +431,8 @@ def convert_to_html(tex_path, backlinks_map=None):
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{title}</title>
     <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
-    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>
-    MathJax = {{
+    window.MathJax = {{
         tex: {{
             inlineMath: [['$', '$']],
             displayMath: [['\\\\[', '\\\\]']],
@@ -450,6 +485,8 @@ def convert_to_html(tex_path, backlinks_map=None):
         }}
     }};
     </script>
+    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         body {{
             max-width: 800px;

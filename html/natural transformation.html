@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Natural Transformation</title>
     <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
-    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>
-    MathJax = {
+    window.MathJax = {
         tex: {
             inlineMath: [['$', '$']],
             displayMath: [['\\[', '\\]']],
@@ -61,6 +59,8 @@
         }
     };
     </script>
+    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         body {
             max-width: 800px;
@@ -193,7 +193,10 @@
 <p>\prereq{functor, category}</p>
 
 <div class="definition"><strong>Definition (Natural Transformation).</strong> 
-<p>Let $F, G : \cC \to \cD$ be <a href="functor.html">functor</a>[functors]. A \textbf{natural transformation} $\eta : F \Rightarrow G$ assigns to each object $A \in \cC$ a morphism $\eta_A : F(A) \to G(A)$ such that for every $f : A \to B$ in $\cC$: \[ \begin{tikzcd} F(A) \ar[r, "\eta_A"] \ar[d, "F(f)"'] & G(A) \ar[d, "G(f)"] \\ F(B) \ar[r, "\eta_B"'] & G(B) \end{tikzcd} \] commutes. The morphisms $\eta_A$ are called the \emph{components} of $\eta$.</p>
+<p>Let $F, G : \cC \to \cD$ be <a href="functor.html">functors</a>. A \textbf{natural transformation} $\eta : F \Rightarrow G$ assigns to each object $A \in \cC$ a morphism $\eta_A : F(A) \to G(A)$ such that for every $f : A \to B$ in $\cC$:</p>
+<script type="text/tikz">\begin{tikzpicture}\begin{tikzcd}F(A) \ar[r, "\eta_A"] \ar[d, "F(f)"'] & G(A) \ar[d, "G(f)"] \\
+  F(B) \ar[r, "\eta_B"'] & G(B)\end{tikzcd}\end{tikzpicture}</script>
+<p>commutes. The morphisms $\eta_A$ are called the \emph{components} of $\eta$.</p>
 </div>
 
 <p>\section{Examples}</p>

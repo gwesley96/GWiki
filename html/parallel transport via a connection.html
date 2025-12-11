@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Parallel Transport via a Connection</title>
     <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
-    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>
-    MathJax = {
+    window.MathJax = {
         tex: {
             inlineMath: [['$', '$']],
             displayMath: [['\\[', '\\]']],
@@ -61,6 +59,8 @@
         }
     };
     </script>
+    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         body {
             max-width: 800px;
@@ -188,13 +188,13 @@
     </div>
 
     <div class="content">
-        <p>From a <a href="linear connection in a vector bundle.html">linear connection in a vector bundle</a>[connection] we can give an explicit formula for a parallel transporter associated to any curve $\gamma$ in $M$. Namely, from $\nabla$ we define $\parallel^{\gamma}w_{0}$ for a vector in the fiber, $w_{0}\in E_{\gamma(0)}$, so that $\nabla_{\dot\gamma(t)}w=0$ for all $t$, subject to the constraint $w$ at $t=0$ is the given vector $w_{0}$. That is, we desire a vector field $w\in \mathfrak{X}(\gamma)$ satisfying these conditions.</p>
+        <p>From a <a href="linear connection in a vector bundle.html">connection</a> we can give an explicit formula for a parallel transporter associated to any curve $\gamma$ in $M$. Namely, from $\nabla$ we define $\parallel^{\gamma}w_{0}$ for a vector in the fiber, $w_{0}\in E_{\gamma(0)}$, so that $\nabla_{\dot\gamma(t)}w=0$ for all $t$, subject to the constraint $w$ at $t=0$ is the given vector $w_{0}$. That is, we desire a vector field $w\in \mathfrak{X}(\gamma)$ satisfying these conditions.</p>
 
 <p>Without loss of generality, we may suppose that $\gamma\subset M$ is contained entirely in a single local trivialization of $E$ on $M$, say $E|_{U}\cong U\times V$ for some $k$-vector space $V$, then such a section $w$ as discussed earlier exists and is unique by the <a href="Existence and Uniqueness Theorem for ODEs.html">Existence and Uniqueness Theorem for ODEs</a>. Indeed, if not (and more generally if $\gamma$ is only piecewise smooth), then we can find the points at which it is not smooth, break it up into maximal smooth pieces $(t_i, t_{i+1}] \subset M$, where $1 \leq i < n$, and define the holonomy by \[ \mathrm{hol}_{\nabla}(\gamma) = \mathrm{hol}_{\nabla}(\gamma_n) \cdots \mathrm{hol}_{\nabla}(\gamma_1). \] In other words, we parallel translate a vector along a piecewise smooth path by parallel translating it along one piece at a time. As $M$ (or at least the closure of an open neighborhood of $\gamma$) is compact, there are finitely many open sets covering $\gamma$, so we can always do this.</p>
 
 <p>\section{Deriving the Path-Ordered Exponential}</p>
 
-<p>Using the <a href="linear connection in a vector bundle.html">linear connection in a vector bundle</a>[local expression of connections] $\nabla =\mathrm{d}+A$, where $\mathrm{d}$ is the (standard Euclidean) <a href="exterior derivative.html">exterior derivative</a> and $A$ is the <a href="linear connection 1-form.html">linear connection 1-form</a> in this local trivialization, the defining equation $\nabla_{\dot\gamma(t)}w=0$ becomes \[ \dot w_{t}=-A(\dot \gamma(t))\,w_{t}. \]</p>
+<p>Using the <a href="linear connection in a vector bundle.html">local expression of connections</a> $\nabla =\mathrm{d}+A$, where $\mathrm{d}$ is the (standard Euclidean) <a href="exterior derivative.html">exterior derivative</a> and $A$ is the <a href="linear connection 1-form.html">linear connection 1-form</a> in this local trivialization, the defining equation $\nabla_{\dot\gamma(t)}w=0$ becomes \[ \dot w_{t}=-A(\dot \gamma(t))\,w_{t}. \]</p>
 
 <p>\begin{itemize}[leftmargin=*] \item Replacing $t$ with $0\leq t_{1}\leq t$ and then integrating both sides from $t_1=0$ to $t_1=t$, we find \[ w_{t}=w_{0}-\int_{0}^{t}\mathrm{d}t_{1}\,A(\dot\gamma(t_{1}))w_{t_{1}}=w_{0}-\left[\int_{0}^{t}\mathrm{d}t_{1}\,A(\dot\gamma(t_{1}))\right]w_{t_{1}} \] where we are using the notation of an integral as an operator (which is here acting on $w_{t_{2}}$) that is common in physics.</p>
 
