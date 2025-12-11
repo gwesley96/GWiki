@@ -121,7 +121,11 @@ def convert_tikz(text):
     def repl_tkz(match):
         opt = match.group(1) if match.group(1) else ""
         content = match.group(2)
-        tikz_code = f'\\begin{{tikzpicture}}[{opt}]\n{content}\n\\end{{tikzpicture}}'
+        # Reconstruct the full tikzpicture code
+        if opt:
+            tikz_code = f'\\begin{{tikzpicture}}[{opt}]\n{content}\n\\end{{tikzpicture}}'
+        else:
+            tikz_code = f'\\begin{{tikzpicture}}\n{content}\n\\end{{tikzpicture}}'
         return stash_script(wrap_tikz(tikz_code))
 
     text = re.sub(r'\\begin\{tkz\}(?:\[([^\]]*)\])?(.*?)\\end\{tkz\}', repl_tkz, text, flags=re.DOTALL)
@@ -149,7 +153,10 @@ def convert_tikz(text):
         opt = match.group(1) if match.group(1) else ""
         content = match.group(2)
         # Reconstruct the full tikzpicture code
-        tikz_code = f'\\begin{{tikzpicture}}[{opt}]\n{content}\n\\end{{tikzpicture}}'
+        if opt:
+            tikz_code = f'\\begin{{tikzpicture}}[{opt}]\n{content}\n\\end{{tikzpicture}}'
+        else:
+            tikz_code = f'\\begin{{tikzpicture}}\n{content}\n\\end{{tikzpicture}}'
         return stash_script(wrap_tikz(tikz_code, preamble=False))
 
     text = re.sub(r'\\begin\{tikzpicture\}(?:\[([^\]]*)\])?(.*?)\\end\{tikzpicture\}', repl_tikzpicture, text, flags=re.DOTALL)
@@ -205,49 +212,175 @@ def convert_environments(text):
 
     return text
 
-TIKZ_PREAMBLE = r'''
-\usetikzlibrary{arrows.meta,calc,decorations.pathmorphing,patterns,positioning,shapes.geometric,quotes,cd}
-
-% Colors
-\definecolor{colA}{RGB}{200,50,50}
-\definecolor{colB}{RGB}{50,50,200}
-\definecolor{colC}{RGB}{50,200,50}
-\definecolor{colD}{RGB}{200,150,50}
-\definecolor{colE}{RGB}{200,150,50}
-\colorlet{gr1}{gray!20}
-
-% Patterns
+# Legacy patterns for TikZJax compatibility (PGF 3.0 vs 3.1)
+LEGACY_PATTERNS = r'''
 \pgfdeclarepatternformonly{primeddots}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{5pt}{5pt}}{\pgfqpoint{4pt}{4pt}}%
 {
   \pgfpathcircle{\pgfqpoint{0pt}{0pt}}{.5pt}
   \pgfusepath{fill}
 }
-
-% Styles
-\tikzset{
-    primedregion/.style={fill=#1, postaction={pattern=primeddots}},
-    boxregion/.style={fill=#1, draw=#1},
-    diagregion/.style={fill=#1, draw=#1},
-    
-    % Arrows
-    arrow at/.style={->},
-    arrow at/.default=0.5,
-    mid>/.style={->},
-    mid>/.default=0.55,
-    Rightarrow/.style={double equal sign distance, >={Implies}, ->},
-    
-    % Knot
-    over/.style={double, draw=white, line width=3pt, double=black},
-    
-    % Nodes
-    coupon/.style={draw=black, fill=white, rounded corners=5pt, thick, inner sep=3pt},
-    bullet/.style={circle, fill=#1, draw=#1, inner sep=0pt, minimum size=3pt},
-    bullet/.default=black,
+\pgfdeclarepatternformonly{primeddots2}{\pgfqpoint{-.3pt}{-.3pt}}{\pgfqpoint{.3pt}{.3pt}}{\pgfqpoint{2.5pt}{2.5pt}}%
+{
+  \pgfpathcircle{\pgfqpoint{0pt}{0pt}}{.35pt}
+  \pgfusepath{fill}
 }
+\pgfdeclarepatternformonly{primedbox}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{1pt}{1pt}}{\pgfqpoint{5pt}{5pt}}%
+{
+  \pgfpathrectangle{\pgfqpoint{-.9pt}{-.9pt}}{\pgfqpoint{1.8pt}{1.8pt}}
+  \pgfusepath{stroke}
+}
+\pgfdeclarepatternformonly{diaglines}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{1pt}{1pt}}{\pgfqpoint{4pt}{4pt}}%
+{
+  \pgfpathmoveto{\pgfqpoint{-1pt}{-1pt}}
+  \pgfpathlineto{\pgfqpoint{1pt}{1pt}}
+  \pgfusepath{stroke}
+}
+'''
 
-% Commands
-\newcommand{\cpn}[2]{\node[coupon] at #1 {#2};}
-\newcommand{\blt}[1]{\node[bullet] at #1 {};}
+def strip_command(text, cmd):
+    """Strip a command and its balanced arguments from latex text."""
+    # Find command
+    while True:
+        idx = text.find(cmd)
+        if idx == -1:
+            break
+            
+        # Check if it is the command (not suffix)
+        # simplistic check: followed by { or [ or space
+        # But we assume inputs like \tikzdeclarepattern{...}
+        
+        # Find start of arguments (first { or [)
+        # We assume standard latex: \cmd{arg} or \cmd[opt]{arg}
+        # For our targets, they are \NewDocumentCommand... or \tikzdeclarepattern...
+        
+        # We just want to effectively remove the whole block.
+        # Simple brace counting from the first {.
+        
+        pre = text[:idx]
+        post = text[idx+len(cmd):]
+        
+        # Scan forward in post to find first {
+        open_idx = post.find('{')
+        if open_idx == -1:
+             # Weird, just remove command?
+             text = pre + post
+             continue
+             
+        # Just remove whitespace between cmd and first {
+        # Actually NewDocumentCommand has args like {name}, so it's fine.
+        
+        # Balance braces starting from open_idx
+        balance = 1
+        pos = open_idx + 1
+        while pos < len(post) and balance > 0:
+            if post[pos] == '{':
+                balance += 1
+            elif post[pos] == '}':
+                balance -= 1
+            pos += 1
+            
+        if balance == 0:
+            # Found end
+            # Also check if there are subsequent arguments?
+            # For \NewDocumentCommand{\tz}{...}{...}, there are 3 brace groups!
+            # For \tikzdeclarepattern{...}, there is 1.
+            
+            # Simple heuristic: consume trailing spaces and look for another { immediately?
+            # For this specific task, we know:
+            # \tikzdeclarepattern{...} -> 1 group
+            # \NewDocumentCommand{name}{args}{body} -> 3 groups
+            # \NewDocumentEnvironment{name}{args}{begin}{end} -> 4 groups
+            
+            # Let's just remove the first group for pattern, and assume we handle others by name.
+            
+            # To be robust, let's hardcode for the known commands.
+            pass
+            
+        # REWRITE: simpler loop
+        # We need to handle multiple distinct commands.
+        # Let's just regex matching the command name, then consume N mandatory args?
+        # Too complex.
+        
+        # Fallback: Just replace the specific known strings from tz.sty?
+        # No, that's brittle.
+        
+        # Recursive brace stripper implementation:
+        
+        def consume_brace_group(s):
+            start = s.find('{')
+            if start == -1: return 0, False
+            balance = 1
+            i = start + 1
+            while i < len(s) and balance > 0:
+                if s[i] == '{': balance += 1
+                elif s[i] == '}': balance -= 1
+                i += 1
+            return i, (balance == 0)
+            
+        # Logic for removal
+        current_post = post
+        groups_to_remove = 1
+        if 'NewDocumentCommand' in cmd: groups_to_remove = 3
+        if 'NewDocumentEnvironment' in cmd: groups_to_remove = 4
+        if 'tikzdeclarepattern' in cmd: groups_to_remove = 1
+        
+        total_consumed = 0
+        success = True
+        
+        for _ in range(groups_to_remove):
+             length, ok = consume_brace_group(current_post)
+             if not ok:
+                 success = False
+                 break
+             total_consumed += length
+             current_post = current_post[length:]
+             
+        if success:
+            text = pre + current_post
+        else:
+             # Failed to match, abort stripping this instance
+             break
+             
+    return text
+
+def load_tz_sty():
+    """Load and clean lib/tz.sty for injection into TikZJax"""
+    try:
+        root_dir = Path(__file__).resolve().parent.parent
+        tz_path = root_dir / "lib" / "tz.sty"
+        if not tz_path.exists():
+            return ""
+        
+        with open(tz_path, 'r') as f:
+            content = f.read()
+            
+        # Clean content
+        content = re.sub(r'\\NeedsTeXFormat.*', '', content)
+        content = re.sub(r'\\ProvidesPackage.*', '', content)
+        content = re.sub(r'\\RequirePackage.*', '', content)
+        
+        # Strip using brace matching
+        content = strip_command(content, r'\NewDocumentCommand')
+        content = strip_command(content, r'\NewDocumentEnvironment')
+        content = strip_command(content, r'\tikzdeclarepattern')
+        
+        # Remove leftover specific xparse stuff
+        content = re.sub(r'\\IfValueT', '', content) # Crude but likely sufficient if args are just braces
+        
+        # Libraries
+        content = re.sub(r'\\usetikzlibrary\{.*?\}', '', content, flags=re.DOTALL)
+        content = re.sub(r'\\pgfdeclarelayer\{.*?\}', '', content)
+        content = re.sub(r'\\pgfsetlayers\{.*?\}', '', content)
+
+        return content + "\n" + LEGACY_PATTERNS
+        
+    except Exception as e:
+        print(f"Warning: Could not load tz.sty: {e}")
+        return ""
+
+TIKZ_PREAMBLE = r'''
+''' + load_tz_sty() + r'''
+
 \newcommand{\wref}[2][]{#2}
 '''
 
