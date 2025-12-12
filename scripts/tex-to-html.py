@@ -89,7 +89,8 @@ def convert_wikilinks(text, title_map=None):
                 display = title_map[target]
             else:
                 # Fallback: prettify filename (e.g. "banach-algebra" -> "Banach Algebra")
-                display = target.replace('-', ' ').title()
+                # Don't force title case, just replace hyphens with spaces
+                display = target.replace('-', ' ')
                 
         return f'<a href="{target}.html">{display}</a>'
 
@@ -345,7 +346,8 @@ def convert_environments(text):
 
         # Content placement logic
         # If body starts with a list (<ul> or <ol>), title goes on separate line/paragraph
-        if body.startswith('<ul>') or body.startswith('<ol>'):
+        # Use lstrip to ignore potential whitespace/newlines from conversion
+        if body.lstrip().startswith('<ul>') or body.lstrip().startswith('<ol>'):
              content = f'<p>{title}</p>\n{body}'
         else:
              # Inline title - we rely on wrap_paragraphs to keep this together if it's text
@@ -354,8 +356,30 @@ def convert_environments(text):
         return f'<div class="env-box {env_name}">\n{content}\n</div>'
 
     # Match environments, including framed versions
+    # Added: construction, claim, step, question, warning, exercise, fact, observation,
+    # convention, note, notation, axiom, assumption, algorithm, postulate
+    env_list = (
+        r"definition|theorem|lemma|proposition|corollary|example|remark|idea|"
+        r"construction|claim|step|question|warning|exercise|fact|observation|"
+        r"convention|note|notation|axiom|assumption|algorithm|postulate"
+    )
+    # create regex that allows "framed" prefix optionally
+    # We use a non-capturing group for the prefix `(?:framed)?` but we need to capture the base name.
+    # Actually my previous regex was `(framed)?(definition|...)`.
+    # Let's construct it dynamically or just write it out.
+    # The previous regex usage relied on group 1 being full name or prefix?
+    # Original: `(definition|...|frameddefinition|...)` matches the whole string.
+    # I'll just build a big pattern.
+    
+    envs = [
+        "definition", "theorem", "lemma", "proposition", "corollary", "example", "remark", "idea",
+        "construction", "claim", "step", "question", "warning", "exercise", "fact", "observation",
+        "convention", "note", "notation", "axiom", "assumption", "algorithm", "postulate", "proof"
+    ]
+    formatted_envs = "|".join([f"(?:framed)?{e}" for e in envs])
+    
     text = re.sub(
-        r'\\begin\{(definition|theorem|lemma|proposition|corollary|example|remark|idea|framedidea|frameddefinition|framedtheorem|framedlemma|framedproposition|framedcorollary)\}(?:\[([^\]]+)\])?(.*?)\\end\{\1\}',
+        r'\\begin\{(' + formatted_envs + r')\}(?:\[([^\]]+)\])?(.*?)\\end\{\1\}',
         replace_env,
         text,
         flags=re.DOTALL
@@ -705,17 +729,24 @@ def convert_lst(text):
     
     # Also handle standard itemize/enumerate
     def replace_itemize(match):
-        content = match.group(1)
+        optional = match.group(1) if match.group(1) else ""
+        content = match.group(2)
         items = re.split(r'\s*\\item\s+', content)
         items = [item.strip() for item in items if item.strip()]
-        list_html = "\n<ul>\n"
+        
+        # Check for nosep
+        css_class = ""
+        if "nosep" in optional:
+            css_class = ' class="nosep"'
+            
+        list_html = f"\n<ul{css_class}>\n"
         for item in items:
             list_html += f"<li>{item}</li>\n"
         list_html += "</ul>\n"
         return list_html
         
-    text = re.sub(r'\\begin\{itemize\}(.*?)\\end\{itemize\}', replace_itemize, text, flags=re.DOTALL)
-    text = re.sub(r'\\begin\{enumerate\}(.*?)\\end\{enumerate\}', replace_itemize, text, flags=re.DOTALL)
+    text = re.sub(r'\\begin\{itemize\}(?:\[(.*?)\])?(.*?)\\end\{itemize\}', replace_itemize, text, flags=re.DOTALL)
+    text = re.sub(r'\\begin\{enumerate\}(?:\[(.*?)\])?(.*?)\\end\{enumerate\}', replace_itemize, text, flags=re.DOTALL)
 
     return text
 
@@ -724,6 +755,7 @@ def convert_itemize(text):
     lines = text.split('\n')
     result = []
     in_list = False
+
     list_type = None  # 'ul' for unordered, 'ol' for ordered
     current_item_lines = []
     base_indent = 0
@@ -1058,12 +1090,29 @@ def convert_to_html(tex_path, backlinks_map=None, title_map=None):
         except:
             pass
 
+    # Build compact TOC
+    toc_html = ""
+    toc_limit = 10
+    
+    sections = []
+    # Extract headers (h2, h3)
+    # Regex find all <h2>...</h2> etc
+    # We already converted them in body? Not yet, we convert sections inside body conversion?
+    # Yes, convert_sections is called. But we need to parse them from the FINAL body or initial body?
+    # convert_sections happens inside convert_to_html logic? No, let's see.
+    # Ah, convert_sections is not called in the snippet I saw? 
+    # Let me check convert_to_html body logic again.
+    # Wait, I need to check where convert_sections is called.
+    pass # I need to check convert_to_html fully first.
+    
+    # Just modifying the date format for now in this chunk
     # Refine Last Modified
     if os.path.exists(tex_path):
         mtime = os.path.getmtime(tex_path)
-        last_modified = datetime.fromtimestamp(mtime).strftime('%Y-%m-%d %H:%M')
+        # Format: November 10, 2025 at 9:36 PM ET
+        last_modified = datetime.fromtimestamp(mtime).strftime('%B %d, %Y at %l:%M %p ET')
     else:
-        last_modified = datetime.now().strftime('%Y-%m-%d %H:%M')
+        last_modified = datetime.now().strftime('%B %d, %Y at %l:%M %p ET')
 
     # Get outgoing links and backlinks
     outgoing_links = extract_wikilinks(content)
@@ -1113,10 +1162,29 @@ def convert_to_html(tex_path, backlinks_map=None, title_map=None):
         
     def convert_nlab(text):
         """Convert \\nlab{keyword} to link"""
-        return re.sub(r'\\nlab\{([^}]+)\}', r'<a href="https://ncatlab.org/nlab/show/\1">nLab:\1</a>', text)
+        return re.sub(r'\\nlab\{([^}]+)\}', r'<a href="https://ncatlab.org/nlab/show/\1" class="nlab-link">nLab:\1</a>', text)
+
+    def convert_prereq(text, title_map=None):
+        """Convert \\prereq{a,b} into a list of links"""
+        def replace(match):
+            content = match.group(1)
+            items = [x.strip() for x in content.split(',')]
+            links = []
+            for item in items:
+                link = item
+                if title_map and item in title_map:
+                    link = f'<a href="{title_map[item]}">{item}</a>'
+                else:
+                    # simplistic fallback
+                    link = f'<a href="{item}.html">{item}</a>'
+                links.append(link)
+            return f'<div class="prereq"><strong>Prerequisites:</strong> {", ".join(links)}</div>'
+        
+        return re.sub(r'\\prereq\{([^}]+)\}', replace, text, flags=re.DOTALL)
 
     body = convert_arxiv(body)
     body = convert_nlab(body)
+    body = convert_prereq(body, title_map)
     body = strip_incoming_links(body)
     
     body = convert_bold(body)
@@ -1256,8 +1324,8 @@ def convert_to_html(tex_path, backlinks_map=None, title_map=None):
             <a href="../pdfs/{name}.pdf" class="nav-btn" title="View PDF">
                 <span>PDF</span>
             </a>
-            <a href="../notes/{name}.tex" class="nav-btn" title="View Source">
-                <span>TeX</span>
+            <a href="file:///Users/greysonwesley/Desktop/workflow/wiki/{name}.md" class="nav-btn" title="Edit in Obsidian">
+                <span>MD</span>
             </a>
         </div>
     </div>
@@ -1274,30 +1342,31 @@ def convert_to_html(tex_path, backlinks_map=None, title_map=None):
     html += f'''
     </div>'''
 
-    # Add table of contents if sections exist
-    if sections and len(sections) > 2:
-        html += '''
-    <div class="toc">
-        <h3>Contents</h3>
-        <ul>'''
+    # Generate TOC HTML if sections exist
+    toc_html = ""
+    if sections and len(sections) > 1:
+        toc_html = '''
+        <div class="toc-compact">
+            <h3>Contents</h3>
+            <ul>'''
         for section in sections:
             # Create anchor from section title
             anchor = re.sub(r'[^a-z0-9]+', '-', section.lower()).strip('-')
-            html += f'''
-            <li><a href="#{anchor}">{section}</a></li>'''
-        html += '''
-        </ul>
-    </div>'''
+            toc_html += f'''
+                <li><a href="#{anchor}">{section}</a></li>'''
+        toc_html += '''
+            </ul>
+        </div>'''
 
     # Add anchors to sections in body
-    if sections and len(sections) > 2:
+    if sections and len(sections) > 1:
         for section in sections:
             anchor = re.sub(r'[^a-z0-9]+', '-', section.lower()).strip('-')
             body = body.replace(f'<h2>{section}</h2>', f'<h2 id="{anchor}">{section}</h2>')
 
     html += f'''
-
     <div class="content">
+        {toc_html}
         {body}
     </div>'''
 

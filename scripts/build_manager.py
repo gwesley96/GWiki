@@ -5,10 +5,11 @@ import subprocess
 from pathlib import Path
 from multiprocessing import Pool
 
-NOTES_DIR = Path("notes")
-PDFS_DIR = Path("pdfs")
-HTML_DIR = Path("html")
-BUILD_DIR = Path("build")
+REPO_ROOT = Path(__file__).resolve().parent.parent
+NOTES_DIR = REPO_ROOT / "notes"
+PDFS_DIR = REPO_ROOT / "pdfs"
+HTML_DIR = REPO_ROOT / "html"
+BUILD_DIR = REPO_ROOT / "build"
 
 def needs_rebuild(source, target):
     if not target.exists():
@@ -89,6 +90,13 @@ def build_all(target="all"):
         pool.map(build_pdf, notes)
         
     if target in ["web", "html"]:
+        # Ensure CSS is present
+        style_src = REPO_ROOT / "lib" / "style.css"
+        style_dst = HTML_DIR / "style.css"
+        if style_src.exists():
+            import shutil
+            shutil.copy(style_src, style_dst)
+            
         pool.map(build_html, notes)
         
     pool.close()

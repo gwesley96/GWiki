@@ -165,7 +165,8 @@
   pdfpagemode=FullScreen,
   linktocpage=true,
   hyperfootnotes=true,
-  pdfnewwindow=true
+  pdfnewwindow=true,
+  ocgcolorlinks
 ]{hyperref}
 
 % Try zref-xr for better hyperlink support between documents
@@ -464,25 +465,47 @@
 \makeatletter
 \pagestyle{fancy}
 \fancyhf{} % Clear all
-\fancyfoot[C]{\scriptsize\color{gray!60}\thepage}
-\renewcommand{\headrulewidth}{0pt}
 \setlength{\headheight}{24pt}
+% URL-encode the jobname by replacing spaces with %20 and removing quotes
+\begingroup
+\catcode`\%=12
+\catcode`\ =12
+\gdef\@spacechar{ }
+\gdef\@percenttwenty{%20}
+\endgroup
+
+% Remove quotes from jobname (TeX adds them when spaces are present)
+\def\@removequotes"#1"{#1}
+\edef\@cleanjobname{\expandafter\@removequotes\jobname}
+
+\def\@urlencode#1{\expandafter\@urlencode@i#1 \@nil}
+\def\@urlencode@i#1 #2\@nil{%
+  #1%
+  \ifx\@nil#2\@nil\else
+    \@percenttwenty\@urlencode@i#2\@nil
+  \fi
+}
+
+\edef\@encodedjobname{\expandafter\@urlencode\@cleanjobname\@empty}
+
+\newcommand{\gwiki@firstheader}{%
+  \fancyhead[R]{}%
+}
 \newcommand{\gwiki@firstfooter}{%
   \fancyfoot[C]{\scriptsize\color{gray!60}\thepage}%
-  \fancyfoot[R]{\scriptsize\color{gray!50}%
-    \href{file:///Users/greysonwesley/Desktop/GWiki/html/\jobname.html}{[HTML]} \quad
-    \href{file:///Users/greysonwesley/Desktop/workflow/wiki/\jobname.md}{[MD]} \quad
-    \href{https://greysonwesley.com}{greysonwesley.com}}%
+  \fancyfoot[R]{\scriptsize\href{https://greysonwesley.com}{\textcolor{blue}{greysonwesley.com}}}%
 }
 
 \fancypagestyle{gwiki@first}{%
   \fancyhf{}%
+  \gwiki@firstheader
   \gwiki@firstfooter
   \renewcommand{\headrulewidth}{0pt}%
 }
 
 \fancypagestyle{plain}{%
   \fancyhf{}%
+  \gwiki@firstheader
   \gwiki@firstfooter
   \renewcommand{\headrulewidth}{0pt}%
 }
