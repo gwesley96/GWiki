@@ -10,14 +10,18 @@
 
 Complete monoidal category string diagrams. \allformats{tikz test 13 monoidal categories}
 
-Navigation: \wref{tikz test 12} (previous) | \wref{tikz test 14} (next)
+Navigation: \wref{tikz test 12 double strands} (previous) | \wref{tikz test 14 shapes} (next)
 
 \section*{Demonstrations}
 
 \begin{center}
 \tz{
-  \fill[colA] (0,0) rectangle (3,2);
-  \node[white] at (1.5,1) {Test 13: monoidal categories};
+  \draw[thick] (0,0) -- (0,2);
+  \draw[thick] (1,0) -- (1,2);
+  \draw[thick] (0,2) to[out=90,in=90, looseness=1.5] (1,2);
+  \node at (0,-0.2) {$A$};
+  \node at (1,-0.2) {$A^*$};
+  \node at (0.5, 2.8) {$\text{ev}_A$};
 }
 \end{center}
 

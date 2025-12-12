@@ -16,8 +16,8 @@ Navigation: \wref{tikz test 11} (previous) | \wref{tikz test 13} (next)
 
 \begin{center}
 \tz{
-  \fill[colA] (0,0) rectangle (3,2);
-  \node[white] at (1.5,1) {Test 12: double strands};
+  \draw[double strand] (0,0) to[out=90,in=-90] (2,2);
+  \draw[double strand=4pt, strB] (2,0) to[out=90,in=-90] (0,2);
 }
 \end{center}
 

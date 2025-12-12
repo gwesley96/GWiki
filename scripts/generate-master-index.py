@@ -53,9 +53,18 @@ def extract_note_metadata(tex_file):
     if summary_match:
         summary = summary_match.group(1)
 
+    # Extract aliases
+    aliases = []
+    aliases_match = re.search(r'\\Aliases\{([^}]+)\}', content)
+    if aliases_match:
+        # Split by comma
+        raw_aliases = aliases_match.group(1)
+        aliases = [a.strip() for a in raw_aliases.split(',') if a.strip()]
+
     return {
         "title": title,
         "tags": tags,
+        "aliases": aliases,
         "summary": summary,
         "filename": tex_file.stem
     }
@@ -553,6 +562,10 @@ def main():
 
     # Scan all notes
     notes_data = []
+    
+    # Store real notes separately to avoid processing aliases in generate_latex_index if desired,
+    # or just flag them.
+    
     for tex_file in sorted(NOTES_DIR.glob("*.tex")):
         # Skip demo/debug files
         if "demo" in tex_file.stem or "debug" in tex_file.stem:
@@ -560,8 +573,18 @@ def main():
 
         note_meta = extract_note_metadata(tex_file)
         notes_data.append(note_meta)
+        
+        # Create alias entries
+        for alias in note_meta["aliases"]:
+            notes_data.append({
+                "title": alias,
+                "tags": note_meta["tags"],
+                "summary": f"Alias for {note_meta['title']}",
+                "filename": note_meta["filename"],
+                "is_alias": True
+            })
 
-    print(f"Found {len(notes_data)} notes")
+    print(f"Found {len(notes_data)} entries (including aliases)")
 
     # Generate LaTeX indices
     generate_latex_index(notes_data, metadata, OUTPUT_DIR / "index-alphabetical.tex", "title")

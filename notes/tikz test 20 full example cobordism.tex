@@ -10,14 +10,20 @@
 
 Cobordism hypothesis diagram. \allformats{tikz test 20 full example cobordism}
 
-Navigation: \wref{tikz test 19} (previous) | \wref{tikz test 01 patterns} (next)
+Navigation: \wref{tikz test 19 full example serpent} (previous) | (no next)
 
 \section*{Demonstrations}
 
 \begin{center}
 \tz{
-  \fill[colA] (0,0) rectangle (3,2);
-  \node[white] at (1.5,1) {Test 20: full example cobordism};
+  % Pair of pants
+  \filldraw[fill=colA!20, draw=black] 
+    (0,2) ellipse (0.5 and 0.2)
+    (2,2) ellipse (0.5 and 0.2)
+    (0,2) -- (0,0) 
+    arc (180:360:1 and 0.5) -- (2,2)
+    (0.5,2) to[out=-90, in=-90] (1.5,2);
+  \draw (1,-0.5) ellipse (1 and 0.5);
 }
 \end{center}
 

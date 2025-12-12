@@ -68,16 +68,16 @@
       \StrBehind{#2}{\#}[\gwiki@xlabel]%
       \IfStrEq{\gwiki@display}{}{%
         % Link to other PDF with named destination
-        \mbox{\href{run:./\gwiki@xdoc.pdf\#\gwiki@xlabel}{\textsl{\gwiki@xdoc} \S\gwiki@xlabel}}%
+        \mbox{\href{file:///Users/greysonwesley/Desktop/GWiki/pdfs/\gwiki@xdoc.pdf\#\gwiki@xlabel}{\textsl{\gwiki@xdoc} \S\gwiki@xlabel}}%
       }{%
-        \mbox{\href{run:./\gwiki@xdoc.pdf\#\gwiki@xlabel}{\gwiki@display}}%
+        \mbox{\href{file:///Users/greysonwesley/Desktop/GWiki/pdfs/\gwiki@xdoc.pdf\#\gwiki@xlabel}{\gwiki@display}}%
       }%
     }{%
       % Simple document reference - link to PDF file
       \IfStrEq{\gwiki@display}{}{%
-        \mbox{\href{run:./#2.pdf}{#2}}%
+        \mbox{\href{file:///Users/greysonwesley/Desktop/GWiki/pdfs/#2.pdf}{#2}}%
       }{%
-        \mbox{\href{run:./#2.pdf}{\gwiki@display}}%
+        \mbox{\href{file:///Users/greysonwesley/Desktop/GWiki/pdfs/#2.pdf}{\gwiki@display}}%
       }%
     }%
   }%
@@ -101,12 +101,12 @@
 
 %% Read this note as PDF (local)
 \newcommand{\aspdf}[1]{%
-  \href{run:./pdfs/#1.pdf}{[PDF]}%
+  \href{file:///Users/greysonwesley/Desktop/GWiki/pdfs/#1.pdf}{[PDF]}%
 }
 
 %% Read this note as HTML (local)
 \newcommand{\ashtml}[1]{%
-  \href{run:./html/#1.html}{[HTML]}%
+  \href{file:///Users/greysonwesley/Desktop/GWiki/html/#1.html}{[HTML]}%
 }
 
 %% Read this note in Obsidian (opens .md file)
@@ -225,7 +225,7 @@
     \edef\wintref@labeltext{\ref*{#2-#3}}%
   }%
   % Create hyperlink to the specific label in the target PDF
-  \mbox{[\href{run:./#2.pdf\##3}{\wintref@display, \wintref@labeltext}]}%
+  \mbox{[\href{file:///Users/greysonwesley/Desktop/GWiki/pdfs/#2.pdf\##3}{\wintref@display, \wintref@labeltext}]}%
 }
 
 %% ----------------------------------------------------------------------------

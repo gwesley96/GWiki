@@ -469,7 +469,10 @@
 \setlength{\headheight}{24pt}
 \newcommand{\gwiki@firstfooter}{%
   \fancyfoot[C]{\scriptsize\color{gray!60}\thepage}%
-  \fancyfoot[R]{\scriptsize\color{gray!50}\href{https://greysonwesley.com}{greysonwesley.com}}%
+  \fancyfoot[R]{\scriptsize\color{gray!50}%
+    \href{file:///Users/greysonwesley/Desktop/GWiki/html/\jobname.html}{[HTML]} \quad
+    \href{file:///Users/greysonwesley/Desktop/workflow/wiki/\jobname.md}{[MD]} \quad
+    \href{https://greysonwesley.com}{greysonwesley.com}}%
 }
 
 \fancypagestyle{gwiki@first}{%

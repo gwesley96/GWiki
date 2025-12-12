@@ -10,14 +10,15 @@
 
 Custom shapes and anchors. \allformats{tikz test 14 shapes}
 
-Navigation: \wref{tikz test 13} (previous) | \wref{tikz test 15} (next)
+Navigation: \wref{tikz test 13 monoidal categories} (previous) | \wref{tikz test 15 compositions} (next)
 
 \section*{Demonstrations}
 
 \begin{center}
 \tz{
-  \fill[colA] (0,0) rectangle (3,2);
-  \node[white] at (1.5,1) {Test 14: shapes};
+  \node[draw, fill=colA!20, minimum width=2cm, minimum height=1cm] (box) at (0,0) {Box};
+  \node[circle, draw, fill=colB!20] (circ) at (3,0) {Circle};
+  \draw[->] (box) -- (circ);
 }
 \end{center}
 

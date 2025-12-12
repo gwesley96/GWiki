@@ -10,16 +10,20 @@
 
 Path intersections and clipping. \allformats{tikz test 17 intersections}
 
-Navigation: \wref{tikz test 16} (previous) | \wref{tikz test 18} (next)
+Navigation: \wref{tikz test 16 3d effects} (previous) | \wref{tikz test 18 matrix} (next)
 
 \section*{Demonstrations}
 
-\begin{center}
+\[
 \tz{
-  \fill[colA] (0,0) rectangle (3,2);
-  \node[white] at (1.5,1) {Test 17: intersections};
+  \begin{scope}
+    \clip (0,0) circle (1cm);
+    \fill[colA!50] (1,0) circle (1cm);
+  \end{scope}
+  \draw (0,0) circle (1cm);
+  \draw (1,0) circle (1cm);
 }
-\end{center}
+\]
 
 \SeeAlso{tikz test 01 patterns}
 

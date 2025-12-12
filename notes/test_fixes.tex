@@ -1,0 +1,41 @@
+\documentclass{gwiki}
+\usepackage{gwiki-links}
+
+\Title{Test Fixes Integration}
+\Tags{test, debug}
+
+\begin{document}
+\NoteHeader
+
+\section*{Math Protection}
+Double dual: $V \to V^{**}$.
+Display math:
+\[
+  V \xrightarrow{\cong} V^{**}
+\]
+Inline stars should stay: $A * B$.
+Bold text should work: **this is bold**.
+Italic text should work: *this is italic*.
+Emphasized text should work: \emph{this is emphasized}.
+
+\section*{Links and Titles}
+Link to \wref{seiberg–witten-theory}.
+Link to \wref{banach-algebra}.
+Link to \wref{Donaldson theory}.
+
+Markdown link: [Google](https://google.com).
+
+\section*{Lists}
+\begin{itemize}
+    \item Item 1
+    \item Item 2
+\end{itemize}
+
+\begin{enumerate}
+    \item Enum 1
+    \item Enum 2
+\end{enumerate}
+
+See also: \begin{itemize} \item \wref{seiberg–witten-theory} \end{itemize}
+
+\end{document}

@@ -55,11 +55,42 @@ def extract_body(content):
 
     return ""
 
-def convert_wikilinks(text):
-    """Convert \wref links to HTML links (supports optional display moved before or after)."""
+
+def build_title_map(notes_dir):
+    """Scan all .tex files to build a filename -> title map"""
+    title_map = {}
+    if not os.path.exists(notes_dir):
+        return title_map
+        
+    for f in os.listdir(notes_dir):
+        if f.endswith('.tex'):
+            path = os.path.join(notes_dir, f)
+            try:
+                content = Path(path).read_text(encoding='utf-8')
+                match = re.search(r'\\Title\{([^}]+)\}', content)
+                if match:
+                    title = match.group(1)
+                    # Use filename (without ext) as key
+                    name = os.path.splitext(f)[0]
+                    title_map[name] = title
+            except:
+                pass
+    return title_map
+
+def convert_wikilinks(text, title_map=None):
+    """Convert \wref links to HTML links with title lookup."""
     def repl(match):
-        display = match.group('display') or match.group('display_after') or match.group('target')
+        display = match.group('display') or match.group('display_after')
         target = match.group('target')
+        
+        # If no display text is provided, try to look up the title
+        if not display:
+            if title_map and target in title_map:
+                display = title_map[target]
+            else:
+                # Fallback: prettify filename (e.g. "banach-algebra" -> "Banach Algebra")
+                display = target.replace('-', ' ').title()
+                
         return f'<a href="{target}.html">{display}</a>'
 
     pattern = re.compile(
@@ -79,10 +110,35 @@ def convert_latex_bold(text):
 
 def convert_italic(text):
     """Convert *italic* to <em>italic</em>"""
-    # Be careful not to match ** patterns or single * that are terminal objects
-    # Only match *word* patterns, not standalone *
-    text = re.sub(r'(?<!\*)\*(?!\*)([a-zA-Z][^*]+?)(?<!\*)\*(?!\*)', r'<em>\1</em>', text)
+    return re.sub(r'\*(.*?)\*', r'<em>\1</em>', text)
+
+def convert_emph(text):
+    """Convert \\emph{...} to <em>...</em>"""
+    return re.sub(r'\\emph\{(.*?)\}', r'<em>\1</em>', text)
+
+def convert_quotes(text):
+    """Convert ``...'' to “...” and `...' to ‘...’"""
+    text = re.sub(r"``", "“", text)
+    text = re.sub(r"''", "”", text)
+    text = re.sub(r"`", "‘", text)
+    text = re.sub(r"'", "’", text)
     return text
+
+def convert_texttt(text):
+    """Convert \\texttt{...} to <code>...</code>"""
+    # Use loop to handle nested braces or multiple occurrences robustly
+    # But for texttt simple regex usually suffices if no nested braces
+    # Let's use robust regex that handles one level of nesting if possible, or non-greedy
+    return re.sub(r'\\texttt\{([^}]+)\}', r'<code>\1</code>', text)
+
+def convert_specialchars(text):
+    """Convert LaTeX special characters like \\textbackslash"""
+    text = text.replace(r'\textbackslash', '\\')
+    return text
+
+def convert_markdown_links(text):
+    """Convert [text](url) to <a href="url">text</a>"""
+    return re.sub(r'\[([^\]]+)\]\(([^)]+)\)', r'<a href="\2">\1</a>', text)
 
 def convert_tikz(text):
     """Convert tikz code blocks, inline tikzcd, tkz environment, and \tz command to TikZJax."""
@@ -92,6 +148,8 @@ def convert_tikz(text):
     def stash_verb(match):
         verb_blocks.append(match.group(0))
         return f'__VERB_BLOCK_{len(verb_blocks) - 1}__'
+    
+    # Stash \verb|...|
 
     # Stash \verb|...|
     text = re.sub(r'\\verb(?P<delim>[^a-zA-Z]).*?(?P=delim)', stash_verb, text, flags=re.DOTALL)
@@ -130,14 +188,95 @@ def convert_tikz(text):
 
     text = re.sub(r'\\begin\{tkz\}(?:\[([^\]]*)\])?(.*?)\\end\{tkz\}', repl_tkz, text, flags=re.DOTALL)
 
-    # 3. Handle \tz[opt]{content}
-    def repl_tz(match):
-        opt = match.group(1) if match.group(1) else ""
-        content = match.group(2)
-        tikz_code = f'\\begin{{tikzpicture}}[{opt}]\n{content}\n\\end{{tikzpicture}}'
-        return stash_script(wrap_tikz(tikz_code))
+    text = re.sub(r'\\begin\{tkz\}(?:\[([^\]]*)\])?(.*?)\\end\{tkz\}', repl_tkz, text, flags=re.DOTALL)
+
+    # 3. Handle \tz[opt]{content} - Manual scan for nested braces
+    out_text = []
+    idx = 0
+    n = len(text)
+    while idx < n:
+        # Find next \tz
+        next_tz = text.find(r'\tz', idx)
+        if next_tz == -1:
+            out_text.append(text[idx:])
+            break
+            
+        # Append text before \tz
+        out_text.append(text[idx:next_tz])
         
-    text = re.sub(r'\\tz(?:\[([^\]]*)\])?\{((?:[^{}]|{[^{}]*})*)\}', repl_tz, text, flags=re.DOTALL)
+        # Check if valid command start
+        # \tz followed by [ or { or space?
+        cursor = next_tz + 3 # len(\tz)
+        
+        # Save start pos to revert if no match
+        match_start = next_tz
+        
+        # Skip spaces
+        while cursor < n and text[cursor].isspace():
+            cursor += 1
+            
+        # Optional arg
+        opt = ""
+        has_opt = False
+        if cursor < n and text[cursor] == '[':
+            # Consume balanced [...]
+            opt_start = cursor + 1
+            balance = 1
+            cursor += 1
+            while cursor < n and balance > 0:
+                if text[cursor] == '[': balance += 1
+                elif text[cursor] == ']': balance -= 1
+                cursor += 1
+            if balance == 0:
+                opt = text[opt_start:cursor-1]
+                has_opt = True
+            else:
+                # Open bracket but no close? Abort
+                out_text.append(text[match_start:cursor])
+                idx = cursor
+                continue
+
+        # Skip spaces
+        while cursor < n and text[cursor].isspace():
+            cursor += 1
+
+        # Mandatory arg usually starts with {
+        if cursor < n and text[cursor] == '{':
+            # Consume balanced {...}
+            body_start = cursor + 1
+            balance = 1
+            cursor += 1
+            while cursor < n and balance > 0:
+                if text[cursor] == '{': balance += 1
+                elif text[cursor] == '}': balance -= 1
+                cursor += 1
+                
+            if balance == 0:
+                body = text[body_start:cursor-1]
+                # Found it!
+                tikz_code = f'\\begin{{tikzpicture}}[{opt}]\n{body}\n\\end{{tikzpicture}}'
+                replacement = stash_script(wrap_tikz(tikz_code))
+                out_text.append(replacement)
+                idx = cursor
+                continue
+            else:
+                # Unbalanced
+                out_text.append(text[match_start:cursor])
+                idx = cursor
+                continue
+                
+        # If we get here, it wasn't a valid \tz call (e.g. \tzsomething)
+        # But wait, \tz could be just \tz without args? Uncommon for this macro.
+        # Check if character after \tz is non-alpha?
+        # But we already skipped spaces.
+        # If it's `\tz ` (space) or `\tz{`, we proceed.
+        # Only if we failed to match { after optional args.
+        
+        # Just append what we skipped and continue
+        out_text.append(text[match_start:cursor])
+        idx = cursor
+        
+    text = "".join(out_text)
 
     # 4. Handle \begin{tikzcd} ... \end{tikzcd}
     # Matches optional \[ wrapper, then the environment
@@ -164,7 +303,6 @@ def convert_tikz(text):
     # Restore TikZ blocks
     for i, block in enumerate(tikz_blocks):
         text = text.replace(f'__TIKZ_BLOCK_{i}__', block)
-    
     # Restore verb blocks
     for i, block in enumerate(verb_blocks):
         text = text.replace(f'__VERB_BLOCK_{i}__', block)
@@ -182,15 +320,28 @@ def convert_environments(text):
         # Remove \label{...} commands
         body = re.sub(r'\\label\{[^}]+\}', '', body)
 
-        # Handle optional argument (usually the title)
-        title = ""
+        # Normalize env name for display
+        disp_name = env_name
+        if disp_name.startswith('framed'):
+            disp_name = disp_name[6:]
+            
+        # Strip outer braces from optional arg if present (e.g. [{(Cite)}])
+        if optional and optional.startswith('{') and optional.endswith('}'):
+             optional = optional[1:-1]
+
         # Special case for Idea: if optional is "Idea", don't repeat it.
-        if env_name == "idea" and optional == "Idea":
-             title = f"<strong>{env_name.capitalize()}.</strong>"
+        if disp_name == "idea" and optional == "Idea":
+             title = f"<strong>{disp_name.capitalize()}.</strong>"
+        elif disp_name == "idea":
+             # Display as "Idea"
+             if optional:
+                title = f"<strong>{disp_name.capitalize()} ({optional}).</strong>"
+             else:
+                title = f"<strong>{disp_name.capitalize()}.</strong>"
         elif optional:
-            title = f"<strong>{env_name.capitalize()} ({optional}).</strong>"
+            title = f"<strong>{disp_name.capitalize()} ({optional}).</strong>"
         else:
-            title = f"<strong>{env_name.capitalize()}.</strong>"
+            title = f"<strong>{disp_name.capitalize()}.</strong>"
 
         # Content placement logic
         # If body starts with a list (<ul> or <ol>), title goes on separate line/paragraph
@@ -200,11 +351,11 @@ def convert_environments(text):
              # Inline title - we rely on wrap_paragraphs to keep this together if it's text
              content = f'{title} {body}'
 
-        return f'<div class="{env_name}">\n{content}\n</div>'
+        return f'<div class="env-box {env_name}">\n{content}\n</div>'
 
-    # Match \begin{env}[optional]{body}\end{env} or \begin{env}{body}\end{env}
+    # Match environments, including framed versions
     text = re.sub(
-        r'\\begin\{(definition|theorem|lemma|proposition|corollary|example|remark|idea)\}(?:\[([^\]]+)\])?(.*?)\\end\{\1\}',
+        r'\\begin\{(definition|theorem|lemma|proposition|corollary|example|remark|idea|framedidea|frameddefinition|framedtheorem|framedlemma|framedproposition|framedcorollary)\}(?:\[([^\]]+)\])?(.*?)\\end\{\1\}',
         replace_env,
         text,
         flags=re.DOTALL
@@ -551,6 +702,21 @@ def convert_lst(text):
         return list_html
 
     text = re.sub(r'\\begin\{lst\}(.*?)\\end\{lst\}', replace_lst, text, flags=re.DOTALL)
+    
+    # Also handle standard itemize/enumerate
+    def replace_itemize(match):
+        content = match.group(1)
+        items = re.split(r'\s*\\item\s+', content)
+        items = [item.strip() for item in items if item.strip()]
+        list_html = "\n<ul>\n"
+        for item in items:
+            list_html += f"<li>{item}</li>\n"
+        list_html += "</ul>\n"
+        return list_html
+        
+    text = re.sub(r'\\begin\{itemize\}(.*?)\\end\{itemize\}', replace_itemize, text, flags=re.DOTALL)
+    text = re.sub(r'\\begin\{enumerate\}(.*?)\\end\{enumerate\}', replace_itemize, text, flags=re.DOTALL)
+
     return text
 
 def convert_itemize(text):
@@ -708,18 +874,44 @@ def fix_math_colons(text):
     
     return text
 
-def convert_seealso(text):
+def convert_seealso(text, title_map=None):
     """Convert \SeeAlso command"""
     def replace_seealso(match):
         content = match.group(1)
         # Split by comma
         items = [item.strip() for item in content.split(',')]
         # Convert to links
-        links = [f'<a href="{item}.html">{item}</a>' for item in items]
-        return f'<p><strong>See also:</strong> {", ".join(links)}</p>'
+        links = []
+        for item in items:
+            display = item
+            if title_map and item in title_map:
+                display = title_map[item]
+            else:
+                display = item.replace('-', ' ').title()
+            links.append(f'<a href="{item}.html">{display}</a>')
+            
+        return f'<div class="see-also"><strong>See also:</strong> {", ".join(links)}</div>'
 
     text = re.sub(r'\\SeeAlso\{([^}]+)\}', replace_seealso, text)
     return text
+
+def convert_citations(text):
+    """Convert ((Citation)) to [N] and return (text, references_list)"""
+    refs = []
+    
+    def replace_cite(match):
+        content = match.group(1)
+        # Check if already in refs
+        if content in refs:
+            idx = refs.index(content) + 1
+        else:
+            refs.append(content)
+            idx = len(refs)
+        return f'<sup><a href="#ref-{idx}">[{idx}]</a></sup>'
+
+    # Match ((...)) but not nested? strict regex
+    new_text = re.sub(r'\(\((.*?)\)\)', replace_cite, text)
+    return new_text, refs
 
 def wrap_paragraphs(text):
     """Wrap text paragraphs in <p> tags"""
@@ -841,7 +1033,7 @@ def build_backlinks_map(notes_dir):
 
     return backlinks
 
-def convert_to_html(tex_path, backlinks_map=None):
+def convert_to_html(tex_path, backlinks_map=None, title_map=None):
     """Main conversion function"""
     with open(tex_path, 'r', encoding='utf-8') as f:
         content = f.read()
@@ -852,6 +1044,7 @@ def convert_to_html(tex_path, backlinks_map=None):
 
     # Get note name for metadata lookups
     note_name = Path(tex_path).stem
+    name = note_name
 
     # Load creation dates
     root_dir = Path(__file__).resolve().parent.parent
@@ -890,19 +1083,76 @@ def convert_to_html(tex_path, backlinks_map=None):
     body = re.sub(r'<script.*?>.*?</script>', stash_all_scripts, body, flags=re.DOTALL)
 
     body = fix_math_colons(body)  # Fix : to \colon in math
-    body = convert_wikilinks(body)
+
+    # Stash math blocks to protect from markdown processing
+    math_blocks = []
+    def stash_math(match):
+        math_blocks.append(match.group(0))
+        return f'__MATH_BLOCK_{len(math_blocks) - 1}__'
+
+    # Stash math: $$...$$, \[...\], \(...\), $...$
+    # First convert $$...$$ to \[...\] (standardize display math)
+    body = re.sub(r'\$\$(.*?)\$\$', r'\\[\1\\]', body, flags=re.DOTALL)
+
+    body = re.sub(r'\\\[.*?\\\]', stash_math, body, flags=re.DOTALL)
+    body = re.sub(r'\\\((.*?)\\\)', stash_math, body, flags=re.DOTALL)
+    # Inline math $...$
+    body = re.sub(r'(?<!\\)\$[^$]+(?<!\\)\$', stash_math, body)
+
+    body = convert_wikilinks(body, title_map)
+    body = convert_markdown_links(body)  # Add markdown link support
+    
+    # Custom commands
+    def convert_arxiv(text):
+        """Convert \\arxiv{id} to link"""
+        return re.sub(r'\\arxiv\{([^}]+)\}', r'<a href="https://arxiv.org/abs/\1">arXiv:\1</a>', text)
+
+    def strip_incoming_links(text):
+        """Remove \\IncomingLinks{...}"""
+        return re.sub(r'\\IncomingLinks\{[^}]+\}', '', text)
+        
+    def convert_nlab(text):
+        """Convert \\nlab{keyword} to link"""
+        return re.sub(r'\\nlab\{([^}]+)\}', r'<a href="https://ncatlab.org/nlab/show/\1">nLab:\1</a>', text)
+
+    body = convert_arxiv(body)
+    body = convert_nlab(body)
+    body = strip_incoming_links(body)
+    
     body = convert_bold(body)
-    body = convert_latex_bold(body) # Add \textbf support
+    body = convert_latex_bold(body)
+    body = convert_emph(body)            # Add \emph support
     body = convert_italic(body)
+    body = convert_quotes(body)          # Add smart quotes support
+    body = convert_texttt(body)          # Add \texttt support
+    body = convert_specialchars(body)    # Handle \textbackslash etc.
+    
+    # Remove \allformats{...}
+    body = re.sub(r'\\allformats\{[^}]+\}', '', body)
+
+    # Handle citations
+    body, references = convert_citations(body)
+    
+    # Restore math blocks
+    for i, block in enumerate(math_blocks):
+        body = body.replace(f'__MATH_BLOCK_{i}__', block)
+    
     body = convert_lst(body)           # Handle LaTeX lists (Moved before environments!)
     body = convert_itemize(body)       # Handle markdown lists
     body = convert_environments(body)  # Environments now see HTML lists
     body = convert_sections(body)
-    body = convert_seealso(body)
+    body = convert_seealso(body, title_map)
     
     # Convert center environment (do this late to avoid interfering with other blocks)
     # Match \begin{center} ... \end{center}
     body = re.sub(r'\\begin\{center\}(.*?)\\end\{center\}', r'<div style="text-align: center;">\1</div>', body, flags=re.DOTALL)
+
+    # Append References if any
+    if references:
+        body += '\n<div class="references">\n<h2>References</h2>\n<ol>\n'
+        for i, ref in enumerate(references, 1):
+             body += f'<li id="ref-{i}">{ref}</li>\n'
+        body += '</ol>\n</div>'
 
     # Restore scripts
     for i, block in enumerate(script_blocks):
@@ -920,6 +1170,10 @@ def convert_to_html(tex_path, backlinks_map=None):
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{title} - GWiki</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
     <script>
     window.MathJax = {{
@@ -950,6 +1204,16 @@ def convert_to_html(tex_path, backlinks_map=None):
                 bZ: '\\\\mathbb{{Z}}',
                 bN: '\\\\mathbb{{N}}',
                 bQ: '\\\\mathbb{{Q}}',
+                bbR: '\\\\mathbb{{R}}',
+                bbC: '\\\\mathbb{{C}}',
+                bbZ: '\\\\mathbb{{Z}}',
+                bbN: '\\\\mathbb{{N}}',
+                bbQ: '\\\\mathbb{{Q}}',
+
+                // Delimiters
+                bkt: ['\\\\langle #1 \\\\middle| #2 \\\\rangle', 2],
+                abs: ['\\\\left| #1 \\\\right|', 1],
+                norm: ['\\\\left\\\\| #1 \\\\right\\\\|', 1],
 
                 // Categories
                 Set: '\\\\mathbf{{Set}}',
@@ -977,184 +1241,25 @@ def convert_to_html(tex_path, backlinks_map=None):
     </script>
     <script src="https://tikzjax.com/v1/tikzjax.js"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <style>
-        body {{
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0;
-            font-family: Georgia, serif;
-            line-height: 1.6;
-            color: #1f2937;
-            background: #f9fafb;
-        }}
-        .top-nav {{
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 15px 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }}
-        .top-nav a {{
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.1em;
-        }}
-        .top-nav a:hover {{
-            text-decoration: underline;
-        }}
-        .content-wrapper {{
-            background: white;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px 40px 60px 40px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.05);
-        }}
-        h1 {{
-            color: #2563eb;
-            border-bottom: 2px solid #e5e7eb;
-            padding-bottom: 10px;
-        }}
-        h2 {{
-            color: #1e40af;
-            margin-top: 30px;
-            margin-bottom: 15px;
-        }}
-        h3 {{
-            color: #1e3a8a;
-            margin-top: 25px;
-            margin-bottom: 10px;
-        }}
-        h4 {{
-            color: #1e40af;
-            margin-top: 20px;
-            margin-bottom: 10px;
-        }}
-        .metadata {{
-            font-size: 0.85em;
-            color: #6b7280;
-            margin-bottom: 25px;
-            padding: 15px;
-            background: #f9fafb;
-            border-radius: 8px;
-            font-family: 'Courier New', monospace;
-        }}
-        .toc {{
-            background: #f0f9ff;
-            border: 1px solid #bfdbfe;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 25px 0;
-        }}
-        .toc h3 {{
-            margin-top: 0;
-            color: #1e40af;
-            font-size: 1.1em;
-        }}
-        .toc ul {{
-            list-style: none;
-            padding-left: 0;
-            margin: 10px 0 0 0;
-        }}
-        .toc li {{
-            margin: 5px 0;
-        }}
-        .toc a {{
-            color: #2563eb;
-            text-decoration: none;
-        }}
-        .toc a:hover {{
-            text-decoration: underline;
-        }}
-        .topics {{
-            background: #f3f4f6;
-            padding: 15px;
-            border-left: 4px solid #2563eb;
-            margin: 20px 0;
-        }}
-        .idea {{
-            background: #ecfeff;
-            border: 1px solid #06b6d4;
-            border-left: 4px solid #06b6d4;
-            padding: 4px 8px;
-            margin: 20px 0;
-            border-radius: 4px;
-        }}
-        .definition, .theorem, .example, .lemma, .proposition, .corollary, .remark {{
-            margin: 20px 0;
-            padding: 8px;
-            border-radius: 4px;
-        }}
-        .definition p, .theorem p, .example p, .lemma p, .proposition p, .corollary p, .remark p, .idea p {{
-            margin: 0;
-        }}
-        .definition {{
-            background: #fef3c7;
-            border-left: 4px solid #f59e0b;
-        }}
-        .theorem, .lemma, .proposition, .corollary {{
-            background: #dbeafe;
-            border-left: 4px solid #3b82f6;
-        }}
-        .example {{
-            background: #f3e8ff;
-            border-left: 4px solid #a855f7;
-        }}
-        .remark {{
-            background: #f3f4f6;
-            border-left: 4px solid #6b7280;
-        }}
-        a {{
-            color: #2563eb;
-            text-decoration: none;
-        }}
-        a:hover {{
-            text-decoration: underline;
-        }}
-        code {{
-            background: #f3f4f6;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-size: 0.9em;
-        }}
-        ul, ol {{
-            margin: 15px 0;
-            padding-left: 30px;
-        }}
-        li {{
-            margin: 8px 0;
-        }}
-        script[type="text/tikz"] {{
-            /* display: block; - Hiding this to prevents raw code from showing if TikZJax fails */
-            margin: 20px 0;
-            text-align: center;
-        }}
-        svg {{
-            display: block;
-            margin: 20px auto;
-            max-width: 100%;
-        }}
-        .linked-notes, .backlinks {{
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #e5e7eb;
-        }}
-        .linked-notes h2, .backlinks h2 {{
-            color: #1e40af;
-            font-size: 1.2em;
-            margin-bottom: 10px;
-        }}
-        .linked-notes ul, .backlinks ul {{
-            list-style: none;
-            padding-left: 0;
-        }}
-        .linked-notes li, .backlinks li {{
-            margin: 5px 0;
-        }}
-    </style>
 </head>
 <body>
     <div class="top-nav">
-        <a href="../index.html">← Back to Index</a>
+        <div class="nav-left">
+            <a href="../index.html" class="nav-link">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                <span>Index</span>
+            </a>
+        </div>
+        <div class="nav-right">
+            <a href="../pdfs/{name}.pdf" class="nav-btn" title="View PDF">
+                <span>PDF</span>
+            </a>
+            <a href="../notes/{name}.tex" class="nav-btn" title="View Source">
+                <span>TeX</span>
+            </a>
+        </div>
     </div>
     <div class="content-wrapper">
     <h1>{title}</h1>
@@ -1257,9 +1362,10 @@ def main():
     # Build backlinks map from notes directory
     notes_dir = os.path.dirname(tex_path) or 'notes'
     backlinks_map = build_backlinks_map(notes_dir)
+    title_map = build_title_map(notes_dir)
 
     # Convert
-    html = convert_to_html(tex_path, backlinks_map)
+    html = convert_to_html(tex_path, backlinks_map, title_map)
 
     # Write output
     with open(html_path, 'w', encoding='utf-8') as f:
