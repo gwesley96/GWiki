@@ -22,11 +22,15 @@ if [ -n "$CREATED_DATE" ]; then
     echo "\\input{$NOTE_FILE}" >> "$TEMP_FILE"
 
     TEXINPUTS=lib: pdflatex -jobname="$NOTE_NAME" -interaction=nonstopmode -halt-on-error -output-directory="$BUILD_DIR" "$TEMP_FILE" > /dev/null 2>&1
+    RET=$?
     TEXINPUTS=lib: pdflatex -jobname="$NOTE_NAME" -interaction=nonstopmode -halt-on-error -output-directory="$BUILD_DIR" "$TEMP_FILE" > /dev/null 2>&1
 
     rm "$TEMP_FILE"
+    exit $RET
 else
     # No creation date, build normally
     TEXINPUTS=lib: pdflatex -interaction=nonstopmode -halt-on-error -output-directory="$BUILD_DIR" "$NOTE_FILE" > /dev/null 2>&1
+    RET=$?
     TEXINPUTS=lib: pdflatex -interaction=nonstopmode -halt-on-error -output-directory="$BUILD_DIR" "$NOTE_FILE" > /dev/null 2>&1
+    exit $RET
 fi

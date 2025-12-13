@@ -10,10 +10,6 @@
 Condensations categorify \wref[split surjections]{split epimorphism}.
 
 \textbf{\wref[Definition 2.1.1]{GJ19CondensationsInHigherCategories.pdf#page=10&selection=4,0,4,15}.} A \textbf{0-condensation} is an equality of objects in a 0-category (a set). Suppose that $a$ and $b$ are objects of a weak $n$-category $\mathcal{C}$. An \textbf{$n$-condensation} of $a$ onto $b$, written $\,\longrightarrow\!\!\!\!\!\!\!\!\!\hookleftarrow{\!\!\!\!\!\!\!\!\!\!\color{white}\blacksquare\color{black}}\,\,b\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!a\,\,\,\,\,\,\,\,\,\,\,\,$, is a pair of 1-morphisms ${}_aX_b\in\mathcal{C}(a\to b)$, ${}_bY_a\in\mathcal{C}(b\to a)$ together with an $(n-1)$-condensation $\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\longrightarrow\!\!\!\!\!\!\!\!\!\hookleftarrow{\!\!\!\!\!\!\!\!\!\!\color{white}\blacksquare\color{black}}\,\,1_{b}\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!{}_bY\otimes_a X_{b}\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,$.
-```tikz
-\usepackage{amsmath,amssymb}
-\usetikzlibrary{decorations.markings,arrows,decorations.pathreplacing,arrows,decorations.pathmorphing,decorations.pathreplacing,decorations.markings,shapes.geometric,through,fit,shapes.symbols}
-\begin{document}
 \tikzset{every picture/.style={scale=2,very thick,yscale=0.8}}
 \tikzset{condensationlarge/.style={-, decoration={markings, mark=at position -1ex with {\arrow[scale=1.25,very thick]{left hook}}, mark=at position 1 with {\arrow[scale=1.75]{>}}, }, preaction={decorate}}}
 \tikzset{doublecondensationlarge/.style={double, double distance=1.5pt, shorten <=6pt, shorten >=6pt, decoration={markings, mark=at position -15pt with {\arrow[scale=1.5,thick]{left hook}}, mark=at position -4.25pt with {\arrow[scale=2,thick]{>}}, }, preaction={decorate}}}
@@ -44,8 +40,6 @@ Condensations categorify \wref[split surjections]{split epimorphism}.
 \draw[doublecondensationlarge] (Xe) -- (Y);
 
 \end{tikzpicture}
-\end{document}
-```
 We say that $a$ (resp. $X$) \textbf{condenses onto} $b$.
 
 \textbf{\wref[Example 2.1.2]{GJ19CondensationsInHigherCategories.pdf#page=10&selection=121,0,121,13}.} In a 1-category $\mathcal{C}$, to say an object $a$ condenses onto an object $b$ means that there is a split surjection (AKA retract). Indeed, the 0-condensation of $X\circ Y$ onto $\mathrm{id}_{b}$ is an equality, so $X\colon a\twoheadrightarrow b$ is an epimorphism ("surjection") and $a\hookleftarrow b\!:Y$ is a monomorphism ("split"). This is the reason for the notation.
@@ -55,8 +49,10 @@ For a 2-category $\mathfrak{C}$, to say an object $a$ condenses onto an object $
 !\wref{2-condensation in a 2-category}
 
 See also: 
-- \wref{condensation algebra in a monoidal (n-1)-category}
-- \wref{condensation monad in an n-category}
-- \wref{2-condensation in a 2-category}
+\begin{itemize}
+\item \wref{condensation algebra in a monoidal (n-1)-category}
+\item \wref{condensation monad in an n-category}
+\item \wref{2-condensation in a 2-category}
+\end{itemize}
 
 \end{document}

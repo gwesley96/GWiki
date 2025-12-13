@@ -7,17 +7,19 @@
 \begin{document}
 \NoteHeader
 
-In a \wref{category} $\mathcal{C}$ with a \wref{terminal object} $\textit{$, a \textbf{pointed object} $(X,x_{0})$ is an object $X\in\mathcal{C}$ equipped with a choice of \wref{global element}, i.e., with a choice of morphism $x_{0}\colon }\to X$, the so-called \textbf{basepoint}. 
+In a \wref{category} $\mathcal{C}$ with a \wref{terminal object} $*$, a \textbf{pointed object} $(X,x_{0})$ is an object $X\in\mathcal{C}$ equipped with a choice of \wref{global element}, i.e., with a choice of morphism $x_{0}\colon * \to X$, the so-called \textbf{basepoint}. 
 
 Instead of requiring $*$ to be a terminal object, we can pick \textit{any} object $P\in\mathcal{C}$ and define a \textbf{$P$-pointed object} in $\mathcal{C}$ to be an object $X\in\mathcal{C}$ equipped with a morphism $P\to X$. (E.g., if $\mathcal{C}$ has a \wref[monoidal structure]{monoidal category} with monoidal unit $1_{\mathcal{C}}$, then we often talk about $1_{\mathcal{C}}$-pointed objects in $\mathcal{C}$.)
 
 \textbf{Example.} When $\mathcal{C}=\mathsf{Top}$, an object $X$ is \wref[pointed]{(pointed) topological spaces, pairs, and triples} when equipped with a choice of basepoint $x_{0}$, i.e., with a chosen element $x_{0}\in X$.
 
-If an object $X\in\mathcal{C}$ admits \textit{some} basepoint, then we call $X$ an \textbf{inhabited object}. Thus pointed objects are objects equipped with extra \wref[structure]{stuff, structure, and properties}, while inhabited objects are objects satisfying a \wref[property]{stuff, structure, and properties}. In particular, a [homomorphism](https://ncatlab.org/nlab/show/homomorphism) of pointed objects $(X,x_{0})\to (X',x_{0}')$ is a morphism $X\to X'$ in $\mathcal{C}$ preserving the basepoint in that the obvious triangle commutes. (Thus the category of pointed objects and homomorphisms is the \wref[coslice category]{comma category} under $\textit{$, i.e., $\mathcal{C}_{}/}$.
+If an object $X\in\mathcal{C}$ admits \textit{some} basepoint, then we call $X$ an \textbf{inhabited object}. Thus pointed objects are objects equipped with extra \wref[structure]{stuff, structure, and properties}, while inhabited objects are objects satisfying a \wref[property]{stuff, structure, and properties}. In particular, a \href{https://ncatlab.org/nlab/show/homomorphism}{homomorphism} of pointed objects $(X,x_{0})\to (X',x_{0}')$ is a morphism $X\to X'$ in $\mathcal{C}$ preserving the basepoint in that the obvious triangle commutes. (Thus the category of pointed objects and homomorphisms is the \wref[coslice category]{comma category} under $*$, i.e., $\mathcal{C}_{}/$.)
 
 
 See also:
-- \wref{looping and delooping}
-- \wref{generalized element}
+\begin{itemize}
+\item \wref{looping and delooping}
+\item \wref{generalized element}
+\end{itemize}
 
 \end{document}

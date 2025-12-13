@@ -242,16 +242,16 @@
         "fcj": "\\widehat",
         "e": "\\varepsilon",
         "glu": "\\mathrm{gl}",
-        "greyson": "\\bgroup\\color{violet}[[#1]]\\egroup",
-        "todo": "\\textbf{[[}\\textsl{#1}\\textbf{]]}",
-        "bkt": "\\left\\langle #1 \\middle| #2 \\right\\rangle",
-        "pbkt": "\\left( #1 \\middle| #2 \\right)",
-        "abs": "\\left| #1 \\right|",
-        "norm": "\\left\\| #1 \\right\\|",
-        "set": "\\left\\{ #1 \\right\\}",
-        "bra": "\\left\\langle #1 \\right|",
-        "ket": "\\left| #1 \\right\\rangle",
-        "braket": "\\left\\langle #1 \\middle| #2 \\right\\rangle",
+        "greyson": ["\\bgroup\\color{violet}[[#1]]\\egroup", 1],
+        "todo": ["\\textbf{[[}\\textsl{#1}\\textbf{]]}", 1],
+        "bkt": ["\\left\\langle #1 \\middle| #2 \\right\\rangle", 2],
+        "pbkt": ["\\left( #1 \\middle| #2 \\right)", 2],
+        "abs": ["\\left| #1 \\right|", 1],
+        "norm": ["\\left\\| #1 \\right\\|", 1],
+        "set": ["\\left\\{ #1 \\right\\}", 1],
+        "bra": ["\\left\\langle #1 \\right|", 1],
+        "ket": ["\\left| #1 \\right\\rangle", 1],
+        "braket": ["\\left\\langle #1 \\right\\rangle", 1],
         "Set": "\\mathbf{Set}",
         "Grp": "\\mathbf{Grp}",
         "Top": "\\mathbf{Top}",
@@ -278,7 +278,45 @@
         "a": "\\alpha",
         "b": "\\beta",
         "d": "\\delta",
-        "g": "\\gamma"
+        "g": "\\gamma",
+        "bd": "\\partial",
+        "tms": "\\times",
+        "tsr": "\\otimes",
+        "pr": "\\operatorname{pr}",
+        "dM": "\\mathcal{M}",
+        "dF": "\\mathcal{F}",
+        "dA": "\\mathcal{A}",
+        "dB": "\\mathcal{B}",
+        "dC": "\\mathcal{C}",
+        "dD": "\\mathcal{D}",
+        "dE": "\\mathcal{E}",
+        "dG": "\\mathcal{G}",
+        "dH": "\\mathcal{H}",
+        "dI": "\\mathcal{I}",
+        "dJ": "\\mathcal{J}",
+        "dK": "\\mathcal{K}",
+        "dL": "\\mathcal{L}",
+        "dN": "\\mathcal{N}",
+        "dO": "\\mathcal{O}",
+        "dP": "\\mathcal{P}",
+        "dQ": "\\mathcal{Q}",
+        "dR": "\\mathcal{R}",
+        "dS": "\\mathcal{S}",
+        "dT": "\\mathcal{T}",
+        "dU": "\\mathcal{U}",
+        "dV": "\\mathcal{V}",
+        "dW": "\\mathcal{W}",
+        "dX": "\\mathcal{X}",
+        "dY": "\\mathcal{Y}",
+        "dZ": "\\mathcal{Z}",
+        "tld": "\\widetilde",
+        "res": "\\operatorname{res}",
+        "Eq": "\\operatorname{Eq}",
+        "sst": "\\subset",
+        "lact": "\\triangleright",
+        "ract": "\\triangleleft",
+        "op": "\\mathrm{op}",
+        "lsjto": "\\longrightarrow\\!\\!\\!\\!\\!\\rightarrow"
         }
       },
       startup: {
@@ -300,10 +338,10 @@
             </a>
         </div>
         <div class="nav-right">
-            <a href="../pdfs/Dehn surgery.pdf" class="nav-btn" title="View PDF">
+            <a href="../pdfs/Dehn surgery.pdf#page=1.00&gsr=0" class="nav-btn" title="View PDF" target="_blank">
                 <span>PDF</span>
             </a>
-            <a href="file:///Users/greysonwesley/Desktop/workflow/wiki/Dehn surgery.md" class="nav-btn" title="Edit in Obsidian">
+            <a href="obsidian://open?path=/Users/greysonwesley/Desktop/workflow/wiki/Dehn surgery.md" class="nav-btn" title="Edit in Obsidian">
                 <span>MD</span>
             </a>
         </div>
@@ -311,14 +349,14 @@
     <div class="content-wrapper">
     <h1>Dehn surgery</h1>
     <div class="metadata">
-        <strong>Last modified:</strong> December 12, 2025 at 10:20 PM ET<br>
+        <strong>Last modified:</strong> December 13, 2025 at  3:59 PM ET<br>
         <strong>Created:</strong> October 17, 2025 at  3:58 PM ET<br>
     </div>
     <div class="content">
         
         <p><strong>Idea.</strong> Dehn surgery is a method for constructing one <a href="manifolds as ringed spaces.html">manifold</a> from another by a certain kind of <em>cut-and-paste</em> procedure, hence the name.</p>
 
-<p>Particularly useful is surgery on <a href="3-manifold.html">3-manifolds</a>,  pair $(L,p/q)$ where $L$ is a <a href="framed link.html">framed link</a> and $p/q\in\mathbb{Q}$. By a Theorem of Lickorish–Wallace, every <a href="connected topological space.html">connected</a> <a href="orientable manifold.html">oriented</a> <a href="3-manifold.html">3-Manifold</a> $X$ arises in this way, and in fact we can choose such a presentation for $X$ where $p/q\in\mathbb{Z}$. For a great introductory video of this, see the YouTube video <a href="https://www.youtube.com/watch?v=govsh086h1A">here</a>.</p>
+<p>Particularly useful is surgery on <a href="3-manifold.html">3-manifolds</a>,  pair $(L,p/q)$ where $L$ is a <a href="framed link.html">framed link</a> and $p/q\in\mathbb{Q}$. By a Theorem of Lickorish–Wallace, every <a href="connected topological space.html">connected</a> <a href="orientable manifold.html">oriented</a> <a href="3-manifold.html">3-manifold</a> $X$ arises in this way, and in fact we can choose such a presentation for $X$ where $p/q\in\mathbb{Z}$. For a great introductory video of this, see the YouTube video <a href="https://www.youtube.com/watch?v=govsh086h1A">here</a>.</p>
 
 <p><strong>Construction (Dehn surgery along a framed link $L$ in $S^{3}$).</strong> See <a href="https://ncatlab.org/nlab/show/Dehn%2Bsurgery?utm_source=chatgpt.com#method">here</a>.</p>
 
@@ -326,10 +364,12 @@
 
 
 <p>See also:</p>
+
 <ul>
 <li><a href="Kirby calculus.html">Kirby calculus</a></li>
 <li><a href="Dehn twist.html">Dehn twist</a></li>
 </ul>
+
     </div>
 
     <div class="linked-notes">

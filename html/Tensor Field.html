@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>tensor field - GWiki</title>
+    <title>Tensor Field - GWiki</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -251,7 +251,7 @@
         "set": ["\\left\\{ #1 \\right\\}", 1],
         "bra": ["\\left\\langle #1 \\right|", 1],
         "ket": ["\\left| #1 \\right\\rangle", 1],
-        "braket": ["\\left\\langle #1 \\middle| #2 \\right\\rangle", 2],
+        "braket": ["\\left\\langle #1 \\right\\rangle", 1],
         "Set": "\\mathbf{Set}",
         "Grp": "\\mathbf{Grp}",
         "Top": "\\mathbf{Top}",
@@ -278,7 +278,45 @@
         "a": "\\alpha",
         "b": "\\beta",
         "d": "\\delta",
-        "g": "\\gamma"
+        "g": "\\gamma",
+        "bd": "\\partial",
+        "tms": "\\times",
+        "tsr": "\\otimes",
+        "pr": "\\operatorname{pr}",
+        "dM": "\\mathcal{M}",
+        "dF": "\\mathcal{F}",
+        "dA": "\\mathcal{A}",
+        "dB": "\\mathcal{B}",
+        "dC": "\\mathcal{C}",
+        "dD": "\\mathcal{D}",
+        "dE": "\\mathcal{E}",
+        "dG": "\\mathcal{G}",
+        "dH": "\\mathcal{H}",
+        "dI": "\\mathcal{I}",
+        "dJ": "\\mathcal{J}",
+        "dK": "\\mathcal{K}",
+        "dL": "\\mathcal{L}",
+        "dN": "\\mathcal{N}",
+        "dO": "\\mathcal{O}",
+        "dP": "\\mathcal{P}",
+        "dQ": "\\mathcal{Q}",
+        "dR": "\\mathcal{R}",
+        "dS": "\\mathcal{S}",
+        "dT": "\\mathcal{T}",
+        "dU": "\\mathcal{U}",
+        "dV": "\\mathcal{V}",
+        "dW": "\\mathcal{W}",
+        "dX": "\\mathcal{X}",
+        "dY": "\\mathcal{Y}",
+        "dZ": "\\mathcal{Z}",
+        "tld": "\\widetilde",
+        "res": "\\operatorname{res}",
+        "Eq": "\\operatorname{Eq}",
+        "sst": "\\subset",
+        "lact": "\\triangleright",
+        "ract": "\\triangleleft",
+        "op": "\\mathrm{op}",
+        "lsjto": "\\longrightarrow\\!\\!\\!\\!\\!\\rightarrow"
         }
       },
       startup: {
@@ -300,7 +338,7 @@
             </a>
         </div>
         <div class="nav-right">
-            <a href="../pdfs/Tensor Field.pdf" class="nav-btn" title="View PDF">
+            <a href="../pdfs/Tensor Field.pdf#page=1.00&gsr=0" class="nav-btn" title="View PDF" target="_blank">
                 <span>PDF</span>
             </a>
             <a href="obsidian://open?path=/Users/greysonwesley/Desktop/workflow/wiki/Tensor Field.md" class="nav-btn" title="Edit in Obsidian">
@@ -309,15 +347,14 @@
         </div>
     </div>
     <div class="content-wrapper">
-    <h1>tensor field</h1>
+    <h1>Tensor Field</h1>
     <div class="metadata">
-        <strong>Last modified:</strong> December 13, 2025 at  1:22 AM ET<br>
+        <strong>Last modified:</strong> December 13, 2025 at  4:26 PM ET<br>
         <strong>Created:</strong> August 09, 2025 at  9:23 PM ET<br>
     </div>
     <div class="content">
         
-        <p>#article</p>
-<h4 id="tensors">Tensors </h4>
+        <h4 id="tensors">Tensors </h4>
 <p>Here we follow <sup><a href="#ref-1">[1]</a></sup>. Let $V$ be a finite-dimensional $\mathbb{R}$-vector space, say of dimension $n$. A <strong>covariant $\ell$-tensor</strong> is a multilinear map $V^{\times \ell}\to \mathbb{R}$. A <strong>contravariant $k$-tensor</strong> is a multilinear map $(V^{*})^{\times k}\to\mathbb{R}$.</p>
 
 <p>A <strong>$k$-contravariant, $\ell$-covariant tensor</strong> (AKA <strong>mixed $(k,\ell)$-tensor</strong> or <strong>$(k,\ell)$-tensor</strong>) is a multilinear map $(V^*)^{\times k}\times V^{\ell}\to\mathbb{R}$, though we will also call multilinear maps whose arguments still consist of $k$ covectors and $\ell$ vectors, but not necessarily in the order given here; such an object is still called a tensor of type $(k,\ell)$. We write $\mathrm{T}^{\ell}(V)\coloneqq\set{\text{covariant \(\ell\)-tensors on \(V\)}}$ and $\mathrm{T}^{(k,\ell)}(V)\coloneqq\{(k,\ell)\text{-tensors on }V\}$. For $F\in \mathrm{T}^{(k,\ell)}(V)$ and $G\in\mathrm{T}^{(p,q)}(V)$, define $F\otimes G\in \mathrm{T}^{(k+p,\ell+q)}(V)$ by\[    (F\otimes G)(\omega^1,\dots,\omega^{k+p},v_1,\dots,v_{\ell+q})\coloneqq F(\omega^1,\dots,\omega^k,v_1,\dots,v_\ell)G(\omega^{k+1},\dots,\omega^{k+p},v_{\ell+1},\dots,v_{\ell+q}).\]If $e_i$ is a basis for $V$ and $\varepsilon^i$ is the associated <a href="dual basis.html">dual basis</a> for $V^*$, then the set\[\set{e_{i_1}\otimes\cdots\otimes e_{i_k}\otimes \varepsilon^{j_1}\otimes\cdots\otimes\varepsilon^{j_\ell}}{i_q,j_q\in \{1,\dots,n\}}\]is a basis for $\mathrm{T}^{(k,\ell)}(V)$. As multilinear maps, these are given by\[(e_{i_1}\otimes\cdots\otimes e_{i_k}\otimes \varepsilon^{j_1}\otimes\cdots\otimes\varepsilon^{j_\ell})(\varepsilon^{s_1},\dots,\varepsilon^{s_k},e_{r_1},\dots,e_{r_{\ell}})=\delta^{s_1}_{i_1}\cdots\delta_{i_k}^{s_k}\delta_{r_1}^{j_1}\cdots\delta_{j_{\ell}}^{r_{\ell}}.\]Thus $\dim\mathrm{T}^{(k,\ell)}(V)=n^{k+\ell}$, and every $(k,\ell)$-tensor $F$ can be written as\[F=F_{j_1\cdots j_\ell}^{i_1\cdots i_k} \,e_{i_1}\otimes\cdots \otimes e_{i_{k}}\otimes \varepsilon^{j_1}\cdots \varepsilon^{j_\ell}\]where $F_{j_1\cdots j_\ell}^{i_1\cdots i_k}=F(\varepsilon^{i_1},\dots,\varepsilon^{i_{k}},e_{j_1},\dots,e_{j_{\ell}})$.</p>
@@ -332,7 +369,8 @@
 <p><strong>Example.</strong> A $(0,2)$-tensor field is a map $M \to T^*M \otimes T^*M$, written in local coordinates $(x^i)$ as $f_{ij} \, \mathrm{d} x^i \otimes \mathrm{d} x^j$ for some $f_{ij} \in C^\infty(M)$.</p>
 
 
-<p>#unorganized , e.g., converting a covector (a 1-form, whose entries are indexed by subscripts) to a vector (a vector, whose entries are indexed by superscripts).</p>
+
+<p>, e.g., converting a covector (a 1-form, whose entries are indexed by subscripts) to a vector (a vector, whose entries are indexed by superscripts).</p>
 <div class="references">
 <h2>References</h2>
 <ol>

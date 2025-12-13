@@ -7,73 +7,101 @@
 \begin{document}
 \NoteHeader
 
-The following contains material pulled from Dan Freed's slides [here](https://people.maths.ox.ac.uk/tillmann/ASPECTSfreed.pdf).
-#AI-using-source 
+The following contains material pulled from Dan Freed's slides \href{https://people.maths.ox.ac.uk/tillmann/ASPECTSfreed.pdf}{here}.
+% #AI-using-source
 \subsubsection*{General Information}
-- \textbf{Title:} 4-3-2-8-7-6
-- \textbf{Author:} Dan Freed
-- \textbf{Collaborators:} The work is joint with Constantin Teleman, builds on work with Mike Hopkins and Jacob Lurie, and is dedicated to Graeme Segal.
+\begin{itemize}
+\item \textbf{Title:} 4-3-2-8-7-6
+\item \textbf{Author:} Dan Freed
+\item \textbf{Collaborators:} The work is joint with Constantin Teleman, builds on work with Mike Hopkins and Jacob Lurie, and is dedicated to Graeme Segal.
+\end{itemize}
 \subsubsection*{Foundational Concepts}
-- "Great theorems are awesome; great definitions are transformational."
-- Graeme Segal proposed a definition of 2D conformal field theory arising from joint work with Quillen.
+\begin{itemize}
+\item "Great theorems are awesome; great definitions are transformational."
+\item Graeme Segal proposed a definition of 2D conformal field theory arising from joint work with Quillen.
+\end{itemize}
 \subsubsection*{Definitions of Quantum Field Theory}
-- \textbf{Segal's Definition:} A 2d conformal field theory is a homomorphism:
+\begin{itemize}
+\item \textbf{Segal's Definition:} A 2d conformal field theory is a homomorphism:
+\end{itemize}
     $F: \text{Bord}_{\langle 1,2 \rangle}^{\text{conf}} \to \text{Vect}_{\mathbb{C}}^{\text{top}}$
-- \textbf{Atiyah's Definition:} An nD topological quantum field theory (TQFT) is a homomorphism:
+\begin{itemize}
+\item \textbf{Atiyah's Definition:} An nD topological quantum field theory (TQFT) is a homomorphism:
+\end{itemize}
     $F: \text{Bord}_{\langle n-1,n \rangle}^{\mathcal{X}(n)} \to \text{Vect}$
     where $\mathcal{X}(n)$ is an nD (topological) tangential structure.
-- The bordism category $\text{Bord}_{\langle n-1,n \rangle}^{\mathrm{SO}}$ categorifies the classical bordism group $\Omega_{n-1}^{\mathrm{SO}}$.
-- TQFTs categorify classical bordism invariants, for example, the \wref[signature map]{signature of a manifold}:
+\begin{itemize}
+\item The bordism category $\text{Bord}_{\langle n-1,n \rangle}^{\mathrm{SO}}$ categorifies the classical bordism group $\Omega_{n-1}^{\mathrm{SO}}$.
+\item TQFTs categorify classical bordism invariants, for example, the \wref[signature map]{signature of a manifold}:
+\end{itemize}
     $\text{Sign}: \Omega_{4k}^{\mathrm{SO}} \to \mathbb{Z}$
 \subsubsection*{Invertible and Extended Field Theories}
-- An invertible field theory $\alpha: \text{Bord}_{\langle n-1,n \rangle} \to \text{Vect}$ is one where $\alpha(M)$ is invertible for every manifold $M$.
-    - For a closed n-manifold $X$, $\alpha(X) \in \mathbb{C}^\times$.
-    - For a closed (n-1)-manifold $Y$, $\alpha(Y)$ is a line.
-- \textbf{Example:} There is a 3D TQFT $\alpha: \text{Bord}_{\langle 2,3 \rangle}^{\text{framed}} \to \text{Vect}$ such that $\alpha(X) = \mu^{\Theta(X)}$, where $\mu = e^{2\pi i / 24}$ and $\Theta(X) \in \Omega_3^{\text{framed}} \cong \mathbb{Z}/24\mathbb{Z}$.
-- Topological invertible theories factor through a map of spectra.
-- \textbf{Extended Field Theories} were introduced in the early 1990s in connection with topological Chern-Simons theory.
-    - \textbf{Domain:} An n-category $\text{Bord}_n$ of bordisms.
-    - \textbf{Codomain:} An arbitrary n-category (or $(\infty, n)$-category).
-- \textbf{Example:} For a finite group $G$, let $A = \text{Map}(G, \mathbb{C})$ under convolution. An extended version of 2d Dijkgraaf-Witten theory is a functor $\alpha: \text{Bord}_2 \to \text{Alg}$, with $\alpha(\text{pt}) = A$.
+\begin{itemize}
+\item An invertible field theory $\alpha: \text{Bord}_{\langle n-1,n \rangle} \to \text{Vect}$ is one where $\alpha(M)$ is invertible for every manifold $M$.
+    \item For a closed n-manifold $X$, $\alpha(X) \in \mathbb{C}^\times$.
+    \item For a closed (n-1)-manifold $Y$, $\alpha(Y)$ is a line.
+\item \textbf{Example:} There is a 3D TQFT $\alpha: \text{Bord}_{\langle 2,3 \rangle}^{\text{framed}} \to \text{Vect}$ such that $\alpha(X) = \mu^{\Theta(X)}$, where $\mu = e^{2\pi i / 24}$ and $\Theta(X) \in \Omega_3^{\text{framed}} \cong \mathbb{Z}/24\mathbb{Z}$.
+\item Topological invertible theories factor through a map of spectra.
+\item \textbf{Extended Field Theories} were introduced in the early 1990s in connection with topological Chern-Simons theory.
+    \item \textbf{Domain:} An n-category $\text{Bord}_n$ of bordisms.
+    \item \textbf{Codomain:} An arbitrary n-category (or $(\infty, n)$-category).
+\item \textbf{Example:} For a finite group $G$, let $A = \text{Map}(G, \mathbb{C})$ under convolution. An extended version of 2d Dijkgraaf-Witten theory is a functor $\alpha: \text{Bord}_2 \to \text{Alg}$, with $\alpha(\text{pt}) = A$.
+\end{itemize}
 \subsubsection*{The Cobordism Hypothesis}
-- The Cobordism Hypothesis applies to fully extended topological theories $F: \text{Bord}_n^{\mathrm{SO}} \to \mathcal{C}$, where $\mathcal{C}$ is a symmetric monoidal $(\infty, n)$-category.
-- \textbf{Hypothesis (Baez-Dolan-Hopkins-Lurie):} The theory $F$ is fully determined by its value on a point, $F(\text{pt}_+)$. Any \textit{n-dualizable, $\mathrm{SO}_n$-invariant} object $c \in \mathcal{C}$ determines such a theory with $F(\text{pt}_+) = c$.
-    - \textbf{n-dualizability:} Data associated with Morse handles exists.
-    - \textbf{$\mathrm{SO}_n$-invariance:} Extra data exists on the object $c$.
-- \textbf{Example (n=2):} An algebra $A$ in the Morita 2-category $\text{Alg}_k$ is 2-dualizable if it is finiteD and semisimple. The $\mathrm{SO}_2$-invariance data corresponds to a Frobenius structure (a nondegenerate trace).
+\begin{itemize}
+\item The Cobordism Hypothesis applies to fully extended topological theories $F: \text{Bord}_n^{\mathrm{SO}} \to \mathcal{C}$, where $\mathcal{C}$ is a symmetric monoidal $(\infty, n)$-category.
+\item \textbf{Hypothesis (Baez-Dolan-Hopkins-Lurie):} The theory $F$ is fully determined by its value on a point, $F(\text{pt}_+)$. Any \textit{n-dualizable, $\mathrm{SO}_n$-invariant} object $c \in \mathcal{C}$ determines such a theory with $F(\text{pt}_+) = c$.
+    \item \textbf{n-dualizability:} Data associated with Morse handles exists.
+    \item \textbf{$\mathrm{SO}_n$-invariance:} Extra data exists on the object $c$.
+\item \textbf{Example (n=2):} An algebra $A$ in the Morita 2-category $\text{Alg}_k$ is 2-dualizable if it is finiteD and semisimple. The $\mathrm{SO}_2$-invariance data corresponds to a Frobenius structure (a nondegenerate trace).
+\end{itemize}
 \subsubsection*{Invertibility Criteria}
-- \textbf{Theorem:} For a theory $\alpha: \text{Bord}_n^{\mathrm{SO}} \to \mathcal{C}$, if either
+\begin{itemize}
+\item \textbf{Theorem:} For a theory $\alpha: \text{Bord}_n^{\mathrm{SO}} \to \mathcal{C}$, if either
+\end{itemize}
     1.  $\alpha(S^k)$ is invertible for some $k \le n/2$, or
     2.  $\alpha(S^n)$ is invertible and $\alpha(S^p \times S^{n-1-p})$ is invertible for all $p$,
     then $\alpha$ is invertible.
-- This is a localization theorem: inverting $\alpha(S^k)$ implies inverting every bordism.
-- \textbf{Example (n=2, k=1):} A theory $\alpha: \text{Bord}_2^{\mathrm{SO}} \to \text{Alg}_k$ defined by a 2-dualizable Frobenius algebra $A$ has $\alpha(S^1)$ equal to the center of $A$. The theory $\alpha$ is invertible if the center of $A$ is $k$.
+\begin{itemize}
+\item This is a localization theorem: inverting $\alpha(S^k)$ implies inverting every bordism.
+\item \textbf{Example (n=2, k=1):} A theory $\alpha: \text{Bord}_2^{\mathrm{SO}} \to \text{Alg}_k$ defined by a 2-dualizable Frobenius algebra $A$ has $\alpha(S^1)$ equal to the center of $A$. The theory $\alpha$ is invertible if the center of $A$ is $k$.
+\end{itemize}
 
 \subsubsection*{Relative Quantum Field Theory}
-- A quantum field theory $F$ is \textbf{relative to} an extended $(n+1)$D QFT $\alpha$ if it is a homomorphism $F: \mathbf{1} \to \tau_{\le n}\alpha$ or $\tilde{F}: \tau_{\le n}\alpha \to \mathbf{1}$.
-- If $\alpha$ is invertible, $F$ is called an \textbf{anomalous theory} with anomaly $\alpha$.
-    - $F(X^n)$ takes values in a line (Lagrangian anomaly).
-    - $F(Y^{n-1})$ takes values in a gerbe (Hamiltonian anomaly).
+\begin{itemize}
+\item A quantum field theory $F$ is \textbf{relative to} an extended $(n+1)$D QFT $\alpha$ if it is a homomorphism $F: \mathbf{1} \to \tau_{\le n}\alpha$ or $\tilde{F}: \tau_{\le n}\alpha \to \mathbf{1}$.
+\item If $\alpha$ is invertible, $F$ is called an \textbf{anomalous theory} with anomaly $\alpha$.
+    \item $F(X^n)$ takes values in a line (Lagrangian anomaly).
+    \item $F(Y^{n-1})$ takes values in a gerbe (Hamiltonian anomaly).
+\end{itemize}
 \subsubsection*{Chern-Simons and Wess-Zumino-Witten (WZW) Theories}
-- A modular tensor category $A \in \text{Cat}_\mathbb{C}^{\otimes}$ defines a 4d invertible theory (the Crane-Yetter theory) $\alpha_A: \text{Bord}_4^{\mathrm{SO}} \to \text{Cat}_\mathbb{C}^{\otimes \beta}$.
-- Chern-Simons theory ($F_A$) can be viewed as a 3d theory relative to this 4d theory.
-- The framing anomaly of Chern-Simons can be trivialized by introducing a signature structure, recovering the Reshetikhin-Turaev 1-2-3-theory.
-- Chern-Simons can be defined as an absolute 3d theory on bordisms with a stable tangential structure called a $p_1$-structure.
-- Chiral WZW theory is a relative 2d theory, which is a restatement of Segal's weakly conformal CFT.
+\begin{itemize}
+\item A modular tensor category $A \in \text{Cat}_\mathbb{C}^{\otimes}$ defines a 4d invertible theory (the Crane-Yetter theory) $\alpha_A: \text{Bord}_4^{\mathrm{SO}} \to \text{Cat}_\mathbb{C}^{\otimes \beta}$.
+\item Chern-Simons theory ($F_A$) can be viewed as a 3d theory relative to this 4d theory.
+\item The framing anomaly of Chern-Simons can be trivialized by introducing a signature structure, recovering the Reshetikhin-Turaev 1-2-3-theory.
+\item Chern-Simons can be defined as an absolute 3d theory on bordisms with a stable tangential structure called a $p_1$-structure.
+\item Chiral WZW theory is a relative 2d theory, which is a restatement of Segal's weakly conformal CFT.
+\end{itemize}
 \subsubsection*{Theories for Tori and a Finite Path Integral}
-- For a torus $T = \Pi \otimes \mathbb{R}/\mathbb{Z}$, a class $\lambda \in H^4(BT; \mathbb{Z})$ corresponds to an even, symmetric, non-degenerate bihomomorphism $b: \Pi \times \Pi \to \mathbb{Z}$.
-- This data defines a Pontrjagin self-dual finite abelian group $\pi$ with a quadratic function $q: \pi \to \mathbb{Q}/\mathbb{Z}$.
-- The pair $(\pi, q)$ determines a homotopy class of maps $q: K(\pi, 2) \to K(\mathbb{Q}/\mathbb{Z}, 4)$.
-- A \textbf{finite path integral} over $\pi$-gerbes gives a fully extended 4d theory $\alpha$. For a closed, oriented 4-manifold $X$, its value is given by a finite Gauss sum:
+\begin{itemize}
+\item For a torus $T = \Pi \otimes \mathbb{R}/\mathbb{Z}$, a class $\lambda \in H^4(BT; \mathbb{Z})$ corresponds to an even, symmetric, non-degenerate bihomomorphism $b: \Pi \times \Pi \to \mathbb{Z}$.
+\item This data defines a Pontrjagin self-dual finite abelian group $\pi$ with a quadratic function $q: \pi \to \mathbb{Q}/\mathbb{Z}$.
+\item The pair $(\pi, q)$ determines a homotopy class of maps $q: K(\pi, 2) \to K(\mathbb{Q}/\mathbb{Z}, 4)$.
+\item A \textbf{finite path integral} over $\pi$-gerbes gives a fully extended 4d theory $\alpha$. For a closed, oriented 4-manifold $X$, its value is given by a finite Gauss sum:
+\end{itemize}
     $\alpha(X) = (\sqrt{\#F})^{\text{Euler } X} \mu^{(\text{sign } b)(\text{Sign } X)}$ where $\mu=e^{2\pi i/8}$.
 \subsubsection*{From 4d to Higher Dimensions (Theory X)}
-- String theory arguments predict the existence of a 6d superconformal field theory, named \textbf{Theory $\mathcal{X}$}, analogous to chiral WZW.
-- The same data $(\pi, q)$ that defines the 4-3-2 dimensional theories is expected to define theories in dimensions 8 and 7-8, starting from a homotopy map $q: K(\pi, 4) \to K(\mathbb{Q}/\mathbb{Z}, 8)$.
-- The construction of a 6-7 dimensional theory requires data of a triple $(\mathfrak{g}, b, \Gamma)$, where $\mathfrak{g}$ is a real Lie algebra, $b$ is an invariant inner product, and $\Gamma$ is a lattice.
-- From this data, one expects to derive:
+\begin{itemize}
+\item String theory arguments predict the existence of a 6d superconformal field theory, named \textbf{Theory $\mathcal{X}$}, analogous to chiral WZW.
+\item The same data $(\pi, q)$ that defines the 4-3-2 dimensional theories is expected to define theories in dimensions 8 and 7-8, starting from a homotopy map $q: K(\pi, 4) \to K(\mathbb{Q}/\mathbb{Z}, 8)$.
+\item The construction of a 6-7 dimensional theory requires data of a triple $(\mathfrak{g}, b, \Gamma)$, where $\mathfrak{g}$ is a real Lie algebra, $b$ is an invariant inner product, and $\Gamma$ is a lattice.
+\item From this data, one expects to derive:
+\end{itemize}
     1.  A 7d topological QFT $\alpha_\mathfrak{g}$.
     2.  A 6d superconformal QFT $\mathcal{X}_\mathfrak{g}$ relative to $\alpha_\mathfrak{g}$.
-- An analogy is drawn between classical PDE and quantum field theory:
+\begin{itemize}
+\item An analogy is drawn between classical PDE and quantum field theory:
+\end{itemize}
 | 4d | 6d |
 | :--- | :--- |
 | \textbf{Classical PDE:} $F + *F = 0$ | \textbf{Quantum Field Theory:} Theory $\mathcal{X}$ |

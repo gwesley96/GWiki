@@ -242,16 +242,16 @@
         "fcj": "\\widehat",
         "e": "\\varepsilon",
         "glu": "\\mathrm{gl}",
-        "greyson": "\\bgroup\\color{violet}[[#1]]\\egroup",
-        "todo": "\\textbf{[[}\\textsl{#1}\\textbf{]]}",
-        "bkt": "\\left\\langle #1 \\middle| #2 \\right\\rangle",
-        "pbkt": "\\left( #1 \\middle| #2 \\right)",
-        "abs": "\\left| #1 \\right|",
-        "norm": "\\left\\| #1 \\right\\|",
-        "set": "\\left\\{ #1 \\right\\}",
-        "bra": "\\left\\langle #1 \\right|",
-        "ket": "\\left| #1 \\right\\rangle",
-        "braket": "\\left\\langle #1 \\middle| #2 \\right\\rangle",
+        "greyson": ["\\bgroup\\color{violet}[[#1]]\\egroup", 1],
+        "todo": ["\\textbf{[[}\\textsl{#1}\\textbf{]]}", 1],
+        "bkt": ["\\left\\langle #1 \\middle| #2 \\right\\rangle", 2],
+        "pbkt": ["\\left( #1 \\middle| #2 \\right)", 2],
+        "abs": ["\\left| #1 \\right|", 1],
+        "norm": ["\\left\\| #1 \\right\\|", 1],
+        "set": ["\\left\\{ #1 \\right\\}", 1],
+        "bra": ["\\left\\langle #1 \\right|", 1],
+        "ket": ["\\left| #1 \\right\\rangle", 1],
+        "braket": ["\\left\\langle #1 \\right\\rangle", 1],
         "Set": "\\mathbf{Set}",
         "Grp": "\\mathbf{Grp}",
         "Top": "\\mathbf{Top}",
@@ -279,6 +279,44 @@
         "b": "\\beta",
         "d": "\\delta",
         "g": "\\gamma",
+        "bd": "\\partial",
+        "tms": "\\times",
+        "tsr": "\\otimes",
+        "pr": "\\operatorname{pr}",
+        "dM": "\\mathcal{M}",
+        "dF": "\\mathcal{F}",
+        "dA": "\\mathcal{A}",
+        "dB": "\\mathcal{B}",
+        "dC": "\\mathcal{C}",
+        "dD": "\\mathcal{D}",
+        "dE": "\\mathcal{E}",
+        "dG": "\\mathcal{G}",
+        "dH": "\\mathcal{H}",
+        "dI": "\\mathcal{I}",
+        "dJ": "\\mathcal{J}",
+        "dK": "\\mathcal{K}",
+        "dL": "\\mathcal{L}",
+        "dN": "\\mathcal{N}",
+        "dO": "\\mathcal{O}",
+        "dP": "\\mathcal{P}",
+        "dQ": "\\mathcal{Q}",
+        "dR": "\\mathcal{R}",
+        "dS": "\\mathcal{S}",
+        "dT": "\\mathcal{T}",
+        "dU": "\\mathcal{U}",
+        "dV": "\\mathcal{V}",
+        "dW": "\\mathcal{W}",
+        "dX": "\\mathcal{X}",
+        "dY": "\\mathcal{Y}",
+        "dZ": "\\mathcal{Z}",
+        "tld": "\\widetilde",
+        "res": "\\operatorname{res}",
+        "Eq": "\\operatorname{Eq}",
+        "sst": "\\subset",
+        "lact": "\\triangleright",
+        "ract": "\\triangleleft",
+        "op": "\\mathrm{op}",
+        "lsjto": "\\longrightarrow\\!\\!\\!\\!\\!\\rightarrow",
         "Z": "Z",
         "M": "\\dM"
         }
@@ -302,10 +340,10 @@
             </a>
         </div>
         <div class="nav-right">
-            <a href="../pdfs/system of topological fields.pdf" class="nav-btn" title="View PDF">
+            <a href="../pdfs/system of topological fields.pdf#page=1.00&gsr=0" class="nav-btn" title="View PDF" target="_blank">
                 <span>PDF</span>
             </a>
-            <a href="file:///Users/greysonwesley/Desktop/workflow/wiki/system of topological fields.md" class="nav-btn" title="Edit in Obsidian">
+            <a href="obsidian://open?path=/Users/greysonwesley/Desktop/workflow/wiki/system of topological fields.md" class="nav-btn" title="Edit in Obsidian">
                 <span>MD</span>
             </a>
         </div>
@@ -313,7 +351,7 @@
     <div class="content-wrapper">
     <h1>system of topological fields</h1>
     <div class="metadata">
-        <strong>Last modified:</strong> December 12, 2025 at  6:46 PM ET<br>
+        <strong>Last modified:</strong> December 13, 2025 at  3:59 PM ET<br>
         <strong>Created:</strong> October 24, 2025 at  7:04 PM ET<br>
         <strong>Tags:</strong> disk-like framework
     </div>
@@ -676,6 +714,20 @@
 
 \newcommand{\wref}[2][]{#2}
 
+\newcommand{\bd}{\partial}
+\newcommand{\tms}{\times}
+\newcommand{\tsr}{\otimes}
+\newcommand{\orev}{\overline}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\A}{\mathrm{Sk}}
+\newcommand{\Z}{Z}
+\newcommand{\M}{\dM}
+\newcommand{\F}{\eF}
+\newcommand{\orev}{\overline}
+\newcommand{\fcj}{\widehat}
+\newcommand{\U}{\eU}
+\newcommand{\undC}{\smash[b]{\text{$\underset{\smash{\raisebox{.275em}{$\scriptstyle\kern.1ex\rightarrow$}}}{\smash{\cC}}$}}}
+
 \begin{tikzcd}[ampersand replacement=\&,cramped,column sep=scriptsize,row sep=small]
 	{\F(X)} \& {\F(\bar S\amalg S\amalg W)} \& {\F(\bar S)\tms \F(S)\tms \F(W)} \&\& {\F(S)} \\
 	\&\&\& {\F(\bar S)}
@@ -1023,6 +1075,20 @@
 
 \newcommand{\wref}[2][]{#2}
 
+\newcommand{\bd}{\partial}
+\newcommand{\tms}{\times}
+\newcommand{\tsr}{\otimes}
+\newcommand{\orev}{\overline}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\A}{\mathrm{Sk}}
+\newcommand{\Z}{Z}
+\newcommand{\M}{\dM}
+\newcommand{\F}{\eF}
+\newcommand{\orev}{\overline}
+\newcommand{\fcj}{\widehat}
+\newcommand{\U}{\eU}
+\newcommand{\undC}{\smash[b]{\text{$\underset{\smash{\raisebox{.275em}{$\scriptstyle\kern.1ex\rightarrow$}}}{\smash{\cC}}$}}}
+
 \begin{tikzpicture}[scale=1.7,yscale=.7,thick,boundary/.style={red}]
 
 
@@ -1061,7 +1127,7 @@
 
 \draw (end) 
     to[out=-90,in=180] ++(2*\circlerad+2*\rightfrombd,-3*\leftovercirclerad*\ysep)
-    to[out=0,in=180](leftoverstart);
+    to\href{leftoverstart}{out=0,in=180};
 \end{scope}
 
 
@@ -1076,7 +1142,7 @@
 
 \draw (end) 
     to[out=-90,in=180] ++(2*\circlerad+2*\rightfrombd,-3*\leftovercirclerad*\ysep)
-    to[out=0,in=180](leftoverend);
+    to\href{leftoverend}{out=0,in=180};
 \end{scope}
 
 \end{tikzpicture}</script>
@@ -1416,6 +1482,20 @@
 
 \newcommand{\wref}[2][]{#2}
 
+\newcommand{\bd}{\partial}
+\newcommand{\tms}{\times}
+\newcommand{\tsr}{\otimes}
+\newcommand{\orev}{\overline}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\A}{\mathrm{Sk}}
+\newcommand{\Z}{Z}
+\newcommand{\M}{\dM}
+\newcommand{\F}{\eF}
+\newcommand{\orev}{\overline}
+\newcommand{\fcj}{\widehat}
+\newcommand{\U}{\eU}
+\newcommand{\undC}{\smash[b]{\text{$\underset{\smash{\raisebox{.275em}{$\scriptstyle\kern.1ex\rightarrow$}}}{\smash{\cC}}$}}}
+
 \begin{tikzpicture}[scale=1.9,yscale=1.25,thick,boundary/.style={red},yscale=1.1]
 
 
@@ -1448,7 +1528,7 @@
 
 \draw (end) 
     to[out=-90,in=180] ++(2*\circlerad+2*\rightfrombd,-3*\leftovercirclerad*0.4)
-    to[out=0,in=180](leftoverstart);
+    to\href{leftoverstart}{out=0,in=180};
 \end{scope}
 
 
@@ -1461,7 +1541,7 @@
 
 \draw (end) 
     to[out=-90,in=180] ++(2*\circlerad+2*\rightfrombd,-3*\leftovercirclerad*0.4)
-    to[out=0,in=180](leftoverend);
+    to\href{leftoverend}{out=0,in=180};
 \end{scope}
 
 \end{tikzpicture}</script>
@@ -1812,6 +1892,20 @@
 
 \newcommand{\wref}[2][]{#2}
 
+\newcommand{\bd}{\partial}
+\newcommand{\tms}{\times}
+\newcommand{\tsr}{\otimes}
+\newcommand{\orev}{\overline}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\A}{\mathrm{Sk}}
+\newcommand{\Z}{Z}
+\newcommand{\M}{\dM}
+\newcommand{\F}{\eF}
+\newcommand{\orev}{\overline}
+\newcommand{\fcj}{\widehat}
+\newcommand{\U}{\eU}
+\newcommand{\undC}{\smash[b]{\text{$\underset{\smash{\raisebox{.275em}{$\scriptstyle\kern.1ex\rightarrow$}}}{\smash{\cC}}$}}}
+
 \begin{tikzpicture}
 
 \node{TODO};
@@ -1904,7 +1998,7 @@
 
 
 <div class="env-box example">
-<p><strong>Example (Annular categories and the tube algebra).</strong> See <a href="https://people.math.osu.edu/penneys.2/8800/Notes/Constructions.pdf">here</a>.</p>
+<p><strong>Example (Annular categories and the tube algebra).</strong> See <a href="https://people.math.osu.edu/penneys.2/8800/Notes/Constructions.pdf#page=1.00&gsr=0">here</a>.</p>
 </div>
 <h3 id="gluing-theorems">Gluing theorems</h3>
 <p>Fix an $(n+\varepsilon)$D TQFT $(\F,\U,z)$. For each $Y\in\M_{n-1}$, which we assume to be closed for simplicity of the notation, the hom profunctor $\A(Y)(-\to-)$ can be denoted by $\A(Y)^{y}{}_{y'}\coloneqq \A(Y)(y\to y')=\A(Y\times I,\overline{y}\amalg y')$ for $y,y'\in \cC(Y)$. Identifying $\A(\overline{Y})$ with $\A(Y)^{\mathrm{op}}$ via the equivalence established to obtain a dagger on $\A(Y)$, we see that $\A(\overline{Y})^{y}{}_{y'}=\A(Y)^{y'}{}_{y}$. For an $n$-manifold $X$ with $\partial X=\overline{S}\amalg T$, where again for simplicity we assume $S$ and $T$ are closed, we get a profunctor/bimodule $A_X\colon \A(T)^\op\times \A(S)\to \Vec$ given by \[ \begin{aligned} A_X\coloneqq  \A(X;\overline{\,\text{-}\,},\text{-})\colon \A(T)^{\mathrm{op}}\times \A(S)&\to\Vec, \\ (t,s)&\mapsto (A_X)^t{}_s\coloneqq \A(X;\overline{s},t), \\ (f\colon t\to t',g\colon s'\to s)&\mapsto (A_X)^f{}_e\colon (A_X)^t{}_s\to (A_X)^{t'}{}_{s'}\end{aligned} \] where $\A(T)$ (resp. $\A(S)$) acts on the right (resp. left) by gluing collars, e.g., if $f\in \A(X;\overline{s},t)$ and $e\in \A(T)^{t}{}_{t'}$, then\[f\mathbin{\triangleleft}e\coloneqq f\bullet_{t}e\in \A(X;\overline{s},t'),\]and similarly for the left $\A(S)$-action. Note that $A_{Y\times I}$ is the identity $\A(Y)$-$\A(Y)$-bimodule.</p>
@@ -2256,6 +2350,20 @@
 
 \newcommand{\wref}[2][]{#2}
 
+\newcommand{\bd}{\partial}
+\newcommand{\tms}{\times}
+\newcommand{\tsr}{\otimes}
+\newcommand{\orev}{\overline}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\A}{\mathrm{Sk}}
+\newcommand{\Z}{Z}
+\newcommand{\M}{\dM}
+\newcommand{\F}{\eF}
+\newcommand{\orev}{\overline}
+\newcommand{\fcj}{\widehat}
+\newcommand{\U}{\eU}
+\newcommand{\undC}{\smash[b]{\text{$\underset{\smash{\raisebox{.275em}{$\scriptstyle\kern.1ex\rightarrow$}}}{\smash{\cC}}$}}}
+
 \begin{tikzpicture}[scale=2,thick,boundary/.style={red,very thick},scale=0.5]
 
 \def\ysep{0.45}
@@ -2278,8 +2386,8 @@
 \end{scope}
 
 \node (c) at (1.25,0) {$c$};
-\draw[-{Stealth},shorten <=1mm,shorten >=1mm](c) to[out=90,in=-30,looseness=1.25] ++(-.7,.15+2*\ysep);
-\draw[-{Stealth},shorten <=1mm,shorten >=1mm](c) to[out=-90,in=30,looseness=1.25] ++(-.7,-.15+-2*\ysep);
+\draw\href{c}{-{Stealth},shorten <=1mm,shorten >=1mm} to[out=90,in=-30,looseness=1.25] ++(-.7,.15+2*\ysep);
+\draw\href{c}{-{Stealth},shorten <=1mm,shorten >=1mm} to[out=-90,in=30,looseness=1.25] ++(-.7,-.15+-2*\ysep);
 
 
 \node[boundary] (Y1) at (\yhoriz,1.1*\ysep){$S^{n-1}$};
@@ -2622,6 +2730,20 @@
 
 \newcommand{\wref}[2][]{#2}
 
+\newcommand{\bd}{\partial}
+\newcommand{\tms}{\times}
+\newcommand{\tsr}{\otimes}
+\newcommand{\orev}{\overline}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\A}{\mathrm{Sk}}
+\newcommand{\Z}{Z}
+\newcommand{\M}{\dM}
+\newcommand{\F}{\eF}
+\newcommand{\orev}{\overline}
+\newcommand{\fcj}{\widehat}
+\newcommand{\U}{\eU}
+\newcommand{\undC}{\smash[b]{\text{$\underset{\smash{\raisebox{.275em}{$\scriptstyle\kern.1ex\rightarrow$}}}{\smash{\cC}}$}}}
+
 \begin{tikzpicture}[scale=2,thick,boundary/.style={red,very thick},scale=0.5]
 
 \def\ysep{0}
@@ -2642,7 +2764,7 @@
 \end{scope}
 
 \node (c) at (1.5,1) {$c_{\glu}$};
-\draw[-{Stealth}](c) to[out=180,in=30,looseness=1.25] (.45,.35);
+\draw\href{c}{-{Stealth}} to[out=180,in=30,looseness=1.25] (.45,.35);
 
 \end{tikzpicture}</script>
 <p>\] \caption{Gluing two disks along their boundaries to get a sphere. <span style="color: #7f00ff;">[[edit this to show how unglued c’s boundaries are compatible? maybe w collar e too...]]</span>} <a id="fig-gluing-disks-to-sphere" class="latex-label"></a> \end{figure} \[ \bigoplus_{r\in\F(S^{n-1})}\A(\orev{D^n}\amalg D^n; \fcj r\amalg r)\cong \A(D^n; r)\tsr_{\bbC} \A(D^n; r)\lsjto \A(S^n) \]</p>
@@ -2651,7 +2773,7 @@
 </div>
 
 
-<div class="see-also"><strong>See also:</strong> <a href="local relations for a system of topological fields.html">local relations for a system of topological fields</a>, <a href="unitary TQFTs introduction.html">Unitary Tqfts Introduction</a></div>
+<div class="see-also"><strong>See also:</strong> <a href="local relations for a system of topological fields.html">local relations for a system of topological fields</a>, <a href="unitary TQFTs introduction.html">unitary TQFTs introduction</a></div>
 <div class="footnotes">
 <p><hr></p>
 <ol>

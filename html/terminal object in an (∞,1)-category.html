@@ -242,16 +242,16 @@
         "fcj": "\\widehat",
         "e": "\\varepsilon",
         "glu": "\\mathrm{gl}",
-        "greyson": "\\bgroup\\color{violet}[[#1]]\\egroup",
-        "todo": "\\textbf{[[}\\textsl{#1}\\textbf{]]}",
-        "bkt": "\\left\\langle #1 \\middle| #2 \\right\\rangle",
-        "pbkt": "\\left( #1 \\middle| #2 \\right)",
-        "abs": "\\left| #1 \\right|",
-        "norm": "\\left\\| #1 \\right\\|",
-        "set": "\\left\\{ #1 \\right\\}",
-        "bra": "\\left\\langle #1 \\right|",
-        "ket": "\\left| #1 \\right\\rangle",
-        "braket": "\\left\\langle #1 \\middle| #2 \\right\\rangle",
+        "greyson": ["\\bgroup\\color{violet}[[#1]]\\egroup", 1],
+        "todo": ["\\textbf{[[}\\textsl{#1}\\textbf{]]}", 1],
+        "bkt": ["\\left\\langle #1 \\middle| #2 \\right\\rangle", 2],
+        "pbkt": ["\\left( #1 \\middle| #2 \\right)", 2],
+        "abs": ["\\left| #1 \\right|", 1],
+        "norm": ["\\left\\| #1 \\right\\|", 1],
+        "set": ["\\left\\{ #1 \\right\\}", 1],
+        "bra": ["\\left\\langle #1 \\right|", 1],
+        "ket": ["\\left| #1 \\right\\rangle", 1],
+        "braket": ["\\left\\langle #1 \\right\\rangle", 1],
         "Set": "\\mathbf{Set}",
         "Grp": "\\mathbf{Grp}",
         "Top": "\\mathbf{Top}",
@@ -278,7 +278,45 @@
         "a": "\\alpha",
         "b": "\\beta",
         "d": "\\delta",
-        "g": "\\gamma"
+        "g": "\\gamma",
+        "bd": "\\partial",
+        "tms": "\\times",
+        "tsr": "\\otimes",
+        "pr": "\\operatorname{pr}",
+        "dM": "\\mathcal{M}",
+        "dF": "\\mathcal{F}",
+        "dA": "\\mathcal{A}",
+        "dB": "\\mathcal{B}",
+        "dC": "\\mathcal{C}",
+        "dD": "\\mathcal{D}",
+        "dE": "\\mathcal{E}",
+        "dG": "\\mathcal{G}",
+        "dH": "\\mathcal{H}",
+        "dI": "\\mathcal{I}",
+        "dJ": "\\mathcal{J}",
+        "dK": "\\mathcal{K}",
+        "dL": "\\mathcal{L}",
+        "dN": "\\mathcal{N}",
+        "dO": "\\mathcal{O}",
+        "dP": "\\mathcal{P}",
+        "dQ": "\\mathcal{Q}",
+        "dR": "\\mathcal{R}",
+        "dS": "\\mathcal{S}",
+        "dT": "\\mathcal{T}",
+        "dU": "\\mathcal{U}",
+        "dV": "\\mathcal{V}",
+        "dW": "\\mathcal{W}",
+        "dX": "\\mathcal{X}",
+        "dY": "\\mathcal{Y}",
+        "dZ": "\\mathcal{Z}",
+        "tld": "\\widetilde",
+        "res": "\\operatorname{res}",
+        "Eq": "\\operatorname{Eq}",
+        "sst": "\\subset",
+        "lact": "\\triangleright",
+        "ract": "\\triangleleft",
+        "op": "\\mathrm{op}",
+        "lsjto": "\\longrightarrow\\!\\!\\!\\!\\!\\rightarrow"
         }
       },
       startup: {
@@ -300,10 +338,10 @@
             </a>
         </div>
         <div class="nav-right">
-            <a href="../pdfs/terminal object in an (∞,1)-category.pdf" class="nav-btn" title="View PDF">
+            <a href="../pdfs/terminal object in an (∞,1)-category.pdf#page=1.00&gsr=0" class="nav-btn" title="View PDF" target="_blank">
                 <span>PDF</span>
             </a>
-            <a href="file:///Users/greysonwesley/Desktop/workflow/wiki/terminal object in an (∞,1)-category.md" class="nav-btn" title="Edit in Obsidian">
+            <a href="obsidian://open?path=/Users/greysonwesley/Desktop/workflow/wiki/terminal object in an (∞,1)-category.md" class="nav-btn" title="Edit in Obsidian">
                 <span>MD</span>
             </a>
         </div>
@@ -311,7 +349,7 @@
     <div class="content-wrapper">
     <h1>terminal object in an (∞,1)-category</h1>
     <div class="metadata">
-        <strong>Last modified:</strong> December 12, 2025 at 10:15 PM ET<br>
+        <strong>Last modified:</strong> December 13, 2025 at  3:59 PM ET<br>
         <strong>Created:</strong> October 09, 2025 at  5:57 PM ET<br>
     </div>
     <div class="content">
@@ -319,20 +357,24 @@
         <p><strong><a href="QuasicategoriesRezk.pdf#page=78&selection=4,0,6,28&color=yellow.html">Definition</a>.</strong> A <strong>terminal object</strong> of an <a href="(∞,1)-category.html">(∞,1)-category</a> $C$ is a vertex $y\in C_{0}$ such that every <a href="simplex category.html">simplicial map</a> $f\colon \partial \Delta^{n}\to C$ with $f|_{\{n\}}=y$ extends to a simplicial map $\widetilde{f}\colon\Delta^{n}\to C$.</p>
 
 <p><strong>Remark.</strong> Let’s unpack the low-dimensional conditions in the definition of terminal object applied to $y\in C_{0}$.</p>
+
 <ul>
 <li>The condition for $n=1$ says that for every object $c$ in $C$, there is a 1-cell $f\colon c\to y$.</li>
 <li>The condition for $n=2$ implies that for any two parallel maps $f, g \colon c \to y$ in $C$, we have $[f]=[g]$, i.e., $f$ and $g$ are homotopic. Thus there is at most one homotopy class of maps into $y$ from any object.</li>
 </ul>
+
 
 <p><strong>Remark.</strong> If $C$ is the <a href="nerve of a category.html">nerve</a> of an ordinary category, then the conditions for $n\geq 2$ are automatically satisfied. The condition for $n=1$ says that for any object $c$, the set of morphisms $\mathrm{Hom}(c,y)$ is nonempty and has a single element. This coincides with the usual notion of a terminal object.</p>
 
 <p><strong><a href="QuasicategoriesRezk.pdf#page=78&selection=353,0,394,39&color=red.html">Warning</a>.</strong></p>
 
 <p>See also:</p>
+
 <ul>
 <li><a href="initial object in an (∞,1)-category.html">initial object in an (∞,1) category</a> $C$ (just a terminal object of $C^{\mathrm{op}}$)</li>
 <li><a href="QuasicategoriesRezk.pdf#page=79&selection=99,0,101,42&color=yellow.html">31.6. Uniqueness of initial and terminal objects</a></li>
 </ul>
+
     </div>
 
     <div class="linked-notes">

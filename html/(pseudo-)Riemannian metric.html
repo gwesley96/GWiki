@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>(Pseudo-)Riemannian Metric - GWiki</title>
+    <title>(pseudo-)Riemannian metric - GWiki</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -251,7 +251,7 @@
         "set": ["\\left\\{ #1 \\right\\}", 1],
         "bra": ["\\left\\langle #1 \\right|", 1],
         "ket": ["\\left| #1 \\right\\rangle", 1],
-        "braket": ["\\left\\langle #1 \\middle| #2 \\right\\rangle", 2],
+        "braket": ["\\left\\langle #1 \\right\\rangle", 1],
         "Set": "\\mathbf{Set}",
         "Grp": "\\mathbf{Grp}",
         "Top": "\\mathbf{Top}",
@@ -278,7 +278,45 @@
         "a": "\\alpha",
         "b": "\\beta",
         "d": "\\delta",
-        "g": "\\gamma"
+        "g": "\\gamma",
+        "bd": "\\partial",
+        "tms": "\\times",
+        "tsr": "\\otimes",
+        "pr": "\\operatorname{pr}",
+        "dM": "\\mathcal{M}",
+        "dF": "\\mathcal{F}",
+        "dA": "\\mathcal{A}",
+        "dB": "\\mathcal{B}",
+        "dC": "\\mathcal{C}",
+        "dD": "\\mathcal{D}",
+        "dE": "\\mathcal{E}",
+        "dG": "\\mathcal{G}",
+        "dH": "\\mathcal{H}",
+        "dI": "\\mathcal{I}",
+        "dJ": "\\mathcal{J}",
+        "dK": "\\mathcal{K}",
+        "dL": "\\mathcal{L}",
+        "dN": "\\mathcal{N}",
+        "dO": "\\mathcal{O}",
+        "dP": "\\mathcal{P}",
+        "dQ": "\\mathcal{Q}",
+        "dR": "\\mathcal{R}",
+        "dS": "\\mathcal{S}",
+        "dT": "\\mathcal{T}",
+        "dU": "\\mathcal{U}",
+        "dV": "\\mathcal{V}",
+        "dW": "\\mathcal{W}",
+        "dX": "\\mathcal{X}",
+        "dY": "\\mathcal{Y}",
+        "dZ": "\\mathcal{Z}",
+        "tld": "\\widetilde",
+        "res": "\\operatorname{res}",
+        "Eq": "\\operatorname{Eq}",
+        "sst": "\\subset",
+        "lact": "\\triangleright",
+        "ract": "\\triangleleft",
+        "op": "\\mathrm{op}",
+        "lsjto": "\\longrightarrow\\!\\!\\!\\!\\!\\rightarrow"
         }
       },
       startup: {
@@ -300,7 +338,7 @@
             </a>
         </div>
         <div class="nav-right">
-            <a href="../pdfs/(pseudo-)Riemannian metric.pdf" class="nav-btn" title="View PDF">
+            <a href="../pdfs/(pseudo-)Riemannian metric.pdf#page=1.00&gsr=0" class="nav-btn" title="View PDF" target="_blank">
                 <span>PDF</span>
             </a>
             <a href="obsidian://open?path=/Users/greysonwesley/Desktop/workflow/wiki/(pseudo-)Riemannian metric.md" class="nav-btn" title="Edit in Obsidian">
@@ -309,9 +347,9 @@
         </div>
     </div>
     <div class="content-wrapper">
-    <h1>(Pseudo-)Riemannian Metric</h1>
+    <h1>(pseudo-)Riemannian metric</h1>
     <div class="metadata">
-        <strong>Last modified:</strong> December 11, 2025 at  8:05 PM ET<br>
+        <strong>Last modified:</strong> December 13, 2025 at  4:26 PM ET<br>
         <strong>Created:</strong> August 09, 2025 at  9:12 PM ET<br>
         <strong>Tags:</strong> differential-geometry
     </div>
@@ -348,14 +386,14 @@
 </div>
 
 <div class="env-box example">
-<p><strong>Example (Poincaré disk model).</strong> For $M = \overset\circ D{}^n \subset \bbR^n$, the <strong>Poincaré metric</strong> $\mathrm{g}_{\small\mathbb{H}}\coloneqq \dfrac{4\overline{\mathrm{g}}}{1-\overline{\mathrm{g}}}$ yields the Poincaré disk model of $n$-dimensional <strong>hyperbolic space</strong> $\mathbb{H}^n$.</p>
+<p><strong>Example (Poincaré disk model).</strong> For $M = \overset\circ D{}^n \subset \bbR^n$, the <strong>Poincaré metric</strong> $\mathrm{g}_{\mathbb{H}}\coloneqq \dfrac{4\overline{\mathrm{g}}}{1-\overline{\mathrm{g}}}$ yields the Poincaré disk model of $n$-dimensional <strong>hyperbolic space</strong> $\mathbb{H}^n$.</p>
 </div>
 
 <div class="env-box framedproposition">
 <p><strong>Proposition ((Lee18, Prop. 2.4)).</strong> Every smooth manifold admits a Riemannian metric; one proof uses a <a href="Partition of Unity.html">Partition of Unity</a>.</p>
 </div>
 
-<div class="see-also"><strong>See also:</strong> <a href="Smooth Manifold.html">Smooth Manifold</a>, <a href="Quadratic Form.html">Quadratic Form</a>, <a href="Tensor Field.html">tensor field</a></div>
+<div class="see-also"><strong>See also:</strong> <a href="Smooth Manifold.html">Smooth Manifold</a>, <a href="Quadratic Form.html">Quadratic Form</a>, <a href="Tensor Field.html">Tensor Field</a></div>
 
 
 <p>Further reading: <a href="https://ncatlab.org/nlab/show/pseudo-Riemannian manifold" class="nlab-link">nLab:pseudo-Riemannian manifold</a>.</p>

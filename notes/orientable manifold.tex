@@ -8,18 +8,11 @@
 \NoteHeader
 
 Let $M$ be a topological $n$-\wref[manifold]{topological manifold}. The \textbf{orientation cover} of $M$ is the \wref[double covering]{topology/covering space}
-```tikz
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{tikz-cd}
-\begin{document}
 \LARGE
 \begin{tikzcd}[ampersand replacement=\&,cramped] {\widetilde M} \& {\{(x,\mu_x)\mid x\in M,\mu_x\text{ is a generator of }H_n(M,M\setminus x)\cong\mathbb{Z}\}} \\ M \arrow["{=}"{marking, allow upside down}, draw=none, from=1-1, to=1-2] \arrow["\pi"', two heads, from=1-1, to=2-1] \end{tikzcd}
-\end{document}
-```
 An \textbf{orientation} on $M$ is a \wref{section} $\mu$ of this cover, that is, a map $M\to\widetilde M$ such that $\pi\circ\mu=\mathrm{id}_M$. An \textbf{oriented manifold} is a pair $(M,\mu),$ where $\mu$ is an orientation on the manifold $M.$ A manifold $M$ is called \textbf{orientable} if it admits an orientation $\mu$.
 
-If $M$ is in fact \wref[smooth]{smooth manifold}, then one can show $M$ is \textbf{oriented} if and only if it admits a \wref[smooth atlas]{atlas} $\{(U_\alpha,\phi_\alpha)\}$ for which $\det(\mathrm{d}\phi_\alpha\circ\phi_\beta^{-1})>0$ for all $\alpha,\beta.$ If $M$ is oriented, there is a canonical identification $\mathrm{Dens}^{1}(M)\cong \Lambda^{n}T^{\textit{}M$ of the \wref[density bundle]{density} with $M$; as $M$ is orientable if and only if $\Lambda^{n}T^{}}M$ has a nowhere-vanishing section. (Any \wref{Riemannian metric} yields a (nowhere-vanishing) \wref[positive density]{density}, namely the \wref{Riemannian volume form}.)
+If $M$ is in fact \wref[smooth]{smooth manifold}, then one can show $M$ is \textbf{oriented} if and only if it admits a \wref[smooth atlas]{atlas} $\{(U_\alpha,\phi_\alpha)\}$ for which $\det(\mathrm{d}\phi_\alpha\circ\phi_\beta^{-1})>0$ for all $\alpha,\beta.$ If $M$ is oriented, there is a canonical identification $\mathrm{Dens}^{1}(M)\cong \Lambda^{n}T^{*}M$ of the \wref[density bundle]{density} with $M$; as $M$ is orientable if and only if $\Lambda^{n}T^{*}M$ has a nowhere-vanishing section. (Any \wref{Riemannian metric} yields a (nowhere-vanishing) \wref[positive density]{density}, namely the \wref{Riemannian volume form}.)
 
 \textbf{Remark.} If a smooth manifold $M$ is simply connected, or even if there are no subgroups of index $2$ in $\pi_1(M),$ then $M$ is orientable. Thus, for instance, simply connected smooth manifolds are orientable.
 
@@ -31,6 +24,8 @@ $$\frac{\mathrm{d}}{\mathrm{d}x}(\phi_{\alpha}\circ\phi_{\beta})= \left( \begin{
 By hypothesis $\det(\delta(\phi_\alpha^\partial \circ\phi_\beta^{-1}))>0$, so since the determinant of a block matrix is multiplicative, it suffices to show $*>0,$ i.e. that $\frac{\partial(\phi_\alpha\circ\phi_\beta^{-1})}{\partial x_1}>0.$ (Why? Because $\mathbb{R}_+^n$ is invariant.) $\square$ 
 
 See also:
-- [Here](https://math.ucr.edu/~res/m205C/orientation001.pdf)
+\begin{itemize}
+\item \href{https://math.ucr.edu/~res/m205C/orientation001.pdf}{Here}
+\end{itemize}
 
 \end{document}

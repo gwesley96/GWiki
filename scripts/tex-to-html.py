@@ -123,7 +123,7 @@ def extract_body(content):
     match = re.search(r'\\begin\{document\}(.*)', content, re.DOTALL)
     if match:
         body = match.group(1)
-        # Try to strip \NoteHeader if it exists but wasn't caught above (e.g. whitespace issues)
+        # Try to strip \NoteHeader if it exists but wasn't caught above
         body = re.sub(r'\\NoteHeader', '', body, count=1)
         
         last_end = body.rfind(r'\end{document}')
@@ -133,26 +133,37 @@ def extract_body(content):
 
     return ""
 
+def extract_navigation(content):
+    """Extract Next and Previous links from LaTeX content."""
+    next_note = None
+    prev_note = None
+    
+    # Matches \Next{note} or \NextNote{note}
+    match_next = re.search(r'\\Next(?:Note)?\{([^}]+)\}', content)
+    if match_next:
+        next_note = match_next.group(1)
+        
+    match_prev = re.search(r'\\Previous(?:Note)?\{([^}]+)\}', content)
+    if match_prev:
+        prev_note = match_prev.group(1)
+        
+    return prev_note, next_note
+
 
 def build_title_map(notes_dir):
-    """Scan all .tex files to build a filename -> title map"""
+    """Scan all .tex files to build a filename -> title map
+    
+    Note: We now use the filename as the title to match the original MD filename.
+    """
     title_map = {}
     if not os.path.exists(notes_dir):
         return title_map
         
     for f in os.listdir(notes_dir):
         if f.endswith('.tex'):
-            path = os.path.join(notes_dir, f)
-            try:
-                content = Path(path).read_text(encoding='utf-8')
-                match = re.search(r'\\Title\{([^}]+)\}', content)
-                if match:
-                    title = match.group(1)
-                    # Use filename (without ext) as key
-                    name = os.path.splitext(f)[0]
-                    title_map[name] = title
-            except:
-                pass
+            # Use filename (without ext) as BOTH key and title
+            name = os.path.splitext(f)[0]
+            title_map[name] = name  # Title matches filename exactly
     return title_map
 
 def convert_wikilinks(text, title_map=None):
@@ -308,6 +319,8 @@ def convert_href(text):
     def repl(match):
         url = match.group(1).replace(r'\%', '%')
         label = match.group(2)
+        if url.lower().endswith('.pdf') and '#page=' not in url:
+            url += "#page=1.00&gsr=0"
         return f'<a href="{url}">{label}</a>'
         
     pattern = r'\\href\{([^}]+)\}\{(.*?)\}'
@@ -393,7 +406,7 @@ def convert_refs(text):
     text = re.sub(r'\\eqref\{([^}]+)\}', repl_eqref, text)
     return text
 
-def convert_tikz(text):
+def convert_tikz(text, extra_preamble=""):
     """Convert tikz code blocks, inline tikzcd, tkz environment, and \tz command to TikZJax."""
     
     # helper to stash content to protect from regexes
@@ -417,14 +430,14 @@ def convert_tikz(text):
         return f'__TIKZ_BLOCK_{len(tikz_blocks) - 1}__'
 
     # Helper to wrap content in script tag with preamble
-    def wrap_tikz(content, preamble=True):
-        full_content = (TIKZ_PREAMBLE + "\n" + content) if preamble else content
+    def wrap_tikz(content, preamble=True, extra_preamble=""):
+        full_content = (TIKZ_PREAMBLE + "\n" + extra_preamble + "\n" + content) if preamble else content
         return f'<script type="text/tikz">{full_content}</script>'
 
     # 1. Handle ```tikz ... ``` blocks
     def repl_block(match):
         content = match.group(1)
-        return stash_script(wrap_tikz(content))
+        return stash_script(wrap_tikz(content, extra_preamble=extra_preamble))
     
     text = re.sub(r'```tikz\s*(.*?)\s*```', repl_block, text, flags=re.DOTALL)
 
@@ -437,7 +450,7 @@ def convert_tikz(text):
             tikz_code = f'\\begin{{tikzpicture}}[{opt}]\n{content}\n\\end{{tikzpicture}}'
         else:
             tikz_code = f'\\begin{{tikzpicture}}\n{content}\n\\end{{tikzpicture}}'
-        return stash_script(wrap_tikz(tikz_code))
+        return stash_script(wrap_tikz(tikz_code, extra_preamble=extra_preamble))
 
     text = re.sub(r'\\begin\{tkz\}(?:\[([^\]]*)\])?(.*?)\\end\{tkz\}', repl_tkz, text, flags=re.DOTALL)
 
@@ -508,7 +521,7 @@ def convert_tikz(text):
                 body = text[body_start:cursor-1]
                 # Found it!
                 tikz_code = f'\\begin{{tikzpicture}}[{opt}]\n{body}\n\\end{{tikzpicture}}'
-                replacement = stash_script(wrap_tikz(tikz_code))
+                replacement = stash_script(wrap_tikz(tikz_code, extra_preamble=extra_preamble))
                 out_text.append(replacement)
                 idx = cursor
                 continue
@@ -536,7 +549,7 @@ def convert_tikz(text):
     def repl_tikzcd(match):
         content = match.group(1)
         # Verify content starts with \begin{tikzcd} to be safe, though regex ensures it
-        return stash_script(wrap_tikz(content))
+        return stash_script(wrap_tikz(content, extra_preamble=extra_preamble))
 
     text = re.sub(r'(?:\\\[\s*)?(\\begin\{tikzcd\}.*?\\end\{tikzcd\})(?:\s*\\\])?', repl_tikzcd, text, flags=re.DOTALL)
 
@@ -549,7 +562,7 @@ def convert_tikz(text):
             tikz_code = f'\\begin{{tikzpicture}}[{opt}]\n{content}\n\\end{{tikzpicture}}'
         else:
             tikz_code = f'\\begin{{tikzpicture}}\n{content}\n\\end{{tikzpicture}}'
-        return stash_script(wrap_tikz(tikz_code, preamble=False))
+        return stash_script(wrap_tikz(tikz_code, preamble=False, extra_preamble=extra_preamble))
 
     text = re.sub(r'\\begin\{tikzpicture\}(?:\[([^\]]*)\])?(.*?)\\end\{tikzpicture\}', repl_tikzpicture, text, flags=re.DOTALL)
     
@@ -1043,9 +1056,9 @@ def convert_itemize(text):
         stripped = line.strip()
 
         # Check for list item patterns
-        # Match "- " or "- (label) " where label is (i), (ii), (1), (2), etc.
-        unordered_match = re.match(r'^(\s*)-\s+(?!\([ivxIVX0-9]+\)\s)(.*)$', line)
-        ordered_match = re.match(r'^(\s*)-\s+\(([ivxIVX0-9]+)\)\s+(.*)$', line)
+        # Match "- " or "* " or "- (label) " where label is (i), (ii), (1), (2), etc.
+        unordered_match = re.match(r'^(\s*)(?:-|\*)\s+(?!\([ivxIVX0-9]+\)\s)(.*)$', line)
+        ordered_match = re.match(r'^(\s*)(?:-|\*)\s+\(([ivxIVX0-9]+)\)\s+(.*)$', line)
 
         if unordered_match and not ordered_match:
             # Unordered list item
@@ -1121,7 +1134,7 @@ def convert_itemize(text):
                 next_is_list = False
                 if i + 1 < len(lines):
                     next_line = lines[i + 1]
-                    if re.match(r'^\s*-\s+', next_line):
+                    if re.match(r'^\s*(?:-|\*)\s+', next_line):
                         next_is_list = True
 
                 if not next_is_list:
@@ -1152,7 +1165,9 @@ def convert_sections(text):
     headers = {
         'section': 'h2',
         'subsection': 'h3',
-        'subsubsection': 'h4'
+        'subsubsection': 'h4',
+        'paragraph': 'h4',
+        'subparagraph': 'h5'
     }
     
     out = []
@@ -1175,7 +1190,7 @@ def convert_sections(text):
         cmd_len = 0
         
         # Check for longest match first
-        for c in ['subsubsection', 'subsection', 'section']:
+        for c in ['subsubsection', 'subsection', 'section', 'subparagraph', 'paragraph']:
             if text.startswith('\\' + c, i):
                 # Check if followed by * or {
                 after = i + 1 + len(c)
@@ -1294,7 +1309,7 @@ def convert_seealso(text):
         if re.search(r'<a\s+href', item, re.IGNORECASE):
             return item
         # Regex check for latex links
-        if re.match(r'^\s*\\wref', item) or re.match(r'^\s*\\href', item):
+        if re.search(r'\\wref', item) or re.search(r'\\href', item):
             return item
             
         # 2. Check for PDF with description: "foo.pdf (desc)"
@@ -1304,7 +1319,7 @@ def convert_seealso(text):
             filename = pdf_match.group(1).strip()
             rest = pdf_match.group(2)
             # Link the filename, keep the rest as text
-            return f'[{filename}](../pdfs/{filename}){rest}'
+            return f'[{filename}](../pdfs/{filename}#page=1.00&gsr=0){rest}'
 
         # 3. Check for "text (note)" pattern where text is the link target
         # E.g. "stable (∞,1)-category" -> link the whole thing?
@@ -1361,6 +1376,26 @@ def convert_seealso(text):
             items = split_balanced(content)
             links = [process_item(item) for item in items]
             return f'<div class="see-also"><strong>See also:</strong> {", ".join(links)}</div>'
+            
+    # Handle environment \begin{seealso}...\end{seealso}
+    # It usually contains an itemize environment or just items
+    def replace_seealso_env(match):
+        content = match.group(1)
+        # Strip \begin{itemize} and \end{itemize} if present
+        content = re.sub(r'\\begin\{itemize\}(?:\[.*?\])?', '', content)
+        content = re.sub(r'\\end\{itemize\}', '', content)
+        
+        # Extract items (\item ...)
+        items = re.split(r'\s*\\item\s+', content)
+        items = [item.strip() for item in items if item.strip()]
+        
+        list_html = "<ul>\n"
+        for item in items:
+             list_html += f"<li>{process_item(item)}</li>\n"
+        list_html += "</ul>"
+        return f'<div class="see-also"><strong>See also:</strong>\n{list_html}</div>'
+
+    text = re.sub(r'\\begin\{seealso\}(.*?)\\end\{seealso\}', replace_seealso_env, text, flags=re.DOTALL)
 
     out_text = []
     idx = 0
@@ -1377,30 +1412,8 @@ def convert_seealso(text):
         
         if cur < n and text[cur] == '{':
             content, end_pos = parse_balanced(text, cur)
-            # Content inside braces
-            inner = re.match(r'(.*)', content, re.DOTALL) # use group match to reuse signature if needed or just pass string
-            # We need a match object for replace_seealso or just change signature?
-            # Let's change signature of replacement logic to take string to be cleaner, 
-            # but for minimize diff, I'll wrap it or just call logic directly.
-            
-            # Refactor replace_seealso to take content string
-            # But wait, original code used match.group(1).
-            
-            # Let's just create a dummy match object or refactor. 
-            # Refactoring is better.
-            
-            # Wait, I cannot easily change the nested function signature in `replace_file_content` 
-            # without replacing the whole block.
-            # I AM replacing the whole block of `convert_seealso`.
-            
-            # So I will inline the logic.
-            
-            # Logic for content:
-            # Check if list...
-            
-            # COPY PASTE LOGIC:
-            c = content
-            lines = [line.strip() for line in c.split('\n') if line.strip()]
+            # Use replace_seealso logic manually since we are here
+            lines = [line.strip() for line in content.split('\n') if line.strip()]
             is_list = any(line.startswith('-') for line in lines)
             
             if is_list:
@@ -1420,7 +1433,7 @@ def convert_seealso(text):
                 list_str += "</ul>"
                 replacement = f'<div class="see-also"><strong>See also:</strong>\n{list_str}</div>'
             else:
-                its = split_balanced(c)
+                its = split_balanced(content)
                 lks = [process_item(it) for it in its]
                 replacement = f'<div class="see-also"><strong>See also:</strong> {", ".join(lks)}</div>'
                 
@@ -1638,10 +1651,11 @@ def generate_macros(extra_macros=None):
     add("norm", r"\left\| #1 \right\|")
     add("set", r"\left\{ #1 \right\}")
     
-    # Standard braket emulation
+    # Standard braket emulation (braket package style - one arg with |)
     add("bra", r"\left\langle #1 \right|")
     add("ket", r"\left| #1 \right\rangle")
-    add("braket", r"\left\langle #1 \middle| #2 \right\rangle")
+    # Change braket to 1 arg so \braket{a|b} works (pipe is manual but safe)
+    add("braket", r"\left\langle #1 \right\rangle")
     add("set", r"\left\{ #1 \right\}")
     add("Set", r"\left\{ #1 \right\}")
 
@@ -1679,6 +1693,52 @@ def generate_macros(extra_macros=None):
     add("b", r"\beta")
     add("d", r"\delta")
     add("g", r"\gamma")
+    
+    # Missing GWiki Macros
+    add("bd", r"\partial")
+    add("tms", r"\times")
+    add("tsr", r"\otimes")
+    add("pr", r"\operatorname{pr}")
+    add("dM", r"\mathcal{M}")
+    add("dF", r"\mathcal{F}")
+    add("dA", r"\mathcal{A}")
+    add("dB", r"\mathcal{B}")
+    add("dC", r"\mathcal{C}")
+    add("dD", r"\mathcal{D}")
+    add("dE", r"\mathcal{E}")
+    add("dG", r"\mathcal{G}")
+    add("dH", r"\mathcal{H}")
+    add("dI", r"\mathcal{I}")
+    add("dJ", r"\mathcal{J}")
+    add("dK", r"\mathcal{K}")
+    add("dL", r"\mathcal{L}")
+    add("dN", r"\mathcal{N}")
+    add("dO", r"\mathcal{O}")
+    add("dP", r"\mathcal{P}")
+    add("dQ", r"\mathcal{Q}")
+    add("dR", r"\mathcal{R}")
+    add("dS", r"\mathcal{S}")
+    add("dT", r"\mathcal{T}")
+    add("dU", r"\mathcal{U}")
+    add("dV", r"\mathcal{V}")
+    add("dW", r"\mathcal{W}")
+    add("dX", r"\mathcal{X}")
+    add("dY", r"\mathcal{Y}")
+    add("dX", r"\mathcal{X}")
+    add("dY", r"\mathcal{Y}")
+    add("dZ", r"\mathcal{Z}")
+
+    # User reported missing macros
+    add("tld", r"\widetilde")
+    add("res", r"\operatorname{res}")
+    add("Eq", r"\operatorname{Eq}")
+    add("sst", r"\subset")
+    add("lact", r"\triangleright")
+    add("ract", r"\triangleleft")
+    add("op", r"\mathrm{op}")
+    add("lsjto", r"\longrightarrow\!\!\!\!\!\rightarrow") 
+    add("id", r"\mathrm{id}")
+    add("Hom", r"\operatorname{Hom}")
     
     # File-specific macros (automatic parsing) - THESE OVERRIDE
     if extra_macros:
@@ -1804,6 +1864,71 @@ def get_creation_date_from_md(note_name):
         return None
     return None
 
+def get_modified_date_from_md(note_name):
+    """Try to get modified date from original markdown file's frontmatter.
+    
+    Returns a tuple (datetime, formatted_string) or (None, None).
+    Uses the most recent date if frontmatter has a list of dates.
+    """
+    wiki_root = Path("/Users/greysonwesley/Desktop/workflow/wiki")
+    if not wiki_root.exists():
+        return None, None
+        
+    found = list(wiki_root.rglob(f"{note_name}.md"))
+    if not found:
+        return None, None
+        
+    md_path = found[0]
+        
+    try:
+        content = md_path.read_text(encoding='utf-8')
+        match = re.search(r'^---\s*\n(.*?)\n---\s*\n', content, re.DOTALL)
+        if match:
+            fm = match.group(1)
+            # Find date modified - could be a single line or a YAML list
+            date_match = re.search(r'^date modified:\s*(.+?)(?=\n[a-z]|\n---|\Z)', fm, re.MULTILINE | re.IGNORECASE | re.DOTALL)
+            
+            if date_match:
+                raw_dates = date_match.group(1).strip()
+                # Parse all dates (could be a YAML list with "- " prefixes)
+                dates = []
+                for line in raw_dates.split('\n'):
+                    line = line.strip().lstrip('-').strip()
+                    if not line:
+                        continue
+                    # Clean up: remove timezone suffix, ' at '
+                    cleaned = re.sub(r'\s+[A-Z]{2,3}$', '', line)
+                    cleaned = cleaned.replace(' at ', ' ')
+                    if 'am' in cleaned: cleaned = cleaned.replace('am', 'AM')
+                    if 'pm' in cleaned: cleaned = cleaned.replace('pm', 'PM')
+                    
+                    formats = [
+                        '%B %d, %Y %I:%M %p',
+                        '%Y-%m-%d %H:%M:%S',
+                        '%Y-%m-%d %H:%M',
+                        '%Y-%m-%d',
+                        '%B %d, %Y %H:%M'
+                    ]
+                    
+                    for fmt in formats:
+                        try:
+                            dt = datetime.strptime(cleaned, fmt)
+                            dates.append(dt)
+                            break
+                        except ValueError:
+                            continue
+                
+                if dates:
+                    # Return the most recent date
+                    most_recent = max(dates)
+                    formatted = most_recent.strftime('%B %d, %Y at %l:%M %p ET')
+                    return most_recent, formatted
+                    
+    except Exception as e:
+        print(f"Warning: Failed to parse MD modified date for {note_name}: {e}")
+        return None, None
+    return None, None
+
 def convert_footnotes(text):
     """Convert \\footnote{...} and [^1] / [^1]: ... to HTML footnotes"""
     
@@ -1918,10 +2043,13 @@ def convert_to_html(tex_path, backlinks_map, title_map):
     # Strip comments EARLY
     content = strip_comments(content)
 
-    # Metadata
-    title, tags = extract_metadata(content)
-    # Clean title (use text version of texorpdfstring)
-    title = convert_texorpdfstring(title, prefer_text=True)
+    # Get note name from filename - USE THIS AS THE TITLE
+    # This ensures HTML title matches the original MD filename exactly
+    note_name = Path(tex_path).stem
+    title = note_name  # Use filename as title (e.g., "(∞,1)-category" not "(∞,1) Category")
+    
+    # Extract tags only from metadata
+    _, tags = extract_metadata(content)
     
     # Extract macros
     file_macros = extract_custom_macros(content)
@@ -1933,9 +2061,37 @@ def convert_to_html(tex_path, backlinks_map, title_map):
     body = re.sub(r'\\NoteHeader', '', body)
     body = re.sub(r'\\References', '', body)
     body = re.sub(r'\\Footer', '', body)
+    
+    # Strip LaTeX sizing commands that should not appear in HTML
+    body = re.sub(r'\\(?:huge|Huge|HUGE|large|Large|LARGE|small|Small|footnotesize|scriptsize|tiny|normalsize)\b', '', body)
 
-    # 2. Convert TikZ and stash scripts (Protect TikZ from escaping)
-    body = convert_tikz(body)
+    # Validating layout: content-wrapper starts at 2227. 
+    # Metadata closes at 2286 (approx).
+    # Navigation added.
+    # Content should abide in content-wrapper or be sibling?
+    # Original design was inside.
+    
+    # Construct LaTeX macros for TikZ
+    tikz_macros = ""
+    # Add critical globals
+    tikz_macros += r"\newcommand{\bd}{\partial}" + "\n"
+    tikz_macros += r"\newcommand{\tms}{\times}" + "\n"
+    tikz_macros += r"\newcommand{\tsr}{\otimes}" + "\n"
+    tikz_macros += r"\newcommand{\orev}{\overline}" + "\n"
+    tikz_macros += r"\newcommand{\F}{\mathcal{F}}" + "\n" # Default F
+    
+    if file_macros:
+        for name, defn in file_macros.items():
+            if isinstance(defn, list):
+                # defn = [body, nargs]
+                # TikZJax supports \newcommand{\foo}[n]{...} ? Yes likely.
+                # Use raw string
+                tikz_macros += f"\\newcommand{{\\{name}}}[{defn[1]}]{{{defn[0]}}}\n"
+            else:
+                 tikz_macros += f"\\newcommand{{\\{name}}}{{{defn}}}\n"
+
+    # 2. Convert TikZ and stash scripts
+    body = convert_tikz(body, extra_preamble=tikz_macros)
     script_blocks = []
     def stash_all_scripts(match):
         script_blocks.append(match.group(0))
@@ -1946,11 +2102,9 @@ def convert_to_html(tex_path, backlinks_map, title_map):
     body = body.replace('<', '&lt;').replace('>', '&gt;')
 
     # 4. Convert \defn -> <strong>
-    # 4. Convert \defn -> <strong>
     body = replace_command_robust(body, r'\defn', '<strong>{}</strong>')
 
-    # Get note name for metadata lookups
-    note_name = Path(tex_path).stem
+    # note_name already set at the top when extracting title from filename
     name = note_name
 
 
@@ -1998,12 +2152,30 @@ def convert_to_html(tex_path, backlinks_map, title_map):
     
     sections = []
     
-    # Just modifying the date format for now in this chunk
-    # Refine Last Modified
+    # Determine Last Modified date:
+    # 1. Get date from Obsidian MD frontmatter (source of truth)
+    # 2. Get TEX file mtime (in case LaTeX was edited directly)
+    # 3. Use the most recent of both
+    
+    md_modified_dt, md_modified_str = get_modified_date_from_md(note_name)
+    
+    tex_modified_dt = None
+    tex_modified_str = None
     if os.path.exists(tex_path):
-        mtime = os.path.getmtime(tex_path)
-        # Format: November 10, 2025 at 9:36 PM ET
-        last_modified = datetime.fromtimestamp(mtime).strftime('%B %d, %Y at %l:%M %p ET')
+        tex_mtime = os.path.getmtime(tex_path)
+        tex_modified_dt = datetime.fromtimestamp(tex_mtime)
+        tex_modified_str = tex_modified_dt.strftime('%B %d, %Y at %l:%M %p ET')
+    
+    # Use the most recent date
+    if md_modified_dt and tex_modified_dt:
+        if tex_modified_dt > md_modified_dt:
+            last_modified = tex_modified_str
+        else:
+            last_modified = md_modified_str
+    elif md_modified_str:
+        last_modified = md_modified_str
+    elif tex_modified_str:
+        last_modified = tex_modified_str
     else:
         last_modified = datetime.now().strftime('%B %d, %Y at %l:%M %p ET')
 
@@ -2101,6 +2273,8 @@ def convert_to_html(tex_path, backlinks_map, title_map):
     if debug_marker in body:
         print(f"[DEBUG] Pre-formatting: {body[body.find(debug_marker):body.find(debug_marker)+100]}")
 
+    body = convert_itemize(body)       # Handle markdown lists (moved before formatting to catch * bullets)
+
     body = convert_bold(body)
     # Use robust method for textbf, emph, textit, texttt
     body = replace_command_robust(body, r'\textbf', '<strong>{}</strong>')
@@ -2133,11 +2307,9 @@ def convert_to_html(tex_path, backlinks_map, title_map):
         print(f"[DEBUG] Post-restoration: {body[body.find(debug_marker):body.find(debug_marker)+100]}")
 
     body = convert_lst(body)           # Handle LaTeX lists (Moved before environments!)
-    body = convert_itemize(body)       # Handle markdown lists
+    # convert_itemize moved earlier
     body = convert_environments(body)  # Environments now see HTML lists
-    body = convert_textit(body)        # Handle \textit
-    body = convert_itemize(body)       # Handle markdown lists
-    body = convert_environments(body)  # Environments now see HTML lists
+
     body = convert_sections(body)
     
     body = convert_labels(body)
@@ -2169,10 +2341,7 @@ def convert_to_html(tex_path, backlinks_map, title_map):
     
     # Macros generated dynamically
 
-
-
-    # Clean title
-    title = convert_texorpdfstring(title)
+    # Title is now set from filename (no texorpdfstring cleanup needed)
 
     # Generate HTML
     html_parts = []
@@ -2216,7 +2385,7 @@ def convert_to_html(tex_path, backlinks_map, title_map):
             </a>
         </div>
         <div class="nav-right">
-            <a href="../pdfs/{name}.pdf" class="nav-btn" title="View PDF">
+            <a href="../pdfs/{name}.pdf#page=1.00&gsr=0" class="nav-btn" title="View PDF" target="_blank">
                 <span>PDF</span>
             </a>
             <a href="obsidian://open?path=/Users/greysonwesley/Desktop/workflow/wiki/{name}.md" class="nav-btn" title="Edit in Obsidian">
@@ -2236,6 +2405,33 @@ def convert_to_html(tex_path, backlinks_map, title_map):
 
     html_parts.append('''
     </div>''')
+
+    # Extract navigation
+    prev_note, next_note = extract_navigation(content)
+    
+    if prev_note or next_note:
+        html_parts.append('<div class="note-nav">')
+        if prev_note:
+            p_display = prev_note
+            if title_map and prev_note in title_map:
+                p_display = title_map[prev_note]
+            html_parts.append(f'<span class="nav-prev"><strong>Previous:</strong> <a href="{prev_note}.html">{p_display}</a></span>')
+            
+        if next_note:
+             if prev_note:
+                 html_parts.append('<span class="nav-sep"> | </span>')
+             n_display = next_note
+             if title_map and next_note in title_map:
+                 n_display = title_map[next_note]
+             html_parts.append(f'<span class="nav-next"><strong>Next:</strong> <a href="{next_note}.html">{n_display}</a></span>')
+             
+        html_parts.append('</div>')
+        html_parts.append('<hr class="nav-rule">')
+
+
+
+    # Note: Do NOT append </div> here. The content-wrapper should wrap the content too.
+    # We will close content-wrapper at the very end of this function.
     
     html = "".join(html_parts)
 

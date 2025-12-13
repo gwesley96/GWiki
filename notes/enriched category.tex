@@ -9,23 +9,31 @@
 
 Fix a monoidal category $(\mathcal{V},\otimes_{\mathcal{V}},1_{\mathcal{V}})$. (It is helpful to think of $(\mathrm{Vec},\otimes_{\mathbb{C}},\mathbb{C})$.)
 A $\mathcal{V}$-\textbf{enriched category} consists of the following data.
-- A collection of \textbf{0-cells} $a\in\mathcal{C}$.
-- For each pair of 0-cells $a,b\in\mathcal{C}$, a \textbf{hom} 0-cell $\mathcal{C}(a\to b)\in\mathcal{V}$; its \textbf{elements} or \textbf{1-cells} $f\in\mathcal{C}(a\to b)$ are 1-cells $f \in \mathcal{V}(1_{\mathcal{V}}\to \mathcal{C}(a\to b))$.
-- For each triplet of 0-cells $a,b,c\in\mathcal{C}$, a \textbf{1-composition} 1-cell$$\circ\in\mathcal{V}(\mathcal{C}(b\to c)\otimes_{\mathcal{V}}\mathcal{C}(a\to b)\to \mathcal{C}(a\to b)).$$
-- For each 0-cell $a\in\mathcal{C}$, an \textbf{identity} element $j_a\in\mathcal{V}(1_{\mathcal{V}}\to \mathcal{C}(a\to a))$.
+\begin{itemize}
+\item A collection of \textbf{0-cells} $a\in\mathcal{C}$.
+\item For each pair of 0-cells $a,b\in\mathcal{C}$, a \textbf{hom} 0-cell $\mathcal{C}(a\to b)\in\mathcal{V}$; its \textbf{elements} or \textbf{1-cells} $f\in\mathcal{C}(a\to b)$ are 1-cells $f \in \mathcal{V}(1_{\mathcal{V}}\to \mathcal{C}(a\to b))$.
+\item For each triplet of 0-cells $a,b,c\in\mathcal{C}$, a \textbf{1-composition} 1-cell$$\circ\in\mathcal{V}(\mathcal{C}(b\to c)\otimes_{\mathcal{V}}\mathcal{C}(a\to b)\to \mathcal{C}(a\to b)).$$
+\item For each 0-cell $a\in\mathcal{C}$, an \textbf{identity} element $j_a\in\mathcal{V}(1_{\mathcal{V}}\to \mathcal{C}(a\to a))$.
+\end{itemize}
 
 These data are subject to the following conditions.
-- The $\circ$ are strictly associative.
-- The $\circ$ strictly preserve identity 1-cells in the left and right slots.
+\begin{itemize}
+\item The $\circ$ are strictly associative.
+\item The $\circ$ strictly preserve identity 1-cells in the left and right slots.
+\end{itemize}
 
-#organize-this 
-- Enriched category
-    - For a $\mathcal{V}$-enriched category $\mathcal{A}$, what is the underlying category $\mathcal{A}_\mathcal{V}$?→It has $\mathcal{A}_\mathcal{V}(a\to b) \coloneqq \mathcal{V}(1_\mathcal{V}\to \mathcal{A}(a\to b))$
-    - For a left $\mathcal{C}$-module category $\mathcal{M}$, what does the internal hom $\mathcal{M}_\mathcal{C}(m\to n)$ represent?→The functor $\mathcal{M}(-\triangleright m \rightarrow n)$
-    - What structure does $\mathcal{M}_\mathcal{C}$ form?→A $\mathcal{C}$-enriched category
+% #organize-this
+\begin{itemize}
+\item Enriched category
+    \item For a $\mathcal{V}$-enriched category $\mathcal{A}$, what is the underlying category $\mathcal{A}_\mathcal{V}$?→It has $\mathcal{A}_\mathcal{V}(a\to b) \coloneqq \mathcal{V}(1_\mathcal{V}\to \mathcal{A}(a\to b))$
+    \item For a left $\mathcal{C}$-module category $\mathcal{M}$, what does the internal hom $\mathcal{M}_\mathcal{C}(m\to n)$ represent?→The functor $\mathcal{M}(-\triangleright m \rightarrow n)$
+    \item What structure does $\mathcal{M}_\mathcal{C}$ form?→A $\mathcal{C}$-enriched category
+\end{itemize}
 See also: 
-- \wref{enriched functor}
-- \wref{Enriched Yoneda Lemma}
-- \wref{underlying category of an enriched category}
+\begin{itemize}
+\item \wref{enriched functor}
+\item \wref{Enriched Yoneda Lemma}
+\item \wref{underlying category of an enriched category}
+\end{itemize}
 
 \end{document}

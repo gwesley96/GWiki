@@ -242,16 +242,16 @@
         "fcj": "\\widehat",
         "e": "\\varepsilon",
         "glu": "\\mathrm{gl}",
-        "greyson": "\\bgroup\\color{violet}[[#1]]\\egroup",
-        "todo": "\\textbf{[[}\\textsl{#1}\\textbf{]]}",
-        "bkt": "\\left\\langle #1 \\middle| #2 \\right\\rangle",
-        "pbkt": "\\left( #1 \\middle| #2 \\right)",
-        "abs": "\\left| #1 \\right|",
-        "norm": "\\left\\| #1 \\right\\|",
-        "set": "\\left\\{ #1 \\right\\}",
-        "bra": "\\left\\langle #1 \\right|",
-        "ket": "\\left| #1 \\right\\rangle",
-        "braket": "\\left\\langle #1 \\middle| #2 \\right\\rangle",
+        "greyson": ["\\bgroup\\color{violet}[[#1]]\\egroup", 1],
+        "todo": ["\\textbf{[[}\\textsl{#1}\\textbf{]]}", 1],
+        "bkt": ["\\left\\langle #1 \\middle| #2 \\right\\rangle", 2],
+        "pbkt": ["\\left( #1 \\middle| #2 \\right)", 2],
+        "abs": ["\\left| #1 \\right|", 1],
+        "norm": ["\\left\\| #1 \\right\\|", 1],
+        "set": ["\\left\\{ #1 \\right\\}", 1],
+        "bra": ["\\left\\langle #1 \\right|", 1],
+        "ket": ["\\left| #1 \\right\\rangle", 1],
+        "braket": ["\\left\\langle #1 \\right\\rangle", 1],
         "Set": "\\mathbf{Set}",
         "Grp": "\\mathbf{Grp}",
         "Top": "\\mathbf{Top}",
@@ -278,7 +278,45 @@
         "a": "\\alpha",
         "b": "\\beta",
         "d": "\\delta",
-        "g": "\\gamma"
+        "g": "\\gamma",
+        "bd": "\\partial",
+        "tms": "\\times",
+        "tsr": "\\otimes",
+        "pr": "\\operatorname{pr}",
+        "dM": "\\mathcal{M}",
+        "dF": "\\mathcal{F}",
+        "dA": "\\mathcal{A}",
+        "dB": "\\mathcal{B}",
+        "dC": "\\mathcal{C}",
+        "dD": "\\mathcal{D}",
+        "dE": "\\mathcal{E}",
+        "dG": "\\mathcal{G}",
+        "dH": "\\mathcal{H}",
+        "dI": "\\mathcal{I}",
+        "dJ": "\\mathcal{J}",
+        "dK": "\\mathcal{K}",
+        "dL": "\\mathcal{L}",
+        "dN": "\\mathcal{N}",
+        "dO": "\\mathcal{O}",
+        "dP": "\\mathcal{P}",
+        "dQ": "\\mathcal{Q}",
+        "dR": "\\mathcal{R}",
+        "dS": "\\mathcal{S}",
+        "dT": "\\mathcal{T}",
+        "dU": "\\mathcal{U}",
+        "dV": "\\mathcal{V}",
+        "dW": "\\mathcal{W}",
+        "dX": "\\mathcal{X}",
+        "dY": "\\mathcal{Y}",
+        "dZ": "\\mathcal{Z}",
+        "tld": "\\widetilde",
+        "res": "\\operatorname{res}",
+        "Eq": "\\operatorname{Eq}",
+        "sst": "\\subset",
+        "lact": "\\triangleright",
+        "ract": "\\triangleleft",
+        "op": "\\mathrm{op}",
+        "lsjto": "\\longrightarrow\\!\\!\\!\\!\\!\\rightarrow"
         }
       },
       startup: {
@@ -300,10 +338,10 @@
             </a>
         </div>
         <div class="nav-right">
-            <a href="../pdfs/Freed's 4-3-2 8-7-6.pdf" class="nav-btn" title="View PDF">
+            <a href="../pdfs/Freed's 4-3-2 8-7-6.pdf#page=1.00&gsr=0" class="nav-btn" title="View PDF" target="_blank">
                 <span>PDF</span>
             </a>
-            <a href="file:///Users/greysonwesley/Desktop/workflow/wiki/Freed's 4-3-2 8-7-6.md" class="nav-btn" title="Edit in Obsidian">
+            <a href="obsidian://open?path=/Users/greysonwesley/Desktop/workflow/wiki/Freed's 4-3-2 8-7-6.md" class="nav-btn" title="Edit in Obsidian">
                 <span>MD</span>
             </a>
         </div>
@@ -311,31 +349,50 @@
     <div class="content-wrapper">
     <h1>Freed's 4-3-2 8-7-6</h1>
     <div class="metadata">
-        <strong>Last modified:</strong> December 11, 2025 at  6:12 PM ET<br>
+        <strong>Last modified:</strong> December 13, 2025 at  4:00 PM ET<br>
         <strong>Created:</strong> October 21, 2025 at  6:14 PM ET<br>
     </div>
     <div class="content">
         
-        <p>The following contains material pulled from Dan Freed’s slides <a href="https://people.maths.ox.ac.uk/tillmann/ASPECTSfreed.pdf">here</a>. #AI-using-source</p>
+        <p>The following contains material pulled from Dan Freed’s slides <a href="https://people.maths.ox.ac.uk/tillmann/ASPECTSfreed.pdf#page=1.00&gsr=0">here</a>.</p>
+
 <h4 id="general-information">General Information</h4>
+
 <ul>
 <li><strong>Title:</strong> 4-3-2-8-7-6</li>
 <li><strong>Author:</strong> Dan Freed</li>
 <li><strong>Collaborators:</strong> The work is joint with Constantin Teleman, builds on work with Mike Hopkins and Jacob Lurie, and is dedicated to Graeme Segal.</li>
 </ul>
+
 <h4 id="foundational-concepts">Foundational Concepts</h4>
+
 <ul>
 <li>"Great theorems are awesome; great definitions are transformational."</li>
 <li>Graeme Segal proposed a definition of 2D conformal field theory arising from joint work with Quillen.</li>
 </ul>
+
 <h4 id="definitions-of-quantum-field-theory">Definitions of Quantum Field Theory</h4>
+
 <ul>
-<li><strong>Segal’s Definition:</strong> A 2d conformal field theory is a homomorphism: $F\colon \text{Bord}_{\langle 1,2 \rangle}^{\text{conf}} \to \text{Vect}_{\mathbb{C}}^{\text{top}}$</li>
-<li><strong>Atiyah’s Definition:</strong> An nD topological quantum field theory (TQFT) is a homomorphism: $F\colon \text{Bord}_{\langle n-1,n \rangle}^{\mathcal{X}(n)} \to \text{Vect}$ where $\mathcal{X}(n)$ is an nD (topological) tangential structure.</li>
-<li>The bordism category $\text{Bord}_{\langle n-1,n \rangle}^{\mathrm{SO}}$ categorifies the classical bordism group $\Omega_{n-1}^{\mathrm{SO}}$.</li>
-<li>TQFTs categorify classical bordism invariants, for example, the <a href="signature of a manifold.html">signature map</a>: $\text{Sign}\colon \Omega_{4k}^{\mathrm{SO}} \to \mathbb{Z}$</li>
+<li><strong>Segal’s Definition:</strong> A 2d conformal field theory is a homomorphism:</li>
 </ul>
+
+<p>$F\colon \text{Bord}_{\langle 1,2 \rangle}^{\text{conf}} \to \text{Vect}_{\mathbb{C}}^{\text{top}}$</p>
+
+<ul>
+<li><strong>Atiyah’s Definition:</strong> An nD topological quantum field theory (TQFT) is a homomorphism:</li>
+</ul>
+
+<p>$F\colon \text{Bord}_{\langle n-1,n \rangle}^{\mathcal{X}(n)} \to \text{Vect}$ where $\mathcal{X}(n)$ is an nD (topological) tangential structure.</p>
+
+<ul>
+<li>The bordism category $\text{Bord}_{\langle n-1,n \rangle}^{\mathrm{SO}}$ categorifies the classical bordism group $\Omega_{n-1}^{\mathrm{SO}}$.</li>
+<li>TQFTs categorify classical bordism invariants, for example, the <a href="signature of a manifold.html">signature map</a>:</li>
+</ul>
+
+<p>$\text{Sign}\colon \Omega_{4k}^{\mathrm{SO}} \to \mathbb{Z}$</p>
 <h4 id="invertible-and-extended-field-theories">Invertible and Extended Field Theories</h4>
+
 <ul>
 <li>An invertible field theory $\alpha\colon \text{Bord}_{\langle n-1,n \rangle} \to \text{Vect}$ is one where $\alpha(M)$ is invertible for every manifold $M$.</li>
 <li>For a closed n-manifold $X$, $\alpha(X) \in \mathbb{C}^\times$.</li>
@@ -347,7 +404,9 @@
 <li><strong>Codomain:</strong> An arbitrary n-category (or $(\infty, n)$-category).</li>
 <li><strong>Example:</strong> For a finite group $G$, let $A = \text{Map}(G, \mathbb{C})$ under convolution. An extended version of 2d Dijkgraaf-Witten theory is a functor $\alpha\colon \text{Bord}_2 \to \text{Alg}$, with $\alpha(\text{pt}) = A$.</li>
 </ul>
+
 <h4 id="the-cobordism-hypothesis">The Cobordism Hypothesis</h4>
+
 <ul>
 <li>The Cobordism Hypothesis applies to fully extended topological theories $F\colon \text{Bord}_n^{\mathrm{SO}} \to \mathcal{C}$, where $\mathcal{C}$ is a symmetric monoidal $(\infty, n)$-category.</li>
 <li><strong>Hypothesis (Baez-Dolan-Hopkins-Lurie):</strong> The theory $F$ is fully determined by its value on a point, $F(\text{pt}_+)$. Any <em>n-dualizable, $\mathrm{SO}_n$-invariant</em> object $c \in \mathcal{C}$ determines such a theory with $F(\text{pt}_+) = c$.</li>
@@ -355,21 +414,32 @@
 <li><strong>$\mathrm{SO}_n$-invariance:</strong> Extra data exists on the object $c$.</li>
 <li><strong>Example (n=2):</strong> An algebra $A$ in the Morita 2-category $\text{Alg}_k$ is 2-dualizable if it is finiteD and semisimple. The $\mathrm{SO}_2$-invariance data corresponds to a Frobenius structure (a nondegenerate trace).</li>
 </ul>
+
 <h4 id="invertibility-criteria">Invertibility Criteria</h4>
+
 <ul>
-<li><strong>Theorem:</strong> For a theory $\alpha\colon \text{Bord}_n^{\mathrm{SO}} \to \mathcal{C}$, if either 1.  $\alpha(S^k)$ is invertible for some $k \le n/2$, or 2.  $\alpha(S^n)$ is invertible and $\alpha(S^p \times S^{n-1-p})$ is invertible for all $p$, then $\alpha$ is invertible.</li>
+<li><strong>Theorem:</strong> For a theory $\alpha\colon \text{Bord}_n^{\mathrm{SO}} \to \mathcal{C}$, if either</li>
+</ul>
+
+<p>1.  $\alpha(S^k)$ is invertible for some $k \le n/2$, or 2.  $\alpha(S^n)$ is invertible and $\alpha(S^p \times S^{n-1-p})$ is invertible for all $p$, then $\alpha$ is invertible.</p>
+
+<ul>
 <li>This is a localization theorem: inverting $\alpha(S^k)$ implies inverting every bordism.</li>
 <li><strong>Example (n=2, k=1):</strong> A theory $\alpha\colon \text{Bord}_2^{\mathrm{SO}} \to \text{Alg}_k$ defined by a 2-dualizable Frobenius algebra $A$ has $\alpha(S^1)$ equal to the center of $A$. The theory $\alpha$ is invertible if the center of $A$ is $k$.</li>
 </ul>
 
+
 <h4 id="relative-quantum-field-theory">Relative Quantum Field Theory</h4>
+
 <ul>
 <li>A quantum field theory $F$ is <strong>relative to</strong> an extended $(n+1)$D QFT $\alpha$ if it is a homomorphism $F\colon \mathbf{1} \to \tau_{\le n}\alpha$ or $\tilde{F}\colon \tau_{\le n}\alpha \to \mathbf{1}$.</li>
 <li>If $\alpha$ is invertible, $F$ is called an <strong>anomalous theory</strong> with anomaly $\alpha$.</li>
 <li>$F(X^n)$ takes values in a line (Lagrangian anomaly).</li>
 <li>$F(Y^{n-1})$ takes values in a gerbe (Hamiltonian anomaly).</li>
 </ul>
+
 <h4 id="chern-simons-and-wess-zumino-witten-wzw-theories">Chern-Simons and Wess-Zumino-Witten (WZW) Theories</h4>
+
 <ul>
 <li>A modular tensor category $A \in \text{Cat}_\mathbb{C}^{\otimes}$ defines a 4d invertible theory (the Crane-Yetter theory) $\alpha_A\colon \text{Bord}_4^{\mathrm{SO}} \to \text{Cat}_\mathbb{C}^{\otimes \beta}$.</li>
 <li>Chern-Simons theory ($F_A$) can be viewed as a 3d theory relative to this 4d theory.</li>
@@ -377,21 +447,32 @@
 <li>Chern-Simons can be defined as an absolute 3d theory on bordisms with a stable tangential structure called a $p_1$-structure.</li>
 <li>Chiral WZW theory is a relative 2d theory, which is a restatement of Segal’s weakly conformal CFT.</li>
 </ul>
+
 <h4 id="theories-for-tori-and-a-finite-path-integral">Theories for Tori and a Finite Path Integral</h4>
+
 <ul>
 <li>For a torus $T = \Pi \otimes \mathbb{R}/\mathbb{Z}$, a class $\lambda \in H^4(BT; \mathbb{Z})$ corresponds to an even, symmetric, non-degenerate bihomomorphism $b\colon \Pi \times \Pi \to \mathbb{Z}$.</li>
 <li>This data defines a Pontrjagin self-dual finite abelian group $\pi$ with a quadratic function $q\colon \pi \to \mathbb{Q}/\mathbb{Z}$.</li>
 <li>The pair $(\pi, q)$ determines a homotopy class of maps $q\colon K(\pi, 2) \to K(\mathbb{Q}/\mathbb{Z}, 4)$.</li>
-<li>A <strong>finite path integral</strong> over $\pi$-gerbes gives a fully extended 4d theory $\alpha$. For a closed, oriented 4-manifold $X$, its value is given by a finite Gauss sum: $\alpha(X) = (\sqrt{\#F})^{\text{Euler } X} \mu^{(\text{sign } b)(\text{Sign } X)}$ where $\mu=e^{2\pi i/8}$.</li>
+<li>A <strong>finite path integral</strong> over $\pi$-gerbes gives a fully extended 4d theory $\alpha$. For a closed, oriented 4-manifold $X$, its value is given by a finite Gauss sum:</li>
 </ul>
+
+<p>$\alpha(X) = (\sqrt{\#F})^{\text{Euler } X} \mu^{(\text{sign } b)(\text{Sign } X)}$ where $\mu=e^{2\pi i/8}$.</p>
 <h4 id="from-4d-to-higher-dimensions-theory-x">From 4d to Higher Dimensions (Theory X)</h4>
+
 <ul>
 <li>String theory arguments predict the existence of a 6d superconformal field theory, named <strong>Theory $\mathcal{X}$</strong>, analogous to chiral WZW.</li>
 <li>The same data $(\pi, q)$ that defines the 4-3-2 dimensional theories is expected to define theories in dimensions 8 and 7-8, starting from a homotopy map $q\colon K(\pi, 4) \to K(\mathbb{Q}/\mathbb{Z}, 8)$.</li>
 <li>The construction of a 6-7 dimensional theory requires data of a triple $(\mathfrak{g}, b, \Gamma)$, where $\mathfrak{g}$ is a real Lie algebra, $b$ is an invariant inner product, and $\Gamma$ is a lattice.</li>
-<li>From this data, one expects to derive: 1.  A 7d topological QFT $\alpha_\mathfrak{g}$. 2.  A 6d superconformal QFT $\mathcal{X}_\mathfrak{g}$ relative to $\alpha_\mathfrak{g}$.</li>
+<li>From this data, one expects to derive:</li>
+</ul>
+
+<p>1.  A 7d topological QFT $\alpha_\mathfrak{g}$. 2.  A 6d superconformal QFT $\mathcal{X}_\mathfrak{g}$ relative to $\alpha_\mathfrak{g}$.</p>
+
+<ul>
 <li>An analogy is drawn between classical PDE and quantum field theory:</li>
 </ul>
+
 <p>| 4d | 6d | | :--- | :--- | | <strong>Classical PDE:</strong> $F + *F = 0$ | <strong>Quantum Field Theory:</strong> Theory $\mathcal{X}$ | | Riemannian self-duality | Lorentzian self-duality | | Compact Lie group + level | ADE Lie algebra |</p>
     </div>
 

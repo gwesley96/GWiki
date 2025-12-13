@@ -75,7 +75,7 @@ where $X_{\glu}$ denotes $X$ glued to itself along the $\bar S$ and $S$; see \cr
 % \centering
 \[
 \begin{tkz}[scale=1.7,yscale=.7,thick,boundary/.style={red}]
-% \draw[thin](-2,-4) grid (7,4);
+% \draw\href{-2,-4}{thin} grid (7,4);
 \def\ysep{0.4}
 \def\xlabel{1.4}
 \def\ylabel{0.85}
@@ -111,7 +111,7 @@ where $X_{\glu}$ denotes $X$ glued to itself along the $\bar S$ and $S$; see \cr
 
 \draw (end) 
     to[out=-90,in=180] ++(2*\circlerad+2*\rightfrombd,-3*\leftovercirclerad*\ysep)
-    to[out=0,in=180](leftoverstart);
+    to\href{leftoverstart}{out=0,in=180};
 \end{scope}
 
 
@@ -126,12 +126,12 @@ where $X_{\glu}$ denotes $X$ glued to itself along the $\bar S$ and $S$; see \cr
 
 \draw (end) 
     to[out=-90,in=180] ++(2*\circlerad+2*\rightfrombd,-3*\leftovercirclerad*\ysep)
-    to[out=0,in=180](leftoverend);
+    to\href{leftoverend}{out=0,in=180};
 \end{scope}
 \end{tkz}
 \qquad\longrightarrow\qquad
 \begin{tkz}[scale=1.9,yscale=1.25,thick,boundary/.style={red},yscale=1.1]
-% \draw[thin](-2,-4) grid (7,4);
+% \draw\href{-2,-4}{thin} grid (7,4);
 \def\ysep{0}
 \def\xlabel{1.5}
 \def\ylabel{0.3}
@@ -161,7 +161,7 @@ where $X_{\glu}$ denotes $X$ glued to itself along the $\bar S$ and $S$; see \cr
 
 \draw (end) 
     to[out=-90,in=180] ++(2*\circlerad+2*\rightfrombd,-3*\leftovercirclerad*0.4)
-    to[out=0,in=180](leftoverstart);
+    to\href{leftoverstart}{out=0,in=180};
 \end{scope}
 
 
@@ -174,7 +174,7 @@ where $X_{\glu}$ denotes $X$ glued to itself along the $\bar S$ and $S$; see \cr
 
 \draw (end) 
     to[out=-90,in=180] ++(2*\circlerad+2*\rightfrombd,-3*\leftovercirclerad*0.4)
-    to[out=0,in=180](leftoverend);
+    to\href{leftoverend}{out=0,in=180};
 \end{scope}
 \end{tkz}
 \]
@@ -378,8 +378,8 @@ By \cref{codim-1 gluing theorem}, gluing $\orev{D^n}\amalg D^n\to S^n$ along $\b
 \end{scope}
 
 \node (c) at (1.25,0) {$c$};
-\draw[-{Stealth},shorten <=1mm,shorten >=1mm](c) to[out=90,in=-30,looseness=1.25] ++(-.7,.15+2*\ysep);
-\draw[-{Stealth},shorten <=1mm,shorten >=1mm](c) to[out=-90,in=30,looseness=1.25] ++(-.7,-.15+-2*\ysep);
+\draw\href{c}{-{Stealth},shorten <=1mm,shorten >=1mm} to[out=90,in=-30,looseness=1.25] ++(-.7,.15+2*\ysep);
+\draw\href{c}{-{Stealth},shorten <=1mm,shorten >=1mm} to[out=-90,in=30,looseness=1.25] ++(-.7,-.15+-2*\ysep);
 
 
 \node[boundary] (Y1) at (\yhoriz,1.1*\ysep){$S^{n-1}$};
@@ -405,7 +405,7 @@ By \cref{codim-1 gluing theorem}, gluing $\orev{D^n}\amalg D^n\to S^n$ along $\b
 \end{scope}
 
 \node (c) at (1.5,1) {$c_{\glu}$};
-\draw[-{Stealth}](c) to[out=180,in=30,looseness=1.25] (.45,.35);
+\draw\href{c}{-{Stealth}} to[out=180,in=30,looseness=1.25] (.45,.35);
 \end{tkz}
 \]
 \caption{Gluing two disks along their boundaries to get a sphere. \greyson{edit this to show how unglued c's boundaries are compatible? maybe w collar e too...}}

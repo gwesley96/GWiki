@@ -11,9 +11,11 @@
 The following definition is motivated by the \wref{covariant derivative} in a \wref{tangent bundle}. Here we define a connection for any smooth vector bundle $p\colon E\to M$, which it is helpful to think of as the tangent bundle.
 
 \textbf{Definition (Connection).} For a smooth vector bundle $p\colon E\to M$, a \textbf{connection in $E$} is a smooth map $\nabla\colon\mathfrak{X}(M)\times \Gamma(E)\to \Gamma(E)$, written $(v,w)\mapsto \nabla_vw$, that satisfies the properties expected of a \wref[covariant derivative]{linear connection in a vector bundle}; more precisely, $\nabla$ is defined by the following properties:
-- $\nabla _vw$ is $C^{\infty}(M)$-linear in $v\in \mathfrak{X}(M)$, i.e., $\nabla_{f_1v_1+f_2v_2}w=f_1\nabla _{v_1}w+f_2\nabla_{v_2}w$, i.e., the $C^{\infty}(M)$-module (hence also $\mathbb{R}$-linear) structure of the tangent space is preserved;
-- $\nabla_vw$ is $\mathbb{R}$-linear in $w\in \Gamma(X)$, i.e., $\nabla_v(\lambda_1w_1+\lambda_2w_2)=\lambda_1\nabla_vw_1+\lambda_2\nabla_vw_2$; and 
-- $\nabla_vw$ satisfies the “$C^{\infty}(M)$-product rule”, i.e., for all $f\in C^{\infty}(M)$, $\nabla_v (fw)=f(\nabla_vw)+v(f)w$.
+\begin{itemize}
+\item $\nabla _vw$ is $C^{\infty}(M)$-linear in $v\in \mathfrak{X}(M)$, i.e., $\nabla_{f_1v_1+f_2v_2}w=f_1\nabla _{v_1}w+f_2\nabla_{v_2}w$, i.e., the $C^{\infty}(M)$-module (hence also $\mathbb{R}$-linear) structure of the tangent space is preserved;
+\item $\nabla_vw$ is $\mathbb{R}$-linear in $w\in \Gamma(X)$, i.e., $\nabla_v(\lambda_1w_1+\lambda_2w_2)=\lambda_1\nabla_vw_1+\lambda_2\nabla_vw_2$; and 
+\item $\nabla_vw$ satisfies the “$C^{\infty}(M)$-product rule”, i.e., for all $f\in C^{\infty}(M)$, $\nabla_v (fw)=f(\nabla_vw)+v(f)w$.
+\end{itemize}
 
 In the case $p\colon E\to M$ is the tangent bundle, we call $\nabla$ a \textbf{connection in $M$}. 
 
@@ -34,15 +36,17 @@ Suppose we choose different local coordinates, say $\tilde{x}^i$ on $U$, and a d
 \subsubsection*{Local expression of a connection}
 Fix a vector field $v\in\mathfrak{X}(M)$. For simplicity, we assume the vector bundle $p\colon E\to M$ is $TM$. For local coordinates $x^k$ on a chart $U\subset M$, write $\partial_i$ for the induced local frame on $TM$ and write $\nabla_j$ for $\nabla_{\partial_j}$, so that $\nabla_i$ is an $\mathbb{R}$-linear map $\Gamma(TM)\to\Gamma(TM)$, i.e., a linear map $\mathfrak{X}(M)\to \mathfrak{X}(M)$. By linearity $\nabla_i\partial_j=\Gamma_{ij}^k\partial_k$ for some $n^3$ smooth functions $\Gamma_{ij}^k\in C^{\infty}(M)$ ($1\leq i,j,k\leq \dim M=n$) called the \textbf{connection coefficients} of $\nabla$ with respect to the local frame $\{\partial_j\}$. Unsurprisingly, $\nabla$ is completely determined on $U$ by its connection coefficients because, by the defining properties of connections,$$\nabla_vw=\nabla_v(w^j\partial_j)=v(w^j)\partial_j+w^j\nabla_v\partial_j=v(w^j)\partial_j+w^jv^i\Gamma_{ij}^k\partial_k=(v(w^k)+w^jv^i\Gamma_{ij}^k)\partial_k.$$By setting $v=\partial_j$, where $\nabla_j u=\nabla_j u^i\,\partial_i$, we find$$\nabla_ju^i=\partial_ju^i+u^k\partial_j\Gamma_{jk}^i.$$
 \subsubsection*{Connections on general smooth fiber bundles}
-See [here](https://math.uchicago.edu/~may/REU2015/REUPapers/Sorce.pdf), §5 for a fantastic brief exposition.
+See \href{https://math.uchicago.edu/~may/REU2015/REUPapers/Sorce.pdf}{here}, §5 for a fantastic brief exposition.
 
 See also: 
-- \wref{linear connection 1-form} (next)
-- \wref{exterior covariant derivative}
-- \wref{covariant derivative}
-- \wref{vector fields on curves} (previous)
-- \wref{geodesic} (next)
-- \wref{torsion of a connection}
-- \wref{flat connection}
+\begin{itemize}
+\item \wref{linear connection 1-form} (next)
+\item \wref{exterior covariant derivative}
+\item \wref{covariant derivative}
+\item \wref{vector fields on curves} (previous)
+\item \wref{geodesic} (next)
+\item \wref{torsion of a connection}
+\item \wref{flat connection}
+\end{itemize}
 
 \end{document}

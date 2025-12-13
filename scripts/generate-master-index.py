@@ -190,9 +190,12 @@ This is a comprehensive index of all notes in GWiki.
 
 
 def generate_html_index(notes_data, metadata):
-    """Generate a beautiful HTML index page"""
-
-    creation_dates = metadata.get("creation_dates", {})
+    """Generate a beautiful, modern HTML index page"""
+    
+    # Calculate stats
+    total_notes = len(notes_data)
+    total_tags = len(set(t for n in notes_data for t in n["tags"]))
+    total_links = sum(len(links) for links in metadata.get("forward_links", {}).values())
 
     # Build tag index
     tag_groups = defaultdict(list)
@@ -200,356 +203,236 @@ def generate_html_index(notes_data, metadata):
         for tag in note["tags"]:
             tag_groups[tag].append(note)
 
-    # Sort notes alphabetically
+    # Sort notes
     alphabetical = sorted(notes_data, key=lambda x: x["title"].lower())
-
+    
     # Recent notes
+    creation_dates = metadata.get("creation_dates", {})
     recent_notes = []
     for note in notes_data:
         if note["filename"] in creation_dates:
             recent_notes.append((creation_dates[note["filename"]], note))
     recent_notes.sort(key=lambda x: x[0], reverse=True)
-    recent_notes = recent_notes[:10]  # Top 10 most recent
+    recent_notes = recent_notes[:6] # Top 6 for the grid
 
     html = """<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GWiki - Master Index</title>
+    <title>GWiki Index</title>
+    <link rel="stylesheet" href="html/style.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: Georgia, serif;
-            line-height: 1.6;
-            color: #1f2937;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-        header {
+        /* Index-specific Overrides */
+        body { padding-top: 0; }
+        .hero {
             text-align: center;
-            color: white;
-            margin-bottom: 60px;
+            padding: 80px 20px 40px;
         }
-        header h1 {
-            font-size: 3em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        header p {
-            font-size: 1.2em;
-            opacity: 0.95;
-        }
-        .search-box {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-        .search-box input {
-            width: 100%;
-            padding: 15px;
-            font-size: 1.1em;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
-            font-family: inherit;
-        }
-        .search-box input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        .tabs {
+        .hero h1 { font-size: 4rem; margin-bottom: 0.2em; }
+        .hero p { font-size: 1.25rem; color: var(--text-muted); font-family: var(--font-body); font-weight: 300; }
+        
+        .section-header {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: baseline;
+            margin: 60px 0 30px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 10px;
         }
-        .tab {
-            background: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: 600;
-            transition: all 0.3s;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        
+        .section-header h2 { 
+            margin: 0; 
+            border: none; 
+            font-size: 1.5rem; 
         }
-        .tab:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-        .tab.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        .content-panel {
-            display: none;
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-        .content-panel.active {
-            display: block;
-        }
-        .note-list {
-            list-style: none;
-        }
-        .note-item {
-            padding: 15px;
-            border-bottom: 1px solid #e5e7eb;
-            transition: background 0.2s;
-        }
-        .note-item:last-child {
-            border-bottom: none;
-        }
-        .note-item:hover {
-            background: #f9fafb;
-        }
-        .note-link {
-            color: #2563eb;
-            text-decoration: none;
-            font-size: 1.1em;
-            font-weight: 500;
-        }
-        .note-link:hover {
-            text-decoration: underline;
-        }
-        .note-tags {
-            display: inline-flex;
-            gap: 6px;
-            margin-left: 10px;
-            flex-wrap: wrap;
-        }
-        .tag {
-            background: #dbeafe;
-            color: #1e40af;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.85em;
-            font-family: monospace;
-        }
-        .note-summary {
-            color: #6b7280;
-            font-size: 0.95em;
-            margin-top: 5px;
-        }
-        .tag-section {
-            margin-bottom: 30px;
-        }
-        .tag-section h3 {
-            color: #1e40af;
-            margin-bottom: 15px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #e5e7eb;
-        }
-        .alpha-section {
-            margin-bottom: 25px;
-        }
-        .alpha-section h3 {
-            color: #1e40af;
-            font-size: 1.5em;
-            margin-bottom: 10px;
-        }
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        
+        .filter-tabs {
+            display: flex;
             gap: 20px;
-            margin-bottom: 30px;
         }
-        .stat-card {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        
+        .filter-btn {
+            background: none;
+            border: none;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 5px 0;
+            position: relative;
         }
-        .stat-number {
-            font-size: 2.5em;
-            font-weight: bold;
-            color: #667eea;
+        
+        .filter-btn.active { color: var(--text-main); font-weight: 600; }
+        .filter-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--text-main);
         }
-        .stat-label {
-            color: #6b7280;
-            font-size: 0.9em;
-            margin-top: 5px;
-        }
-        .recent-date {
-            color: #6b7280;
-            font-size: 0.9em;
-            font-family: monospace;
-            margin-right: 10px;
-        }
-        footer {
-            text-align: center;
-            color: white;
-            margin-top: 60px;
-            padding: 20px;
-            opacity: 0.9;
-        }
-        footer a {
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-        }
-        footer a:hover {
-            text-decoration: underline;
-        }
+
+        .view-panel { display: none; }
+        .view-panel.active { display: block; }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
+        
+        <div class="hero">
             <h1>GWiki</h1>
-            <p>A mathematical knowledge base</p>
-        </header>
+            <p>Mathematical Knowledge Base</p>
+            
+            <div class="search-container">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search knowledge..." autofocus>
+            </div>
 
-        <div class="stats">
-            <div class="stat-card">
-                <div class="stat-number">""" + str(len(notes_data)) + """</div>
-                <div class="stat-label">Total Notes</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">""" + str(len(tag_groups)) + """</div>
-                <div class="stat-label">Tags</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">""" + str(sum(len(links) for links in metadata.get("forward_links", {}).values())) + """</div>
-                <div class="stat-label">Total Links</div>
+            <div class="stats-row">
+                <div class="stat-item">
+                    <div class="value">""" + str(total_notes) + """</div>
+                    <div class="label">Notes</div>
+                </div>
+                <div class="stat-item">
+                    <div class="value">""" + str(total_tags) + """</div>
+                    <div class="label">Topics</div>
+                </div>
+                <div class="stat-item">
+                    <div class="value">""" + str(total_links) + """</div>
+                    <div class="label">Connections</div>
+                </div>
             </div>
         </div>
 
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Search notes by title, tags, or content..." />
+        <div class="section-header">
+            <h2>Explore</h2>
+            <div class="filter-tabs">
+                <button class="filter-btn active" onclick="switchView('recent')">Fresh</button>
+                <button class="filter-btn" onclick="switchView('all')">Index</button>
+                <button class="filter-btn" onclick="switchView('tags')">Topics</button>
+            </div>
         </div>
 
-        <div class="tabs">
-            <button class="tab active" onclick="showTab('all')">All Notes</button>
-            <button class="tab" onclick="showTab('tags')">By Tag</button>
-            <button class="tab" onclick="showTab('recent')">Recent</button>
-        </div>
-
-        <div id="all-panel" class="content-panel active">
-            <h2 style="margin-bottom: 20px; color: #1e40af;">All Notes (Alphabetical)</h2>
+        <!-- Recent Grid -->
+        <div id="view-recent" class="view-panel active">
+            <div class="note-grid">
+"""
+    for date_str, note in recent_notes:
+        html += f"""                <a href="html/{note['filename']}.html" class="note-card">
+                    <div class="meta">
+                        <span>{date_str}</span>
+                    </div>
+                    <h3>{note['title']}</h3>
+                    <div class="excerpt">{note['summary'] if note['summary'] else 'No summary available.'}</div>
+                    <div class="tags-row">
+"""
+        for tag in note["tags"][:3]: # Limit tags per card
+            html += f'                        <span class="tag-chip">{tag}</span>\n'
+        html += """                    </div>
+                </a>
 """
 
-    # All notes alphabetically
-    current_letter = None
+    html += """            </div>
+        </div>
+
+        <!-- All Notes List (Grouped Alphabetically) -->
+        <div id="view-all" class="view-panel">
+            <div style="column-count: 2; column-gap: 40px;">
+"""
+    
+    current_char = None
     for note in alphabetical:
         first_char = note["title"][0].upper()
-        if first_char != current_letter:
-            if current_letter is not None:
-                html += "            </ul>\n            </div>\n"
-            current_letter = first_char
-            html += f'            <div class="alpha-section">\n'
-            html += f'                <h3>{current_letter}</h3>\n'
-            html += '                <ul class="note-list">\n'
+        if first_char != current_char:
+            if current_char: html += "</ul></div>\n"
+            current_char = first_char
+            html += f'<div style="break-inside: avoid; margin-bottom: 30px;">\n<h3 style="margin-top:0; border-bottom: 1px solid var(--border); padding-bottom: 5px;">{current_char}</h3>\n<ul style="list-style: none; padding: 0;">\n'
+        
+        html += f'<li style="margin-bottom: 8px;"><a href="html/{note["filename"]}.html" style="text-decoration: none; font-weight: 500;">{note["title"]}</a></li>\n'
+    
+    if current_char: html += "</ul></div>\n"
 
-        html += '                    <li class="note-item">\n'
-        html += f'                        <a href="html/{note["filename"]}.html" class="note-link">{note["title"]}</a>\n'
-        if note["tags"]:
-            html += '                        <div class="note-tags">\n'
-            for tag in note["tags"]:
-                html += f'                            <span class="tag">{tag}</span>\n'
-            html += '                        </div>\n'
-        if note["summary"]:
-            html += f'                        <div class="note-summary">{note["summary"]}</div>\n'
-        html += '                    </li>\n'
-
-    if current_letter is not None:
-        html += "                </ul>\n            </div>\n"
-
-    html += """        </div>
-
-        <div id="tags-panel" class="content-panel">
-            <h2 style="margin-bottom: 20px; color: #1e40af;">Notes by Tag</h2>
-"""
-
-    # By tags
-    for tag in sorted(tag_groups.keys()):
-        html += f'            <div class="tag-section">\n'
-        html += f'                <h3>{tag} ({len(tag_groups[tag])})</h3>\n'
-        html += '                <ul class="note-list">\n'
-        for note in sorted(tag_groups[tag], key=lambda x: x["title"].lower()):
-            html += '                    <li class="note-item">\n'
-            html += f'                        <a href="html/{note["filename"]}.html" class="note-link">{note["title"]}</a>\n'
-            html += '                    </li>\n'
-        html += '                </ul>\n'
-        html += '            </div>\n'
-
-    html += """        </div>
-
-        <div id="recent-panel" class="content-panel">
-            <h2 style="margin-bottom: 20px; color: #1e40af;">Recently Created</h2>
-            <ul class="note-list">
-"""
-
-    # Recent notes
-    for date_str, note in recent_notes:
-        html += '                <li class="note-item">\n'
-        html += f'                    <span class="recent-date">{date_str}</span>\n'
-        html += f'                    <a href="html/{note["filename"]}.html" class="note-link">{note["title"]}</a>\n'
-        if note["tags"]:
-            html += '                    <div class="note-tags">\n'
-            for tag in note["tags"]:
-                html += f'                        <span class="tag">{tag}</span>\n'
-            html += '                    </div>\n'
-        html += '                </li>\n'
-
-    html += """            </ul>
+    html += """            </div>
         </div>
 
-        <footer>
-            <p>Generated by GWiki | <a href="https://greysonwesley.com">greysonwesley.com</a></p>
-        </footer>
+        <!-- Topics Cloud -->
+        <div id="view-tags" class="view-panel">
+             <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+"""
+    for tag in sorted(tag_groups.keys()):
+        count = len(tag_groups[tag])
+        size = 1 + (count / 5) * 0.1 # Simple scaling
+        html += f'<a href="#" onclick="filterByTag(\'{tag}\'); return false;" class="tag-chip" style="font-size: {size}rem; padding: 5px 10px;">{tag} ({count})</a>\n'
+
+    html += """            </div>
+            
+            <div id="tag-results" style="margin-top: 30px; display: none;">
+                <h3 id="tag-title">Notes tagged...</h3>
+                <div class="note-grid" id="tag-grid"></div>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        function showTab(tabName) {
-            // Hide all panels
-            document.querySelectorAll('.content-panel').forEach(panel => {
-                panel.classList.remove('active');
-            });
-            // Deactivate all tabs
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            // Show selected panel
-            document.getElementById(tabName + '-panel').classList.add('active');
-            // Activate clicked tab
+        const notesData = """ + json.dumps(notes_data) + """;
+        const tagMap = """ + json.dumps({t: [n['filename'] for n in g] for t, g in tag_groups.items()}) + """;
+
+        function switchView(viewName) {
+            document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById('view-' + viewName).classList.add('active');
+            // Find the button (approximate)
             event.target.classList.add('active');
         }
 
-        // Simple search functionality
-        document.getElementById('searchInput').addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            const noteItems = document.querySelectorAll('.note-item');
+        function filterByTag(tag) {
+            const results = document.getElementById('tag-results');
+            const grid = document.getElementById('tag-grid');
+            const title = document.getElementById('tag-title');
+            
+            results.style.display = 'block';
+            title.textContent = '#' + tag;
+            grid.innerHTML = '';
 
-            noteItems.forEach(item => {
-                const text = item.textContent.toLowerCase();
-                if (text.includes(searchTerm)) {
-                    item.style.display = '';
-                } else {
-                    item.style.display = 'none';
-                }
+            const filenames = tagMap[tag] || [];
+            
+            // Inefficient but fine for client side small wiki
+            const filteredNotes = notesData.filter(n => filenames.includes(n.filename));
+
+            filteredNotes.forEach(note => {
+                const card = document.createElement('a');
+                card.href = 'html/' + note.filename + '.html';
+                card.className = 'note-card';
+                card.innerHTML = `<h3>${note.title}</h3><div class="excerpt">${note.summary || ''}</div>`;
+                grid.appendChild(card);
+            });
+            
+            // Scroll to results
+            results.scrollIntoView({behavior: 'smooth'});
+        }
+
+        // Search
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase();
+            if (term.length < 2) return;
+            
+            // If searching, maybe switch to a search view or just highlight?
+            // For now, let's keep it simple: filter the 'All' view which is most useful
+            switchView('all');
+            
+            const listItems = document.querySelectorAll('#view-all li');
+            listItems.forEach(li => {
+                const text = li.textContent.toLowerCase();
+                li.style.display = text.includes(term) ? '' : 'none';
             });
         });
     </script>
 </body>
 </html>
 """
-
     return html
 
 

@@ -242,16 +242,16 @@
         "fcj": "\\widehat",
         "e": "\\varepsilon",
         "glu": "\\mathrm{gl}",
-        "greyson": "\\bgroup\\color{violet}[[#1]]\\egroup",
-        "todo": "\\textbf{[[}\\textsl{#1}\\textbf{]]}",
-        "bkt": "\\left\\langle #1 \\middle| #2 \\right\\rangle",
-        "pbkt": "\\left( #1 \\middle| #2 \\right)",
-        "abs": "\\left| #1 \\right|",
-        "norm": "\\left\\| #1 \\right\\|",
-        "set": "\\left\\{ #1 \\right\\}",
-        "bra": "\\left\\langle #1 \\right|",
-        "ket": "\\left| #1 \\right\\rangle",
-        "braket": "\\left\\langle #1 \\middle| #2 \\right\\rangle",
+        "greyson": ["\\bgroup\\color{violet}[[#1]]\\egroup", 1],
+        "todo": ["\\textbf{[[}\\textsl{#1}\\textbf{]]}", 1],
+        "bkt": ["\\left\\langle #1 \\middle| #2 \\right\\rangle", 2],
+        "pbkt": ["\\left( #1 \\middle| #2 \\right)", 2],
+        "abs": ["\\left| #1 \\right|", 1],
+        "norm": ["\\left\\| #1 \\right\\|", 1],
+        "set": ["\\left\\{ #1 \\right\\}", 1],
+        "bra": ["\\left\\langle #1 \\right|", 1],
+        "ket": ["\\left| #1 \\right\\rangle", 1],
+        "braket": ["\\left\\langle #1 \\right\\rangle", 1],
         "Set": "\\mathbf{Set}",
         "Grp": "\\mathbf{Grp}",
         "Top": "\\mathbf{Top}",
@@ -278,7 +278,45 @@
         "a": "\\alpha",
         "b": "\\beta",
         "d": "\\delta",
-        "g": "\\gamma"
+        "g": "\\gamma",
+        "bd": "\\partial",
+        "tms": "\\times",
+        "tsr": "\\otimes",
+        "pr": "\\operatorname{pr}",
+        "dM": "\\mathcal{M}",
+        "dF": "\\mathcal{F}",
+        "dA": "\\mathcal{A}",
+        "dB": "\\mathcal{B}",
+        "dC": "\\mathcal{C}",
+        "dD": "\\mathcal{D}",
+        "dE": "\\mathcal{E}",
+        "dG": "\\mathcal{G}",
+        "dH": "\\mathcal{H}",
+        "dI": "\\mathcal{I}",
+        "dJ": "\\mathcal{J}",
+        "dK": "\\mathcal{K}",
+        "dL": "\\mathcal{L}",
+        "dN": "\\mathcal{N}",
+        "dO": "\\mathcal{O}",
+        "dP": "\\mathcal{P}",
+        "dQ": "\\mathcal{Q}",
+        "dR": "\\mathcal{R}",
+        "dS": "\\mathcal{S}",
+        "dT": "\\mathcal{T}",
+        "dU": "\\mathcal{U}",
+        "dV": "\\mathcal{V}",
+        "dW": "\\mathcal{W}",
+        "dX": "\\mathcal{X}",
+        "dY": "\\mathcal{Y}",
+        "dZ": "\\mathcal{Z}",
+        "tld": "\\widetilde",
+        "res": "\\operatorname{res}",
+        "Eq": "\\operatorname{Eq}",
+        "sst": "\\subset",
+        "lact": "\\triangleright",
+        "ract": "\\triangleleft",
+        "op": "\\mathrm{op}",
+        "lsjto": "\\longrightarrow\\!\\!\\!\\!\\!\\rightarrow"
         }
       },
       startup: {
@@ -300,10 +338,10 @@
             </a>
         </div>
         <div class="nav-right">
-            <a href="../pdfs/linear connection in a vector bundle.pdf" class="nav-btn" title="View PDF">
+            <a href="../pdfs/linear connection in a vector bundle.pdf#page=1.00&gsr=0" class="nav-btn" title="View PDF" target="_blank">
                 <span>PDF</span>
             </a>
-            <a href="file:///Users/greysonwesley/Desktop/workflow/wiki/linear connection in a vector bundle.md" class="nav-btn" title="Edit in Obsidian">
+            <a href="obsidian://open?path=/Users/greysonwesley/Desktop/workflow/wiki/linear connection in a vector bundle.md" class="nav-btn" title="Edit in Obsidian">
                 <span>MD</span>
             </a>
         </div>
@@ -311,7 +349,7 @@
     <div class="content-wrapper">
     <h1>linear connection in a vector bundle</h1>
     <div class="metadata">
-        <strong>Last modified:</strong> December 12, 2025 at 10:15 PM ET<br>
+        <strong>Last modified:</strong> December 13, 2025 at  3:59 PM ET<br>
         <strong>Created:</strong> August 09, 2025 at  6:05 PM ET<br>
     </div>
     <div class="content">
@@ -319,11 +357,13 @@
         <p>#unorganized #article The following definition is motivated by the <a href="covariant derivative.html">covariant derivative</a> in a <a href="tangent bundle.html">tangent bundle</a>. Here we define a connection for any smooth vector bundle $p\colon E\to M$, which it is helpful to think of as the tangent bundle.</p>
 
 <p><strong>Definition (Connection).</strong> For a smooth vector bundle $p\colon E\to M$, a <strong>connection in $E$</strong> is a smooth map $\nabla\colon\mathfrak{X}(M)\times \Gamma(E)\to \Gamma(E)$, written $(v,w)\mapsto \nabla_vw$, that satisfies the properties expected of a <a href="linear connection in a vector bundle.html">covariant derivative</a>; more precisely, $\nabla$ is defined by the following properties:</p>
+
 <ul>
 <li>$\nabla _vw$ is $C^{\infty}(M)$-linear in $v\in \mathfrak{X}(M)$, i.e., $\nabla_{f_1v_1+f_2v_2}w=f_1\nabla _{v_1}w+f_2\nabla_{v_2}w$, i.e., the $C^{\infty}(M)$-module (hence also $\mathbb{R}$-linear) structure of the tangent space is preserved;</li>
 <li>$\nabla_vw$ is $\mathbb{R}$-linear in $w\in \Gamma(X)$, i.e., $\nabla_v(\lambda_1w_1+\lambda_2w_2)=\lambda_1\nabla_vw_1+\lambda_2\nabla_vw_2$; and</li>
 <li>$\nabla_vw$ satisfies the “$C^{\infty}(M)$-product rule”, i.e., for all $f\in C^{\infty}(M)$, $\nabla_v (fw)=f(\nabla_vw)+v(f)w$.</li>
 </ul>
+
 
 <p>In the case $p\colon E\to M$ is the tangent bundle, we call $\nabla$ a <strong>connection in $M$</strong>.</p>
 
@@ -344,9 +384,10 @@
 <h4 id="local-expression-of-a-connection">Local expression of a connection</h4>
 <p>Fix a vector field $v\in\mathfrak{X}(M)$. For simplicity, we assume the vector bundle $p\colon E\to M$ is $TM$. For local coordinates $x^k$ on a chart $U\subset M$, write $\partial_i$ for the induced local frame on $TM$ and write $\nabla_j$ for $\nabla_{\partial_j}$, so that $\nabla_i$ is an $\mathbb{R}$-linear map $\Gamma(TM)\to\Gamma(TM)$, i.e., a linear map $\mathfrak{X}(M)\to \mathfrak{X}(M)$. By linearity $\nabla_i\partial_j=\Gamma_{ij}^k\partial_k$ for some $n^3$ smooth functions $\Gamma_{ij}^k\in C^{\infty}(M)$ ($1\leq i,j,k\leq \dim M=n$) called the <strong>connection coefficients</strong> of $\nabla$ with respect to the local frame $\{\partial_j\}$. Unsurprisingly, $\nabla$ is completely determined on $U$ by its connection coefficients because, by the defining properties of connections,\[\nabla_vw=\nabla_v(w^j\partial_j)=v(w^j)\partial_j+w^j\nabla_v\partial_j=v(w^j)\partial_j+w^jv^i\Gamma_{ij}^k\partial_k=(v(w^k)+w^jv^i\Gamma_{ij}^k)\partial_k.\]By setting $v=\partial_j$, where $\nabla_j u=\nabla_j u^i\,\partial_i$, we find\[\nabla_ju^i=\partial_ju^i+u^k\partial_j\Gamma_{jk}^i.\]</p>
 <h4 id="connections-on-general-smooth-fiber-bundles">Connections on general smooth fiber bundles</h4>
-<p>See <a href="https://math.uchicago.edu/~may/REU2015/REUPapers/Sorce.pdf">here</a>, §5 for a fantastic brief exposition.</p>
+<p>See <a href="https://math.uchicago.edu/~may/REU2015/REUPapers/Sorce.pdf#page=1.00&gsr=0">here</a>, §5 for a fantastic brief exposition.</p>
 
 <p>See also:</p>
+
 <ul>
 <li><a href="linear connection 1-form.html">linear connection 1-form</a> (next)</li>
 <li><a href="exterior covariant derivative.html">exterior covariant derivative</a></li>
@@ -356,6 +397,7 @@
 <li><a href="torsion of a connection.html">torsion of a connection</a></li>
 <li><a href="flat connection.html">flat connection</a></li>
 </ul>
+
 <div class="references">
 <h2>References</h2>
 <ol>

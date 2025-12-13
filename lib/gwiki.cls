@@ -116,6 +116,7 @@
 \RequirePackage{thmtools,thm-restate}
 \RequirePackage{enumitem}
 \RequirePackage{tikz}
+\usetikzlibrary{arrows,arrows.meta,calc,decorations.markings,decorations.pathreplacing,shapes}
 \RequirePackage{tikz-cd}
 \RequirePackage{quiver}
 \RequirePackage{nicematrix}
@@ -492,7 +493,7 @@
 \edef\@encodedjobname{\expandafter\@urlencode\@cleanjobname\@empty}
 
 \newcommand{\gwiki@firstheader}{%
-  \fancyhead[R]{}%
+  \fancyhead[R]{\scriptsize\ashtml{\@encodedjobname}\quad\asmd{\@encodedjobname}}%
 }
 \newcommand{\gwiki@firstfooter}{%
   \fancyfoot[C]{\scriptsize\color{gray!60}\thepage}%

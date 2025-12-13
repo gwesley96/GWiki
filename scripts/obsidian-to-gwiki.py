@@ -45,42 +45,69 @@ def extract_frontmatter(content):
 
     return frontmatter, content
 
+def escape_latex_text(text):
+    """Escape text for LaTeX display"""
+    return text.replace('#', r'\#').replace('&', r'\&').replace('%', r'\%').replace('_', r'\_').replace('$', r'\$')
+
+def escape_link_target(link):
+    """Escape link target (keep # and _ for gwiki/hyperref)"""
+    # We DO NOT escape # (anchors) or _ (filenames)
+    # But we DO escape % and & just in case they mess up URL parsing or args
+    return link.replace('&', r'\&').replace('%', r'\%')
+
 def convert_wikilinks(text):
     """Convert Obsidian [[wikilinks]] to GWiki \wref{}"""
-    def escape_link(link):
-        return link.replace('#', r'\#').replace('&', r'\&').replace('%', r'\%').replace('_', r'\_')
 
     def replace_header_link(match):
         # **Header.** [[link|text]] -> \wref[Header.]{link} text
         header = match.group(1)
-        # remove bold markup from header if captured
         header = header.replace('**', '').strip()
-        link = escape_link(match.group(2))
+        link = escape_link_target(match.group(2))
         body = match.group(3)
         return f'\\wref[{header}]{{{link}}} {body}'
 
     def replace_link(match):
-        link = escape_link(match.group(1))
-        display = match.group(2)
-        # If display text is very long (heuristic > 60 chars), split it out
-        # But only if it looks like a full sentence/paragraph
+        link = escape_link_target(match.group(1))
+        display = escape_latex_text(match.group(2))
         if len(display) > 60:
              return f'{display} \\wcite{{{link}}}'
-             
         return f'\\wref[{display}]{{{link}}}'
         
     def replace_simple_link(match):
-        link = escape_link(match.group(1))
+        link = escape_link_target(match.group(1))
+        # Display text is implicit, usually same as link but without anchor?
+        # \wref{link} handles display automatically
         return f'\\wref{{{link}}}'
 
     # Special case: **Header.** [[link|text]]
-    # We match **Header** followed by optional punctuation and spaces
     text = re.sub(r'\*\*([^\*]+)\*\*[:\.]?\s*\[\[([^\]|]+)\|([^\]]+)\]\]', replace_header_link, text)
 
-    # [[link|display]] -> \wref[display]{link} or text \wcite{link} rules
+    # [[link|display]] -> \wref[display]{link}
     text = re.sub(r'\[\[([^\]|]+)\|([^\]]+)\]\]', replace_link, text)
     # [[link]] -> \wref{link}
     text = re.sub(r'\[\[([^\]]+)\]\]', replace_simple_link, text)
+    return text
+
+def convert_markdown_links(text):
+    """Convert Markdown [text](url) to \href or \wref"""
+    def repl(match):
+        display = escape_latex_text(match.group(1))
+        url = match.group(2)
+        
+        # Check for external link
+        if re.match(r'^[a-zA-Z]+://', url):
+            clean_url = escape_link_target(url) # Keep # etc
+            return f'\\href{{{clean_url}}}{{{display}}}'
+        else:
+            # Internal link
+            clean_url = escape_link_target(url)
+            # Strip .md if present
+            if clean_url.endswith('.md'):
+                clean_url = clean_url[:-3]
+            return f'\\wref[{display}]{{{clean_url}}}'
+
+    # Match [text](url) but NOT image ![]
+    text = re.sub(r'(?<!\!)\[([^\]]+)\]\(([^)]+)\)', repl, text)
     return text
 
 def convert_hashtags(text):
@@ -257,6 +284,7 @@ def convert_to_gwiki(obsidian_path, tags_to_use=None):
     
     body = convert_images(body)
     body = convert_wikilinks(body)
+    body = convert_markdown_links(body)
     body = convert_hashtags(body)
     body = convert_formatting(body) # Headers, Bold, Italic
     body = convert_lists(body)      # Lists

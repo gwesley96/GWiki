@@ -1,6 +1,6 @@
 \documentclass{gwiki}
 
-\texorpdfstring{\Title{H*-monads and completions of pre-3-Hilbert spaces}}
+\texorpdfstring{\Title{Hstar monad}}
 
 \Tags{}
 
@@ -59,19 +59,19 @@ with unit $\iota\colon 1_a\to {}_aA_a$ satisfying the following axioms.
 \qquad\quad\text{where}\quad\quad 
 a=\tz[scale=.7]{
     \coordinate(O) at (0,0); 
-    \fill[regA](O) rectangle ++(1,1);   
+    \fill\href{O}{regA} rectangle ++(1,1);   
 },
 \quad
 A=\tz[scale=.7]{
     \coordinate(O) at (0,0); 
-    \fill[regA](O) rectangle ++(1,1);   
-    \draw[strA](O)++(0.5,0)--++(0,1);
+    \fill\href{O}{regA} rectangle ++(1,1);   
+    \draw\href{O}{strA}++(0.5,0)--++(0,1);
 },
 \quad
 \mu=\tz[scale=.7]{
     \coordinate(O) at (0,0); 
-    \fill[regA](O)++(-0.25,0) rectangle ++(1.5,1);       
-    \draw[strA](O)++(0.5,0.5)--++(0,0.5);                     
+    \fill\href{O}{regA}++(-0.25,0) rectangle ++(1.5,1);       
+    \draw\href{O}{strA}++(0.5,0.5)--++(0,0.5);                     
     \draw[strA] (O)++(1,0) \capfrom{0.5};                
 }.
 \]
@@ -132,22 +132,22 @@ Diagrammatically, if we write
 \[
 b=\tz[scale=.7]{
     \coordinate(O) at (0,0); 
-    \fill[regB, rounded corners=5pt](O)rectangle ++(1,1); % Object b
+    \fill\href{O}{regB, rounded corners=5pt}rectangle ++(1,1); % Object b
 },
 \qquad\qquad
 X=\tz[scale=.7]{
     \coordinate(O) at (0,0); 
-    \clip[rounded corners](O)rectangle ++(1,1);
-    \fill[regA](O)rectangle ++(1,1);                    % 1-morph X (Red)
-    \fill[regB](O)++(0.5,0)rectangle ++(0.5,1);              % 1-morph X (Blue side)
-    \draw[strC](O)++(0.5,0)--++(0,1);                       % Separator
+    \clip\href{O}{rounded corners}rectangle ++(1,1);
+    \fill\href{O}{regA}rectangle ++(1,1);                    % 1-morph X (Red)
+    \fill\href{O}{regB}++(0.5,0)rectangle ++(0.5,1);              % 1-morph X (Blue side)
+    \draw\href{O}{strC}++(0.5,0)--++(0,1);                       % Separator
 },
 \qquad\qquad
 \gamma=\tz[scale=.7,yscale=-1]{
     \coordinate(O) at (0,0); 
-    \fill[regA](O)++(-0.25,0)rectangle ++(1.5,1);         % Gamma map
-    \draw[strA](O)++(0.5,0.5)--++(0,0.5);
-    \fill[regB](O)++(1,0) \capfrom{0.5} --cycle;
+    \fill\href{O}{regA}++(-0.25,0)rectangle ++(1.5,1);         % Gamma map
+    \draw\href{O}{strA}++(0.5,0.5)--++(0,0.5);
+    \fill\href{O}{regB}++(1,0) \capfrom{0.5} --cycle;
     \draw[strC] (O)++(1,0) \capfrom{0.5};
 },
 \]

@@ -83,21 +83,19 @@ def build_all(target="all"):
         print("Cleaned.")
         return
 
-    # Parallel build
+    # Parallel build - ALWAYS build BOTH PDF and HTML together to keep them in sync
     pool = Pool()
     
-    if target in ["all", "web", "pdf"]:
-        pool.map(build_pdf, notes)
-        
-    if target in ["web", "html"]:
-        # Ensure CSS is present
-        style_src = REPO_ROOT / "lib" / "style.css"
-        style_dst = HTML_DIR / "style.css"
-        if style_src.exists():
-            import shutil
-            shutil.copy(style_src, style_dst)
-            
-        pool.map(build_html, notes)
+    # Always ensure CSS is present
+    style_src = REPO_ROOT / "lib" / "style.css"
+    style_dst = HTML_DIR / "style.css"
+    if style_src.exists():
+        import shutil
+        shutil.copy(style_src, style_dst)
+    
+    # Build both PDF and HTML for all notes
+    pool.map(build_pdf, notes)
+    pool.map(build_html, notes)
         
     pool.close()
     pool.join()

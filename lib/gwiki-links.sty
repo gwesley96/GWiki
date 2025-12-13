@@ -89,9 +89,9 @@
     }{%
       % Simple document reference - link to PDF file
       \IfStrEq{\gwiki@display}{}{%
-        \mbox{\href{file:///Users/greysonwesley/Desktop/GWiki/pdfs/#2.pdf}{#2}}%
+        \mbox{\href{file:///Users/greysonwesley/Desktop/GWiki/pdfs/\gwiki@safeinput.pdf\#page=1.00\&gsr=0}{#2}}%
       }{%
-        \mbox{\href{file:///Users/greysonwesley/Desktop/GWiki/pdfs/#2.pdf}{\gwiki@display}}%
+        \mbox{\href{file:///Users/greysonwesley/Desktop/GWiki/pdfs/\gwiki@safeinput.pdf\#page=1.00\&gsr=0}{\gwiki@display}}%
       }%
     }%
   }%
@@ -115,7 +115,7 @@
 
 %% Read this note as PDF (local)
 \newcommand{\aspdf}[1]{%
-  \href{file:///Users/greysonwesley/Desktop/GWiki/pdfs/#1.pdf}{[PDF]}%
+  \href{file:///Users/greysonwesley/Desktop/GWiki/pdfs/#1.pdf\#page=1.00\&gsr=0}{[PDF]}%
 }
 
 %% Read this note as HTML (local)
@@ -125,7 +125,7 @@
 
 %% Read this note in Obsidian (opens .md file)
 \newcommand{\asmd}[1]{%
-  \href{file:///Users/greysonwesley/Desktop/workflow/wiki/#1.md}{[MD]}%
+  \href[pdfnewwindow=true]{obsidian://open?path=/Users/greysonwesley/Desktop/workflow/wiki/#1.md}{[MD]}%
 }
 
 %% All formats together
@@ -251,19 +251,74 @@
   \par\smallskip
 }
 
-\newcommand{\seealso}[1]{%
+\newenvironment{seealso}{%
   \par\medskip\noindent\textbf{See also:}%
-  \begin{itemize}[nosep,leftmargin=*]
-    \foreach \p in {#1} {\item \wref{\p}}
-  \end{itemize}
+  \begin{itemize}[nosep,leftmargin=*]%
+}{%
+  \end{itemize}%
 }
 
-\newcommand{\SeeAlso}[1]{%
-  \par\medskip\noindent\textbf{See also:}%
-  \begin{itemize}[nosep,leftmargin=*]
-    \foreach \p in {#1} {\item \wref{\p}}
-  \end{itemize}
+\ExplSyntaxOn
+
+\regex_new:N \l_gwiki_mdlink_regex
+\regex_set:Nn \l_gwiki_mdlink_regex { ^\s*\[([^\]]+)\]\(([^)]+)\)(.*)$ }
+
+\regex_new:N \l_gwiki_pdf_regex
+\regex_set:Nn \l_gwiki_pdf_regex { ^\s*(.*?\.pdf)(.*)$ }
+
+\cs_new_protected:Npn \gwiki_process_seealso_item:n #1 {
+    \tl_set:Nn \l_tmpa_tl { #1 }
+    \tl_trim_spaces:N \l_tmpa_tl
+    \tl_if_empty:NF \l_tmpa_tl {
+        \item 
+        % Check for MD Link [text](url)
+        \regex_match:NnTF \l_gwiki_mdlink_regex { \l_tmpa_tl }
+        {
+            \regex_replace_all:NnN \l_gwiki_mdlink_regex { \c{href}\cB\{\2\cE\}\cB\{\1\cE\}\3 } \l_tmpa_tl
+            \l_tmpa_tl
+        }
+        {
+            % Check for PDF file (ends in .pdf)
+            \regex_match:NnTF \l_gwiki_pdf_regex { \l_tmpa_tl }
+            {
+               % \href{file://.../pdfs/file.pdf}{file.pdf} suffix
+               \regex_replace_all:NnN \l_gwiki_pdf_regex { \c{href}\cB\{file:///Users/greysonwesley/Desktop/GWiki/pdfs/\1\#page=1.00\&gsr=0\cE\}\cB\{\1\cE\}\2 } \l_tmpa_tl
+               \l_tmpa_tl
+            }
+            {
+               % Default: Wikilink
+               \wref{\l_tmpa_tl}
+            }
+        }
+    }
 }
+
+\NewDocumentCommand{\SeeAlso}{m}{
+  \par\medskip\noindent\textbf{See~also:}
+  % Check if manual list (contains "- ") using robust expl3 check (dash+space)
+  \tl_if_in:nnTF { #1 } { -~ } {
+    \begin{itemize}[nosep,leftmargin=*]
+      \seq_set_split:Nnn \l_tmpa_seq { -~ } { #1 }
+      % Drop the first empty element (everything before first dash)
+      \seq_pop_left:NN \l_tmpa_seq \l_tmpb_tl
+      
+      \seq_map_inline:Nn \l_tmpa_seq {
+          \gwiki_process_seealso_item:n { ##1 }
+      }
+    \end{itemize}
+  }{
+    % Comma separated list fallback (legacy)
+    \begin{itemize}[nosep,leftmargin=*]
+      \clist_set:Nn \l_tmpa_clist { #1 }
+      \clist_map_inline:Nn \l_tmpa_clist {
+         \item \wref{##1}
+      }
+    \end{itemize}
+  }
+}
+
+\ExplSyntaxOff
+
 
 \newcommand{\IncomingLinks}[1]{%
   \par\medskip\noindent\textbf{Incoming links:}%
@@ -340,6 +395,7 @@
   % Key sources line (if present)
   \gwiki@printkeysources
   %
+
   % Metadata line: tags, dates
   \noindent
   {\scriptsize\ttfamily\color{gray!55}%
@@ -348,6 +404,9 @@
     Modified \gwiki@moddatestring%
   \par}%
   \vspace{2pt}%
+  %
+  % Navigation
+  \NoteNavigation
   %
   % Rule
   \noindent{\color{gray!25}\rule{\linewidth}{0.4pt}}\par%
@@ -488,22 +547,25 @@
 \newcommand{\gwiki@prevnote}{}
 \newcommand{\gwiki@nextnote}{}
 
-\newcommand{\PreviousNote}[1]{\renewcommand{\gwiki@prevnote}{#1}}
-\newcommand{\NextNote}[1]{\renewcommand{\gwiki@nextnote}{#1}}
+\newcommand{\Previous}[1]{\renewcommand{\gwiki@prevnote}{#1}}
+\newcommand{\Next}[1]{\renewcommand{\gwiki@nextnote}{#1}}
+
+% Legacy support if needed, or aliases
+\newcommand{\PreviousNote}[1]{\Previous{#1}}
+\newcommand{\NextNote}[1]{\Next{#1}}
 
 \newcommand{\NoteNavigation}{%
   \ifboolexpr{ test {\ifdefempty{\gwiki@prevnote}} and test {\ifdefempty{\gwiki@nextnote}} }
   {}
   {
-    \par\noindent\bigskip
-    \begingroup\footnotesize
+    \par\noindent
+    \begingroup\footnotesize\sffamily
     \ifdefempty{\gwiki@prevnote}{}
       {\textbf{Previous:} \wref{\gwiki@prevnote}}%
     \ifdefempty{\gwiki@nextnote}{}
-      {\hfill\textbf{Next:} \wref{\gwiki@nextnote}}%
+      {\ifx\gwiki@prevnote\empty\else\quad|\quad\fi\textbf{Next:} \wref{\gwiki@nextnote}}%
     \endgroup
-    \par\vspace{1em}
-    \noindent{\color{gray!25}\rule{\linewidth}{0.4pt}}\par\vspace{1em}%
+    \par\vspace{5pt}
   }
 }
 
