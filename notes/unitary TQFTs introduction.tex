@@ -1,0 +1,155 @@
+\Tags{disk-like framework}
+
+\maketitle
+\greyson{todo: change `$A$' in $A$-invariants to $\mathrm{Sk}$?}
+\greyson{todo: change ``cylinder $k$-category'' with ``annular $k$-category'' or actually ``skein $k$-category''}
+\greyson{todo: ask Kevin or someone if there are Frobenius--Schur complications?}
+\greyson{DEFINE STRING DIAGRAM N-CATEGORY. THEN USE THIS AS MOTIVATION TO DEFINE DISKLIKE N-CAT, GIVING EXAMPLE OF MAPS TO A SPACE AS SOMETHING YOU CANT DO.}
+
+\begin{makeabstract}
+% The slogan developed in this paper, which is already known to experts, is that a TQFT without its path integral is determined by a sort of category with ``strong duality'' properties, such as a dagger category or a pivotal category, while the top dimension of a TQFT requires extra data, namely a (unitary) trace, to become a full $(n+1)$D (unitary) TQFT. 
+\end{makeabstract}
+
+
+\tableofcontents
+
+\greyson{TODO: maybe add the following footnote somewhere: Think of $f \in \mathcal{A}(S \times I; \bar{x}, y)$ as a "process" evolving from boundary condition $x$ to boundary condition $y$. Then:
+- $\bar{f}$ is "the same process, but on the orientation-reversed manifold" — it lives elsewhere.
+- $f^\dagger$ is "the time-reversed process" — it goes from $y$ back to $x$, on the same manifold.}
+\greyson{TODO: somewhere add: For $M \in \mathcal{M}_k$ with $\partial M = Y_1 \cup \cdots \cup Y_r$ (a decomposition into boundary components), and fields $c_i \in \mathcal{F}(Y_i)$, we write
+$$\mathcal{A}(M; c_1, \dots, c_r) \coloneqq \{a \in \mathcal{A}(M) \mid a|_{Y_i} = c_i\}.$$
+When $Y_i$ is $H$-homeomorphic to $\overline{Y}$ for some $Y$, we will often write the boundary condition as $\overline{c}$ to indicate it lives on the “incoming” copy. In particular, for a cylinder $S \times I$ with $\partial(S \times I) = \bar{S} \cup S$ (where $\bar{S} = S \times \{0\}$ with the “incoming” $H$-structure and $S = S \times \{1\}$ with the “outgoing” $H$-structure), and $x, y \in \mathcal{F}(S)$, we write
+$$\mathcal{A}(S \times I; \bar{x}, y) = \{f \in \mathcal{A}(S \times I) \mid f|_{S \times \{0\}} = \bar{x}\text{ and } f|_{S \times \{1\}} = y\}.$$
+This is the space of morphisms $x \to y$ in the cylinder category $\mathcal{A}(S)$.}
+\section{Introduction}
+Recent developments in higher (linear) categories have allowed the inductive construction of $n$-categories of (finite) \defn{$n$-vector spaces} $n\Vec$ for all $n\geq 1$, which then naturally serve as receptacles of $(n+1)$D TQFTs when viewed as functors from an appropriate higher category of bordisms. However, entirely absent from this story  \greyson{quantify?} is any notion of unitarity, due to a historically poor understanding of unitarity of higher categories. In theoretical condensed matter physics, idempotents in higher categories describe phase changes between $(2+1)$D topologically ordered phases of matter. As these topological orders are inherently unitary, their application benefit from an understanding of higher unitarity \greyson{ref or remove}.
+
+A natural choice of target category in the definition of a $n$D unitary TQFT for general $n$ is not yet known. The article \greyson{cite dagger ncats} defines a \defn{dagger $(\infty,n)$-category with unitary duality} (or simply \defn{$\PL(n)$-dagger category}) and suggests we should define a unitary $n$D TQFT to be a functor of symmetric monoidal PL($n$)-dagger $(\infty,n)$-categories on an appropriate bordism category. For $n=2,3$, these coherent notions are expected to agree with the already existing organic algebraic definition of dagger $n$-categories and dagger $n$-functors \greyson{cite Gio's paper}. Thus understanding the cases $n=2,3$ in the algebraic case will likely resolve these questions. This has since led to an analogous unitary construction of (finite) $n$-Hilbert spaces up to $n=3$, which recovers finite $2$-Hilbert spaces in the sense of \greyson{ref Baez}.
+
+\greyson{...}
+
+% While allowing for a concise definition of TQFT, viewing a TQFT as a functor is not conducive for local-to-global constructions.
+
+In other words, given a fully dualizable $n$-category, it is not immediately apparent how one could construct the corresponding TQFT functor. 
+
+There is another sframework that was constructed exactcylfor this local-to-glboal thing,. 
+The Cobordism Hypothesis asserts that \greyson{Wick-rotated} local (i.e., fully extended) topological quantum field theories (TQFTs) are classified by their value at a point, and that this value is a ``nice'' higher category \greyson{ref}. 
+
+The idea is that a TQFT assigns to each manifold a set of \emph{fields} and rules for how those fields glue together when gluing together their underlying manifolds. The higher category encodes the local behavior, which in the topological setting just means the behavior of fields on manifolds that are homeomorphic to the standard unit ball. 
+
+Important in this setting is to see if they atch. 
+
+
+This local, algebraic data of a TQFT can be viewed as a fully dualizable notion of a higher category, which from a topological lens can be called a ``disk-like'' (or ``ball-like'') category, as \greyson{morphisms can be reversed, conjugated, reflected, etc., to reflect the symmetry of the ball in such a way that it is not meaningful to assign a ``source'' and ``target'' to a $k$-morphism for any $k$. Then say this terminology also reflects that it is literally the local data of a TQFT, i.e., the value of the TQFT on balls (``disks'').}
+
+% To mitigate this, we choose to adopt Kevin Walker's notion of TQFTs as being , which together can be thought of as the local part of a TQFT (i.e., values on balls), together with a formal path integral on the top-dimensional fields.
+
+% that determines the global behavior of the theory. 
+
+
+
+Unlike the functorial approach, which abstracts the fields into the functor, fields play a key role in Walker's framework. More specifically, the vector space associated to an $n$-manifold $X$, denoted $\A(X)$, should be viewed as consisting of fields, $\F(X)$, modulo the subspace of local relations, $\U(X)$. Local relations carry the same information as the path integral of the (closed) $n+1$-dimensional ball $D^{n+1}$ over all possible boundary conditions. In \cite[Chapter 1]{W06}, Walker gives a heuristic argument that these local relations determine the path integral on the $(n+1)$-dimensional ball $D^{n+1}$ for all possible boundary conditions, and in \cite{W21} \greyson{and cite slides} he axiomatically defines a \defn{path integral} to be a collection of faithful tracial weights $z_M\colon \A(\partial M)\to \bC$ for each $(n+1)$-manifold $M$ that are invariant under boundary-preserving homeomorphisms and whose induced inner products are suitably compatible.
+
+While Walker's notion of TQFT is seemingly more nuanced than the Atiyah--Segal functorial viewpoint, it has the advantage that computations are readily accessible \greyson{qualify} and the skein theory apparent \greyson{make clear}. Walker's notion of TQFT is also flexible, by for instance allowing self-gluing of manifolds (with corners) to any codimension-0 submanifold.
+% For instance, they allow self-gluing of manifolds (with corners) to any codimension-0 submanifold. Moreover, Walker's definition of TQFT immediately gives a state sum and Hamiltonian models \greyson{verify the Hamiltonian claim}/is conducive to state-sums and Hamiltonian models \greyson{cite Universal State Sum, cite Hamiltonian slides (?), maybe mention examples} %\greyson{For example, in Dijkgraaf--Witten theories, the fields are maps $X\to \mathrm{B} G$ for some finite group $G$, so that when these maps are identified by their homotopy classes, they precisely correspond to principal $G$-bundles over $X$, which .... todo or remove.. this may not be the right place for examples}
+One of the key advantages of Walker's approach is that
+% not immediately apparent how to construct the higher categorical data of the corresponding TQFT. 
+the higher categorical structure is automatically present down to points, in the sense that there is a $k$-category $\A(W)$, for every $(n-k)$-dimensional manifold $W$, called the \defn{cylinder $k$-category} of $W$. We will see that structure-reversal (e.g., orientation-reversal) on $n$-manifolds composed with a certain orientation-preserving homeomorphism equips each cylinder 1-category with a dagger structure, and by construction of the cylinder $k$-categories for $k>1$ this is expected to disseminates to a dagger structure on all cylinder categories, and we will show that it does for $n=1,2$. 
+
+The $k$-category $Z(W)\coloneq \Fun^*(\A(\partial X)\to\Hilb)$ is then the \defn{unitary representations} (or \defn{unitary modules}) of the dagger $k$-category $\A(\partial W)$, duality-preserving functors (e.g., dagger functors $\Fun^\dag(\A(\partial W)\to \Hilb)$ when $n=1$ and UAF-preserving dagger functors $\Fun^{\dag,\vee}(\A(\partial W)\to 2\Hilb)$ when $n=2$) is then expected to be suitably Cauchy complete, and is known to be for $n=1,2$ \greyson{cite [Bases for 3-Hilbert spaces] paper}.
+% local data of a TQFT, whether it be viewed as a fully dualizable $n$-category or a system of local fields (that is, a ``disk-like'' $n$-category), given
+% \greyson{We retain the notion of fields on manifolds and require that the vector spaces for $n$-manifolds be constructed out of these fields by local relations (or, dually, local projections). These local relations carry the same information as the path integral of the $n+1$-dimensional ball $B^{n+1}$ with all possible boundary conditions. }
+
+Conversely, the following theorem shows that when given the \emph{local} data of an $(n+\varepsilon)$D TQFT obtained from an $n$-category satisfies suitable finiteness conditions, then the data of a system of fields and local relations, of a TQFT satisfies suitable finiteness conditions, then the path integral, and thus the full $(n+1)$D TQFT, can be recovered in a constructive way.
+
+\greyson{Should I introduce `$H$-pivotal' (AKA $H$-structured) in the intro or just omit until later?}
+
+
+\begin{theorem}[{{\cite{W06,W21}}}]
+\label{unitaryWalkerTheore}
+For a (unitary) disk-like $n$-category $\C$ equipped with a faithful tracial weight $\psi\colon\A_\C(S^n)\to\bC$, there is a unique (unitary) path integral $z_{(-)}$ inducing (positive-definite) nondegenerate inner products on $\A_\C(D^n;c)$ for all boundary conditions $c\in\C(S^n)$ such that $z_{D^n}=\psi$.
+% such that $A_{\C}(S^k\times D^{n-k},c)$ is finite-dimensional for all $k$. 
+\end{theorem}
+
+
+% \greyson{Say something along the lines of ``Moreover, given that the top-dimensional (read: global) part of an $(n+1)$D TQFT, the path integral, is a tool that computes amplitudes between fields, it can be thought of as a faithful tracial weight in the top dimension. Verify/cite/say if rigorous...}. 
+
+
+
+% The conclusion is that TQFTs and systems of fields with local relations are related in that when you have a path integral satisfying the gluing condition, is invariant under structure-preserving homeomorphisms of manifolds, and that defines compatible pairings between the space of states and its predual, then we get a full TQFT. Conversely, given a full TQFT, according to the cobordism hypothesis, you should be able to recover an $n$-category of some sort that describes its local behavior, because it should be generated by the point. So, we have a system of fields and local relations; by restricting to the local parts, i.e. to the balls, we obtain, via the correspondence, a fully dualizable $n$-category.
+
+% Now, the requirement is that the system of fields, local relations, and the path integral be compatible in the sense that at the top level of the system of fields with local relations there is a product defined through the path integral. One can either define TQFT pairings on the skein modules -- the $\A$-invariants -- or on the $Z$ and $D$ spaces by the obvious choice of dual pairing coming from the one on $\A$. They need to be compatible with gluing in the sense that gluing a collar on one side produces the same result as gluing the collar on the other.
+
+% The act of gluing requires you to reverse the $H$-structure; sliding from one side of a sphere to another is a reflection (flipping upside down). It is equivalent to cutting the sphere in half; on the other side you apply a vertical flip, i.e. apply the time-reversal operator $R$, then reverse the $H$-structure, then glue. That composite is what the dagger is. It means you flip upside down by reversing time, apply reversal, and then glue.
+% So you can glue an object with its dagger. In particular, if you have a sphere with $f^\dag$ on the top face and $f$ on the bottom, then gluing those pieces together (in either reading) yields the same outcome. The boundary parts that are not glued remain as external boundary of that half/half configuration.
+
+\greyson{Give a few sentences about how I expect the $\Hstar$Alg/$\Hstar\mathsf{mFC}$ to be a category of defects, and then remark that blob homology essentially provides a sketch of this framework for the nonunitary case. But this work is still to be done... so not sure if I should write it just yet.}
+
+
+\greyson{say somewhere that all tqfts in this article always means local, i.e., fully extended.}
+
+% \greyson{say how Walker works from a top-down approach, while others work with a bottom-up approach. ie start at top, where we have structure (ie dagger), then descend lower and lower, getting higher and higher categories, until we reach the point; on the other hand, the functorial picture assigns to the point an n-category, which then generates the whole thing. Actually maybe these are just two ways of looking at these and this argument would apply equally to both...}
+
+Several of Walker's formulas for gluing also hint at topological interpretations of normalization factors appearing in \cite{3Hilb}.
+
+In the remainder of this section we will outline this article. In \greyson{ref}, we define a system of fields, local relations, and the corresponding ``$(n+\varepsilon)$D TQFT'' this gives, where the name alludes to the fact that without the path integral we do not yet have a full $(n+1)$D theory (aside from mapping cones via the action of homeomorphisms).  
+
+In \greyson{ref}, we show that 2-Hilbert spaces correspond to 2D unitary TQFTs.
+
+\begin{restatable}{theoremalpha}{twoDimUnitaryCobordismHypothesis}
+\label{def:2D Unitary Cobordism Hypothesis}
+\begin{lst} 
+\item\label{2UTQFT->2Hilb} From a 2D unitary TQFT $(\F,\U,z)$, the cylinder 1-catgory $Z(\pt)$ is a 2-Hilbert space whose unitary trace is induced by the path integral $z$. 
+
+\item\label{2Hilb->2UTQFT}Conversely, given a 2-Hilbert space $(\cA,\Tr^\cA)$, the induced $(n+\e)$D TQFT (cf. \greyson{ref}) is a 2-Hilbert space whose path integral is constructed from $\Tr^\cA$ via \cref{unitaryWalkerTheorem}.
+
+\item \greyson{todo: make this statement type-check, and then prove it...} Moreover, when viewing 2D unitary TQFTs as forming a (ordinary) 2-category, this correspondence gives an isometric equivalence of 3-Hilbert spaces $2\Hilb\cong \Hstar\mathsf{Alg}$.
+
+\item \greyson{todo: make this statement type-check, and then prove it...} Conversely, when viewing 2-Hilbert spaces as forming a disk-like 2-category, namely the disk-like unitary 2-category of sphere modules from \cite[§6.7]{MW12} , this construction preserves the top-dimensional (i.e., $(2+1)$D) pairings, which in this case are just the unitary traces. 
+\end{lst}
+\end{restatable}
+
+\greyson{given minor intro on 3hilbs}
+
+
+\begin{restatable}{definitionalpha}{threeDimUnitaryCobordismHypothesis}
+\label{3DunitaryCobordismHypothesis}
+\begin{lst}
+    \item\label{3UTQFT->3Hilb} From a 3D unitary TQFT $(\F,\U,z)$, the cylinder 2-category $Z(\pt)$ is a 3-Hilbert space whose faithful spherical trace is induced by the path integral $z$.
+    \item\label{3Hilb->3UTQFT} Conversely, given a 3-Hilbert space $(\fX,\vee,\Psi)$, the induced $(n+\e)$D TQFT (cf. \greyson{ref}) is a 2-Hilbert space whose path integral is constructed from $\Tr^\cA$ via \greyson{ref: unitary Walker's Theorem}.
+    \item\greyson{todo: substitute this}\footnote{Once the correct notion of 4-Hilbert space is decided, we expect that when viewing 3D unitary TQFTs as forming a (ordinary) 3-category, this correspondence gives an isometric equivalence of 4-Hilbert spaces $3\Hilb\cong \Hstar\mathsf{mFC}$.}
+    \item Conversely, when viewing 3-Hilbert spaces as forming a disk-like 3-category, namely the disk-like unitary 2-category of sphere modules from \cite[§6.7]{MW12}, this construction preserves the top-dimensional (i.e., $(3+1)$D) pairings, which in this case are just the faithful spherical traces. 
+\end{lst}
+\end{restatable}
+
+As fully dualizable $n$-categories correspond to $(n+1)$D TQFTs, we can view this to mean fully dualizable $n$-categories have enough structure to define a trace, i.e., the path integral, on top-dimensional fields. In the unitary case, then, one would expect the local part of an $(n+1)$D \emph{unitary} TQFT to model the correct notion of a fully \textit{unitarily} dualizable \emph{unitary} $n$-category equipped with a \textit{unitary} trace. This trace can be thought of as providing ``unitary duality in dimension $(n+1)$''. 
+
+% We will see that we can think of this as equipping the $n$-category that describes the local behavior of the TQFT and equipping it with a trace, which in 
+
+\begin{restatable}[Unitary disk-like \texorpdfstring{$n$}{n}-category]{definitionalpha}{defUnitaryDiskLikeNCategory}
+\label{def:Unitary disk-like n-category}
+\greyson{todo: change z's to psi's}
+A \defn{unitary disk-like $n$-category} $(\C,\PI_{(-)\times I})$ is a disk-like $n$-category $\C$ together with a collection
+\[
+    \PI_{(-)\times I}\coloneq \set{\PI_{X\times I}\in \C(X,c)^\vee}{X\in\D_n,c\in\C(\partial X)}
+\]
+of linear functionals
+$z_{X\times I}\colon\C(S^n,\phi)\to \bC$ such that the canonical left $\A_{\C}(\partial X)$-module maps $\varphi_{X,c}\colon\bar{\C(X,c)}\to\C(X,c)^\vee$ determined by
+\[
+    \bar a\eqcolon \ket{\bar a}_{X,c}\overset{\varphi_{X,c}}\longmapsto{}_{X,c}\bra{a}
+\]
+satisfy the following properties.
+\begin{lst}
+\item (Nondegenerate) ${}_{X,c}\bkt{a}{b}\coloneq z_{X\times I,c}(\fcj a\cup b)$ are isomorphisms.
+\item (Positive) $\bkt {a}{a}_{X,c}\geq 0$ for all $a\in\C(X,c)$.
+\item (Hermitian) $\bkt{a}{b}_{X,c}=\bar{\bkt{b}{a}_{X,c}}$ for all $a,b\in\C(X,c)$.
+\item (Compatible) The $z_{X\times I}$'s are compatible in the sense of \cite[§6.7]{MW12}.(\greyson{todo (in notebook) but prob not in intro}.
+\end{lst}
+By \cite[Exercise I.1.3.22]{UQSL} (which says the data of a Hilbert space is equivalent to a vector space $V$ equipped with an isomorphism $\varphi\colon \bar V\overset\cong\to V^\vee\coloneq \Hom(V\to \bC)$ such that (i) (Hermitian) for every $\xi,\eta\in V$, $\varphi(\xi)(\eta)\geq 0$ and (ii) (Positive) for every $\xi\in V$, $\varphi(\bar\xi)(\xi)\geq 0$ in $\bC$), this implies that the (finite-dimensional) vector space $\C(X,c)$ equipped with the inner product $\bkt{-}{-}_{X,c}$ is a Hilbert space and that $\bkt{-}{-}_{X,c}$ is compatible with the induced dual pairing ${}_{X,c}\bkt--$ on $\C(X,c)^\vee$.
+% makes them finite-dimensional Hilbert spaces as well. 
+\end{restatable}
+Here $\D_n$ denotes the collection of $n$-balls, $c$ is a ``boundary condition'', i.e., a field on $\partial X$, and $\C(X,c)$ is the vector space of fields on $X$ with boundary $c$.
+\greyson{comment how the local relations are built into the def of $\C$ rather than carried along as a subspace}
+% \greyson{We retain the notion of fields on manifolds and require that the vector spaces for n-manifolds be constructed out of these fields by local relations (or, dually, local projections). These local relations carry the same information as the path integral of the $n+1$-dimensional ball $B^{n+1}$ with all possible boundary conditions. \greyson{todo...}
+
+\greyson{question: (hopefully) the Morita $H*$-cat satisfies the caompatibility condition...}

@@ -11,70 +11,283 @@
     <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
     <script>
     window.MathJax = {
-        tex: {
-            inlineMath: [['$', '$']],
-            displayMath: [['\\[', '\\]']],
-            macros: {
-                // Category theory
-                cC: '\\mathcal{C}',
-                cD: '\\mathcal{D}',
-                cF: '\\mathcal{F}',
-                cG: '\\mathcal{G}',
-                cH: '\\mathcal{H}',
-                cL: '\\mathcal{L}',
-                cM: '\\mathcal{M}',
-                cP: '\\mathcal{P}',
-                cU: '\\mathcal{U}',
-                Obj: '\\operatorname{Obj}',
-                Hom: '\\operatorname{Hom}',
-                Mor: '\\operatorname{Mor}',
-                End: '\\operatorname{End}',
-                Aut: '\\operatorname{Aut}',
-                id: '\\mathrm{id}',
-
-                // Blackboard bold
-                bR: '\\mathbb{R}',
-                bC: '\\mathbb{C}',
-                bZ: '\\mathbb{Z}',
-                bN: '\\mathbb{N}',
-                bQ: '\\mathbb{Q}',
-                bbR: '\\mathbb{R}',
-                bbC: '\\mathbb{C}',
-                bbZ: '\\mathbb{Z}',
-                bbN: '\\mathbb{N}',
-                bbQ: '\\mathbb{Q}',
-
-                // Delimiters
-                bkt: ['\\langle #1 \\middle| #2 \\rangle', 2],
-                abs: ['\\left| #1 \\right|', 1],
-                norm: ['\\left\\| #1 \\right\\|', 1],
-
-                // Categories
-                Set: '\\mathbf{Set}',
-                Grp: '\\mathbf{Grp}',
-                Top: '\\mathbf{Top}',
-                Vec: '\\mathbf{Vec}',
-
-                // Operators
-                colim: '\\operatorname{colim}',
-                Ext: '\\operatorname{Ext}',
-                Tor: '\\operatorname{Tor}',
-                Spec: '\\operatorname{Spec}',
-                im: '\\operatorname{im}',
-                coker: '\\operatorname{coker}',
-                coloneqq: '\\mathrel{\\vcenter{:}}=',
-                coloneq: '\\mathrel{\\vcenter{:}}=',
-
-                // TikZ-like (limited in HTML)
-                to: '\\rightarrow',
-                injto: '\\hookrightarrow',
-                surjto: '\\twoheadrightarrow'
-            }
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true,
+        macros: {
+        "cA": "\\mathcal{A}",
+        "bbA": "\\mathbb{A}",
+        "sfA": "\\mathsf{A}",
+        "fA": "\\mathfrak{A}",
+        "bA": "\\mathbf{A}",
+        "sA": "\\mathscr{A}",
+        "eA": "\\mathcal{A}",
+        "cB": "\\mathcal{B}",
+        "bbB": "\\mathbb{B}",
+        "sfB": "\\mathsf{B}",
+        "fB": "\\mathfrak{B}",
+        "bB": "\\mathbf{B}",
+        "sB": "\\mathscr{B}",
+        "eB": "\\mathcal{B}",
+        "cC": "\\mathcal{C}",
+        "bbC": "\\mathbb{C}",
+        "sfC": "\\mathsf{C}",
+        "fC": "\\mathfrak{C}",
+        "bC": "\\mathbf{C}",
+        "sC": "\\mathscr{C}",
+        "eC": "\\mathcal{C}",
+        "cD": "\\mathcal{D}",
+        "bbD": "\\mathbb{D}",
+        "sfD": "\\mathsf{D}",
+        "fD": "\\mathfrak{D}",
+        "bD": "\\mathbf{D}",
+        "sD": "\\mathscr{D}",
+        "eD": "\\mathcal{D}",
+        "cE": "\\mathcal{E}",
+        "bbE": "\\mathbb{E}",
+        "sfE": "\\mathsf{E}",
+        "fE": "\\mathfrak{E}",
+        "bE": "\\mathbf{E}",
+        "sE": "\\mathscr{E}",
+        "eE": "\\mathcal{E}",
+        "cF": "\\mathcal{F}",
+        "bbF": "\\mathbb{F}",
+        "sfF": "\\mathsf{F}",
+        "fF": "\\mathfrak{F}",
+        "bF": "\\mathbf{F}",
+        "sF": "\\mathscr{F}",
+        "eF": "\\mathcal{F}",
+        "cG": "\\mathcal{G}",
+        "bbG": "\\mathbb{G}",
+        "sfG": "\\mathsf{G}",
+        "fG": "\\mathfrak{G}",
+        "bG": "\\mathbf{G}",
+        "sG": "\\mathscr{G}",
+        "eG": "\\mathcal{G}",
+        "cH": "\\mathcal{H}",
+        "bbH": "\\mathbb{H}",
+        "sfH": "\\mathsf{H}",
+        "fH": "\\mathfrak{H}",
+        "bH": "\\mathbf{H}",
+        "sH": "\\mathscr{H}",
+        "eH": "\\mathcal{H}",
+        "cI": "\\mathcal{I}",
+        "bbI": "\\mathbb{I}",
+        "sfI": "\\mathsf{I}",
+        "fI": "\\mathfrak{I}",
+        "bI": "\\mathbf{I}",
+        "sI": "\\mathscr{I}",
+        "eI": "\\mathcal{I}",
+        "cJ": "\\mathcal{J}",
+        "bbJ": "\\mathbb{J}",
+        "sfJ": "\\mathsf{J}",
+        "fJ": "\\mathfrak{J}",
+        "bJ": "\\mathbf{J}",
+        "sJ": "\\mathscr{J}",
+        "eJ": "\\mathcal{J}",
+        "cK": "\\mathcal{K}",
+        "bbK": "\\mathbb{K}",
+        "sfK": "\\mathsf{K}",
+        "fK": "\\mathfrak{K}",
+        "bK": "\\mathbf{K}",
+        "sK": "\\mathscr{K}",
+        "eK": "\\mathcal{K}",
+        "cL": "\\mathcal{L}",
+        "bbL": "\\mathbb{L}",
+        "sfL": "\\mathsf{L}",
+        "fL": "\\mathfrak{L}",
+        "bL": "\\mathbf{L}",
+        "sL": "\\mathscr{L}",
+        "eL": "\\mathcal{L}",
+        "cM": "\\mathcal{M}",
+        "bbM": "\\mathbb{M}",
+        "sfM": "\\mathsf{M}",
+        "fM": "\\mathfrak{M}",
+        "bM": "\\mathbf{M}",
+        "sM": "\\mathscr{M}",
+        "eM": "\\mathcal{M}",
+        "cN": "\\mathcal{N}",
+        "bbN": "\\mathbb{N}",
+        "sfN": "\\mathsf{N}",
+        "fN": "\\mathfrak{N}",
+        "bN": "\\mathbf{N}",
+        "sN": "\\mathscr{N}",
+        "eN": "\\mathcal{N}",
+        "cO": "\\mathcal{O}",
+        "bbO": "\\mathbb{O}",
+        "sfO": "\\mathsf{O}",
+        "fO": "\\mathfrak{O}",
+        "bO": "\\mathbf{O}",
+        "sO": "\\mathscr{O}",
+        "eO": "\\mathcal{O}",
+        "cP": "\\mathcal{P}",
+        "bbP": "\\mathbb{P}",
+        "sfP": "\\mathsf{P}",
+        "fP": "\\mathfrak{P}",
+        "bP": "\\mathbf{P}",
+        "sP": "\\mathscr{P}",
+        "eP": "\\mathcal{P}",
+        "cQ": "\\mathcal{Q}",
+        "bbQ": "\\mathbb{Q}",
+        "sfQ": "\\mathsf{Q}",
+        "fQ": "\\mathfrak{Q}",
+        "bQ": "\\mathbf{Q}",
+        "sQ": "\\mathscr{Q}",
+        "eQ": "\\mathcal{Q}",
+        "cR": "\\mathcal{R}",
+        "bbR": "\\mathbb{R}",
+        "sfR": "\\mathsf{R}",
+        "fR": "\\mathfrak{R}",
+        "bR": "\\mathbf{R}",
+        "sR": "\\mathscr{R}",
+        "eR": "\\mathcal{R}",
+        "cS": "\\mathcal{S}",
+        "bbS": "\\mathbb{S}",
+        "sfS": "\\mathsf{S}",
+        "fS": "\\mathfrak{S}",
+        "bS": "\\mathbf{S}",
+        "sS": "\\mathscr{S}",
+        "eS": "\\mathcal{S}",
+        "cT": "\\mathcal{T}",
+        "bbT": "\\mathbb{T}",
+        "sfT": "\\mathsf{T}",
+        "fT": "\\mathfrak{T}",
+        "bT": "\\mathbf{T}",
+        "sT": "\\mathscr{T}",
+        "eT": "\\mathcal{T}",
+        "cU": "\\mathcal{U}",
+        "bbU": "\\mathbb{U}",
+        "sfU": "\\mathsf{U}",
+        "fU": "\\mathfrak{U}",
+        "bU": "\\mathbf{U}",
+        "sU": "\\mathscr{U}",
+        "eU": "\\mathcal{U}",
+        "cV": "\\mathcal{V}",
+        "bbV": "\\mathbb{V}",
+        "sfV": "\\mathsf{V}",
+        "fV": "\\mathfrak{V}",
+        "bV": "\\mathbf{V}",
+        "sV": "\\mathscr{V}",
+        "eV": "\\mathcal{V}",
+        "cW": "\\mathcal{W}",
+        "bbW": "\\mathbb{W}",
+        "sfW": "\\mathsf{W}",
+        "fW": "\\mathfrak{W}",
+        "bW": "\\mathbf{W}",
+        "sW": "\\mathscr{W}",
+        "eW": "\\mathcal{W}",
+        "cX": "\\mathcal{X}",
+        "bbX": "\\mathbb{X}",
+        "sfX": "\\mathsf{X}",
+        "fX": "\\mathfrak{X}",
+        "bX": "\\mathbf{X}",
+        "sX": "\\mathscr{X}",
+        "eX": "\\mathcal{X}",
+        "cY": "\\mathcal{Y}",
+        "bbY": "\\mathbb{Y}",
+        "sfY": "\\mathsf{Y}",
+        "fY": "\\mathfrak{Y}",
+        "bY": "\\mathbf{Y}",
+        "sY": "\\mathscr{Y}",
+        "eY": "\\mathcal{Y}",
+        "cZ": "\\mathcal{Z}",
+        "bbZ": "\\mathbb{Z}",
+        "sfZ": "\\mathsf{Z}",
+        "fZ": "\\mathfrak{Z}",
+        "bZ": "\\mathbf{Z}",
+        "sZ": "\\mathscr{Z}",
+        "eZ": "\\mathcal{Z}",
+        "fa": "\\mathfrak{a}",
+        "fb": "\\mathfrak{b}",
+        "fc": "\\mathfrak{c}",
+        "fd": "\\mathfrak{d}",
+        "fe": "\\mathfrak{e}",
+        "ff": "\\mathfrak{f}",
+        "fg": "\\mathfrak{g}",
+        "fh": "\\mathfrak{h}",
+        "fi": "\\mathfrak{i}",
+        "fj": "\\mathfrak{j}",
+        "fk": "\\mathfrak{k}",
+        "fl": "\\mathfrak{l}",
+        "fm": "\\mathfrak{m}",
+        "fn": "\\mathfrak{n}",
+        "fo": "\\mathfrak{o}",
+        "fp": "\\mathfrak{p}",
+        "fq": "\\mathfrak{q}",
+        "fr": "\\mathfrak{r}",
+        "fs": "\\mathfrak{s}",
+        "ft": "\\mathfrak{t}",
+        "fu": "\\mathfrak{u}",
+        "fv": "\\mathfrak{v}",
+        "fw": "\\mathfrak{w}",
+        "fx": "\\mathfrak{x}",
+        "fy": "\\mathfrak{y}",
+        "fz": "\\mathfrak{z}",
+        "bar": "\\overline",
+        "undC": "\\underline{\\mathcal{C}}",
+        "Obj": "\\operatorname{Obj}",
+        "Hom": "\\operatorname{Hom}",
+        "Mor": "\\operatorname{Mor}",
+        "End": "\\operatorname{End}",
+        "Aut": "\\operatorname{Aut}",
+        "id": "\\mathrm{id}",
+        "pt": "\\mathrm{pt}",
+        "Tr": "\\operatorname{Tr}",
+        "eval": "\\operatorname{eval}",
+        "A": "\\operatorname{Sk}",
+        "F": "\\mathcal{F}",
+        "U": "\\mathcal{U}",
+        "orev": "\\overline",
+        "fcj": "\\widehat",
+        "e": "\\varepsilon",
+        "glu": "\\mathrm{gl}",
+        "greyson": ["\\bgroup\\color{violet}[[#1]]\\egroup", 1],
+        "todo": ["\\textbf{[[}\\textsl{#1}\\textbf{]]}", 1],
+        "bkt": ["\\left\\langle #1 \\middle| #2 \\right\\rangle", 2],
+        "pbkt": ["\\left( #1 \\middle| #2 \\right)", 2],
+        "abs": ["\\left| #1 \\right|", 1],
+        "norm": ["\\left\\| #1 \\right\\|", 1],
+        "set": ["\\left\\{ #1 \\right\\}", 1],
+        "bra": ["\\left\\langle #1 \\right|", 1],
+        "ket": ["\\left| #1 \\right\\rangle", 1],
+        "braket": ["\\left\\langle #1 \\middle| #2 \\right\\rangle", 2],
+        "Set": "\\mathbf{Set}",
+        "Grp": "\\mathbf{Grp}",
+        "Top": "\\mathbf{Top}",
+        "Vec": "\\mathbf{Vec}",
+        "Hilb": "\\mathbf{Hilb}",
+        "Sk": "\\operatorname{Sk}",
+        "colim": "\\operatorname{colim}",
+        "Ext": "\\operatorname{Ext}",
+        "Tor": "\\operatorname{Tor}",
+        "Spec": "\\operatorname{Spec}",
+        "im": "\\operatorname{im}",
+        "coker": "\\operatorname{coker}",
+        "coloneqq": "\\mathrel{\\vcenter{:}}=",
+        "coloneq": "\\mathrel{\\vcenter{:}}=",
+        "eqqcolon": "=\\mathrel{\\vcenter{:}}",
+        "endto": "\\to",
+        "to": "\\rightarrow",
+        "injto": "\\hookrightarrow",
+        "surjto": "\\twoheadrightarrow",
+        "longto": "\\longrightarrow",
+        "lto": "\\longrightarrow",
+        "mapsfrom": "\\mathrel{\\reflectbox{\\ensuremath{\\mapsto}}}",
+        "Ising": "\\mathsf{Ising}",
+        "a": "\\alpha",
+        "b": "\\beta",
+        "d": "\\delta",
+        "g": "\\gamma"
         }
+      },
+      startup: {
+        typeset: true
+      }
     };
     </script>
-    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
 </head>
 <body>
     <div class="top-nav">
@@ -90,7 +303,7 @@
             <a href="../pdfs/parallel transport via a connection.pdf" class="nav-btn" title="View PDF">
                 <span>PDF</span>
             </a>
-            <a href="file:///Users/greysonwesley/Desktop/workflow/wiki/parallel transport via a connection.md" class="nav-btn" title="Edit in Obsidian">
+            <a href="obsidian://open?path=/Users/greysonwesley/Desktop/workflow/wiki/parallel transport via a connection.md" class="nav-btn" title="Edit in Obsidian">
                 <span>MD</span>
             </a>
         </div>
@@ -99,7 +312,7 @@
     <h1>Parallel Transport via a Connection</h1>
     <div class="metadata">
         <strong>Last modified:</strong> December 11, 2025 at  8:05 PM ET<br>
-        <strong>Created:</strong> 2025-12-10<br>
+        <strong>Created:</strong> August 10, 2025 at 10:31 PM ET<br>
         <strong>Tags:</strong> differential-geometry, gauge-theory, physics
     </div>
     <div class="content">
@@ -108,16 +321,16 @@
             <h3>Contents</h3>
             <ul>
                 <li><a href="#deriving-the-path-ordered-exponential">Deriving the Path-Ordered Exponential</a></li>
-                <li><a href="#special-cases-of-texorpdfstring-mathcal-p">Special cases of \texorpdfstring{$\mathcal{P</a></li>
+                <li><a href="#special-cases-of-p">Special cases of $\mathcal{P}\exp$</a></li>
             </ul>
         </div>
         <p>From a <a href="linear connection in a vector bundle.html">connection</a> we can give an explicit formula for a parallel transporter associated to any curve $\gamma$ in $M$. Namely, from $\nabla$ we define $\parallel^{\gamma}w_{0}$ for a vector in the fiber, $w_{0}\in E_{\gamma(0)}$, so that $\nabla_{\dot\gamma(t)}w=0$ for all $t$, subject to the constraint $w$ at $t=0$ is the given vector $w_{0}$. That is, we desire a vector field $w\in \mathfrak{X}(\gamma)$ satisfying these conditions.</p>
 
-<p>Without loss of generality, we may suppose that $\gamma\subset M$ is contained entirely in a single local trivialization of $E$ on $M$, say $E|_{U}\cong U\times V$ for some $k$-vector space $V$, then such a section $w$ as discussed earlier exists and is unique by the <a href="Existence and Uniqueness Theorem for ODEs.html">Existence and Uniqueness Theorem for ODEs</a>. Indeed, if not (and more generally if $\gamma$ is only piecewise smooth), then we can find the points at which it is not smooth, break it up into maximal smooth pieces $(t_i, t_{i+1}] \subset M$, where $1 \leq i < n$, and define the holonomy by \[ \mathrm{hol}_{\nabla}(\gamma) = \mathrm{hol}_{\nabla}(\gamma_n) \cdots \mathrm{hol}_{\nabla}(\gamma_1). \] In other words, we parallel translate a vector along a piecewise smooth path by parallel translating it along one piece at a time. As $M$ (or at least the closure of an open neighborhood of $\gamma$) is compact, there are finitely many open sets covering $\gamma$, so we can always do this.</p>
+<p>Without loss of generality, we may suppose that $\gamma\subset M$ is contained entirely in a single local trivialization of $E$ on $M$, say $E|_{U}\cong U\times V$ for some $k$-vector space $V$, then such a section $w$ as discussed earlier exists and is unique by the <a href="Existence and Uniqueness Theorem for ODEs.html">Existence and Uniqueness Theorem for ODEs</a>. Indeed, if not (and more generally if $\gamma$ is only piecewise smooth), then we can find the points at which it is not smooth, break it up into maximal smooth pieces $(t_i, t_{i+1}] \subset M$, where $1 \leq i &lt; n$, and define the holonomy by \[ \mathrm{hol}_{\nabla}(\gamma) = \mathrm{hol}_{\nabla}(\gamma_n) \cdots \mathrm{hol}_{\nabla}(\gamma_1). \] In other words, we parallel translate a vector along a piecewise smooth path by parallel translating it along one piece at a time. As $M$ (or at least the closure of an open neighborhood of $\gamma$) is compact, there are finitely many open sets covering $\gamma$, so we can always do this.</p>
 
 <h2 id="deriving-the-path-ordered-exponential">Deriving the Path-Ordered Exponential</h2>
 
-<p>Using the <a href="linear connection in a vector bundle.html">local expression of connections</a> $\nabla =\mathrm{d}+A$, where $\mathrm{d}$ is the (standard Euclidean) <a href="exterior derivative.html">exterior derivative</a> and $A$ is the <a href="linear connection 1-form.html">Linear Connection 1-Form</a> in this local trivialization, the defining equation $\nabla_{\dot\gamma(t)}w=0$ becomes \[ \dot w_{t}=-A(\dot \gamma(t))\,w_{t}. \]</p>
+<p>Using the <a href="linear connection in a vector bundle.html">local expression of connections</a> $\nabla =\mathrm{d}+A$, where $\mathrm{d}$ is the (standard Euclidean) <a href="exterior derivative.html">exterior derivative</a> and $A$ is the <a href="linear connection 1-form.html">linear connection 1-form</a> in this local trivialization, the defining equation $\nabla_{\dot\gamma(t)}w=0$ becomes \[ \dot w_{t}=-A(\dot \gamma(t))\,w_{t}. \]</p>
 
 
 <ul>
@@ -136,7 +349,7 @@
 
 <p>Notice that the formula we found for $w_{t}$ above is essentially integrating over an $n$-simplex. As there are $n!$ simplexes in the cube, by the symmetry of relabeling the dummy integration variables, the integral over each simplex after reordering the bracketed operators is the same, so \begin{align*} w_{t}&=\sum_{n=0}^\infty(-1)^{n}\!\left[\int_0^t \!\!\mathrm{d}t_1\,A(\dot\gamma(t_1))\right]\left[\int_0^{t_1}\!\!\mathrm{d}t_{2}\,A(\dot\gamma(t_{2}))\right]\cdots \left[\int_0^{t_{n-1}} \!\!\mathrm{d}t_n \,A(\dot\gamma(t_n))\right]w_{0} \\ &=\sum_{n=0}^{\infty}\frac{(-1)^{n}}{n!}\left[\int_{(t_1,\dots,t_{n-1})\in [0,t]^n}\!\!\mathrm{d}\mathrm{vol} \, \mathcal{P}\left\{A(\dot\gamma(t_{1}))\cdots A(\dot\gamma(t_{n}))\right\}\right]w_{0} \\ &=\sum_{n=0}^{\infty}\frac{(-1)^{n}}{n!}\mathcal{P} \left\{\left[\int_0^t A(\dot\gamma (s))\,\mathrm{d}s \right]^{n}\right\} \\ &\eqqcolon\mathcal{P}\exp\left[-\!\int_{0}^{t}A(\dot\gamma(s))\,\mathrm{d}s\right] \end{align*} where the power of $n$ in the penultimate line means we take $n$ copies of the operator in brackets, put them side-by-side, and then $\mathcal{P}$-order the factors in the parameter $s$ over $t_1,\dots,t_{n-1}\in [0,t]$. We call $\mathcal{P}\exp\left[-\!\int_{0}^{t}A(\dot\gamma(s))\,\mathrm{d}s\right]$ the <strong>path-ordered exponential</strong> of $A$ along $\gamma$.</p>
 
-<h2 id="special-cases-of-texorpdfstring-mathcal-p">Special cases of \texorpdfstring{$\mathcal{P</h2>\exp$}{Pexp}}
+<h2 id="special-cases-of-p">Special cases of $\mathcal{P}\exp$</h2>
 <p>The path-ordered exponential $\mathcal{P}\exp$ reduces to the ordinary exponential $\exp$ in special cases.</p>
 
 <ul class="nosep">
@@ -149,7 +362,7 @@
 
 <p>We can finally conclude that for a smooth vector bundle $E\to M$ and a smooth curve $\gamma\subset M$ contained in a local trivialization of $E$ over $U$ wherein $\nabla=\mathrm{d}+A$, we have \[ \mathrm{hol}_{\nabla}(\gamma)=\mathcal{P}\mathrm{e}^{-\!\oint_{\kern-.3ex\scriptscriptstyle\gamma}{\scriptstyle\kern-.2ex A}}\,w_{0}. \]</p>
 
-<div class="see-also"><strong>See also:</strong> <a href="holonomy.html">Holonomy</a>, <a href="covariant derivative.html">Covariant Derivative</a>, <a href="vector fields on curves and parallelism.html">Vector Fields On Curves And Parallelism</a>, <a href="geodesic.html">Geodesic</a>, <a href="torsion of a connection.html">Torsion Of A Connection</a></div>
+<div class="see-also"><strong>See also:</strong> <a href="holonomy.html">holonomy</a>, <a href="covariant derivative.html">covariant derivative</a>, <a href="vector fields on curves and parallelism.html">vector fields on curves and parallelism</a>, <a href="geodesic.html">geodesic</a>, <a href="torsion of a connection.html">torsion of a connection</a></div>
     </div>
 
     <div class="linked-notes">

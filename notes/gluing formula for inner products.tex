@@ -1,93 +1,179 @@
 \documentclass{gwiki}
 
-\Title{Gluing formula for inner products}
+
+\Title{gluing formula for inner products}
 \Tags{TQFT, unitary-TQFT, gluing}
-\CreatedOn{2025-12-02 19:52}
-\ModifiedOn{December 2, 2025 at 8:36 pm ET}
+
+% \Summary{}
+\newcommand{\A}{\mathrm{Sk}}
+\newcommand{\F}{\eF}
+\newcommand{\orev}{\overline}
+\newcommand{\fcj}{\widehat}
+\renewcommand{\U}{\eU}
+\newcommand{\M}{\eM}
+\newcommand{\undC}{\smash[b]{\text{$\underset{\smash{\raisebox{.275em}{$\scriptstyle\kern.1ex\rightarrow$}}}{\smash{\cC}}$}}}
+\renewcommand{\bkt}[2]{\langle #1|#2 \rangle}
 
 \begin{document}
 
 \NoteHeader
 
 \begin{lemma}[Gluing formula for inner products]
+\label{lem:codim-1 gluing formula}
 Let $(\mathcal{F}, \mathcal{U}, z)$ be an $(n{+}1)$-dimensional unitary TQFT. Suppose $X \in \mathcal{M}_n$ has boundary
 \[
 \partial X = (\overline{Y} \sqcup Y)_{\overline{\partial Y} \sqcup \partial Y} \cup Q
 \]
 for $Y, Q \in \mathcal{M}_{n-1}$. Fix $d \in \mathcal{F}(\partial Y)$, $q \in \mathcal{F}(Q; \overline{d} \sqcup d)$, and $y \in \mathcal{F}(Y, d)$. Then for $f, f' \in \mathcal{A}(X, (\overline{y} \sqcup y) \bullet q)$,
 \[
-\langle f_{\mathrm{gl}}, f'_{\mathrm{gl}} \rangle_{X_{\mathrm{gl}}, q_{\mathrm{gl}}}
+\langle f_\glu, f'_\glu \rangle_{X_\glu, q_\glu}
 = \sum_{s \in \mathrm{Irr}} \sum_{k=1}^{n_s}
 \frac{\langle f \cup e_s^{(k)}, f' \cup e_s^{(k)} \rangle_{X, (\overline{y} \sqcup y) \bullet q}}{\langle e_s^{(k)}, e_s^{(k)} \rangle_{Y \times I, \overline{y} \sqcup y}},
 \]
 where $\mathrm{Irr} = \mathrm{Irr}(\mathsf{Rep}(\mathrm{End}_{\mathcal{A}(Y,d)}(y)))$, and $\{e_s^{(k)}\}$ is a complete set of orthogonal minimal idempotents for the unitary algebra $\mathrm{End}_{\mathcal{A}(Y,d)}(y)$.
 \end{lemma}
 
+
+The next result shows how gluing $n$-manifolds affects the TQFT inner products.
+
+% \begin{lemma}[{{\cite[6.2.5]{W06}, \cite[Lem. 4.2.4]{W21}}}]
+% \label{4.2.4}
+% Let $(\F,\U,z)$ be an $(n+1)$D unitary TQFT. Suppose $X\in\M_n$ has boundary $\partial X = (\orev{Y}\sqcup Y)_{\orev{\partial Y}\sqcup \partial Y}\cup Q$ for some $Y,Q\in\M_{n-1}$, and let $d\in\F(\partial Y)$ and $q\in\F(Q,\fcj d\sqcup d)$. (See \greyson{fig}.) Then for any $y\in\F(Y,d)$
+% and any $f, f' \in \A(X, (\fcj y\sqcup y)\bullet_{\fcj d\sqcup d}q)$,
+% \[
+% \bkt{f_\glu}{f'_\glu}_{X_\glu,q_\glu}
+% =
+% \sum_{s \in \mathrm{Irr}(\Rep\End_{\A(Y,d)}(y))} \sum_{k=1}^{n_s} 
+% \frac{\bkt{f\cup e_s^{(k)}}{f'\cup e_s^{(k)}}_{X,(\fcj y\sqcup y)\bullet_{\fcj d\sqcup d}q}}{\bkt{e_s^{(k)}}{e_s^{(k)}}_{Y \times I,\fcj y\sqcup y}}
+% \]
+% where the outer sum is indexed over isomorphism classes of simple modules of $\End_{\A(Y,d)}(y)$, $n_s$ is the dimension of the simple module $s$, and $\{e_s^{(k)}\}$ is a system of multimatrix units (orthogonal minimal idempotents) for the unitary algebra $\End_{\A(Y,d)}(y)$.
+% \end{lemma}
+
+% \begin{pf}
+% \greyson{check this proof}
+% % Let $X\in \M_n$, $Y,Q\in\M_{n-1}$, $q\in\F(Q)$, $y\in\F(Y,\partial q)$, and suppose $\partial X=(\orev Y\sqcup Y)\cup Q$. We want to compute $\bkt{f_\glu}{f_\glu'}_{X_\glu,q_\glu}$ for $f,f'\in \A(X,q\cup (\fcj y\sqcup y))$. As the gluing locus is $Y\times I$, we sum over an orthogonal basis of $\A(Y\times I,\fcj y\cup_{\partial q} y)=\End_{\A(Y,\partial q)}(y)$. 
+% Since $\End_{\A(Y,d)}(y)$ is a finite-dimensional unitary algebra, it admits a complete set of central, minimal, orthogonal projections $e_s^{(k)}\colon y\to y$, indexed over $k=1,\dots,n_s$ and over simples $s\in\Irr(\End_{\A(Y,d)}(y))$. Thus $e_s^{(k)}\circ e_t^{(\ell)}=\delta_{st}\delta_{k\ell}e_s^{(k)}$, so
+% $$
+%     \bkt{e_s^{(k)}}{e_t^{(\ell)}}_{Y\times I,\fcj y\cup_{\partial q}y}
+%     =
+%     z_{Y\times I\times I}(\fcj{e_{s}^{(k)}}\bullet_{\fcj y\cup_{\partial q} y} e_t^{(\ell)})
+%     =
+%     \delta_{st}\delta_{k\ell}\bkt{e_s^{(k)}}{e_s^{(k)}},
+% $$
+% which is strictly positive when $s=t$ and $k=\ell$ by positive-definiteness, and zero otherwise. Thus $\{e_s^{(k)}\}_{s,k}$ is an orthogonal basis of $\A(Y\times I,\fcj y\cup_{\partial q} y)$.
+
+% Applying the gluing formula with corners for the gluing $X\times I\to (X\times I)_\glu=X_\glu\times I$, we find
+% \[
+% \bkt{f_\glu}{f_\glu'}=z_{X_\glu\times I}(\fcj {f_\glu}\bullet_{q_\glu}f_\glu')=\sum_{s,k}\frac{z_{X\times I}((\fcj{f}\cup\fcj{e_s^{(k)}})\bullet (f'\cup e_s^{(k)}))}{\bkt{e_s^{(k)}}{e_s^{(k)}}_{Y\times I,\fcj y\cup_{\partial q} y}}.
+% \]
+% The idempotents decompose $\A(X,q\cup(\fcj y\sqcup y))$ into matrix blocks. By inserting the resolution of identity $\id_y = \sum_{s,k} e_s^{(k)}$ on both boundaries, any $f$ can be written as
+% $$
+% f = \sum_{s,k,t,\ell} e_s^{(k)}\cup f\cup e_t^{(\ell)},
+% $$
+% where each component lives in the space $e_s^{(k)}\cup \A(X,q\cup(\fcj y\sqcup y))\cup e_t^{(\ell)}$. Since $e_s^{(k)}\circ e_t^{(\ell)}=\delta_{st}\delta_{k\ell}e_s^{(k)}$,
+% \[
+% (e_s^{(k)}\cup f\cup e_t^{(\ell)})\cup e_{r}^{(m)} = e_s^{(k)}\cup f\cup (e_t^{(\ell)}\circ e_{r}^{(m)}) = \delta_{tr}\delta_{\ell m}\cdot e_s^{(k)}\cup f\cup e_t^{(\ell)}
+% \]
+% and similarly $e_{r}^{(m)}\cup (e_s^{(k)}\cup f\cup e_t^{(\ell)}) = \delta_{sr}\delta_{km}\cdot e_s^{(k)}\cup f\cup e_t^{(\ell)}$. Thus
+% \[
+% f\cup e_{r}^{(m)} = \sum_{s,k,t,\ell} \delta_{sr}\delta_{km}\delta_{tr}\delta_{\ell j}\cdot e_s^{(k)}\cup f\cup e_t^{(\ell)} = e_{r}^{(m)}\cup f\cup e_{r}^{(m)}.
+% \]
+% For each corner $(r,m)=(s,k)$, choose an orthogonal basis $\{f_{s,k,i}\}_i$ of $e_s^{(k)}\cup \A(X,q\cup(\fcj y\sqcup y))\cup e_s^{(k)}$. The entire collection $\{f_{s,k,i}\}_{s,k,i}$ forms an orthogonal basis of $\A(X,q\cup(\fcj y\sqcup y))$, and by the above, $f_{s,k,i}\cup e_{t}^{(\ell)}=\delta_{st}\delta_{k\ell}f_{s,k,i}$. For these basis elements,
+% \begin{align*}
+%      \bkt{\glu(f_{s,k,i})}{\glu(f_{t,\ell,j})}
+%      =\sum_{r,m}\frac{\bkt{f_{s,k,i}\cup e_{r}^{(m)}}{f_{t,\ell,j}\cup e_{r}^{(m)}}_{X,q\cup (\fcj y\sqcup y)}}{\bkt{e_{r}^{(m)}}{e_{r}^{(m)}}_{Y\times I}}
+%      =
+%      \delta_{st}\delta_{k\ell}\delta_{ij}\frac{\bkt{f_{s,k,i}}{f_{s,k,i}}_{X,(\fcj y\sqcup y)\cup q}}{\bkt{e_{s}^{(k)}}{e_{s}^{(k)}}_{Y\times I}}.
+%  \end{align*}
+% Thus, for general $f,f'$ as in the claim, we obtain
+% \[
+% \bkt{f_\glu}{f'_\glu}_{X_\glu,q_\glu}
+% =
+% \sum_{s,k}\frac{\bkt{f\cup e_s^{(k)}}{f'\cup e_s^{(k)}}_{X, (\fcj{y}\sqcup y)\bullet_{\fcj d\sqcup d} q}}{\bkt{e_s^{(k)}}{e_s^{(k)}}_{Y \times I,\fcj y\sqcup y}}.\qedhere
+% \]
+% \end{pf}
+
+
+
+
+% \begin{lemma}[{\cite[6.2.5]{W06}, \cite[Lem. 4.2.4]{W21}}]
+% \label{4.2.4}
+% Let $(\F,\U,z)$ be an $(n+1)$D unitary TQFT. Suppose $X\in\M_n$ has boundary $\partial X = (\orev{Y}\sqcup Y) \cup Q$ for some $Y,Q\in\M_{n-1}$, boundary conditions $d\in\F(\partial Y)$ and $q\in\F(Q,\fcj d\sqcup d)$, and a boundary object $y\in\F(Y,d)$.
+
+% Let $\mathcal{A}_y \coloneqq \End_{\A(Y,d)}(y)$. Then for any $f, f' \in \A(X, (\fcj y\sqcup y) \bullet q)$,
+% \[
+% \bkt{f_\glu}{f'_\glu}_{X_\glu,q_\glu}
+% =
+% \sum_{s \in \Irr(\mathcal{A}_y)} \sum_{k=1}^{n_s} 
+% \frac{\bkt{f \cup e_s^{(k)}}{f' \cup e_s^{(k)}}_{X, (\fcj y\sqcup y) \bullet q}}{\bkt{e_s^{(k)}}{e_s^{(k)}}_{Y \times I, \fcj y \sqcup y}}
+% \]
+% where the outer sum is indexed over isomorphism classes of simple modules of $\mathcal{A}_y$, $n_s = \dim(s)$, and $\{e_s^{(k)}\}$ is a system of multimatrix units (orthogonal minimal idempotents) for the unitary algebra $\mathcal{A}_y$.
+% \end{lemma}
+
 \begin{proof}
-\begin{itemize}
-\item \textbf{Setup and notation.} The gluing $X_{\mathrm{gl}}$ is obtained by identifying the copy of $\overline{Y}$ in $\partial X$ with the copy of $Y$, yielding $\partial X_{\mathrm{gl}} = Q_{\mathrm{gl}}$. After gluing, the field $(\overline{y} \sqcup y) \bullet q$ on $\partial X$ descends to the glued field $q_{\mathrm{gl}}$ on $\partial X_{\mathrm{gl}}$. For any $n$-manifold $M$ with boundary conditions $c$, the inner product on $\mathcal{A}(M;c)$ is defined by the path integral of the cylinder (\wref[Walker06, 6.2.1]{WalkerTQFTnotes06})
-\[
-\langle x, y \rangle_{M,c} = Z(M \times I)(\overline{x} \cup y),
-\]
-where $\overline{x}$ is the conjugated field on $\overline{M} = M \times \{0\}$ and $y$ sits on $M \times \{1\}$. The cylinder category $\mathcal{A}(Y;d)$ has objects $\mathcal{C}(Y;d)$ and morphisms $\mathcal{A}(Y;d)^1_{ab} = \mathcal{A}(Y \times I; \overline{a}, b)$. Composition is given by stacking cylinders. In particular, the endomorphism space
-\[
-\mathrm{End}_{\mathcal{A}(Y,d)}(y) \coloneqq \mathcal{A}(Y \times I; \overline{y}, y)
-\]
-is an associative algebra under composition.
+Since $\End_{\A(Y,d)}(y)$ is a finite-dimensional unitary algebra, it admits a complete set of central, minimal, orthogonal projections $e_s^{(k)}\colon y\to y$, indexed over $k=1,\dots,n_s$ and over simples $s\in\Irr(\Rep\End_{\A(Y,d)}(y))$. \greyson{The first sentence in the following proof uses that (i) skein spaces of $n$-manifolds are finite-dimensional vector spaces and (ii) that cylinder 1-categories are unitary (to get that the endomorphism spaces are unitary). However, the latter is proven in the proof of a lemma that itself uses finiteness; thus, to avoid circularity, \cref{lem:codim-1 gluing formula} and its proof (the proof you are reading right now) should go AFTER \cref{f.d. spaces}, AFTER the proof of \emph{unitarity} in \cref{unitary implies finite unitary cylinder 1-categories}, but BEFORE the finiteness proof of \cref{unitary implies finite unitary cylinder 1-categories}!}
 
-\item \textbf{Step 1. Applying the gluing formula to $X_{\mathrm{gl}} \times I$.} To compute $\langle f_{\mathrm{gl}}, f'_{\mathrm{gl}} \rangle_{X_{\mathrm{gl}}}$, we evaluate
+Thus $e_s^{(k)}\circ e_t^{(\ell)}=\delta_{st}\delta_{k\ell}e_s^{(k)}$, so
 \[
-\langle f_{\mathrm{gl}}, f'_{\mathrm{gl}} \rangle = Z(X_{\mathrm{gl}} \times I)(\overline{f}_{\mathrm{gl}} \bullet f'_{\mathrm{gl}}).
+    \bkt{e_s^{(k)}}{e_t^{(\ell)}}_{Y\times I,\fcj y\sqcup y}
+    =
+    z_{Y\times I\times I}(\fcj{e_{s}^{(k)}}\bullet_{\fcj y\sqcup y} e_t^{(\ell)})
+    =
+    \delta_{st}\delta_{k\ell}\bkt{e_s^{(k)}}{e_s^{(k)}},
 \]
-The manifold $X_{\mathrm{gl}} \times I$ is itself obtained by gluing $(X \times I)$ along the cylinder $Y \times I$ (since $(X \times I)_{\mathrm{gl}} = X_{\mathrm{gl}} \times I$). Applying the gluing formula \wref[Walker, (6.1.9)]{WalkerTQFTnotes06} for an orthogonal basis $\{e_i\}$ of the gluing locus $\mathcal{A}(Y \times I; \overline{y}, y)$,
-\[
-Z(X_{\mathrm{gl}} \times I)(\overline{f}_{\mathrm{gl}} \bullet f'_{\mathrm{gl}}) = \sum_i \frac{Z(X \times I)\bigl((\overline{f} \cup \overline{e}_i) \bullet (f' \cup e_i)\bigr)}{\langle e_i, e_i \rangle_{Y \times I}}.
-\]
-The numerator simplifies using compatibility of conjugation with $\cup$ via
-\[
-Z(X \times I)\bigl((\overline{f} \cup \overline{e}_i) \bullet (f' \cup e_i)\bigr) = Z(X \times I)\bigl(\overline{f \cup e_i} \bullet (f' \cup e_i)\bigr) = \langle f \cup e_i, f' \cup e_i \rangle_X.
-\]
-Thus
-\[
-\langle f_{\mathrm{gl}}, f'_{\mathrm{gl}} \rangle = \sum_i \frac{\langle f \cup e_i, f' \cup e_i \rangle_X}{\langle e_i, e_i \rangle_{Y \times I}},
-\]
-for any orthogonal basis $\{e_i\}$ of $\mathrm{End}_{\mathcal{A}(Y,d)}(y)$.
+which is strictly positive when $s=t$ and $k=\ell$ by positive-definiteness (ensuring $e_s^{(k)}\neq 0$), and zero otherwise.
 
-\item \textbf{Step 2. Structure of the endomorphism algebra.} The algebra $E \coloneqq \mathrm{End}_{\mathcal{A}(Y,d)}(y)$ is finite-dimensional. It carries an inner product from the cylinder $\langle e, e' \rangle = Z(Y \times I \times I)(\overline{e} \bullet e')$, making it a \emph{unitary algebra} (the inner product is compatible with the $*$-structure given by conjugation). By semisimplicity (a consequence of unitarity and finite-dimensionality), $E$ decomposes as a direct sum of matrix algebras
+To verify spanning, note that by the Artin-Wedderburn theorem, $\End_{\A(Y,d)}(y) \cong \bigoplus_s M_{n_s}(\mathbb{C})$, and the projections satisfy the resolution of identity $\sum_{s,k} e_s^{(k)} = \id_y$. For any $f \in \A(Y\times I,\fcj y\sqcup y)$, we have
 \[
-E \cong \bigoplus_{s \in \mathrm{Irr}} M_{n_s}(\mathbb{C}),
+f = \id_y \circ f \circ \id_y = \sum_{s,k,t,\ell} e_s^{(k)} \circ f \circ e_t^{(\ell)} \in \mathrm{span}\{e_s^{(k)}\}_{s,k},
 \]
-where $\mathrm{Irr}$ indexes the simple modules and $n_s = \dim(s)$. A unitary semisimple algebra admits a complete set of \emph{orthogonal minimal idempotents} $\{e_s^{(k)}\}$, for $s \in \mathrm{Irr}$ and $k = 1, \ldots, n_s$. These satisfy the multimatrix unit relations
-\[
-e_s^{(k)} \circ e_t^{(\ell)} = \delta_{st}\delta_{k\ell}\, e_s^{(k)}.
-\]
+since each summand is a scalar multiple of some $e_r^{(m)}$ by the orthogonality relations. Thus $\{e_s^{(k)}\}_{s,k}$ is an orthogonal basis of $\A(Y\times I,\fcj y\sqcup y)$.
 
-\item \textbf{Step 3. The minimal idempotents form an orthogonal basis.} We verify that $\{e_s^{(k)}\}$ is orthogonal with respect to $\langle \cdot, \cdot \rangle_{Y \times I}$. The inner product on $E = \mathcal{A}(Y \times I; \overline{y}, y)$ satisfies the \emph{trace property} (Walker [6.2.4])
+Applying the gluing formula with corners for the gluing $X\times I\to (X\times I)_\glu=X_\glu\times I$, we find
 \[
-\langle e \circ e', e'' \rangle = \langle e, e'' \circ (e')^* \rangle
+\bkt{f_\glu}{f_\glu'}=z_{X_\glu\times I}(\fcj {f_\glu}\bullet_{q_\glu}f_\glu')=\sum_{s,k}\frac{z_{X\times I}((\fcj{f}\cup\fcj{e_s^{(k)}})\bullet (f'\cup e_s^{(k)}))}{\bkt{e_s^{(k)}}{e_s^{(k)}}_{Y\times I,\fcj y\sqcup y}}.
 \]
-for composable morphisms, where $(-)^*$ is the conjugate-adjoint. For idempotents, $e^* = e$ (they are self-adjoint projections in a unitary algebra). Computing for two idempotents
+The idempotents decompose $\A(X,(\fcj y\sqcup y)\bullet_{\fcj d\sqcup d}q)$ into matrix blocks. By inserting the resolution of identity $\id_y = \sum_{s,k} e_s^{(k)}$ on both boundaries, any $f$ can be written as
 \[
-\langle e_s^{(k)}, e_t^{(\ell)} \rangle = \langle e_s^{(k)} \circ e_t^{(\ell)}, \mathrm{id}_y \rangle = \delta_{st}\delta_{k\ell}\, \langle e_s^{(k)}, \mathrm{id}_y \rangle.
+f = \sum_{s,k,t,\ell} e_s^{(k)}\cup f\cup e_t^{(\ell)},
 \]
-When $(s,k) \neq (t,\ell)$, the idempotent relation gives $e_s^{(k)} \circ e_t^{(\ell)} = 0$, so $\langle e_s^{(k)}, e_t^{(\ell)} \rangle = 0$. When $(s,k) = (t,\ell)$, positive-definiteness of the inner product gives $\langle e_s^{(k)}, e_s^{(k)} \rangle > 0$. Thus $\{e_s^{(k)}\}_{s,k}$ is indeed an orthogonal basis of $E$.
-
-\item \textbf{Step 4. Conclusion.} Substituting the orthogonal basis $\{e_s^{(k)}\}$ into the formula from \textbf{Step 1},
+where each component lives in the space $e_s^{(k)}\cup \A(X,(\fcj y\sqcup y)\bullet_{\fcj d\sqcup d}q)\cup e_t^{(\ell)}$. Since $e_s^{(k)}\circ e_t^{(\ell)}=\delta_{st}\delta_{k\ell}e_s^{(k)}$,
 \[
-\langle f_{\mathrm{gl}}, f'_{\mathrm{gl}} \rangle_{X_{\mathrm{gl}}, q_{\mathrm{gl}}} = \sum_{s \in \mathrm{Irr}} \sum_{k=1}^{n_s} \frac{\langle f \cup e_s^{(k)}, f' \cup e_s^{(k)} \rangle_{X, (\overline{y} \sqcup y) \bullet q}}{\langle e_s^{(k)}, e_s^{(k)} \rangle_{Y \times I, \overline{y} \sqcup y}}.
+(e_s^{(k)}\cup f\cup e_t^{(\ell)})\cup e_{r}^{(m)} = e_s^{(k)}\cup f\cup (e_t^{(\ell)}\circ e_{r}^{(m)}) = \delta_{tr}\delta_{\ell m}\cdot e_s^{(k)}\cup f\cup e_t^{(\ell)}
 \]
-\end{itemize}
+and similarly $\fcj{e_{r}^{(m)}}\cup (e_s^{(k)}\cup f\cup e_t^{(\ell)}) = \delta_{sr}\delta_{km}\cdot e_s^{(k)}\cup f\cup e_t^{(\ell)}$. Thus
+\[
+f\cup e_{r}^{(m)} = \sum_{s,k,t,\ell} \delta_{tr}\delta_{\ell m}\cdot e_s^{(k)}\cup f\cup e_t^{(\ell)} = \sum_{s,k} e_s^{(k)}\cup f\cup e_{r}^{(m)}.
+\]
+For each corner $(r,m)=(s,k)$, choose an orthogonal basis $\{f_{s,k,i}\}_i$ of $e_s^{(k)}\cup \A(X,(\fcj y\sqcup y)\bullet_{\fcj d\sqcup d}q)\cup e_s^{(k)}$. The entire collection $\{f_{s,k,i}\}_{s,k,i}$ forms an orthogonal basis of $\A(X,(\fcj y\sqcup y)\bullet_{\fcj d\sqcup d}q)$, and by the above, $f_{s,k,i}\cup e_{t}^{(\ell)}=\delta_{st}\delta_{k\ell}f_{s,k,i}$ and $\fcj{e_t^{(\ell)}}\cup f_{s,k,i}=\delta_{st}\delta_{k\ell}f_{s,k,i}$. For these basis elements,
+\begin{align*}
+     \bkt{\glu(f_{s,k,i})}{\glu(f_{t,\ell,j})}
+     &=\sum_{r,m}\frac{\bkt{f_{s,k,i}\cup e_{r}^{(m)}}{f_{t,\ell,j}\cup e_{r}^{(m)}}_{X,(\fcj y\sqcup y)\bullet_{\fcj d\sqcup d} q}}{\bkt{e_{r}^{(m)}}{e_{r}^{(m)}}_{Y\times I,\fcj y\sqcup y}}\\
+     &=\sum_{r,m}\frac{\delta_{sr}\delta_{km}\delta_{tr}\delta_{\ell m}\bkt{f_{s,k,i}}{f_{t,\ell,j}}_{X,(\fcj y\sqcup y)\bullet_{\fcj d\sqcup d} q}}{\bkt{e_{r}^{(m)}}{e_{r}^{(m)}}_{Y\times I,\fcj y\sqcup y}}\\
+     &=
+     \delta_{st}\delta_{k\ell}\delta_{ij}\frac{\bkt{f_{s,k,i}}{f_{s,k,i}}_{X,(\fcj y\sqcup y)\bullet_{\fcj d\sqcup d} q}}{\bkt{e_{s}^{(k)}}{e_{s}^{(k)}}_{Y\times I,\fcj y\sqcup y}}.
+ \end{align*}
+Thus, for general $f,f'$ as in the claim, expanding in this orthogonal basis and using bilinearity of the inner product, we obtain
+\[
+\bkt{f_\glu}{f'_\glu}_{X_\glu,q_\glu}
+=
+\sum_{s,k}\frac{\bkt{f\cup e_s^{(k)}}{f'\cup e_s^{(k)}}_{X, (\fcj{y}\sqcup y)\bullet_{\fcj d\sqcup d} q}}{\bkt{e_s^{(k)}}{e_s^{(k)}}_{Y \times I,\fcj y\sqcup y}}.\qedhere
+\]
 \end{proof}
 
-\begin{remark}[Simple case]
+
+\begin{example}
 When $y$ is \emph{simple}, meaning $\mathrm{End}(y) \cong \mathbb{C}$, there is a unique minimal idempotent $e = \mathrm{id}_y$, and the formula becomes
 \[
-\langle f_{\mathrm{gl}}, f'_{\mathrm{gl}} \rangle = \frac{\langle f, f' \rangle_X}{\langle \mathrm{id}_y, \mathrm{id}_y \rangle_{Y \times I}} = \frac{\langle f, f' \rangle_X}{d_y},
+\bkt{f_\glu}{f'_\glu}_{X_\glu,q_\glu}
+%  = \frac{\langle f, f' \rangle_X}{\langle \mathrm{id}_y, \mathrm{id}_y \rangle_{Y \times I}} 
+ = \frac{\bkt{f}{f'}_{X, (\fcj{y}\sqcup y)\bullet_{\fcj d\sqcup d} q}}{d_y},
 \]
-where $d_y = \langle \mathrm{id}_y, \mathrm{id}_y \rangle$ is the quantum dimension.
-\end{remark}
+where $d_y = \langle \mathrm{id}_y, \mathrm{id}_y \rangle_{Y\times I,\fcj y\sqcup y}$.
+\end{example}
 
-\SeeAlso{next}
+
+\SeeAlso{relative scalar product}
 
 \References
 

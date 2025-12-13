@@ -11,70 +11,285 @@
     <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
     <script>
     window.MathJax = {
-        tex: {
-            inlineMath: [['$', '$']],
-            displayMath: [['\\[', '\\]']],
-            macros: {
-                // Category theory
-                cC: '\\mathcal{C}',
-                cD: '\\mathcal{D}',
-                cF: '\\mathcal{F}',
-                cG: '\\mathcal{G}',
-                cH: '\\mathcal{H}',
-                cL: '\\mathcal{L}',
-                cM: '\\mathcal{M}',
-                cP: '\\mathcal{P}',
-                cU: '\\mathcal{U}',
-                Obj: '\\operatorname{Obj}',
-                Hom: '\\operatorname{Hom}',
-                Mor: '\\operatorname{Mor}',
-                End: '\\operatorname{End}',
-                Aut: '\\operatorname{Aut}',
-                id: '\\mathrm{id}',
-
-                // Blackboard bold
-                bR: '\\mathbb{R}',
-                bC: '\\mathbb{C}',
-                bZ: '\\mathbb{Z}',
-                bN: '\\mathbb{N}',
-                bQ: '\\mathbb{Q}',
-                bbR: '\\mathbb{R}',
-                bbC: '\\mathbb{C}',
-                bbZ: '\\mathbb{Z}',
-                bbN: '\\mathbb{N}',
-                bbQ: '\\mathbb{Q}',
-
-                // Delimiters
-                bkt: ['\\langle #1 \\middle| #2 \\rangle', 2],
-                abs: ['\\left| #1 \\right|', 1],
-                norm: ['\\left\\| #1 \\right\\|', 1],
-
-                // Categories
-                Set: '\\mathbf{Set}',
-                Grp: '\\mathbf{Grp}',
-                Top: '\\mathbf{Top}',
-                Vec: '\\mathbf{Vec}',
-
-                // Operators
-                colim: '\\operatorname{colim}',
-                Ext: '\\operatorname{Ext}',
-                Tor: '\\operatorname{Tor}',
-                Spec: '\\operatorname{Spec}',
-                im: '\\operatorname{im}',
-                coker: '\\operatorname{coker}',
-                coloneqq: '\\mathrel{\\vcenter{:}}=',
-                coloneq: '\\mathrel{\\vcenter{:}}=',
-
-                // TikZ-like (limited in HTML)
-                to: '\\rightarrow',
-                injto: '\\hookrightarrow',
-                surjto: '\\twoheadrightarrow'
-            }
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true,
+        macros: {
+        "cA": "\\mathcal{A}",
+        "bbA": "\\mathbb{A}",
+        "sfA": "\\mathsf{A}",
+        "fA": "\\mathfrak{A}",
+        "bA": "\\mathbf{A}",
+        "sA": "\\mathscr{A}",
+        "eA": "\\mathcal{A}",
+        "cB": "\\mathcal{B}",
+        "bbB": "\\mathbb{B}",
+        "sfB": "\\mathsf{B}",
+        "fB": "\\mathfrak{B}",
+        "bB": "\\mathbf{B}",
+        "sB": "\\mathscr{B}",
+        "eB": "\\mathcal{B}",
+        "cC": "\\mathcal{C}",
+        "bbC": "\\mathbb{C}",
+        "sfC": "\\mathsf{C}",
+        "fC": "\\mathfrak{C}",
+        "bC": "\\mathbf{C}",
+        "sC": "\\mathscr{C}",
+        "eC": "\\mathcal{C}",
+        "cD": "\\mathcal{D}",
+        "bbD": "\\mathbb{D}",
+        "sfD": "\\mathsf{D}",
+        "fD": "\\mathfrak{D}",
+        "bD": "\\mathbf{D}",
+        "sD": "\\mathscr{D}",
+        "eD": "\\mathcal{D}",
+        "cE": "\\mathcal{E}",
+        "bbE": "\\mathbb{E}",
+        "sfE": "\\mathsf{E}",
+        "fE": "\\mathfrak{E}",
+        "bE": "\\mathbf{E}",
+        "sE": "\\mathscr{E}",
+        "eE": "\\mathcal{E}",
+        "cF": "\\mathcal{F}",
+        "bbF": "\\mathbb{F}",
+        "sfF": "\\mathsf{F}",
+        "fF": "\\mathfrak{F}",
+        "bF": "\\mathbf{F}",
+        "sF": "\\mathscr{F}",
+        "eF": "\\mathcal{F}",
+        "cG": "\\mathcal{G}",
+        "bbG": "\\mathbb{G}",
+        "sfG": "\\mathsf{G}",
+        "fG": "\\mathfrak{G}",
+        "bG": "\\mathbf{G}",
+        "sG": "\\mathscr{G}",
+        "eG": "\\mathcal{G}",
+        "cH": "\\mathcal{H}",
+        "bbH": "\\mathbb{H}",
+        "sfH": "\\mathsf{H}",
+        "fH": "\\mathfrak{H}",
+        "bH": "\\mathbf{H}",
+        "sH": "\\mathscr{H}",
+        "eH": "\\mathcal{H}",
+        "cI": "\\mathcal{I}",
+        "bbI": "\\mathbb{I}",
+        "sfI": "\\mathsf{I}",
+        "fI": "\\mathfrak{I}",
+        "bI": "\\mathbf{I}",
+        "sI": "\\mathscr{I}",
+        "eI": "\\mathcal{I}",
+        "cJ": "\\mathcal{J}",
+        "bbJ": "\\mathbb{J}",
+        "sfJ": "\\mathsf{J}",
+        "fJ": "\\mathfrak{J}",
+        "bJ": "\\mathbf{J}",
+        "sJ": "\\mathscr{J}",
+        "eJ": "\\mathcal{J}",
+        "cK": "\\mathcal{K}",
+        "bbK": "\\mathbb{K}",
+        "sfK": "\\mathsf{K}",
+        "fK": "\\mathfrak{K}",
+        "bK": "\\mathbf{K}",
+        "sK": "\\mathscr{K}",
+        "eK": "\\mathcal{K}",
+        "cL": "\\mathcal{L}",
+        "bbL": "\\mathbb{L}",
+        "sfL": "\\mathsf{L}",
+        "fL": "\\mathfrak{L}",
+        "bL": "\\mathbf{L}",
+        "sL": "\\mathscr{L}",
+        "eL": "\\mathcal{L}",
+        "cM": "\\mathcal{M}",
+        "bbM": "\\mathbb{M}",
+        "sfM": "\\mathsf{M}",
+        "fM": "\\mathfrak{M}",
+        "bM": "\\mathbf{M}",
+        "sM": "\\mathscr{M}",
+        "eM": "\\mathcal{M}",
+        "cN": "\\mathcal{N}",
+        "bbN": "\\mathbb{N}",
+        "sfN": "\\mathsf{N}",
+        "fN": "\\mathfrak{N}",
+        "bN": "\\mathbf{N}",
+        "sN": "\\mathscr{N}",
+        "eN": "\\mathcal{N}",
+        "cO": "\\mathcal{O}",
+        "bbO": "\\mathbb{O}",
+        "sfO": "\\mathsf{O}",
+        "fO": "\\mathfrak{O}",
+        "bO": "\\mathbf{O}",
+        "sO": "\\mathscr{O}",
+        "eO": "\\mathcal{O}",
+        "cP": "\\mathcal{P}",
+        "bbP": "\\mathbb{P}",
+        "sfP": "\\mathsf{P}",
+        "fP": "\\mathfrak{P}",
+        "bP": "\\mathbf{P}",
+        "sP": "\\mathscr{P}",
+        "eP": "\\mathcal{P}",
+        "cQ": "\\mathcal{Q}",
+        "bbQ": "\\mathbb{Q}",
+        "sfQ": "\\mathsf{Q}",
+        "fQ": "\\mathfrak{Q}",
+        "bQ": "\\mathbf{Q}",
+        "sQ": "\\mathscr{Q}",
+        "eQ": "\\mathcal{Q}",
+        "cR": "\\mathcal{R}",
+        "bbR": "\\mathbb{R}",
+        "sfR": "\\mathsf{R}",
+        "fR": "\\mathfrak{R}",
+        "bR": "\\mathbf{R}",
+        "sR": "\\mathscr{R}",
+        "eR": "\\mathcal{R}",
+        "cS": "\\mathcal{S}",
+        "bbS": "\\mathbb{S}",
+        "sfS": "\\mathsf{S}",
+        "fS": "\\mathfrak{S}",
+        "bS": "\\mathbf{S}",
+        "sS": "\\mathscr{S}",
+        "eS": "\\mathcal{S}",
+        "cT": "\\mathcal{T}",
+        "bbT": "\\mathbb{T}",
+        "sfT": "\\mathsf{T}",
+        "fT": "\\mathfrak{T}",
+        "bT": "\\mathbf{T}",
+        "sT": "\\mathscr{T}",
+        "eT": "\\mathcal{T}",
+        "cU": "\\mathcal{U}",
+        "bbU": "\\mathbb{U}",
+        "sfU": "\\mathsf{U}",
+        "fU": "\\mathfrak{U}",
+        "bU": "\\mathbf{U}",
+        "sU": "\\mathscr{U}",
+        "eU": "\\mathcal{U}",
+        "cV": "\\mathcal{V}",
+        "bbV": "\\mathbb{V}",
+        "sfV": "\\mathsf{V}",
+        "fV": "\\mathfrak{V}",
+        "bV": "\\mathbf{V}",
+        "sV": "\\mathscr{V}",
+        "eV": "\\mathcal{V}",
+        "cW": "\\mathcal{W}",
+        "bbW": "\\mathbb{W}",
+        "sfW": "\\mathsf{W}",
+        "fW": "\\mathfrak{W}",
+        "bW": "\\mathbf{W}",
+        "sW": "\\mathscr{W}",
+        "eW": "\\mathcal{W}",
+        "cX": "\\mathcal{X}",
+        "bbX": "\\mathbb{X}",
+        "sfX": "\\mathsf{X}",
+        "fX": "\\mathfrak{X}",
+        "bX": "\\mathbf{X}",
+        "sX": "\\mathscr{X}",
+        "eX": "\\mathcal{X}",
+        "cY": "\\mathcal{Y}",
+        "bbY": "\\mathbb{Y}",
+        "sfY": "\\mathsf{Y}",
+        "fY": "\\mathfrak{Y}",
+        "bY": "\\mathbf{Y}",
+        "sY": "\\mathscr{Y}",
+        "eY": "\\mathcal{Y}",
+        "cZ": "\\mathcal{Z}",
+        "bbZ": "\\mathbb{Z}",
+        "sfZ": "\\mathsf{Z}",
+        "fZ": "\\mathfrak{Z}",
+        "bZ": "\\mathbf{Z}",
+        "sZ": "\\mathscr{Z}",
+        "eZ": "\\mathcal{Z}",
+        "fa": "\\mathfrak{a}",
+        "fb": "\\mathfrak{b}",
+        "fc": "\\mathfrak{c}",
+        "fd": "\\mathfrak{d}",
+        "fe": "\\mathfrak{e}",
+        "ff": "\\mathfrak{f}",
+        "fg": "\\mathfrak{g}",
+        "fh": "\\mathfrak{h}",
+        "fi": "\\mathfrak{i}",
+        "fj": "\\mathfrak{j}",
+        "fk": "\\mathfrak{k}",
+        "fl": "\\mathfrak{l}",
+        "fm": "\\mathfrak{m}",
+        "fn": "\\mathfrak{n}",
+        "fo": "\\mathfrak{o}",
+        "fp": "\\mathfrak{p}",
+        "fq": "\\mathfrak{q}",
+        "fr": "\\mathfrak{r}",
+        "fs": "\\mathfrak{s}",
+        "ft": "\\mathfrak{t}",
+        "fu": "\\mathfrak{u}",
+        "fv": "\\mathfrak{v}",
+        "fw": "\\mathfrak{w}",
+        "fx": "\\mathfrak{x}",
+        "fy": "\\mathfrak{y}",
+        "fz": "\\mathfrak{z}",
+        "bar": "\\overline",
+        "undC": "\\smash[b]{\\text{$\\underset{\\smash{\\raisebox{.275em}{$\\scriptstyle\\kern.1ex\\rightarrow$}}}{\\smash{\\cC}}$}}",
+        "Obj": "\\operatorname{Obj}",
+        "Hom": "\\operatorname{Hom}",
+        "Mor": "\\operatorname{Mor}",
+        "End": "\\operatorname{End}",
+        "Aut": "\\operatorname{Aut}",
+        "id": "\\mathrm{id}",
+        "pt": "\\mathrm{pt}",
+        "Tr": "\\operatorname{Tr}",
+        "eval": "\\operatorname{eval}",
+        "A": "\\mathrm{Sk}",
+        "F": "\\eF",
+        "U": "\\eU",
+        "orev": "\\overline",
+        "fcj": "\\widehat",
+        "e": "\\varepsilon",
+        "glu": "\\mathrm{gl}",
+        "greyson": "\\bgroup\\color{violet}[[#1]]\\egroup",
+        "todo": "\\textbf{[[}\\textsl{#1}\\textbf{]]}",
+        "bkt": "\\left\\langle #1 \\middle| #2 \\right\\rangle",
+        "pbkt": "\\left( #1 \\middle| #2 \\right)",
+        "abs": "\\left| #1 \\right|",
+        "norm": "\\left\\| #1 \\right\\|",
+        "set": "\\left\\{ #1 \\right\\}",
+        "bra": "\\left\\langle #1 \\right|",
+        "ket": "\\left| #1 \\right\\rangle",
+        "braket": "\\left\\langle #1 \\middle| #2 \\right\\rangle",
+        "Set": "\\mathbf{Set}",
+        "Grp": "\\mathbf{Grp}",
+        "Top": "\\mathbf{Top}",
+        "Vec": "\\mathbf{Vec}",
+        "Hilb": "\\mathbf{Hilb}",
+        "Sk": "\\operatorname{Sk}",
+        "colim": "\\operatorname{colim}",
+        "Ext": "\\operatorname{Ext}",
+        "Tor": "\\operatorname{Tor}",
+        "Spec": "\\operatorname{Spec}",
+        "im": "\\operatorname{im}",
+        "coker": "\\operatorname{coker}",
+        "coloneqq": "\\mathrel{\\vcenter{:}}=",
+        "coloneq": "\\mathrel{\\vcenter{:}}=",
+        "eqqcolon": "=\\mathrel{\\vcenter{:}}",
+        "endto": "\\to",
+        "to": "\\rightarrow",
+        "injto": "\\hookrightarrow",
+        "surjto": "\\twoheadrightarrow",
+        "longto": "\\longrightarrow",
+        "lto": "\\longrightarrow",
+        "mapsfrom": "\\mathrel{\\reflectbox{\\ensuremath{\\mapsto}}}",
+        "Ising": "\\mathsf{Ising}",
+        "a": "\\alpha",
+        "b": "\\beta",
+        "d": "\\delta",
+        "g": "\\gamma",
+        "Z": "Z",
+        "M": "\\dM"
         }
+      },
+      startup: {
+        typeset: true
+      }
     };
     </script>
-    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
 </head>
 <body>
     <div class="top-nav">
@@ -98,59 +313,50 @@
     <div class="content-wrapper">
     <h1>$(n+\varepsilon)$D TQFT</h1>
     <div class="metadata">
-        <strong>Last modified:</strong> December 11, 2025 at  8:25 PM ET<br>
-        <strong>Created:</strong> 2025-12-10<br>
-        <strong>Tags:</strong> TQFT, skein-modules, higher-categories
+        <strong>Last modified:</strong> December 12, 2025 at  6:54 PM ET<br>
+        <strong>Created:</strong> August 17, 2025 at 10:09 PM ET<br>
+        <strong>Tags:</strong> disk-like framework, TQFT, skein-modules, higher-categories
     </div>
     <div class="content">
         
-        <div class="toc-compact">
-            <h3>Contents</h3>
-            <ul>
-                <li><a href="#skein-modules-and-categories">Skein Modules and Categories</a></li>
-                <li><a href="#examples">Examples</a></li>
-                <li><a href="#unitary-n-categories-with-strong-duality">(Unitary) $n$-Categories with Strong Duality</a></li>
-            </ul>
-        </div>
         <div class="env-box definition">
-<p><strong>Definition ($(n+\varepsilon)$-dimensional TQFT).</strong> An <strong>$(n+\varepsilon)$-dimensional TQFT</strong> $(\mathcal{F},\mathcal{U})$ is just an $n$<a href="system of topological fields.html">-dimensional system of topological fields</a> and <a href="extended isotopy.html">local relations</a>.</p>
+<p><strong>Definition ($(n+\varepsilon)$-dimensional TQFT).</strong> An <strong>$(n+\varepsilon)$-dimensional TQFT</strong> $(\F,\U)$ is just an $n$<a href="system of topological fields.html">-dimensional system of topological fields</a> and <a href="extended isotopy.html">local relations</a>.</p>
 </div>
 
 <p>The reason for this terminology is that although an $(n+\varepsilon)$-dimensional TQFT does not have the data of the path integral/partition function of a typical $(n+1)$-dimensional manifold, it does have this data for <a href="mapping class group.html">mapping cylinders</a> between $n$-manifolds.</p>
 
-<h2 id="skein-modules-and-categories">Skein Modules and Categories</h2>
+<h2 id="skein-modules-and-skein-k-categories">Skein modules and skein $k$-categories</h2>
 
 <div class="env-box construction">
-<p><strong>Construction (Skein module from an $(n+\varepsilon)$-dimensional TQFT).</strong> Let $(\mathcal{F},\mathcal{U})$ be an $(n+\varepsilon)$D TQFT and consider an $n$-manifold $X$ with boundary condition $c\in\mathcal{F}(\partial X)$. Let $R$ be any unital <a href="ring (nPOV).html">ring</a>. We define the <strong>skein module</strong> associated to $(X,c)$ by the free $R$-module generated by fields on $X$ (in this context, often called base fields) modulo local relations on $(X,c)$, i.e., \[ \mathrm{Sk}_{\mathcal{F},\mathcal{U}}(X,c;R)\coloneqq R[\mathcal{F}(X,c)]/\mathcal{U}(X,c). \] By a slight abuse of terminology, we will often refer to elements of $\mathrm{Sk}_{\mathcal{F},\mathcal{U}}(X,c;R)$ again as fields.</p>
+<p><strong>Construction (Skein module from an $(n+\varepsilon)$-dimensional TQFT).</strong> <a id="const-skein-module" class="latex-label"></a> Let $(\F,\U)$ be an $(n+\varepsilon)$D TQFT and consider an $n$-manifold $X$ with boundary condition $c\in\F(\partial X)$. Let $R$ be any unital <a href="ring (nPOV).html">ring</a>. We define the <strong>skein module</strong> associated to $(X,c)$ by the free $R$-module generated by fields on $X$ (in this context, often called base fields) modulo local relations on $(X,c)$, i.e., \[ \A_{\F,\U}(X,c;R)\coloneqq R[\F(X,c)]/\U(X,c). \] By a slight abuse of terminology, we will often refer to elements of $\A_{\F,\U}(X,c;R)$ again as fields.</p>
 </div>
 
-<p>More generally, for any $1 \leq k \leq n$ we can consider $(W,c)$ for any $(n - k)$-manifold $W$ and any boundary condition $d\in\mathcal{F}(\partial Y)$. We define the <strong>skein $k$-category</strong> $\mathrm{Sk}_{\mathcal{F},\mathcal{U}}(W;d;R)$ to be the following (traditional, algebraic, linear) $R$-linear $k$-category whose morphisms we define recursively as follows.</p>
+<div class="env-box construction">
+<p><strong>Construction (Skein $k$-category from an $(n+\e)$D TQFT).</strong> More generally, for any $1 \leq k \leq n$ we can consider $(W,c)$ for any $(n - k)$-manifold $W$ and any boundary condition $d\in\F(\partial Y)$. We define the <strong>skein $k$-category</strong> $\A_{\F,\U}(W;d;R)$ to be the following (traditional, algebraic, linear) $R$-linear $k$-category whose morphisms we define recursively as follows.</p>
 
-<ul class="nosep">
-<li><strong>0-morphisms.</strong> The objects of $\mathrm{Sk}_{\mathcal{F},\mathcal{U}}(W,d;R)$ are elements of the subset $\mathcal{F}(W;d)\coloneqq \partial^{-1}(d)$ of $\mathcal{F}(W)$.</li>
-<li><strong>$j$-morphisms for $1\leq j\leq n-1$.</strong> For any two compatible $(j-1)$-morphisms $a,b$ in $\mathrm{Sk}_{\mathcal{F},\mathcal{U}}(W,d;R)$, we set $\mathrm{Sk}_{\mathcal{F},\mathcal{U}}(W,d;R)(a\to b)\coloneqq \mathcal{F}(W\times D^j,(\widehat a, b);R)$.</li>
-<li><strong>$n$-morphisms.</strong> For any two compatible $(n-1)$-morphisms $a,b$ in $\mathrm{Sk}_{\mathcal{F},\mathcal{U}}(W,d;R)$, we set $\mathrm{Sk}_{\mathcal{F},\mathcal{U}}(W,d;R)(a\to b)\coloneqq \mathrm{Sk}_{\mathcal{F},\mathcal{U}}(W\times D^j,(\widehat a, b);R)$.</li>
+<ul>
+<li><strong>0-morphisms.</strong> The objects of $\A_{\F,\U}(W,d;R)$ are elements of the subset $\F(W;d)\coloneqq \partial^{-1}(d)$ of $\F(W)$.</li>
+<li><strong>$j$-morphisms for $1\leq j\leq n-1$.</strong> For any two compatible $(j-1)$-morphisms $a,b$ in $\A_{\F,\U}(W,d;R)$, we set $\A_{\F,\U}(W,d;R)(a\to b)\coloneqq \F(W\times D^j,(\fcj a, b);R)$.</li>
+<li><strong>$n$-morphisms.</strong> For any two compatible $(n-1)$-morphisms $a,b$ in $\A_{\F,\U}(W,d;R)$, we set $\A_{\F,\U}(W,d;R)(a\to b)\coloneqq \A_{\F,\U}(W\times D^j,(\fcj a, b);R)$.</li>
 </ul>
 
-<p>As usual, in this construction, unless $\partial W=\varnothing$, every product $W\times D^j$ has a “pinched” boundary so that $\partial (W\times D^{j})\cong \Delta W\coloneqq \overline{W}\cup_{\partial W} W$, the <a href="double of a manifold.html">double</a> of $Y$.</p>
+<p>As usual, in this construction, unless $\partial W=\varnothing$, every product $W\times D^j$ has a “pinched” boundary so that $\partial (W\times D^{j})\cong \Delta W\coloneqq \overline{W}\cup_{\partial W} W$, the <a href="double of a manifold.html">double</a> of $Y$. (Note that we have not showed how $j$-composition works in general, but composition is given by gluing.)</p>
+</div>
 
-<p>(Note that we have not showed how $j$-composition works in general, but composition is given by gluing.)</p>
+<p>For the rest of this article we take $R$ to be the complex numbers $\mathbb{C}$, so we will henceforth drop $R$ from the notation.</p>
 
-<p>We will be more interested in the dual space (representations) of $\mathrm{Sk}_{\mathcal{F},\mathcal{U}}(X,c;R)$, which we denote by $Z_{\mathcal{F},\mathcal{U}}(X,c;R)$. This is because $Z_{\mathcal{F},\mathcal{U}}(X,c;R)$ turn out to have nicer algebraic structure than the $\mathrm{Sk}_{\mathcal{F},\mathcal{U}}(X,c;R)$-invariants; in particular, at least for $n=1,2$, the former are always <a href="Cauchy complete n-category.html">Cauchy complete</a> even when the latter are not.</p>
+<p>We will be more interested in the dual space (representations) of $\A_{\F,\U}(X,c)$, which we denote by $Z_{\F,\U}(X,c)$. This is because $Z_{\F,\U}(X,c)$ turn out to have nicer algebraic structure than the $\A_{\F,\U}(X,c)$-invariants; in particular, at least for $n=1,2$, the former are always <a href="Cauchy complete n-category.html">Cauchy complete</a> even when the latter are not.</p>
 
-<p><strong>Notation.</strong> Often the system of fields and local relations $(\mathcal{F},\mathcal{U})$ that define $\mathrm{Sk}_{\mathcal{F},\mathcal{U}}$ and $Z_{\mathcal{F},\mathcal{U}}$ are should be clear from context, and we simply write $\mathrm{Sk}$ and $Z$ respectively.</p>
+<div class="env-box notation">
+<p><strong>Notation.</strong> Often the system of fields and local relations $(\F,\U)$ that define $\A_{\F,\U}$ and $Z_{\F,\U}$ are should be clear from context, and we simply write $\A$ and $Z$ respectively.</p>
+</div>
 
 <h2 id="examples">Examples</h2>
+<p>Our main example of an $n$-dimensional system of fields will be $\cC$-labeled string diagrams for some “traditional $n$-category with strong duality” $\cC$.</p>
 
-<p>Our main example of an $n$-dimensional system of fields will be $\mathcal{C}$-labeled string diagrams for some “traditional $n$-category with strong duality” $\mathcal{C}$.</p>
 
-<p>Recall that a $\mathcal{C}$-<strong>labeled string diagram</strong> on a $k$-manifold $Y$ is an embedded cell complex of $Y$ whose codimension-$j$ cells are labeled by $j$-morphisms of $\mathcal{C}$. (We will give the precise definition of a $\mathcal{C}$-labeled string diagram after providing the full definition of a system of fields.) It will be helpful to think of string diagrams as the “fields” in the following definition.</p>
 
-<h2 id="unitary-n-categories-with-strong-duality">(Unitary) $n$-Categories with Strong Duality</h2>
-
-<p>% TODO: expand this section</p>
-
-<div class="see-also"><strong>See also:</strong> <a href="(n+1)D TQFT.html">(N+1)D Tqft</a>, <a href="system of topological fields.html">system of topological fields</a>, <a href="local relations for a system of topological fields.html">Local Relations For A System Of Topological Fields</a>, <a href="extended isotopy.html">Extended Isotopy</a></div>
+<div class="see-also"><strong>See also:</strong> <a href="(n+1)D TQFT.html">(N+1)D Tqft</a>, <a href="unitary (n+1)D TQFT.html">Unitary (N+1)D Tqft</a>, <a href="system of topological fields.html">system of topological fields</a>, <a href="local relations for a system of topological fields.html">local relations for a system of topological fields</a>, <a href="extended isotopy.html">extended isotopy</a>, <a href="disk-like n-category.html">disk-like n-category</a></div>
     </div>
 
     <div class="linked-notes">
@@ -162,6 +368,13 @@
             <li><a href="mapping class group.html">mapping class group</a></li>
             <li><a href="ring (nPOV).html">ring (nPOV)</a></li>
             <li><a href="system of topological fields.html">system of topological fields</a></li>
+        </ul>
+    </div>
+
+    <div class="backlinks">
+        <h2>Backlinks</h2>
+        <ul>
+            <li><a href="local relations for a system of topological fields.html">local relations for a system of topological fields</a></li>
         </ul>
     </div>
     </div>

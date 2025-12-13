@@ -11,70 +11,283 @@
     <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
     <script>
     window.MathJax = {
-        tex: {
-            inlineMath: [['$', '$']],
-            displayMath: [['\\[', '\\]']],
-            macros: {
-                // Category theory
-                cC: '\\mathcal{C}',
-                cD: '\\mathcal{D}',
-                cF: '\\mathcal{F}',
-                cG: '\\mathcal{G}',
-                cH: '\\mathcal{H}',
-                cL: '\\mathcal{L}',
-                cM: '\\mathcal{M}',
-                cP: '\\mathcal{P}',
-                cU: '\\mathcal{U}',
-                Obj: '\\operatorname{Obj}',
-                Hom: '\\operatorname{Hom}',
-                Mor: '\\operatorname{Mor}',
-                End: '\\operatorname{End}',
-                Aut: '\\operatorname{Aut}',
-                id: '\\mathrm{id}',
-
-                // Blackboard bold
-                bR: '\\mathbb{R}',
-                bC: '\\mathbb{C}',
-                bZ: '\\mathbb{Z}',
-                bN: '\\mathbb{N}',
-                bQ: '\\mathbb{Q}',
-                bbR: '\\mathbb{R}',
-                bbC: '\\mathbb{C}',
-                bbZ: '\\mathbb{Z}',
-                bbN: '\\mathbb{N}',
-                bbQ: '\\mathbb{Q}',
-
-                // Delimiters
-                bkt: ['\\langle #1 \\middle| #2 \\rangle', 2],
-                abs: ['\\left| #1 \\right|', 1],
-                norm: ['\\left\\| #1 \\right\\|', 1],
-
-                // Categories
-                Set: '\\mathbf{Set}',
-                Grp: '\\mathbf{Grp}',
-                Top: '\\mathbf{Top}',
-                Vec: '\\mathbf{Vec}',
-
-                // Operators
-                colim: '\\operatorname{colim}',
-                Ext: '\\operatorname{Ext}',
-                Tor: '\\operatorname{Tor}',
-                Spec: '\\operatorname{Spec}',
-                im: '\\operatorname{im}',
-                coker: '\\operatorname{coker}',
-                coloneqq: '\\mathrel{\\vcenter{:}}=',
-                coloneq: '\\mathrel{\\vcenter{:}}=',
-
-                // TikZ-like (limited in HTML)
-                to: '\\rightarrow',
-                injto: '\\hookrightarrow',
-                surjto: '\\twoheadrightarrow'
-            }
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true,
+        macros: {
+        "cA": "\\mathcal{A}",
+        "bbA": "\\mathbb{A}",
+        "sfA": "\\mathsf{A}",
+        "fA": "\\mathfrak{A}",
+        "bA": "\\mathbf{A}",
+        "sA": "\\mathscr{A}",
+        "eA": "\\mathcal{A}",
+        "cB": "\\mathcal{B}",
+        "bbB": "\\mathbb{B}",
+        "sfB": "\\mathsf{B}",
+        "fB": "\\mathfrak{B}",
+        "bB": "\\mathbf{B}",
+        "sB": "\\mathscr{B}",
+        "eB": "\\mathcal{B}",
+        "cC": "\\mathcal{C}",
+        "bbC": "\\mathbb{C}",
+        "sfC": "\\mathsf{C}",
+        "fC": "\\mathfrak{C}",
+        "bC": "\\mathbf{C}",
+        "sC": "\\mathscr{C}",
+        "eC": "\\mathcal{C}",
+        "cD": "\\mathcal{D}",
+        "bbD": "\\mathbb{D}",
+        "sfD": "\\mathsf{D}",
+        "fD": "\\mathfrak{D}",
+        "bD": "\\mathbf{D}",
+        "sD": "\\mathscr{D}",
+        "eD": "\\mathcal{D}",
+        "cE": "\\mathcal{E}",
+        "bbE": "\\mathbb{E}",
+        "sfE": "\\mathsf{E}",
+        "fE": "\\mathfrak{E}",
+        "bE": "\\mathbf{E}",
+        "sE": "\\mathscr{E}",
+        "eE": "\\mathcal{E}",
+        "cF": "\\mathcal{F}",
+        "bbF": "\\mathbb{F}",
+        "sfF": "\\mathsf{F}",
+        "fF": "\\mathfrak{F}",
+        "bF": "\\mathbf{F}",
+        "sF": "\\mathscr{F}",
+        "eF": "\\mathcal{F}",
+        "cG": "\\mathcal{G}",
+        "bbG": "\\mathbb{G}",
+        "sfG": "\\mathsf{G}",
+        "fG": "\\mathfrak{G}",
+        "bG": "\\mathbf{G}",
+        "sG": "\\mathscr{G}",
+        "eG": "\\mathcal{G}",
+        "cH": "\\mathcal{H}",
+        "bbH": "\\mathbb{H}",
+        "sfH": "\\mathsf{H}",
+        "fH": "\\mathfrak{H}",
+        "bH": "\\mathbf{H}",
+        "sH": "\\mathscr{H}",
+        "eH": "\\mathcal{H}",
+        "cI": "\\mathcal{I}",
+        "bbI": "\\mathbb{I}",
+        "sfI": "\\mathsf{I}",
+        "fI": "\\mathfrak{I}",
+        "bI": "\\mathbf{I}",
+        "sI": "\\mathscr{I}",
+        "eI": "\\mathcal{I}",
+        "cJ": "\\mathcal{J}",
+        "bbJ": "\\mathbb{J}",
+        "sfJ": "\\mathsf{J}",
+        "fJ": "\\mathfrak{J}",
+        "bJ": "\\mathbf{J}",
+        "sJ": "\\mathscr{J}",
+        "eJ": "\\mathcal{J}",
+        "cK": "\\mathcal{K}",
+        "bbK": "\\mathbb{K}",
+        "sfK": "\\mathsf{K}",
+        "fK": "\\mathfrak{K}",
+        "bK": "\\mathbf{K}",
+        "sK": "\\mathscr{K}",
+        "eK": "\\mathcal{K}",
+        "cL": "\\mathcal{L}",
+        "bbL": "\\mathbb{L}",
+        "sfL": "\\mathsf{L}",
+        "fL": "\\mathfrak{L}",
+        "bL": "\\mathbf{L}",
+        "sL": "\\mathscr{L}",
+        "eL": "\\mathcal{L}",
+        "cM": "\\mathcal{M}",
+        "bbM": "\\mathbb{M}",
+        "sfM": "\\mathsf{M}",
+        "fM": "\\mathfrak{M}",
+        "bM": "\\mathbf{M}",
+        "sM": "\\mathscr{M}",
+        "eM": "\\mathcal{M}",
+        "cN": "\\mathcal{N}",
+        "bbN": "\\mathbb{N}",
+        "sfN": "\\mathsf{N}",
+        "fN": "\\mathfrak{N}",
+        "bN": "\\mathbf{N}",
+        "sN": "\\mathscr{N}",
+        "eN": "\\mathcal{N}",
+        "cO": "\\mathcal{O}",
+        "bbO": "\\mathbb{O}",
+        "sfO": "\\mathsf{O}",
+        "fO": "\\mathfrak{O}",
+        "bO": "\\mathbf{O}",
+        "sO": "\\mathscr{O}",
+        "eO": "\\mathcal{O}",
+        "cP": "\\mathcal{P}",
+        "bbP": "\\mathbb{P}",
+        "sfP": "\\mathsf{P}",
+        "fP": "\\mathfrak{P}",
+        "bP": "\\mathbf{P}",
+        "sP": "\\mathscr{P}",
+        "eP": "\\mathcal{P}",
+        "cQ": "\\mathcal{Q}",
+        "bbQ": "\\mathbb{Q}",
+        "sfQ": "\\mathsf{Q}",
+        "fQ": "\\mathfrak{Q}",
+        "bQ": "\\mathbf{Q}",
+        "sQ": "\\mathscr{Q}",
+        "eQ": "\\mathcal{Q}",
+        "cR": "\\mathcal{R}",
+        "bbR": "\\mathbb{R}",
+        "sfR": "\\mathsf{R}",
+        "fR": "\\mathfrak{R}",
+        "bR": "\\mathbf{R}",
+        "sR": "\\mathscr{R}",
+        "eR": "\\mathcal{R}",
+        "cS": "\\mathcal{S}",
+        "bbS": "\\mathbb{S}",
+        "sfS": "\\mathsf{S}",
+        "fS": "\\mathfrak{S}",
+        "bS": "\\mathbf{S}",
+        "sS": "\\mathscr{S}",
+        "eS": "\\mathcal{S}",
+        "cT": "\\mathcal{T}",
+        "bbT": "\\mathbb{T}",
+        "sfT": "\\mathsf{T}",
+        "fT": "\\mathfrak{T}",
+        "bT": "\\mathbf{T}",
+        "sT": "\\mathscr{T}",
+        "eT": "\\mathcal{T}",
+        "cU": "\\mathcal{U}",
+        "bbU": "\\mathbb{U}",
+        "sfU": "\\mathsf{U}",
+        "fU": "\\mathfrak{U}",
+        "bU": "\\mathbf{U}",
+        "sU": "\\mathscr{U}",
+        "eU": "\\mathcal{U}",
+        "cV": "\\mathcal{V}",
+        "bbV": "\\mathbb{V}",
+        "sfV": "\\mathsf{V}",
+        "fV": "\\mathfrak{V}",
+        "bV": "\\mathbf{V}",
+        "sV": "\\mathscr{V}",
+        "eV": "\\mathcal{V}",
+        "cW": "\\mathcal{W}",
+        "bbW": "\\mathbb{W}",
+        "sfW": "\\mathsf{W}",
+        "fW": "\\mathfrak{W}",
+        "bW": "\\mathbf{W}",
+        "sW": "\\mathscr{W}",
+        "eW": "\\mathcal{W}",
+        "cX": "\\mathcal{X}",
+        "bbX": "\\mathbb{X}",
+        "sfX": "\\mathsf{X}",
+        "fX": "\\mathfrak{X}",
+        "bX": "\\mathbf{X}",
+        "sX": "\\mathscr{X}",
+        "eX": "\\mathcal{X}",
+        "cY": "\\mathcal{Y}",
+        "bbY": "\\mathbb{Y}",
+        "sfY": "\\mathsf{Y}",
+        "fY": "\\mathfrak{Y}",
+        "bY": "\\mathbf{Y}",
+        "sY": "\\mathscr{Y}",
+        "eY": "\\mathcal{Y}",
+        "cZ": "\\mathcal{Z}",
+        "bbZ": "\\mathbb{Z}",
+        "sfZ": "\\mathsf{Z}",
+        "fZ": "\\mathfrak{Z}",
+        "bZ": "\\mathbf{Z}",
+        "sZ": "\\mathscr{Z}",
+        "eZ": "\\mathcal{Z}",
+        "fa": "\\mathfrak{a}",
+        "fb": "\\mathfrak{b}",
+        "fc": "\\mathfrak{c}",
+        "fd": "\\mathfrak{d}",
+        "fe": "\\mathfrak{e}",
+        "ff": "\\mathfrak{f}",
+        "fg": "\\mathfrak{g}",
+        "fh": "\\mathfrak{h}",
+        "fi": "\\mathfrak{i}",
+        "fj": "\\mathfrak{j}",
+        "fk": "\\mathfrak{k}",
+        "fl": "\\mathfrak{l}",
+        "fm": "\\mathfrak{m}",
+        "fn": "\\mathfrak{n}",
+        "fo": "\\mathfrak{o}",
+        "fp": "\\mathfrak{p}",
+        "fq": "\\mathfrak{q}",
+        "fr": "\\mathfrak{r}",
+        "fs": "\\mathfrak{s}",
+        "ft": "\\mathfrak{t}",
+        "fu": "\\mathfrak{u}",
+        "fv": "\\mathfrak{v}",
+        "fw": "\\mathfrak{w}",
+        "fx": "\\mathfrak{x}",
+        "fy": "\\mathfrak{y}",
+        "fz": "\\mathfrak{z}",
+        "bar": "\\overline",
+        "undC": "\\underline{\\mathcal{C}}",
+        "Obj": "\\operatorname{Obj}",
+        "Hom": "\\operatorname{Hom}",
+        "Mor": "\\operatorname{Mor}",
+        "End": "\\operatorname{End}",
+        "Aut": "\\operatorname{Aut}",
+        "id": "\\mathrm{id}",
+        "pt": "\\mathrm{pt}",
+        "Tr": "\\operatorname{Tr}",
+        "eval": "\\operatorname{eval}",
+        "A": "\\operatorname{Sk}",
+        "F": "\\mathcal{F}",
+        "U": "\\mathcal{U}",
+        "orev": "\\overline",
+        "fcj": "\\widehat",
+        "e": "\\varepsilon",
+        "glu": "\\mathrm{gl}",
+        "greyson": "\\bgroup\\color{violet}[[#1]]\\egroup",
+        "todo": "\\textbf{[[}\\textsl{#1}\\textbf{]]}",
+        "bkt": "\\left\\langle #1 \\middle| #2 \\right\\rangle",
+        "pbkt": "\\left( #1 \\middle| #2 \\right)",
+        "abs": "\\left| #1 \\right|",
+        "norm": "\\left\\| #1 \\right\\|",
+        "set": "\\left\\{ #1 \\right\\}",
+        "bra": "\\left\\langle #1 \\right|",
+        "ket": "\\left| #1 \\right\\rangle",
+        "braket": "\\left\\langle #1 \\middle| #2 \\right\\rangle",
+        "Set": "\\mathbf{Set}",
+        "Grp": "\\mathbf{Grp}",
+        "Top": "\\mathbf{Top}",
+        "Vec": "\\mathbf{Vec}",
+        "Hilb": "\\mathbf{Hilb}",
+        "Sk": "\\operatorname{Sk}",
+        "colim": "\\operatorname{colim}",
+        "Ext": "\\operatorname{Ext}",
+        "Tor": "\\operatorname{Tor}",
+        "Spec": "\\operatorname{Spec}",
+        "im": "\\operatorname{im}",
+        "coker": "\\operatorname{coker}",
+        "coloneqq": "\\mathrel{\\vcenter{:}}=",
+        "coloneq": "\\mathrel{\\vcenter{:}}=",
+        "eqqcolon": "=\\mathrel{\\vcenter{:}}",
+        "endto": "\\to",
+        "to": "\\rightarrow",
+        "injto": "\\hookrightarrow",
+        "surjto": "\\twoheadrightarrow",
+        "longto": "\\longrightarrow",
+        "lto": "\\longrightarrow",
+        "mapsfrom": "\\mathrel{\\reflectbox{\\ensuremath{\\mapsto}}}",
+        "Ising": "\\mathsf{Ising}",
+        "a": "\\alpha",
+        "b": "\\beta",
+        "d": "\\delta",
+        "g": "\\gamma"
         }
+      },
+      startup: {
+        typeset: true
+      }
     };
     </script>
-    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
 </head>
 <body>
     <div class="top-nav">
@@ -98,13 +311,41 @@
     <div class="content-wrapper">
     <h1>defects of a QFT</h1>
     <div class="metadata">
-        <strong>Last modified:</strong> December 11, 2025 at  6:24 PM ET<br>
-        <strong>Created:</strong> 2025-12-11<br>
-        <strong>Tags:</strong> stub
+        <strong>Last modified:</strong> December 12, 2025 at 10:15 PM ET<br>
+        <strong>Created:</strong> August 23, 2025 at  9:12 PM ET<br>
     </div>
     <div class="content">
         
-        <p>This note is a placeholder for future content.</p>
+        <p><strong>Idea.</strong> The following is from <a href="JF21HeisenbergQFT.pdf.html">JF21HeisenbergQFT.pdf</a>. <em>Consider choosing a vector space V and placing on R (considered just as an oriented manifold) some “beads” labeled by vectors in V . These “beads” can slide back and forth but cannot pass through each other. Further assume that the beads can “fuse” in a nuclear reaction. Imposing linearity in the labels, this “fusion” is an operation V ⊗ V → V . At microscopic scales, fusion isn’t really a discrete process: instead, when beads become very close to each other, they can become bonded and behave like a single particle. But suppose that all physics of beads and fusion is “topological” in the sense that it is independent of distances on R. Then the fusion operation V ⊗ V → V is associative. The “invisible bead” — no bead at all — is a unit for this fusion. So such a system is the same as an associative algebra structure on V . The beads are nothing but “local observables” drawn from the “algebra of observables” V . The theory of local observables for a general quantum field theory has been formulated in terms of factorization algebras in [CG16], and restricts to “beads on R” in the case of one-dimensional topological theories. More generally, consider dividing R into intervals separated by “point defects.” One can imagine a situation in which the different regions follow different physical laws: one might be filled with water, for example, and another air. Each defect might also have its own physics: perhaps there are waves that live only where water and air meet. Each region and each defect has its own vector space of observables. As observables move around, they can fuse, and we will require that the universe be topological. An observable in a region can move onto a defect, but not otherwise. There should be “invisible observables” that can be inserted at any point. These rules together comprise (1) an associative algebra assigned to each region, and (2) a pointed bimodule assigned to each defect. These are nothing but the objects and morphisms of Alg1(VectK).</em></p>
+
+
+<h4 id="defects">Defects</h4>
+<p>(From <a href="Borcherds QFT summary.html">Borcherd’s QFT notes</a>:)As introduced in Lecture 31, there are more general “observables” or “operators” in a quantum field theory whose support is not a point, but rather a higher dimensional submanifold, or <a href="stratified submanifold.html">stratified submanifold</a>. The general word for these are defects. In Chern–Simons theory, the interesting defects are 1-dimensional: so-called line defects. The support is a 1-dimensional submanifold, a curve in a 3-manifold.</p>
+
+<p>Just as the vector space of point defects in a topological field theory is computed as the value of the theory on the link of a point, so too the category of line defects at a point $x ∈ L ⊂ X$ on a curve in a 3-manifold is the value of the theory on the link of $L ⊂ X$ at $x$. If $L ⊂ X$ is normally framed, then this link can be identified as the standard circle S1, and the category of local line defects is the modular tensor category A = eZ(S1). One can specialize to X = S3, and then L ⊂ S3 is a knot or link. A bit more discussion is in §31.4. From correlation functions of line defects in the theories Z = Z(SU2,k) one recovers the Jones polynomial, which was Witten’s starting point [W3, A3, FK].</p>
+
+<h3 id="extended-operators-and-defects">Extended Operators and Defects</h3>
+
+<h4 id="extended-operators">Extended Operators</h4>
+<p>In gauge theories, extended operators include Wilson line operators and ’t Hooft line operators.</p>
+
+<p>Two examples of extended operators in gauge theories are Wilson line operators and ’t Hooft line operators.</p>
+
+<p>See also:</p>
+<ul>
+<li><a href="https://arxiv.org/pdf/1607.05747">Here</a></li>
+<li><a href="https://arxiv.org/pdf/1603.01171#page=18.45">Here</a></li>
+<li><a href="https://indico.in2p3.fr/event/32058/contributions/140322/attachments/85993/129097/Brunner.pdf">Here</a></li>
+<li><a href="WalkerSlidesDefectsUCLA2015.pdf.html">WalkerSlidesDefectsUCLA2015.pdf</a></li>
+</ul>
+    </div>
+
+    <div class="linked-notes">
+        <h2>Linked Notes</h2>
+        <ul>
+            <li><a href="Borcherds QFT summary.html">Borcherds QFT summary</a></li>
+            <li><a href="stratified submanifold.html">stratified submanifold</a></li>
+        </ul>
     </div>
 
     <div class="backlinks">

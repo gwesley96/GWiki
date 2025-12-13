@@ -14,6 +14,7 @@
         tex: {
             inlineMath: [['$', '$']],
             displayMath: [['\\[', '\\]']],
+            
             macros: {
                 // Category theory
                 cC: '\\mathcal{C}',
@@ -25,12 +26,26 @@
                 cM: '\\mathcal{M}',
                 cP: '\\mathcal{P}',
                 cU: '\\mathcal{U}',
+                eF: '\\mathcal{F}',
+                eU: '\\mathcal{U}',
+                undC: '\\underline{\\mathcal{C}}',
                 Obj: '\\operatorname{Obj}',
                 Hom: '\\operatorname{Hom}',
                 Mor: '\\operatorname{Mor}',
                 End: '\\operatorname{End}',
                 Aut: '\\operatorname{Aut}',
                 id: '\\mathrm{id}',
+                pt: '\\mathrm{pt}',
+                Tr: '\\operatorname{Tr}',
+                eval: '\\operatorname{eval}',
+                
+                // User-specific shortcuts (2-Hilbert)
+                A: '\\operatorname{Sk}',
+                F: '\\mathcal{F}',
+                U: '\\mathcal{U}',
+                orev: '\\overline',
+                fcj: '\\widehat',
+                e: '\\varepsilon',
 
                 // Blackboard bold
                 bR: '\\mathbb{R}',
@@ -45,7 +60,8 @@
                 bbQ: '\\mathbb{Q}',
 
                 // Delimiters
-                bkt: ['\\langle #1 \\middle| #2 \\rangle', 2],
+                bkt: ['\\left\\langle #1 \\middle| #2 \\right\\rangle', 2],
+                braket: ['\\left\\langle #1 \\middle| #2 \\right\\rangle', 2],
                 abs: ['\\left| #1 \\right|', 1],
                 norm: ['\\left\\| #1 \\right\\|', 1],
 
@@ -54,6 +70,8 @@
                 Grp: '\\mathbf{Grp}',
                 Top: '\\mathbf{Top}',
                 Vec: '\\mathbf{Vec}',
+                Hilb: '\\mathbf{Hilb}',
+                Sk: '\\operatorname{Sk}',
 
                 // Operators
                 colim: '\\operatorname{colim}',
@@ -64,12 +82,14 @@
                 coker: '\\operatorname{coker}',
                 coloneqq: '\\mathrel{\\vcenter{:}}=',
                 coloneq: '\\mathrel{\\vcenter{:}}=',
-
+                endto: '\\to',
+                
                 // TikZ-like (limited in HTML)
                 to: '\\rightarrow',
                 injto: '\\hookrightarrow',
                 surjto: '\\twoheadrightarrow'
             }
+
         }
     };
     </script>

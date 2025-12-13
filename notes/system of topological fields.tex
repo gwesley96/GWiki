@@ -2,11 +2,443 @@
 \usepackage{gwiki-links}
 
 \Title{system of topological fields}
-\Tags{stub}
+\Tags{disk-like framework}
+
+\newcommand{\A}{\mathrm{Sk}}
+\newcommand{\Z}{Z}
+\newcommand{\M}{\dM}
+\newcommand{\F}{\eF}
+\newcommand{\orev}{\overline}
+\newcommand{\fcj}{\widehat}
+\renewcommand{\U}{\eU}
+\newcommand{\undC}{\smash[b]{\text{$\underset{\smash{\raisebox{.275em}{$\scriptstyle\kern.1ex\rightarrow$}}}{\smash{\cC}}$}}}
 
 \begin{document}
 \NoteHeader
+\section{Systems of topological fields}
+\subsection{System of fields: Data}
+An \defn{$n$-dimensional system of topological fields} $\F$ (enriched in $\Vec$) consists of the following data. 
+\begin{lst}[font=\upshape,label=($\eF$\arabic*)]
+\item 
+\label{Ffields}
+% \cite[Axm. 6.1.1, notation adapted]{Mg12} 
+(\emph{Fields}) Symmetric monoidal functors $\F_k\colon(\cM_k,\amalg)\to (\Set,\tms)$ for $0\leq k\leq n-1$ and $\F_n\colon (\cM_n,\amalg)\to(\Vec,\otimes_{\bbC})$, which by abuse of notation we often write as $\F$. 
 
-This note is a placeholder for future content.
+\item 
+\label{Fboundary-restrictions}
+% \cite[Lem. 6.1.3, notation adapted]{MW12}
+(\emph{Boundary restrictions}) For each $1\leq k\leq n$, a symmetric monoidal natural transformation $\bd_k\colon \F_{k}\Rightarrow \F_{k-1}\circ\bd$, which by abuse of notation we often write as $\bd$.\footnote{We will also demand this for $k=0$, which is just taking the boundary of 0-manifolds, which will always give the empty $(-1)$-manifold. \greyson{put in/make rigorous}}
 
+\item
+\label{Fconjugation}
+% \cite[p. 21, notation adapted]{W06} 
+(\emph{$H$-reversal}) For $0\leq k\leq n$, $X\in\cM_k$, and $c\in\F(\bd X)$,
+% (possibly $c=\varnothing$), 
+a symmetric monoidal natural isomorphism $\bar{\;\cdot\;}\colon\bar{\F(X)}\to \F(\bar X)$, where $\bar{\F(X)}$ is the complex conjugate vector space when $k=n$ and $\bar{\F(X)}=\F(X)$ when $k<n$.
+% , where $\orev{X}$ denotes the $H$-structure-reversal of $X$ (see \cref{manifold-assumptions}).
+% For general $X$, there are bijections
+% \[
+% \cC(X; c) \longleftrightarrow \cC(-X, \hat{c}), \quad a \leftrightarrow \hat{a}.
+% \]
+
+\item
+\label{Fproduct-fields}
+% \cite[p. 1494, item (7), notation adapted]{MW12} 
+(\emph{Product fields})
+For $1\leq k\leq n$ and $Y\in \cM_k$, a symmetric monoidal natural transformation $\F_{k-1} \Rightarrow \F_k(-\tms I)$, denoted $c\mpto c\tms I$.
+
+\item
+\label{Fglue-without-corners}
+% \cite[p. 1493, item (4), notation adapted]{MW12} 
+(\emph{Gluing without corners})
+For each $1\leq k\leq n$ and $X\in\cM_k$ with $\bd X = \bar S \amalg S \amalg W$ for closed $(k-1)$-manifolds $S$ and $Q$, %\footnote{Often we will have $W=\varnothing$.} 
+if $\res_{\bar S}$ and $\res_{S}$ denote the restriction maps
+% https://q.uiver.app/#q=WzAsNSxbMywxLCJcXGNGKFxcYmFyIFkpIl0sWzAsMCwiXFxjRihYKSJdLFsxLDAsIlxcY0YoXFxiYXIgWVxcYW1hbGcgWVxcYW1hbGcgVykiXSxbMiwwLCJcXGNGKFxcYmFyIFkpXFx0bXMgXFxjRihZKVxcdG1zIFxcY0YoVykiXSxbNCwwLCJcXGNGKFkpIl0sWzEsMiwiXFxiZCJdLFsyLDMsIlxcY29uZyJdLFszLDQsIlxccHJfMiJdLFszLDAsIlxccHJfMSJdLFswLDQsIlxcYmFye1xcO1xcY2RvdFxcO30iLDJdXQ==&macro_url=https%3A%2F%2Fgist.githubusercontent.com%2Fgwesley96%2Faa003342fcc08c40cd10353da2b130f8%2Fraw%2F6218ded28b3944a5cf9023086f92d0596f44497f%2FGreyTeX.sty
+\[\begin{tikzcd}[ampersand replacement=\&,cramped,column sep=scriptsize,row sep=small]
+	{\F(X)} \& {\F(\bar S\amalg S\amalg W)} \& {\F(\bar S)\tms \F(S)\tms \F(W)} \&\& {\F(S)} \\
+	\&\&\& {\F(\bar S)}
+	\arrow["\bd", from=1-1, to=1-2]
+	\arrow["\cong", from=1-2, to=1-3]
+	\arrow["{\pr_2}", from=1-3, to=1-5]
+	\arrow["{\pr_1}"', from=1-3, to=2-4]
+	\arrow["{\bar{\;\cdot\;}}"', from=2-4, to=1-5]
+\end{tikzcd}\]
+(where `$\tms$' is replaced with $\tsr_{\bbC}$ if $k=n$) corresponding to $\bar S$ and $S$ in $\bd X$ respectively, and $\mathrm{Eq}_S(\F(X))$ denotes the equalizer of these two maps,%\footnote{When $X$ is a disjoint union $X_1 \amalg X_2$, the equalizer is the same as the fibered product $\F(X_1)\times_{\F(S)} \F(X_2)$.}
+then there is a ``gluing'' map
+\[
+  \glu_S\colon \mathrm{Eq}_S(\F(X))
+ \to
+  \F(X_{\glu})
+\]
+where $X_{\glu}$ denotes $X$ glued to itself along the $\bar S$ and $S$; see \cref{fig:gluing-without-corners}. We say that fields on $X_{\glu}$ in the image of the gluing map are \defn{transverse to} (or \defn{splittable along}) $S$.
+\begin{figure}[!ht]
+% \centering
+\[
+\begin{tkz}[scale=1.7,yscale=.7,thick,boundary/.style={red}]
+% \draw[thin](-2,-4) grid (7,4);
+\def\ysep{0.4}
+\def\xlabel{1.4}
+\def\ylabel{0.85}
+\def\rotatebd{.285}
+\def\rightfrombd{.25}
+\def\downfrombd{.1}
+\def\circlerad{0.65}
+\def\leftovercirclerad{0.75}
+\def\leftovercirclesep{-0.25}
+
+\node (X1) at (\xlabel,\ylabel) {$X$};
+% \node (X2) at (\xlabel,-1.1*\ylabel) {$X_2$};
+
+\node[boundary] (Y1) at (0,\ysep)(\xlabel,-1.1*\ylabel) {$Y$};
+\node[boundary] (Y2) at (0,-\ysep) {$\orev Y$};
+\node[boundary] (W) at (4*\circlerad+\leftovercirclesep,0) {$Q$};
+
+\begin{scope}[shift={(4*\circlerad+\leftovercirclesep,0)},rotate=90] 
+\draw[boundary] (0,0) ellipse ({\leftovercirclerad} and {\leftovercirclerad*\rotatebd});
+\coordinate (leftoverstart) at (-\leftovercirclerad,0);
+\coordinate (leftoverend) at (\leftovercirclerad,0);
+\end{scope}
+
+
+\begin{scope}[shift={(0,-\ysep)}]
+\path (\circlerad*1,0)coordinate(start) arc(0:-180:\circlerad)coordinate(end);
+
+\draw[boundary] (0,0) ellipse ({\circlerad} and {\circlerad*\rotatebd});
+
+\draw (start)to[out=-90,in=180]++(\rightfrombd,-\downfrombd) to[out=0,in=-90]++(\rightfrombd,\ysep+\downfrombd);
+
+\path (\circlerad,0)coordinate(end) arc(0:-180:\circlerad)coordinate(end);
+
+\draw (end) 
+    to[out=-90,in=180] ++(2*\circlerad+2*\rightfrombd,-3*\leftovercirclerad*\ysep)
+    to[out=0,in=180](leftoverstart);
+\end{scope}
+
+
+\begin{scope}[shift={(0,\ysep)},yscale=-1]
+\path (\circlerad*1,0)coordinate(start) arc(0:-180:\circlerad)coordinate(end);
+
+\draw[boundary] (0,0) ellipse ({\circlerad} and {\circlerad*\rotatebd});
+
+\draw (start)to[out=-90,in=180]++(\rightfrombd,-\downfrombd) to[out=0,in=-90]++(\rightfrombd,\ysep+\downfrombd);
+
+\path (\circlerad,0)coordinate(end) arc(0:-180:\circlerad)coordinate(end);
+
+\draw (end) 
+    to[out=-90,in=180] ++(2*\circlerad+2*\rightfrombd,-3*\leftovercirclerad*\ysep)
+    to[out=0,in=180](leftoverend);
+\end{scope}
+\end{tkz}
+\qquad\longrightarrow\qquad
+\begin{tkz}[scale=1.9,yscale=1.25,thick,boundary/.style={red},yscale=1.1]
+% \draw[thin](-2,-4) grid (7,4);
+\def\ysep{0}
+\def\xlabel{1.5}
+\def\ylabel{0.3}
+\def\rotatebd{.225}
+\def\rightfrombd{.4}
+\def\downfrombd{.13}
+\def\circlerad{0.5}
+\def\leftovercirclerad{0.4}
+\def\leftovercirclesep{0}
+
+\node (X1) at (\xlabel,\ylabel) {$X_{\glu}$};
+\node[boundary] (W) at (4*\circlerad+\leftovercirclesep,0) {$Q$};
+\begin{scope}[shift={(4*\circlerad+\leftovercirclesep,0)},rotate=90] 
+\draw[boundary] (0,0) ellipse ({\leftovercirclerad} and {\leftovercirclerad*\rotatebd*2});
+\coordinate (leftoverstart) at (-\leftovercirclerad,0);
+\coordinate (leftoverend) at (\leftovercirclerad,0);
+\end{scope}
+
+\begin{scope}[shift={(0,-\ysep)}]
+\path (\circlerad*1,0)coordinate(start) arc(0:-180:\circlerad)coordinate(end);
+
+\draw[dashed,thin] (0,0) ellipse ({\circlerad} and {\circlerad*\rotatebd*.5});
+
+\draw (start)to[out=-90,in=180,looseness=1.15]++(\rightfrombd,-\downfrombd) to[out=0,in=-90,looseness=1.15]++(\rightfrombd,\downfrombd);
+
+\path (\circlerad,0)coordinate(end) arc(0:-180:\circlerad)coordinate(end);
+
+\draw (end) 
+    to[out=-90,in=180] ++(2*\circlerad+2*\rightfrombd,-3*\leftovercirclerad*0.4)
+    to[out=0,in=180](leftoverstart);
+\end{scope}
+
+
+\begin{scope}[shift={(0,\ysep)},yscale=-1]
+\path (\circlerad*1,0)coordinate(start) arc(0:-180:\circlerad)coordinate(end);
+
+\draw (start)to[out=-90,in=180,looseness=1.15]++(\rightfrombd,-\downfrombd) to[out=0,in=-90,looseness=1.15]++(\rightfrombd,\downfrombd);
+
+\path (\circlerad,0)coordinate(end) arc(0:-180:\circlerad)coordinate(end);
+
+\draw (end) 
+    to[out=-90,in=180] ++(2*\circlerad+2*\rightfrombd,-3*\leftovercirclerad*0.4)
+    to[out=0,in=180](leftoverend);
+\end{scope}
+\end{tkz}
+\]
+\caption{Illustration of gluing without corners with $n=2$.}
+\label{fig:gluing-without-corners}
+\end{figure}
+% Furthermore, up to extended isotopy in $X_{\glu}$, $\glu_S$ is surjective.
+
+% \greyson{Push a lot of these details to the figure when I add it; take advantage of the figure's caption too.}
+
+% Viewing $S^1$ as two copies of $D^1$ glued (without corners) together along the boundary $S\coloneq \bd S^1=\pt\amalg \pt$, the gluing-without-corners axiom for systems of fields gives a linear isomorphism $\Eq(\F(D^1\amalg D^1))=\F(D^1)\otimes_{\F(S)}\F(D^1)\to \F(S^1)=\A(S^1)$
+
+\item
+\label{Fglue-with-corners}
+% \cite[p. 1493--4, item (5), notation adapted]{MW12} 
+(\emph{Gluing with corners})
+\greyson{todo: replace $W$ with $Q$ (for later)}
+Let $X\in\cM_k$ for $2\leq k\leq n$. Let $\bd X = (\bar Y \amalg Y) \cup Q$, where $\bar Y$ and $Y$ are disjoint from each other and $\bd(\bar Y \amalg Y) = \bd Q$, and let $X_{\glu}$ denote $X$ glued to itself (without corners) along $\bar Y$ and $Y$ as in \cref{fig:gluing-with-corners}. Note that $\bd X_{\glu} = Q_{\glu}$, where $Q_{\glu}$ denotes $Q$ glued to itself (without corners) along $\bd Y$ and $\bd Y$. Let $c_{\glu} \in \F(Q_{\glu})$ be a splittable field on $Q_{\glu}$ and let $c \in \F(Q)$ be the cut-open version of $c_{\glu}$. Let $\F^c(X)$ denote the subset of $\F(X)$ that restricts to $c$ on $Q$.\footnote{This restriction map uses the gluing-without-corners map above.} Using the boundary restriction and gluing-without-corners map, we get two maps $\res^c_{\bar Y} \colon \F^c(X) \to \F(\bar Y)$  and $\res^c_Y \colon \F^c(X) \to \F(Y)\colon \F^c(X) \to \F(Y)$ corresponding to $\bar Y$ and $Y$ in $\bd X$ respectively. Let $\Eq^c_Y(\F(X))$ denote the equalizer of these two maps. Then there is a ``gluing'' map
+\[
+\glu_Y^c\colon \mathrm{Eq}_Y^c(\F(X)) \to \F(X_{\glu}; c_{\glu}).
+\]
+% and this gluing map is compatible with all of the above structure (actions of homeomorphisms, boundary restrictions, disjoint union). 
+% Furthermore, up to homeomorphisms of $X_{\glu}$ isotopic to the identity and collar maps, the gluing map is surjective. 
+\begin{figure}[H]
+% \centering
+\[
+% % \input{figures/tikzpictures/gluing-with-corners-unglued}
+% \quad\quad\overset{\displaystyle\glu}{\longrightarrow}\quad\quad
+% % \input{figures/tikzpictures/gluing-with-corners-glued}
+\begin{tkz}
+\node{TODO};
+\end{tkz}
+\]
+\caption{\greyson{(from blob paper; todo: make own figure} We say that fields on $X_{\glu}$ with boundary $c_{\glu}$ in the image of the gluing map are \defn{splittable} along $Y$ or \defn{transverse} to $Y$.}
+\label{fig:gluing-with-corners}
+\end{figure}
+\end{lst} 
+
+% \greyson{TODO: Define notation for $a\amalg b$, $a\bullet_x b$, $\glu$, with/without the sub/superscripts, etc.}
+We use the gluing notation $x_{\glu} \coloneq  \glu(x) \in \F(X_{\glu})$ for $x \in \F(X)$. In the case that $X = X_1 \amalg X_2$ have $\bd X_1=\bd X_2$ and $a,b \in \F(X_i;x)$, we write $a \bullet_x b \coloneq  \glu_x(a \tsr b) \in \F(X_{\glu})$. When $x$ is understood, we often write these as $a\bullet b$ or $\glu(a\tsr b)$.
+
+\subsection{System of fields: Conditions}
+The above data for an $n$-dimensional system of fields $\F$ enriched in $\Vec$ must satisfy the following conditions. 
+\begin{lst}[label=(C\arabic*),ref=(C\arabic*)]
+    \item The functors $\bar{\;\cdot\;}\colon \cM_k\to\cM_k$ from \ref{Fconjugation} commute with homeomorphisms and boundary restrictions.%  \greyson{Does this follow from the axioms?}
+    \item
+    The gluing-without-corners maps $\glu_Y\colon \mathrm{Eq}_Y(\F(X))\to\F(X_{\glu})$ from \ref{Fglue-without-corners} are injective, surjective up to extended isotopy in $X_{\glu}$ (see \cref{def:extended isotopy} below), and compatible with all of the above structure, i.e., with actions of homeomorphisms, boundary restrictions, and monoidal structure.
+    % (disjoint union). 
+
+    \item
+    The gluing-with-corners maps $\glu_Y^c\colon \mathrm{Eq}_Y^c(\F(X))\to\F(X_{\glu};c_{\glu})$ from \ref{Fglue-with-corners} are injective, surjective up to extended isotopy in $X_{\glu}$ as defined in \cref{def:extended isotopy} below, and compatible with all of the above structure, i.e., with actions of homeomorphisms, boundary restrictions, and monoidal structure.
+    % (disjoint union). 
+
+    % \item The cylinder natural transformations $\Cyl$ from \ref{Fproduct-fields} commute appropriately with all the structure maps above (disjoint unions, boundary restrictions, etc). 
+    
+    \item
+    If $c$ is a field as in \ref{Fproduct-fields} and $\tld f\colon  Y \times I \to Y \times I$ is a fiber-preserving homeomorphism over a map $f\colon Y\to Y$, then $\tld f(c \times I) = f(c) \times I$.
+    
+    \item
+    % \cite[p. 1494, item (6), notation adapted]{MW12} 
+    (Splittings)
+    Let $X\in\cM_k$ for $1\leq k\leq n$. Let $c \in \F_k(X)$ and let $Y \subset X$ be a properly embedded submanifold of $X$ of codimension 1. Then for most\footnote{E.g., for an open dense subset of such perturbations, or for all perturbations satisfying a transversality condition.} small perturbations of $Y$, $c$ splits along $Y$. See \cite[Axm. 6.1.11]{MW12} for the details.
+    % (In Example 2.1.1, $c$ splits along all such $Y$. 
+    In \cref{String diagrams give a system of fields}, $c$ splits along $Y$ so long as $Y$ is in general position
+    % \footnote{To see what this means, consider the following paragraph from \cite{MW12}: ``If $X$ has boundary, we require that the cell decompositions are in general position with respect to the boundary---the boundary intersects each cell transversely, so cells meeting the boundary are mere half-cells. Put another way, the cell decompositions we consider are dual to standard cell decompositions of X.''} 
+    with respect to the cell decomposition associated to $c$.)
+\end{lst}
+% \subsection{Extended isotopy}
+% \label{extended isotopy}
+Let $X$ be an $n$-manifold and $Y \subset \bd X$ be a codimension-0 submanifold of $\bd X$. Let $X \cup (Y \times I)$ denote $X$ glued to $Y \times I$ along $\orev Y$ and $Y$. Extend the product structure on $Y \times I$ to a bicollar \greyson{define bicollar?} neighborhood of $Y$ inside $X \cup (Y \times I)$. We call a homeomorphism 
+\[
+f\colon  X \cup (Y \times I) \to X
+\]
+a \defn{collaring homeomorphism} if $f$ is the identity outside of the bicollar and $f$ preserves the fibers of the bicollar. The maps $\F(X) \to \F(X)$ that collar homeomorphisms induce via the functoriality and product field properties above are called \defn{collar maps}. Let $X$ and $Y \subset \bd X$ be as above. Let $x \in \F(X)$ be a field on $X$ and such that $\bd x$ is splittable along $\bd Y$. Let $c$ be $x$ restricted to $Y$. Then we have the glued field $x \bullet (c \times I)$ on $X \cup (Y \times I)$. Let $f\colon  X \cup (Y \times I) \to X$ be a collaring homeomorphism. Then we call the map $x \mapsto f(x \bullet (c \times I))$ a \defn{collar map}. (See \greyson{make figure}.)
+
+\begin{definition}\label{def:extended isotopy}
+We call the equivalence relation generated by collar maps and homeomorphisms isotopic to the identity \defn{extended isotopy}.
+%\footnote{We use this name because the collar map can be thought of (informally) as the limit of homeomorphisms that expand an infinitesimally thin collar neighborhood of $Y$ to a thicker collar neighborhood.}
+\end{definition}
+
+\subsection{Local relations}
+% For convenience, we assume that fields are enriched over $\Vec$.
+% Local relations are subspaces $\U(D; c) \sst \F(D; c)$ of the fields on balls that form an ideal under gluing. Again, we give the examples first.
+% 
+% \begin{example}[2.1.1 (contd.)]
+%     For maps into spaces, $U(D, c)$ is generated by fields of the form $a \cdot b \in C(D, c)$, where $a$ and $b$ are maps (fields) which are homotopic rel boundary.
+% \end{example}
+% 
+% These motivate the following definition.
+% 
+% \begin{definition}[2.3.1]
+A choice of \emph{local relations} for a system of fields $\F$ is a collection of subspaces $\U(D; c) \sst \F(D; c)$, for all $n$-manifolds $D$ that are homeomorphic to the standard $n$-disk and all $c \in \F(\bd D)$, satisfying the following properties.
+    \begin{lst}[font=\upshape,label=($\U$\arabic*)]
+        \item\label{U1} (Functoriality) $f(\U(D;\phi))=\U(D';f_*\phi)$ for all homeomorphisms $f\colon D \to D'$.
+        \item\label{U2} (Extended isotopy invariance is a local relation) If $x, y \in \F(D; c)$ and $x$ is extended-isotopic to $y$, then $x-y\in \U(D;c)$.
+        \item\label{U3} (Ideal under gluing) If $D'$ is an $n$-manifold contained in $D$ (and possibly intersecting $\bd D$)  that is homeomorphic to $D^n$, then fields $x \in \U(D')$ and $r \in \F(D\setminus D')$ satisfy $x \bullet r \in \U(D)$. 
+        \item\label{U4} ($H$-reversal-preserving) \greyson{todo: check this one}
+    \end{lst}
+    % \greyson{Add figure}
+% \end{definition}
+
+
+% \section{(Dagger) systems of fields, local relations, and \texorpdfstring{($n+\varepsilon$)}{(n+e)}D TQFTs}
+% \greyson{todo: readd defn of system of fields, define dagger possibly only for system of fields (ie and not for local relns), put gluing with corners into gluing etc.. idk}
+
+
+% A system of fields and local relations is called \defn{dagger} if all involved monoidal functors, monoidal natural isomorphisms, coheretors, and other isomorphisms are dagger and/or compatible with the dagger in the obvious way. (Hence all coherence isomorphisms are unitary.) Moreover, cups and caps should be their vertical flips in the sense that $\coev$'s are the daggers of $\ev$'s \greyson{does this follow from compatibility with the $H$-structure reversal functor? See the purple note below}. An $(n+\varepsilon)$D TQFT is called \defn{dagger} if its underlying underlying system of fields and local relations is dagger. \greyson{revisit this... possibly delete if this defn is not necessary. actually this should really just mean compatibility with the $H$-structure-reversal, which is already part of the axioms, so I'm pretty sure we don't need the notion of ``dagger system of fields''...}
+
+
+\subsection{\texorpdfstring{$(n+\e)$}{n+e}-dimensional TQFTs} 
+% \greyson{TODO: Check this, particularly w the quotient of U} \greyson{comment on name $n+\e$ vs $n+1$}
+An \defn{$(n+\varepsilon)$-dimensional TQFT} $(\F,\U)$ is an $n$-dimensional $\Vec$-enriched system of fields and local relations. 
+
+Fix an $n$-manifold $X$ and a boundary condition $c\in\F(X)$. We define the \defn{skein module} of $(X,c)$ associated to a system of fields and local relations $(\F,\U)$ by 
+\[ 
+\A(X,c)\coloneq \F(X,c)/\U(X,c) 
+\] 
+where $\U(X)$ is the subspace of $\F(X)$ 
+% is the space of local relations in $\F(X)$, i.e., $\U(X)$ is
+generated by fields of the form $u\bullet r$ where $u\in\U(D)$ and $r\in\F(X\setminus D)$ for some embedded $D$ in $X$ homeomorphic to an $n$-disk. By a slight abuse of terminology, we will often refer to elements of $\A(X)$ again as fields. \greyson{todo: completely rewrite this section...}
+
+
+We will often be more interested in the dual vector space of $\A(X)$, which we denote by $\Z(X)$. This is because the $\Z$-invariants often have nicer algebraic structure than the $\A$-invariants. %In particular, the former are Cauchy complete even when the latter are not. 
+
+We will denote an $(n+\e)$-dimensional TQFT by a quadruple $(\F,\U)$, where $\A$ and $\Z$ are defined as above.
+When $W$ is closed, we simply write $Z(W)$ instead of $Z(W,\varnothing)$, and similarly for $\A(W)$.
+
+\greyson{TODO: Explain notation $a,b,c$ after semicolons...}
+
+
+\begin{example}[\texorpdfstring{$(n+\e)$}{(n+e)}-dimensional TQFTs from traditional \texorpdfstring{$n$}{n}-categories with strong duality]
+\label{String diagrams give a system of fields}
+Here we focus on our running example of string diagrams on manifolds. Given a traditional $n$-category with strong duality $\cC$, we get an $(n+\e)$-dimensional TQFT $(\F,\U)$ by letting the fields be $\cC$-labeled string diagrams. That is,  
+% \color{Purple} (from \cite[p. 1497]{MW12})
+for general $n$, a field on a $k$-manifold $X$ consists of
+\begin{itemize}
+    \item a cell decomposition of $X$;
+    \item an general position homeomorphism from the link of each $j$-cell to the boundary of the standard $(k-j)$-dimensional bigon; and
+    \item a labeling of each $j$-cell by a $(k-j)$-dimensional morphism of $C$, whose domain and range are determined by the labelings of the link of the $j$-cell.
+\end{itemize}
+\label{Local relations from a traditional $n$-category with strong duality}
+The local relations are given as follows. Given an $n$-manifold $D$ homeomorphic to $D^n$, we set $\U(D;c)$ equal to the kernel of the evaluation map $\ev\colon \F(D;c) \to \cC(c_s\to c_t)$, where $(c_s, c_t)$ is any choice of splitting of $c$ as $c=c_s\bullet c_t$ into source $c_s$ and target $c_t$, that sends a string diagram to the $j$-morphism in $\cC$ that it represents.
+\end{example}
+
+
+\begin{example}[Annular categories and the tube algebra]
+See \href{https://people.math.osu.edu/penneys.2/8800/Notes/Constructions.pdf}{here}.
+\end{example}
+\subsection{Gluing theorems}
+Fix an $(n+\varepsilon)$D TQFT $(\F,\U,z)$. For each $Y\in\M_{n-1}$, which we assume to be closed for simplicity of the notation, the hom profunctor $\A(Y)(-\to-)$ can be denoted by $\A(Y)^{y}{}_{y'}\coloneqq \A(Y)(y\to y')=\A(Y\times I,\overline{y}\amalg y')$ for $y,y'\in \cC(Y)$. Identifying $\A(\overline{Y})$ with $\A(Y)^{\mathrm{op}}$ via the equivalence established to obtain a dagger on $\A(Y)$, we see that $\A(\overline{Y})^{y}{}_{y'}=\A(Y)^{y'}{}_{y}$. For an $n$-manifold $X$ with $\partial X=\overline{S}\amalg T$, where again for simplicity we assume $S$ and $T$ are closed, we get a profunctor/bimodule $A_X\colon \A(T)^\op\times \A(S)\to \Vec$ given by
+\[
+\begin{aligned}
+A_X\coloneqq  \A(X;\overline{\,\text{-}\,},\text{-})\colon \A(T)^{\mathrm{op}}\times \A(S)&\to\Vec,
+\\
+(t,s)&\mapsto (A_X)^t{}_s\coloneqq \A(X;\overline{s},t),
+\\
+(f\colon t\to t',g\colon s'\to s)&\mapsto (A_X)^f{}_e\colon (A_X)^t{}_s\to (A_X)^{t'}{}_{s'}\end{aligned}
+\]
+where $\A(T)$ (resp. $\A(S)$) acts on the right (resp. left) by gluing collars, e.g., if $f\in \A(X;\overline{s},t)$ and $e\in \A(T)^{t}{}_{t'}$, then$$f\mathbin{\triangleleft}e\coloneqq f\bullet_{t}e\in \A(X;\overline{s},t'),$$and similarly for the left $\A(S)$-action. Note that $A_{Y\times I}$ is the identity $\A(Y)$-$\A(Y)$-bimodule.
+
+\begin{theorem}[{{\cite[Thm. 4.4.4/9]{W06}}}]
+(Here we omit boundary conditions on $Y$ for ease of notation.) Suppose $X\in\M_n$ with $\partial X=\overline{Y}\amalg Y\amalg Q$ and $X$ (resp. $Q$) glued along $\overline{Y}$ and $Y$ (resp. $\partial \overline{Y}=\overline{\partial Y}$ and $\partial Y$) to get $X_{\mathrm{gl}}$ (resp. $Q_{\mathrm{gl}}$) with $\partial X_{\mathrm{gl}}=Q_{\mathrm{gl}}$. Then $A_X$ is the relative tensor product with the $\A(Y)$-$\A(Y)$-bimodule $A_X$ over $\A(Y)$, i.e.,
+\[
+    \A(X_{\mathrm{gl}},c_{\mathrm{gl}})=(A_X)^{y}{}_{y,c}= \int^{y \in \cC(Y)} \A(X, \overline{y},y,c)\cong {\left(\bigoplus_{r\in\F(S)}\A(S;\bar r\amalg r\amalg c)\right)}\bigg/L
+\]
+where $L$ is the vector subspace generated by fields of the form $v\ract e-e\lact v$ for some $v\in \A(S; x, y, c)$ and $e\in \A(S;c)(x\to y)$.
+\end{theorem}
+
+\begin{corollary}[{{\cite[Cor. 4.4.4; notation adapted]{W06}}}]\label{codim-1 gluing theorem}
+Suppose $X\in\cM_{n}$ has boundary decomposition $\bd X\cong \bar S\amalg S\amalg W$ for some closed $W,S\in\cM_{n-1}$. (See \cref{fig:gluing-without-corners}). Then for any $c\in\F(W)$, $\A(X_{\glu};c)$ is the coend of the $\A(S)^\op\tms \A(S)$-action on $\set{\A(S;\bar{x},x,c)}_{x\in\F(Y)}$. In particular, 
+\[
+    \A(S;\bar x, x, c)\cong {\left(\bigoplus_{r\in\F(S)}\A(S;\bar r\amalg r\amalg c)\right)}\bigg/L
+\]
+where $L$ is the vector subspace generated by fields of the form $v\ract e-e\lact v$ for some $v\in \A(S; x, y, c)$ and $e\in \A(S;c)(x\to y)$.
+\end{corollary}
+
+\begin{example}[Gluing disks to get spheres]
+\label{gluing-disks-to-spheres}
+By \cref{codim-1 gluing theorem}, gluing $\orev{D^n}\amalg D^n\to S^n$ along $\bd D^n\cong S^{n-1}$ (see \cref{fig:gluing-disks-to-sphere}) induces a surjective linear map
+\begin{figure}
+% \centering
+\[
+\begin{tkz}[scale=2,thick,boundary/.style={red,very thick},scale=0.5]
+\def\ysep{0.45}
+\def\xlabel{0}
+\def\ylabel{0.625}
+\def\rotatebd{.3}
+\def\arlen{0.5}
+\def\yhoriz{-1.6}
+
+\begin{scope}[shift={(0,-\ysep)}]
+\draw[inner color=black!15] (1,0) arc(0:-180:1);
+\draw[boundary,bottom color=black!1] (0,0) ellipse (1 and \rotatebd);
+\node at (\xlabel,-\ylabel) {$\orev{D^n}$};
+\end{scope}
+
+\begin{scope}[shift={(0,\ysep)},yscale=-1]
+\draw[inner color=black!15] (1,0) arc(0:-180:1);
+\draw[boundary,bottom color=black!1] (0,0) ellipse (1 and \rotatebd);
+\node at (\xlabel,-\ylabel) {$D^n$};
+\end{scope}
+
+\node (c) at (1.25,0) {$c$};
+\draw[-{Stealth},shorten <=1mm,shorten >=1mm](c) to[out=90,in=-30,looseness=1.25] ++(-.7,.15+2*\ysep);
+\draw[-{Stealth},shorten <=1mm,shorten >=1mm](c) to[out=-90,in=30,looseness=1.25] ++(-.7,-.15+-2*\ysep);
+
+
+\node[boundary] (Y1) at (\yhoriz,1.1*\ysep){$S^{n-1}$};
+\node[boundary] (Y2) at (\yhoriz,-1.1*\ysep) {$\orev{S^{n-1}}$};
+\end{tkz}
+\quad\quad\overset{\displaystyle\glu}{\longrightarrow}\quad\quad
+\begin{tkz}[scale=2,thick,boundary/.style={red,very thick},scale=0.5]
+\def\ysep{0}
+\def\xlabel{0}
+\def\ylabel{0.625}
+\def\rotatebd{.25}
+\def\arlen{0.5}
+\def\yhoriz{-1.6}
+
+\begin{scope}[shift={(0,-\ysep)}]
+\draw[inner color=black!15] (0,0) circle (1);
+\end{scope}
+
+\begin{scope}[shift={(0,\ysep)},yscale=-1]
+\draw (1,0) arc(0:-180:1);
+\draw[dashed] (0,0) ellipse (1 and \rotatebd);
+\node at (\xlabel,-\ylabel) {$S^n$};
+\end{scope}
+
+\node (c) at (1.5,1) {$c_{\glu}$};
+\draw[-{Stealth}](c) to[out=180,in=30,looseness=1.25] (.45,.35);
+\end{tkz}
+\]
+\caption{Gluing two disks along their boundaries to get a sphere. \greyson{edit this to show how unglued c's boundaries are compatible? maybe w collar e too...}}
+\label{fig:gluing-disks-to-sphere}
+\end{figure}
+\[
+    \bigoplus_{r\in\F(S^{n-1})}\A(\orev{D^n}\amalg D^n; \fcj r\amalg r)\cong \A(D^n; r)\tsr_{\bbC} \A(D^n; r)\lsjto \A(S^n)
+\]
+% \greyson{Define the notation here $\bar r\amalg r$ vs $\bar r\tsr r$?}
+whose kernel is the subspace generated by the elements of the form $v\ract e-e\lact v$ for some $v\in \A(\orev{D^n}\amalg D^n, \fcj y\amalg z)$ and $e\in \A(S^{n-1}\tms D^1; \fcj y\amalg z)$ where $y,z\in\F(S^{n-1})$. Under the isomorphism $\A(\orev{D^n}\amalg D^n; \fcj{r}\amalg r)\cong \bar{\A(D^n; r)}\tsr_{\bbC} \A(D^n; r)$, any such $v$ takes the form $v=\sum_{i} \fcj{p_i}\tsr q_i$ for some $p_i\in \A(D^n;y)$ and $q_i\in \A(D^n;z)$. Thus, since the left and right $\A(S^{n-1})$-actions on $\A(D^n)$ are linear and compatible with $\tsr_{\bbC}$, 
+\begin{align*}
+    v\ract e&=\left(\sum_i \fcj{p_i}\tsr q_i\right)\ract e=\sum_i(\fcj{p_i}\tsr q_i)\ract e=\sum_i\fcj{p_i}\tsr (e\bullet_z q_i),
+    \\
+    e\lact v&=e\lact\left(\sum_i p_i\tsr q_i\right)=\sum_i e\lact( p_i\tsr q_i)=\sum_i(p_i\bullet_y e)\tsr q_i.
+\end{align*}
+Thus 
+\[
+    L
+    =
+    \bbC\left[\set{
+         p\tsr ( e\bullet_z q)-( p\bullet_y e)\tsr q
+    }{\substack{
+    y,\, z\,\in\, \F(S^{n-1}), \ p\,\in\, \A(D^n;y),
+    \\ 
+    q\,\in\, \A(D^n;z), \ e\,\in\, \A(S^{n-1})(y\to z)}}\right].
+\]
+Therefore, if $c=c'$ in $\A(S^n)$, then in $\bigoplus_{r\in\F(S^{n-1})}\A(D^n;r)\tsr_\bbC\A(D^n;r)$ we have $c=c'+\xi$ for some finite linear combination 
+\[
+    \xi=\sum_i \big(p_{i}\tsr ( e_i\bullet_{z_i} q_{i})-( p_{i}\bullet_{y_i} e_i)\tsr q_{i}\big)
+\]
+where $y_i,z_i\in \F(S^{n-1})$, $p_i\in \A(D^n;y_i)$, $q_i\in \A(D^n;z_i)$, and $e_i\in \A(S^{n-1})(y\to z)$. 
+\end{example}
+
+
+\SeeAlso{local relations for a system of topological fields,unitary TQFTs introduction}
 \end{document}

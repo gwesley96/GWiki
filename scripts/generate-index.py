@@ -48,9 +48,16 @@ def parse_metadata(tex_file: Path) -> dict:
     }
 
     # Extract \Title
-    title_match = re.search(r'\\Title\{([^}]+)\}', content)
-    if title_match:
-        meta['title'] = title_match.group(1)
+    if '\\Title{' in content:
+        start = content.find('\\Title{') + 7
+        balance = 1
+        i = start
+        while i < len(content) and balance > 0:
+            if content[i] == '{': balance += 1
+            elif content[i] == '}': balance -= 1
+            i += 1
+        if balance == 0:
+            meta['title'] = content[start:i-1]
 
     # Extract \Tags - handle both {tag1}{tag2} and {tag1, tag2}
     tags_match = re.search(r'\\Tags(\{[^}]*\})+', content)
@@ -138,31 +145,11 @@ def generate_index():
 \section{Vault Statistics}
 
 \begin{itemize}[nosep]
-  \item \textbf{Total Notes:} ''' + str(num_notes) + r'''
-  \item \textbf{Total Tags:} ''' + str(num_tags) + r'''
-  \item \textbf{Total Aliases:} ''' + str(num_aliases) + r'''
-  \item \textbf{Generated:} ''' + datetime.now().strftime("%Y-%m-%d %H:%M") + r'''
+  \item Total Notes: ''' + str(num_notes) + r'''
+  \item Total Tags: ''' + str(num_tags) + r'''
+  \item Total Aliases: ''' + str(num_aliases) + r'''
+  \item Generated: ''' + datetime.now().strftime("%Y-%m-%d %H:%M") + r'''
 \end{itemize}
-
-\section{All Notes (Alphabetical)}
-
-\begin{itemize}[nosep,leftmargin=*]
-'''
-
-    # Sort notes alphabetically by title
-    sorted_notes = sorted(notes, key=lambda n: (n['title'] or n['filename']).lower())
-
-    for note in sorted_notes:
-        title = note['title'] or note['filename']
-        filename = note['filename']
-        tags = ', '.join(note['tags']) if note['tags'] else '(no tags)'
-
-        latex += f"  \\item \\wref{{{filename}}} "
-        if note['summary']:
-            latex += f"--- {latex_escape(note['summary'][:80])}{'...' if len(note['summary']) > 80 else ''} "
-        latex += f"\\hfill {{\\footnotesize\\color{{gray}}\\textit{{{latex_escape(tags)}}}}}\n"
-
-    latex += r'''\end{itemize}
 
 \section{Notes by Tag}
 
@@ -171,15 +158,17 @@ def generate_index():
     # Sort tags alphabetically
     for tag in sorted(all_tags):
         tag_notes = tags_index[tag]
-        latex += f"\\subsection{{{latex_escape(tag)}}}\n\n"
+        latex += f"\\subsection{{{tag}}}\n\n"
         latex += "\\begin{itemize}[nosep,leftmargin=*]\n"
 
         for note in sorted(tag_notes, key=lambda n: (n['title'] or n['filename']).lower()):
             filename = note['filename']
-            title = note['title'] or note['filename']
+            # title = note['title'] or note['filename'] # Unused variable
             latex += f"  \\item \\wref{{{filename}}}"
             if note['summary']:
-                latex += f" --- {latex_escape(note['summary'][:60])}{'...' if len(note['summary']) > 60 else ''}"
+                latex += f" — {note['summary'][:100]}"
+                if len(note['summary']) > 100:
+                    latex += "..."
             latex += "\n"
 
         latex += "\\end{itemize}\n\n"
@@ -194,12 +183,81 @@ This section lists all defined aliases across the vault.
 '''
 
         for alias, title in sorted(all_aliases, key=lambda x: x[0].lower()):
-            latex += f"  \\item \\textbf{{{latex_escape(alias)}}} $\\rightarrow$ {latex_escape(title)}\n"
+            latex += f"  \\item \\textbf{{{alias}}} $\\rightarrow$ {title}\n"
 
         latex += r'''\end{itemize}
 '''
 
-    latex += r'''
+    # All Notes (Alphabetical) - Moved to bottom
+    latex += r'''\section{All Notes (Alphabetical)}
+
+\begin{itemize}[nosep,leftmargin=*]
+'''
+
+    # Sort notes alphabetically by title
+    sorted_notes = sorted(notes, key=lambda n: (n['title'] or n['filename']).lower())
+
+    for note in sorted_notes:
+        filename = note['filename']
+        tags_str = ", ".join(note['tags']) if note['tags'] else ""
+        
+        # Clean title of texorpdfstring if present
+        # We need a simple helper or just regex here since we don't import tex-to-html
+        # But wait, we can just simplistic regex it?
+        # Or better, just strip it.
+        # \texorpdfstring{A}{B} -> A
+        # Using a loop here is safer.
+        current_title = note['title'] or filename
+        while r'\texorpdfstring' in current_title:
+             # Find it
+             idx = current_title.find(r'\texorpdfstring')
+             if idx == -1: break
+             
+             # Assume brace balanced structure {A}{B}
+             # Parse A
+             p1_start = current_title.find('{', idx)
+             if p1_start == -1: break
+             
+             # Balance A
+             bal = 1
+             p1_end = p1_start + 1
+             while p1_end < len(current_title) and bal > 0:
+                 if current_title[p1_end] == '{': bal += 1
+                 elif current_title[p1_end] == '}': bal -= 1
+                 p1_end += 1
+             
+             tex_part = current_title[p1_start+1:p1_end-1]
+             
+             # Parse B (immediately follows?)
+             p2_start = current_title.find('{', p1_end)
+             # Consume space?
+             
+             # Should replace whole command with tex_part
+             # But we need to find end of B to consume it.
+             if p2_start != -1:
+                 bal = 1
+                 p2_end = p2_start + 1
+                 while p2_end < len(current_title) and bal > 0:
+                     if current_title[p2_end] == '{': bal += 1
+                     elif current_title[p2_end] == '}': bal -= 1
+                     p2_end += 1
+                 
+                 current_title = current_title[:idx] + tex_part + current_title[p2_end:]
+             else:
+                 break
+
+        latex += f"  \\item \\wref[{current_title}]{{{filename}}} "
+        if note['summary']:
+            # Use raw summary to avoid double escaping problems in tex-to-html
+            latex += f"— {note['summary'][:100]}{'...' if len(note['summary']) > 100 else ''} "
+        
+        if tags_str:
+            latex += f" <i>({tags_str})</i>"
+            
+        latex += "\n"
+
+    latex += r'''\end{itemize}
+
 \section{How to Use This Index}
 
 \begin{itemize}[nosep]

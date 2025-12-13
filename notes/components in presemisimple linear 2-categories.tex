@@ -1,12 +1,20 @@
 \documentclass{gwiki}
 \usepackage{gwiki-links}
 
-\Title{Components in Presemisimple Linear 2-Categories}
-\Tags{stub}
+\Title{components in presemisimple linear 2-categories}
+\Tags{}
 
 \begin{document}
 \NoteHeader
 
-This note is a placeholder for future content.
+\textbf{\wref[Components of presemisimple 2-categories]{DR23-Fusion2Categories.pdf#page=19&selection=758,1,758,41}.} Unlike in the 1-categorical case (see \wref{Schur's Lemma}), two \wref[simple objects]{simple object in a 2-category} in a \wref{presemisimple 2-category} $\mathcal{C}$ may be connected by \wref[nonzero]{zero 1-morphism in a 2-category} 1-morphisms. 
+
+Two simple objects $a$ and $b$ of $\mathfrak{C}$ are in the same \textbf{connected component} (often just \textbf{component}) of $\mathfrak{C}$ if there is a nonzero 1-morphism $a\to b$, that is if $\mathfrak{C}(a\to b)\neq 0$. The set of components of $\mathfrak{C}$, denoted $\pi_0\mathfrak{C}$, is the quotient of the set of simples by the equivalence relation of being in the same component.
+
+Connectedness is an equivalence relation in a presemisimple 2-category $\mathfrak{C}$:  reflexivity is clear, symmetry follows from the fact that the right adjoint of a nonzero morphism is nonzero, and transitivity is precisely the content of \wref[Proposition 1.2.19]{DR23-Fusion2Categories.pdf#page=18&selection=57,0,58,0}.
+
+Thus each ‘indecomposable’ collection of simples will be completely connected in the sense that there is a nonzero morphism between any two simples in the collection. 
+\subsubsection*{Examples}
+- (\textit{Very important!}): For an \wref[indecomposable]{indecomposable multitensor category} \wref{multifusion category} $\mathcal{D}$, the associated \wref[unfolded]{unfolding} 2-category is connected, i.e., has a single component. More generally, the set of indecomposable summands of a multifusion category corresponds to the set of connected components of its unfolding. (In fact, we \wref[can]{DR23-Fusion2Categories.pdf#page=16&selection=238,58,239,65} view giving a multifusion category as a method for providing the data of a finite presemisimple 2-category.)
 
 \end{document}

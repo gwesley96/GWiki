@@ -11,70 +11,283 @@
     <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
     <script>
     window.MathJax = {
-        tex: {
-            inlineMath: [['$', '$']],
-            displayMath: [['\\[', '\\]']],
-            macros: {
-                // Category theory
-                cC: '\\mathcal{C}',
-                cD: '\\mathcal{D}',
-                cF: '\\mathcal{F}',
-                cG: '\\mathcal{G}',
-                cH: '\\mathcal{H}',
-                cL: '\\mathcal{L}',
-                cM: '\\mathcal{M}',
-                cP: '\\mathcal{P}',
-                cU: '\\mathcal{U}',
-                Obj: '\\operatorname{Obj}',
-                Hom: '\\operatorname{Hom}',
-                Mor: '\\operatorname{Mor}',
-                End: '\\operatorname{End}',
-                Aut: '\\operatorname{Aut}',
-                id: '\\mathrm{id}',
-
-                // Blackboard bold
-                bR: '\\mathbb{R}',
-                bC: '\\mathbb{C}',
-                bZ: '\\mathbb{Z}',
-                bN: '\\mathbb{N}',
-                bQ: '\\mathbb{Q}',
-                bbR: '\\mathbb{R}',
-                bbC: '\\mathbb{C}',
-                bbZ: '\\mathbb{Z}',
-                bbN: '\\mathbb{N}',
-                bbQ: '\\mathbb{Q}',
-
-                // Delimiters
-                bkt: ['\\langle #1 \\middle| #2 \\rangle', 2],
-                abs: ['\\left| #1 \\right|', 1],
-                norm: ['\\left\\| #1 \\right\\|', 1],
-
-                // Categories
-                Set: '\\mathbf{Set}',
-                Grp: '\\mathbf{Grp}',
-                Top: '\\mathbf{Top}',
-                Vec: '\\mathbf{Vec}',
-
-                // Operators
-                colim: '\\operatorname{colim}',
-                Ext: '\\operatorname{Ext}',
-                Tor: '\\operatorname{Tor}',
-                Spec: '\\operatorname{Spec}',
-                im: '\\operatorname{im}',
-                coker: '\\operatorname{coker}',
-                coloneqq: '\\mathrel{\\vcenter{:}}=',
-                coloneq: '\\mathrel{\\vcenter{:}}=',
-
-                // TikZ-like (limited in HTML)
-                to: '\\rightarrow',
-                injto: '\\hookrightarrow',
-                surjto: '\\twoheadrightarrow'
-            }
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true,
+        macros: {
+        "cA": "\\mathcal{A}",
+        "bbA": "\\mathbb{A}",
+        "sfA": "\\mathsf{A}",
+        "fA": "\\mathfrak{A}",
+        "bA": "\\mathbf{A}",
+        "sA": "\\mathscr{A}",
+        "eA": "\\mathcal{A}",
+        "cB": "\\mathcal{B}",
+        "bbB": "\\mathbb{B}",
+        "sfB": "\\mathsf{B}",
+        "fB": "\\mathfrak{B}",
+        "bB": "\\mathbf{B}",
+        "sB": "\\mathscr{B}",
+        "eB": "\\mathcal{B}",
+        "cC": "\\mathcal{C}",
+        "bbC": "\\mathbb{C}",
+        "sfC": "\\mathsf{C}",
+        "fC": "\\mathfrak{C}",
+        "bC": "\\mathbf{C}",
+        "sC": "\\mathscr{C}",
+        "eC": "\\mathcal{C}",
+        "cD": "\\mathcal{D}",
+        "bbD": "\\mathbb{D}",
+        "sfD": "\\mathsf{D}",
+        "fD": "\\mathfrak{D}",
+        "bD": "\\mathbf{D}",
+        "sD": "\\mathscr{D}",
+        "eD": "\\mathcal{D}",
+        "cE": "\\mathcal{E}",
+        "bbE": "\\mathbb{E}",
+        "sfE": "\\mathsf{E}",
+        "fE": "\\mathfrak{E}",
+        "bE": "\\mathbf{E}",
+        "sE": "\\mathscr{E}",
+        "eE": "\\mathcal{E}",
+        "cF": "\\mathcal{F}",
+        "bbF": "\\mathbb{F}",
+        "sfF": "\\mathsf{F}",
+        "fF": "\\mathfrak{F}",
+        "bF": "\\mathbf{F}",
+        "sF": "\\mathscr{F}",
+        "eF": "\\mathcal{F}",
+        "cG": "\\mathcal{G}",
+        "bbG": "\\mathbb{G}",
+        "sfG": "\\mathsf{G}",
+        "fG": "\\mathfrak{G}",
+        "bG": "\\mathbf{G}",
+        "sG": "\\mathscr{G}",
+        "eG": "\\mathcal{G}",
+        "cH": "\\mathcal{H}",
+        "bbH": "\\mathbb{H}",
+        "sfH": "\\mathsf{H}",
+        "fH": "\\mathfrak{H}",
+        "bH": "\\mathbf{H}",
+        "sH": "\\mathscr{H}",
+        "eH": "\\mathcal{H}",
+        "cI": "\\mathcal{I}",
+        "bbI": "\\mathbb{I}",
+        "sfI": "\\mathsf{I}",
+        "fI": "\\mathfrak{I}",
+        "bI": "\\mathbf{I}",
+        "sI": "\\mathscr{I}",
+        "eI": "\\mathcal{I}",
+        "cJ": "\\mathcal{J}",
+        "bbJ": "\\mathbb{J}",
+        "sfJ": "\\mathsf{J}",
+        "fJ": "\\mathfrak{J}",
+        "bJ": "\\mathbf{J}",
+        "sJ": "\\mathscr{J}",
+        "eJ": "\\mathcal{J}",
+        "cK": "\\mathcal{K}",
+        "bbK": "\\mathbb{K}",
+        "sfK": "\\mathsf{K}",
+        "fK": "\\mathfrak{K}",
+        "bK": "\\mathbf{K}",
+        "sK": "\\mathscr{K}",
+        "eK": "\\mathcal{K}",
+        "cL": "\\mathcal{L}",
+        "bbL": "\\mathbb{L}",
+        "sfL": "\\mathsf{L}",
+        "fL": "\\mathfrak{L}",
+        "bL": "\\mathbf{L}",
+        "sL": "\\mathscr{L}",
+        "eL": "\\mathcal{L}",
+        "cM": "\\mathcal{M}",
+        "bbM": "\\mathbb{M}",
+        "sfM": "\\mathsf{M}",
+        "fM": "\\mathfrak{M}",
+        "bM": "\\mathbf{M}",
+        "sM": "\\mathscr{M}",
+        "eM": "\\mathcal{M}",
+        "cN": "\\mathcal{N}",
+        "bbN": "\\mathbb{N}",
+        "sfN": "\\mathsf{N}",
+        "fN": "\\mathfrak{N}",
+        "bN": "\\mathbf{N}",
+        "sN": "\\mathscr{N}",
+        "eN": "\\mathcal{N}",
+        "cO": "\\mathcal{O}",
+        "bbO": "\\mathbb{O}",
+        "sfO": "\\mathsf{O}",
+        "fO": "\\mathfrak{O}",
+        "bO": "\\mathbf{O}",
+        "sO": "\\mathscr{O}",
+        "eO": "\\mathcal{O}",
+        "cP": "\\mathcal{P}",
+        "bbP": "\\mathbb{P}",
+        "sfP": "\\mathsf{P}",
+        "fP": "\\mathfrak{P}",
+        "bP": "\\mathbf{P}",
+        "sP": "\\mathscr{P}",
+        "eP": "\\mathcal{P}",
+        "cQ": "\\mathcal{Q}",
+        "bbQ": "\\mathbb{Q}",
+        "sfQ": "\\mathsf{Q}",
+        "fQ": "\\mathfrak{Q}",
+        "bQ": "\\mathbf{Q}",
+        "sQ": "\\mathscr{Q}",
+        "eQ": "\\mathcal{Q}",
+        "cR": "\\mathcal{R}",
+        "bbR": "\\mathbb{R}",
+        "sfR": "\\mathsf{R}",
+        "fR": "\\mathfrak{R}",
+        "bR": "\\mathbf{R}",
+        "sR": "\\mathscr{R}",
+        "eR": "\\mathcal{R}",
+        "cS": "\\mathcal{S}",
+        "bbS": "\\mathbb{S}",
+        "sfS": "\\mathsf{S}",
+        "fS": "\\mathfrak{S}",
+        "bS": "\\mathbf{S}",
+        "sS": "\\mathscr{S}",
+        "eS": "\\mathcal{S}",
+        "cT": "\\mathcal{T}",
+        "bbT": "\\mathbb{T}",
+        "sfT": "\\mathsf{T}",
+        "fT": "\\mathfrak{T}",
+        "bT": "\\mathbf{T}",
+        "sT": "\\mathscr{T}",
+        "eT": "\\mathcal{T}",
+        "cU": "\\mathcal{U}",
+        "bbU": "\\mathbb{U}",
+        "sfU": "\\mathsf{U}",
+        "fU": "\\mathfrak{U}",
+        "bU": "\\mathbf{U}",
+        "sU": "\\mathscr{U}",
+        "eU": "\\mathcal{U}",
+        "cV": "\\mathcal{V}",
+        "bbV": "\\mathbb{V}",
+        "sfV": "\\mathsf{V}",
+        "fV": "\\mathfrak{V}",
+        "bV": "\\mathbf{V}",
+        "sV": "\\mathscr{V}",
+        "eV": "\\mathcal{V}",
+        "cW": "\\mathcal{W}",
+        "bbW": "\\mathbb{W}",
+        "sfW": "\\mathsf{W}",
+        "fW": "\\mathfrak{W}",
+        "bW": "\\mathbf{W}",
+        "sW": "\\mathscr{W}",
+        "eW": "\\mathcal{W}",
+        "cX": "\\mathcal{X}",
+        "bbX": "\\mathbb{X}",
+        "sfX": "\\mathsf{X}",
+        "fX": "\\mathfrak{X}",
+        "bX": "\\mathbf{X}",
+        "sX": "\\mathscr{X}",
+        "eX": "\\mathcal{X}",
+        "cY": "\\mathcal{Y}",
+        "bbY": "\\mathbb{Y}",
+        "sfY": "\\mathsf{Y}",
+        "fY": "\\mathfrak{Y}",
+        "bY": "\\mathbf{Y}",
+        "sY": "\\mathscr{Y}",
+        "eY": "\\mathcal{Y}",
+        "cZ": "\\mathcal{Z}",
+        "bbZ": "\\mathbb{Z}",
+        "sfZ": "\\mathsf{Z}",
+        "fZ": "\\mathfrak{Z}",
+        "bZ": "\\mathbf{Z}",
+        "sZ": "\\mathscr{Z}",
+        "eZ": "\\mathcal{Z}",
+        "fa": "\\mathfrak{a}",
+        "fb": "\\mathfrak{b}",
+        "fc": "\\mathfrak{c}",
+        "fd": "\\mathfrak{d}",
+        "fe": "\\mathfrak{e}",
+        "ff": "\\mathfrak{f}",
+        "fg": "\\mathfrak{g}",
+        "fh": "\\mathfrak{h}",
+        "fi": "\\mathfrak{i}",
+        "fj": "\\mathfrak{j}",
+        "fk": "\\mathfrak{k}",
+        "fl": "\\mathfrak{l}",
+        "fm": "\\mathfrak{m}",
+        "fn": "\\mathfrak{n}",
+        "fo": "\\mathfrak{o}",
+        "fp": "\\mathfrak{p}",
+        "fq": "\\mathfrak{q}",
+        "fr": "\\mathfrak{r}",
+        "fs": "\\mathfrak{s}",
+        "ft": "\\mathfrak{t}",
+        "fu": "\\mathfrak{u}",
+        "fv": "\\mathfrak{v}",
+        "fw": "\\mathfrak{w}",
+        "fx": "\\mathfrak{x}",
+        "fy": "\\mathfrak{y}",
+        "fz": "\\mathfrak{z}",
+        "bar": "\\overline",
+        "undC": "\\underline{\\mathcal{C}}",
+        "Obj": "\\operatorname{Obj}",
+        "Hom": "\\operatorname{Hom}",
+        "Mor": "\\operatorname{Mor}",
+        "End": "\\operatorname{End}",
+        "Aut": "\\operatorname{Aut}",
+        "id": "\\mathrm{id}",
+        "pt": "\\mathrm{pt}",
+        "Tr": "\\operatorname{Tr}",
+        "eval": "\\operatorname{eval}",
+        "A": "\\operatorname{Sk}",
+        "F": "\\mathcal{F}",
+        "U": "\\mathcal{U}",
+        "orev": "\\overline",
+        "fcj": "\\widehat",
+        "e": "\\varepsilon",
+        "glu": "\\mathrm{gl}",
+        "greyson": "\\bgroup\\color{violet}[[#1]]\\egroup",
+        "todo": "\\textbf{[[}\\textsl{#1}\\textbf{]]}",
+        "bkt": "\\left\\langle #1 \\middle| #2 \\right\\rangle",
+        "pbkt": "\\left( #1 \\middle| #2 \\right)",
+        "abs": "\\left| #1 \\right|",
+        "norm": "\\left\\| #1 \\right\\|",
+        "set": "\\left\\{ #1 \\right\\}",
+        "bra": "\\left\\langle #1 \\right|",
+        "ket": "\\left| #1 \\right\\rangle",
+        "braket": "\\left\\langle #1 \\middle| #2 \\right\\rangle",
+        "Set": "\\mathbf{Set}",
+        "Grp": "\\mathbf{Grp}",
+        "Top": "\\mathbf{Top}",
+        "Vec": "\\mathbf{Vec}",
+        "Hilb": "\\mathbf{Hilb}",
+        "Sk": "\\operatorname{Sk}",
+        "colim": "\\operatorname{colim}",
+        "Ext": "\\operatorname{Ext}",
+        "Tor": "\\operatorname{Tor}",
+        "Spec": "\\operatorname{Spec}",
+        "im": "\\operatorname{im}",
+        "coker": "\\operatorname{coker}",
+        "coloneqq": "\\mathrel{\\vcenter{:}}=",
+        "coloneq": "\\mathrel{\\vcenter{:}}=",
+        "eqqcolon": "=\\mathrel{\\vcenter{:}}",
+        "endto": "\\to",
+        "to": "\\rightarrow",
+        "injto": "\\hookrightarrow",
+        "surjto": "\\twoheadrightarrow",
+        "longto": "\\longrightarrow",
+        "lto": "\\longrightarrow",
+        "mapsfrom": "\\mathrel{\\reflectbox{\\ensuremath{\\mapsto}}}",
+        "Ising": "\\mathsf{Ising}",
+        "a": "\\alpha",
+        "b": "\\beta",
+        "d": "\\delta",
+        "g": "\\gamma"
         }
+      },
+      startup: {
+        typeset: true
+      }
     };
     </script>
-    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
 </head>
 <body>
     <div class="top-nav">
@@ -98,18 +311,82 @@
     <div class="content-wrapper">
     <h1>linear connection in a vector bundle</h1>
     <div class="metadata">
-        <strong>Last modified:</strong> December 11, 2025 at  6:24 PM ET<br>
-        <strong>Created:</strong> 2025-12-11<br>
-        <strong>Tags:</strong> stub
+        <strong>Last modified:</strong> December 12, 2025 at 10:15 PM ET<br>
+        <strong>Created:</strong> August 09, 2025 at  6:05 PM ET<br>
     </div>
     <div class="content">
         
-        <p>This note is a placeholder for future content.</p>
+        <p>#unorganized #article The following definition is motivated by the <a href="covariant derivative.html">covariant derivative</a> in a <a href="tangent bundle.html">tangent bundle</a>. Here we define a connection for any smooth vector bundle $p\colon E\to M$, which it is helpful to think of as the tangent bundle.</p>
+
+<p><strong>Definition (Connection).</strong> For a smooth vector bundle $p\colon E\to M$, a <strong>connection in $E$</strong> is a smooth map $\nabla\colon\mathfrak{X}(M)\times \Gamma(E)\to \Gamma(E)$, written $(v,w)\mapsto \nabla_vw$, that satisfies the properties expected of a <a href="linear connection in a vector bundle.html">covariant derivative</a>; more precisely, $\nabla$ is defined by the following properties:</p>
+<ul>
+<li>$\nabla _vw$ is $C^{\infty}(M)$-linear in $v\in \mathfrak{X}(M)$, i.e., $\nabla_{f_1v_1+f_2v_2}w=f_1\nabla _{v_1}w+f_2\nabla_{v_2}w$, i.e., the $C^{\infty}(M)$-module (hence also $\mathbb{R}$-linear) structure of the tangent space is preserved;</li>
+<li>$\nabla_vw$ is $\mathbb{R}$-linear in $w\in \Gamma(X)$, i.e., $\nabla_v(\lambda_1w_1+\lambda_2w_2)=\lambda_1\nabla_vw_1+\lambda_2\nabla_vw_2$; and</li>
+<li>$\nabla_vw$ satisfies the “$C^{\infty}(M)$-product rule”, i.e., for all $f\in C^{\infty}(M)$, $\nabla_v (fw)=f(\nabla_vw)+v(f)w$.</li>
+</ul>
+
+<p>In the case $p\colon E\to M$ is the tangent bundle, we call $\nabla$ a <strong>connection in $M$</strong>.</p>
+
+<h4 id="connections-as-operators-on-the-graded-module-of-e-valued-forms">Connections as operators on the graded module of E-valued forms</h4>
+<p>The notion of <a href="vector-valued differential form.html">vector-valued differential forms</a> is useful because it lets us view linear connections $\nabla$ in $E$ as linear maps $\nabla \colon \Omega^0(M;E) = \Gamma(E) \to \Omega^1(M;E)$ satisfying the Leibniz rule\[\nabla(fs) = \mathrm{d}f \otimes s + f \nabla s\]for all $f \in C^\infty(M)$ and $s \in \Gamma(E)$. Indeed, for $s \in \Gamma(E)$, we get an $E$-valued 1-form $\nabla s \in \Omega^1(M;E)$ given at $p \in M$ by $T_pM \ni v \mapsto \nabla_v s \in E_p$, where $\nabla s$ “differentiates in the direction $v$” with respect to the connection $\nabla$.</p>
+
+<h4 id="local-expression-of-a-connection">Local expression of a connection</h4>
+<p>As a 1-form, say with local coordinates $x^i$ on $U \subset M$ and local frame field $e_j$ on $E$ (with dual frame field $e^j$),\[\nabla s = \nabla(s^j e_j) = \mathrm{d}s^j \otimes e_j + s^j\, \nabla e_j = \mathrm{d}s^j \otimes e_j + s^j \otimes \nabla e_j.\]As $\nabla e_k \in \Omega^1(M;E) = \Gamma(T^*M \otimes E)$, and $T^*M \otimes E$ has local frame field $\mathrm{d}x^i \otimes e_j$, $\nabla e_k$ has local expression $\nabla e_k = A^i_{jk} \,\mathrm{d}x^i \otimes e_j$ for some $A^i_{jk} \in C^\infty(M)$, so\[\nabla s = \mathrm{d}s^j \otimes e_j + A^i_{jk} s^k \,\mathrm{d}x^i \otimes e_j = (\mathrm{d}s^j + A^i_{jk} s^k \,\mathrm{d}x^i) \otimes e_j. \qquad (\star)\]The term $A^i_{jk} s^k \,\mathrm{d}x^j$ can be written as $A^j_k s$ where $A^j_k$ is the local 1-form $A^j_k \coloneqq A^j_{ik} \,\mathrm{d}x^i$, so that we get an $r \times r$ matrix of local 1-forms, $A \coloneqq (A^j_k)_{i,j=1}^r$, called the <strong>connection 1-form</strong> for $U$ with respect to our chosen constant frame. We can then view $A^j_k \,\mathrm{d}x^j$ as applying the matrix $A$ of 1-forms to the local expression of $s$ viewed as a vector $s = (s^k)$. With this view $\mathrm{d}s$ acts componentwise on $s$ in this way, and we obtain the relatively clean formula for $\nabla s$ (which of course depends on our choice of coordinates/frames!):\[\nabla s = \mathrm{d}s + A s. \tag{$**$}\]In this sense, one writes $\nabla = \mathrm{d} + A$ where $U$ is the open subset on which our choice of local coordinates (and hence of connection 1-form) lives.</p>
+
+<p>Note that this shows that the space $\mathcal{A}(E)$ of all connections in $E$ is an <a href="affine space.html">affine space</a> for the vector space $\Omega^1(M;\mathrm{End}(E))$, that is, that for any connection $\nabla \in \mathcal{A}(E)$,\[\mathcal{A}(E) = \{\nabla + A\mid A \in \Omega^1(M;\mathrm{End}(E))\}.\]Here $(\nabla + A)_v s = \nabla_v s + A_v s$, where $A_v$ is the endomorphism $A(v)$. Indeed, we have a local connection 1-form $A$ for each local chart $U$, and use a partition of unity just as in the construction of a usual connection.</p>
+
+<h4 id="change-of-coordinates">Change of coordinates</h4>
+<p>Suppose we choose different local coordinates, say $\tilde{x}^i$ on $U$, and a different local frame field $\tilde{e}_j$ on $M$. Then $\tilde{e}_k = F^j_k e_j$ for some $F^j_k \in C^\infty(U)$. Denoting by $F$ the matrix $F = (F^j_k)$ and following the above construction, we find that the local connection 1-form $\tilde{A}$ on $U$ with respect to $\tilde{x}^i$ and $\tilde{e}_j$ is\[\tilde{A}^j_k = (F^{-1})^j_\rho A^\rho_p F^p_k - \mathrm{d}((F^{-1})^j_p) F^p_k.\]Or, in matrix notation,\[\tilde{A} = F^{-1} \mathrm{d}F + F^{-1} A F - \mathrm{d}(F^{-1}) F,\]where $\mathrm{d}F$ is the matrix $(\mathrm{d}F^j_i)$.</p>
+
+<p><strong>Example (Euclidean connection).</strong> Define the <strong>Euclidean connection</strong> $\overline \nabla$ by $\overline\nabla_vw=v(w^1)\partial_1+\cdots+v(w^n)\partial_n$. This means that in any local frame $\partial_i$, $\overline \nabla_j\partial_k = 0$.</p>
+
+<p><strong>Remark (Existence of connections).</strong> All smooth manifolds with or without boundary admit a connection. It is a straightforward check to show that a finite convex combination of connections is a connection. Now consider a countable set of coordinate charts $\{(U_\alpha,\varphi_\alpha)\}_{\alpha}$ on $M$ and choose a <a href="partition of unity.html">partition of unity</a> $\{u_\alpha\colon M\to \mathbb{R}\}_{\alpha}$ subordinate to this open cover. Define $\nabla\coloneqq u_{\alpha}\nabla^{\alpha}$ where $\nabla^{\alpha}$ is the Euclidean connection $\overline\nabla$ on $U_{\alpha}$. For more details, see the proof of <sup><a href="#ref-1">[1]</a></sup>.</p>
+<h4 id="local-expression-of-a-connection">Local expression of a connection</h4>
+<p>Fix a vector field $v\in\mathfrak{X}(M)$. For simplicity, we assume the vector bundle $p\colon E\to M$ is $TM$. For local coordinates $x^k$ on a chart $U\subset M$, write $\partial_i$ for the induced local frame on $TM$ and write $\nabla_j$ for $\nabla_{\partial_j}$, so that $\nabla_i$ is an $\mathbb{R}$-linear map $\Gamma(TM)\to\Gamma(TM)$, i.e., a linear map $\mathfrak{X}(M)\to \mathfrak{X}(M)$. By linearity $\nabla_i\partial_j=\Gamma_{ij}^k\partial_k$ for some $n^3$ smooth functions $\Gamma_{ij}^k\in C^{\infty}(M)$ ($1\leq i,j,k\leq \dim M=n$) called the <strong>connection coefficients</strong> of $\nabla$ with respect to the local frame $\{\partial_j\}$. Unsurprisingly, $\nabla$ is completely determined on $U$ by its connection coefficients because, by the defining properties of connections,\[\nabla_vw=\nabla_v(w^j\partial_j)=v(w^j)\partial_j+w^j\nabla_v\partial_j=v(w^j)\partial_j+w^jv^i\Gamma_{ij}^k\partial_k=(v(w^k)+w^jv^i\Gamma_{ij}^k)\partial_k.\]By setting $v=\partial_j$, where $\nabla_j u=\nabla_j u^i\,\partial_i$, we find\[\nabla_ju^i=\partial_ju^i+u^k\partial_j\Gamma_{jk}^i.\]</p>
+<h4 id="connections-on-general-smooth-fiber-bundles">Connections on general smooth fiber bundles</h4>
+<p>See <a href="https://math.uchicago.edu/~may/REU2015/REUPapers/Sorce.pdf">here</a>, §5 for a fantastic brief exposition.</p>
+
+<p>See also:</p>
+<ul>
+<li><a href="linear connection 1-form.html">linear connection 1-form</a> (next)</li>
+<li><a href="exterior covariant derivative.html">exterior covariant derivative</a></li>
+<li><a href="covariant derivative.html">covariant derivative</a></li>
+<li><a href="vector fields on curves.html">vector fields on curves</a> (previous)</li>
+<li><a href="geodesic.html">geodesic</a> (next)</li>
+<li><a href="torsion of a connection.html">torsion of a connection</a></li>
+<li><a href="flat connection.html">flat connection</a></li>
+</ul>
+<div class="references">
+<h2>References</h2>
+<ol>
+<li id="ref-1">Lee18, Prop. 4.12</li>
+</ol>
+</div>
+    </div>
+
+    <div class="linked-notes">
+        <h2>Linked Notes</h2>
+        <ul>
+            <li><a href="affine space.html">affine space</a></li>
+            <li><a href="covariant derivative.html">covariant derivative</a></li>
+            <li><a href="exterior covariant derivative.html">exterior covariant derivative</a></li>
+            <li><a href="flat connection.html">flat connection</a></li>
+            <li><a href="geodesic.html">geodesic</a></li>
+            <li><a href="linear connection 1-form.html">linear connection 1-form</a></li>
+            <li><a href="linear connection in a vector bundle.html">linear connection in a vector bundle</a></li>
+            <li><a href="partition of unity.html">partition of unity</a></li>
+            <li><a href="tangent bundle.html">tangent bundle</a></li>
+            <li><a href="torsion of a connection.html">torsion of a connection</a></li>
+            <li><a href="vector fields on curves.html">vector fields on curves</a></li>
+            <li><a href="vector-valued differential form.html">vector-valued differential form</a></li>
+        </ul>
     </div>
 
     <div class="backlinks">
         <h2>Backlinks</h2>
         <ul>
+            <li><a href="linear connection 1-form.html">linear connection 1-form</a></li>
+            <li><a href="linear connection in a vector bundle.html">linear connection in a vector bundle</a></li>
             <li><a href="parallel transport via a connection.html">parallel transport via a connection</a></li>
         </ul>
     </div>

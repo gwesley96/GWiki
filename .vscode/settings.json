@@ -7,7 +7,7 @@
   "latex-workshop.latex.recipes": [
     {
       "name": "GWiki Build",
-      "tools": ["pdflatex", "pdflatex"]
+      "tools": ["pdflatex", "pdflatex", "copyToGWikiPdfs"]
     }
   ],
   "latex-workshop.latex.tools": [
@@ -24,6 +24,15 @@
       "env": {
         "TEXINPUTS": "%DIR%/lib:%DIR%/../lib:"
       }
+    },
+    {
+      "name": "copyToGWikiPdfs",
+      "command": "cp",
+      "args": [
+        "%OUTDIR%/%DOCFILE%.pdf",
+        "%DIR%/../pdfs/%DOCFILE%.pdf"
+      ],
+      "env": {}
     }
   ],
 

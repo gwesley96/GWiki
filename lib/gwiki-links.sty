@@ -44,6 +44,12 @@
 %%
 %% Links open the target PDF when clicked in a PDF viewer.
 
+% Define a literal hash character for comparisons
+\begingroup
+\catcode`\#=12
+\gdef\gwiki@hashchar{#}
+\endgroup
+
 \NewDocumentCommand{\wref}{O{} m o}{%
   % Allow display text either before or after the target argument
   \def\gwiki@display{#1}%
@@ -52,9 +58,12 @@
       \def\gwiki@display{#3}%
     }{}%
   }%
+  % Sanitize the input for xstring processing
+  \edef\gwiki@safeinput{\detokenize{#2}}%
   % Check if it starts with # (internal reference)
-  \IfBeginWith{#2}{\#}{%
+  \IfBeginWith{\gwiki@safeinput}{\gwiki@hashchar}{%
     % Internal reference - strip the # and use hyperref
+    % We use #2 directly here because hyperref handles it fine
     \StrBehind{#2}{\#}[\gwiki@intlabel]%
     \IfStrEq{\gwiki@display}{}{%
       \mbox{\hyperref[\gwiki@intlabel]{\gwiki@intlabel}}%
@@ -63,9 +72,14 @@
     }%
   }{%
     % Check if it contains # (cross-document section reference)
-    \IfSubStr{#2}{\#}{%
-      \StrBefore{#2}{\#}[\gwiki@xdoc]%
-      \StrBehind{#2}{\#}[\gwiki@xlabel]%
+    \IfSubStr{\gwiki@safeinput}{\gwiki@hashchar}{%
+      % We need to safely split the string.
+      % xstring StrBefore/StrBehind might fail on raw #2 if it has #.
+      % But actually, if we use the sanitized input for detection, we can just assume it's safe to
+      % let xstring try on #2 if we double the hash? No, better to simply use \detokenize for splitting too.
+      \StrBefore{\gwiki@safeinput}{\gwiki@hashchar}[\gwiki@xdoc]%
+      \StrBehind{\gwiki@safeinput}{\gwiki@hashchar}[\gwiki@xlabel]%
+      % Trim potential spaces from detokenization (optional but good practice)
       \IfStrEq{\gwiki@display}{}{%
         % Link to other PDF with named destination
         \mbox{\href{file:///Users/greysonwesley/Desktop/GWiki/pdfs/\gwiki@xdoc.pdf\#\gwiki@xlabel}{\textsl{\gwiki@xdoc} \S\gwiki@xlabel}}%
@@ -82,9 +96,9 @@
     }%
   }%
   % Record for backlinks (processed by build system)
-  \IfBeginWith{#2}{\#}{}{%
-    \IfSubStr{#2}{\#}{%
-      \StrBefore{#2}{\#}[\gwiki@refdoc]%
+  \IfBeginWith{\gwiki@safeinput}{\gwiki@hashchar}{}{%
+    \IfSubStr{\gwiki@safeinput}{\gwiki@hashchar}{%
+      \StrBefore{\gwiki@safeinput}{\gwiki@hashchar}[\gwiki@refdoc]%
       \immediate\write\@auxout{\string\gwiki@ref{\jobname}{\gwiki@refdoc}}%
     }{%
       \immediate\write\@auxout{\string\gwiki@ref{\jobname}{#2}}%
@@ -466,6 +480,31 @@
   \IfNoValueTF{#1}{#2}{#2, #1}%
   \textup{]}%
   \gwiki@addref{\IfNoValueTF{#1}{[#2]}{[#2, #1]}}%
+}
+
+%% ----------------------------------------------------------------------------
+%% SERIES NAVIGATION
+%% ----------------------------------------------------------------------------
+\newcommand{\gwiki@prevnote}{}
+\newcommand{\gwiki@nextnote}{}
+
+\newcommand{\PreviousNote}[1]{\renewcommand{\gwiki@prevnote}{#1}}
+\newcommand{\NextNote}[1]{\renewcommand{\gwiki@nextnote}{#1}}
+
+\newcommand{\NoteNavigation}{%
+  \ifboolexpr{ test {\ifdefempty{\gwiki@prevnote}} and test {\ifdefempty{\gwiki@nextnote}} }
+  {}
+  {
+    \par\noindent\bigskip
+    \begingroup\footnotesize
+    \ifdefempty{\gwiki@prevnote}{}
+      {\textbf{Previous:} \wref{\gwiki@prevnote}}%
+    \ifdefempty{\gwiki@nextnote}{}
+      {\hfill\textbf{Next:} \wref{\gwiki@nextnote}}%
+    \endgroup
+    \par\vspace{1em}
+    \noindent{\color{gray!25}\rule{\linewidth}{0.4pt}}\par\vspace{1em}%
+  }
 }
 
 \makeatother

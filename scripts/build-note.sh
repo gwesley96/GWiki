@@ -11,18 +11,8 @@ fi
 
 NOTE_NAME=$(basename "$NOTE_FILE" .tex)
 
-# Get creation date from metadata
-# Get creation date from metadata
-CREATED_DATE=$(python3 -c "
-import json, sys
-from pathlib import Path
-note_name = sys.argv[1]
-try:
-    data = json.loads(Path('.gwiki-metadata.json').read_text())
-    print(data.get('creation_dates', {}).get(note_name, ''))
-except:
-    print('')
-" "$NOTE_NAME")
+# Get creation date from new centralized script
+CREATED_DATE=$(python3 scripts/get-date.py "$NOTE_NAME")
 
 # Build with creation date if available
 if [ -n "$CREATED_DATE" ]; then

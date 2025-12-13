@@ -31,7 +31,7 @@
 %% ----------------------------------------------------------------------------
 \DeclareStringOption[article]{type}        % article, wiki, or note
 \DeclareStringOption[]{gwikiid}            % Unique ID for this document
-\DeclareStringOption[12pt plus 3pt minus 9pt]{displayMathPadding}
+\DeclareStringOption[3pt plus 3pt minus 9pt]{displayMathPadding}
 \DeclareStringOption[0.25in]{parindent}
 \DeclareStringOption[12pt]{fontsize}
 \DeclareStringOption[letterpaper]{paper}
@@ -129,18 +129,19 @@
 \captionsetup{margin=0.75cm}
 \RequirePackage[dvipsnames,svgnames]{xcolor}
 \RequirePackage[protrusion=true,expansion=true,activate={true,nocompatibility}]{microtype}
+\RequirePackage{newunicodechar}
+\newunicodechar{∞}{\ensuremath{\infty}}
+\newunicodechar{𝓒}{\ensuremath{\mathcal{C}}}
 
 % More aggressive reductions
 \microtypesetup{
   tracking=true,
-  spacing=true,
+  % spacing=true,
   stretch=10,     % allow more expansion
   shrink=20       % allow more shrinkage
 }
 
-\SetTracking{encoding=*}{-20}
-
-% \microtypecontext{spacing=nonfrench}
+% \SetTracking{encoding=*}{-20}
 
 
 \iftoggle{enableParskip}{\RequirePackage{parskip}}{}
@@ -475,8 +476,10 @@
 \endgroup
 
 % Remove quotes from jobname (TeX adds them when spaces are present)
-\def\@removequotes"#1"{#1}
-\edef\@cleanjobname{\expandafter\@removequotes\jobname}
+% Robust quote removal
+\def\@zapquotes#1"#2"#3\@nil{#1#2}
+\def\@removequotes#1{\expandafter\@zapquotes#1""\@nil}
+\edef\@cleanjobname{\@removequotes\jobname}
 
 \def\@urlencode#1{\expandafter\@urlencode@i#1 \@nil}
 \def\@urlencode@i#1 #2\@nil{%

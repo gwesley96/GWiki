@@ -1,12 +1,44 @@
 \documentclass{gwiki}
 \usepackage{gwiki-links}
 
-\Title{Presemisimple 2-Category}
-\Tags{stub}
+\Title{presemisimple 2-category}
+\Tags{}
 
 \begin{document}
 \NoteHeader
 
-This note is a placeholder for future content.
+\textbf{\wref[Definition 2.26]{3Hilb.pdf#page=11&selection=188,0,188,15}.} A linear 2-category $\mathfrak{C}$ is \textbf{presemisimple} if all $n$-fold \wref[linking algebras]{linking category} are \wref[semisimple]{semisimple category} \wref[multitensor categories]{multitensor category}. A presemisimple 2-category is \textbf{finite} if all $n$-fold linking algebras are multi*fusion* and there is a global bound on the dimensions of $\mathrm{End}(1)$ for the centers of all linking algebras. (That is, there is a $K>0$ such that for any linking algebra $\mathcal{L}=\mathcal{L}(a_1,\dots, a_n)$, $\dim(\mathrm{End}(1_{\mathcal{Z}(\mathcal{L})}))<K$.)
+
+If $a,b\in\mathfrak{X}$ are in distinct \wref[components]{components in presemisimple linear 2-categories} of a presemisimple 2-category $\mathfrak{X}$, then the multitensor \wref{linking category} ($\mathrm{E}_{1}$-algebra) $\mathcal{L}(a,b)$ decomposes as $\mathcal{L}(a)\boxplus \mathcal{L}(b)$ (direct sum of categories), and so its \wref[Drinfeld center]{Drinfeld center} splits as $\mathcal{Z}(\mathcal{L}(a,b))\cong \mathcal{Z}(\mathcal{L}(a))\oplus \mathcal{Z}(\mathcal{L}(b))$. Thus, when $\mathfrak{X}$ is \textit{finite} presemisimple, $\mathcal{Z}(\mathfrak{X})$ splits as a direct sum $\boxplus_s$ of indecomposable \wref[braided fusion categories]{braided fusion category}, and these summands correspond to the indecomposable fusion blocks of $\mathcal{L}(a,b)$.
+
+\textbf{\wref[Definition 1.2.7]{DR23-Fusion2Categories.pdf#page=15&selection=145,0,145,15} (Alternative to the above).} A \textbf{presemisimple 2-category} is a \wref[rigid]{rigid 2-category}, \wref[locally]{category theory/locally} \wref[semisimple]{semisimple category} \wref{2-category} wherein each object decomposes into a finite \wref[direct sum]{2-direct sum} of \wref[simple objects]{simple object in a 2-category} and with the property that any (hence all) of the following equivalent conditions are satisfied: 
+- (\textbf{pSS1}) endomorphism categories of simple objects are \wref[multitensor]{multitensor category};
+- (\textbf{pSS2}) (\wref[Proposition 1.2.19]{DR23-Fusion2Categories.pdf#page=18&selection=57,0,58,0}) composition of nonzero morphisms between simple objects is nonzero; and
+- (\textbf{pSS3}) (\wref[Corollary 1.2.15]{DR23-Fusion2Categories.pdf#page=17&selection=603,0,603,16}) every object decomposes into a finite direct sum of objects with simple identity 2-morphism.
+
+\textbf{\wref[Definition 1.2.8]{DR23-Fusion2Categories.pdf#page=16&selection=16,0,17,0}.} A presemisimple 2-category is \textbf{finite} if it is locally \wref[finite semisimple]{finite semisimple} and if it has finitely many equivalence classes of \wref[simple objects]{simple object in a 2-category}.
+
+\subsection*{Properties}
+\textbf{\wref[Remark 1.2.10]{DR23-Fusion2Categories.pdf#page=16&selection=43,0,45,6}.} Endomorphism categories in a finite presemisimple 2-category are multifusion.
+
+\textbf{\wref[Example 1.2.11]{DR23-Fusion2Categories.pdf#page=16&selection=51,0,53,6}.} Every \wref[infusion category]{tensor category} $\mathcal{C}$ deloops to a presemisimple 2-category $\mathrm{B}\mathcal{C}$.
+
+!\wref{unfolding}
+
+!\wref{folding}
+
+
+\textbf{\wref[Corollary 1.2.16]{DR23-Fusion2Categories.pdf#page=17&selection=619,0,619,16}.} Projections and inclusions of \wref[2-direct sums]{2-direct sum} of simple objects are simple.
+
+
+\textbf{\wref[Proposition 1.2.17]{DR23-Fusion2Categories.pdf#page=17&selection=769,0,775,57} (Simple if and only if indecomposable).} An object in a \wref{presemisimple 2-category} is simple if and only if it is indecomposable.
+
+\textit{Proof.} Any nontrivial decomposition $x=x_{1}\boxplus x_2$ gives an injective (fully faithful) inclusion 1-morphism $x_1\to x$, and so $x_{1}$ is a nontrivial subobject, meaning $x$ is not simple. Conversely, by presemisimplicity, any object is a sum of simple objects, so an indecomposable object must have exactly one summand, and so is itself simple. 
+
+\textbf{\wref[Proposition 1.2.21]{DR23-Fusion2Categories.pdf#page=18&selection=279,0,279,18}.} Decomposition into simples is unique (contractible choice) in presemisimple 2-categories.
+
+See also: 
+- \wref{semisimple 2-category}
+- \wref{components in presemisimple linear 2-categories}
 
 \end{document}

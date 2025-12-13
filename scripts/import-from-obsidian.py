@@ -43,6 +43,12 @@ def convert_obsidian_wikilinks(text):
     text = re.sub(r'\[\[([^\]|]+)\|([^\]]+)\]\]', r'\\wref[\2]{\1}', text)
     # Handle [[link]] format
     text = re.sub(r'\[\[([^\]]+)\]\]', r'\\wref{\1}', text)
+    # Handle [text](url) format
+    def repl_href(match):
+        text = match.group(1)
+        url = match.group(2).replace('%', r'\%')
+        return f'\\href{{{url}}}{{{text}}}'
+    text = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', repl_href, text)
     return text
 
 

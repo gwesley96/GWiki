@@ -10,13 +10,16 @@
 %% ----------------------------------------------------------------------------
 %% COMMAND DECLARATION HELPERS
 %% ----------------------------------------------------------------------------
+\RequirePackage{etoolbox}
 \newcommand{\declarecommand}[2]{%
   \expandafter\providecommand\csname #1\endcsname{#2}%
   \expandafter\renewcommand\csname #1\endcsname{#2}%
 }
 
 \newcommand{\cmdNewCommand}[4][]{%
-  \expandafter\declarecommand{#1#4}{\csname #2\endcsname{\csname #3\endcsname{#4}}}%
+  \ifstrempty{#2}%
+  {\expandafter\declarecommand{#1#4}{\csname #3\endcsname{#4}}}%
+  {\expandafter\declarecommand{#1#4}{\csname #2\endcsname{\csname #3\endcsname{#4}}}}%
 }
 
 %% ----------------------------------------------------------------------------
@@ -87,7 +90,7 @@
 \forcsvlist{\cmdNewCommand{}{mathsf}}{%
   Alt,Fib,Ising,Poly,Ab,Add,Alg,Bim,Cat,Chain,Coh,Cyc,FreeMod,Fun,Gray,%
   Grp,Hilb,HoTop,Idem,Ind,LieAlg,Mod,Mon,MonCat,Op,Proj,PSet,PSh,QCoh,%
-  Rep,Ring,Sch,Set,Sh,sSet,sVec,TLJ,Top,UCyc,B,Set,Vec,Cob,Bord,%
+  Rep,Ring,Sch,Set,Sh,sSet,sVec,TLJ,Top,UCyc,B,Vec,Cob,Bord,%
   SymMonCat,Ho,Arr,src,targ%
 }
 

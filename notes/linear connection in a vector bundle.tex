@@ -2,11 +2,47 @@
 \usepackage{gwiki-links}
 
 \Title{linear connection in a vector bundle}
-\Tags{stub}
+\Tags{}
 
 \begin{document}
 \NoteHeader
 
-This note is a placeholder for future content.
+#unorganized #article 
+The following definition is motivated by the \wref{covariant derivative} in a \wref{tangent bundle}. Here we define a connection for any smooth vector bundle $p\colon E\to M$, which it is helpful to think of as the tangent bundle.
+
+\textbf{Definition (Connection).} For a smooth vector bundle $p\colon E\to M$, a \textbf{connection in $E$} is a smooth map $\nabla\colon\mathfrak{X}(M)\times \Gamma(E)\to \Gamma(E)$, written $(v,w)\mapsto \nabla_vw$, that satisfies the properties expected of a \wref[covariant derivative]{linear connection in a vector bundle}; more precisely, $\nabla$ is defined by the following properties:
+- $\nabla _vw$ is $C^{\infty}(M)$-linear in $v\in \mathfrak{X}(M)$, i.e., $\nabla_{f_1v_1+f_2v_2}w=f_1\nabla _{v_1}w+f_2\nabla_{v_2}w$, i.e., the $C^{\infty}(M)$-module (hence also $\mathbb{R}$-linear) structure of the tangent space is preserved;
+- $\nabla_vw$ is $\mathbb{R}$-linear in $w\in \Gamma(X)$, i.e., $\nabla_v(\lambda_1w_1+\lambda_2w_2)=\lambda_1\nabla_vw_1+\lambda_2\nabla_vw_2$; and 
+- $\nabla_vw$ satisfies the “$C^{\infty}(M)$-product rule”, i.e., for all $f\in C^{\infty}(M)$, $\nabla_v (fw)=f(\nabla_vw)+v(f)w$.
+
+In the case $p\colon E\to M$ is the tangent bundle, we call $\nabla$ a \textbf{connection in $M$}. 
+
+\subsubsection*{Connections as operators on the graded module of E-valued forms}
+The notion of \wref[vector-valued differential forms]{vector-valued differential form} is useful because it lets us view linear connections $\nabla$ in $E$ as linear maps $\nabla \colon \Omega^0(M;E) = \Gamma(E) \to \Omega^1(M;E)$ satisfying the Leibniz rule$$\nabla(fs) = \mathrm{d}f \otimes s + f \nabla s$$for all $f \in C^\infty(M)$ and $s \in \Gamma(E)$. Indeed, for $s \in \Gamma(E)$, we get an $E$-valued 1-form $\nabla s \in \Omega^1(M;E)$ given at $p \in M$ by $T_pM \ni v \mapsto \nabla_v s \in E_p$, where $\nabla s$ “differentiates in the direction $v$” with respect to the connection $\nabla$.
+
+\subsubsection*{Local expression of a connection}
+As a 1-form, say with local coordinates $x^i$ on $U \subset M$ and local frame field $e_j$ on $E$ (with dual frame field $e^j$),$$\nabla s = \nabla(s^j e_j) = \mathrm{d}s^j \otimes e_j + s^j\, \nabla e_j = \mathrm{d}s^j \otimes e_j + s^j \otimes \nabla e_j.$$As $\nabla e_k \in \Omega^1(M;E) = \Gamma(T^*M \otimes E)$, and $T^*M \otimes E$ has local frame field $\mathrm{d}x^i \otimes e_j$, $\nabla e_k$ has local expression $\nabla e_k = A^i_{jk} \,\mathrm{d}x^i \otimes e_j$ for some $A^i_{jk} \in C^\infty(M)$, so$$\nabla s = \mathrm{d}s^j \otimes e_j + A^i_{jk} s^k \,\mathrm{d}x^i \otimes e_j = (\mathrm{d}s^j + A^i_{jk} s^k \,\mathrm{d}x^i) \otimes e_j. \qquad (\star)$$The term $A^i_{jk} s^k \,\mathrm{d}x^j$ can be written as $A^j_k s$ where $A^j_k$ is the local 1-form $A^j_k \coloneqq A^j_{ik} \,\mathrm{d}x^i$, so that we get an $r \times r$ matrix of local 1-forms, $A \coloneqq (A^j_k)_{i,j=1}^r$, called the \textbf{connection 1-form} for $U$ with respect to our chosen constant frame. We can then view $A^j_k \,\mathrm{d}x^j$ as applying the matrix $A$ of 1-forms to the local expression of $s$ viewed as a vector $s = (s^k)$. With this view $\mathrm{d}s$ acts componentwise on $s$ in this way, and we obtain the relatively clean formula for $\nabla s$ (which of course depends on our choice of coordinates/frames!):$$\nabla s = \mathrm{d}s + A s. \tag{$**$}$$In this sense, one writes $\nabla = \mathrm{d} + A$ where $U$ is the open subset on which our choice of local coordinates (and hence of connection 1-form) lives.
+
+Note that this shows that the space $\mathcal{A}(E)$ of all connections in $E$ is an \wref{affine space} for the vector space $\Omega^1(M;\mathrm{End}(E))$, that is, that for any connection $\nabla \in \mathcal{A}(E)$,$$\mathcal{A}(E) = \{\nabla + A\mid A \in \Omega^1(M;\mathrm{End}(E))\}.$$Here $(\nabla + A)_v s = \nabla_v s + A_v s$, where $A_v$ is the endomorphism $A(v)$. Indeed, we have a local connection 1-form $A$ for each local chart $U$, and use a partition of unity just as in the construction of a usual connection.
+
+\subsubsection*{Change of coordinates}
+Suppose we choose different local coordinates, say $\tilde{x}^i$ on $U$, and a different local frame field $\tilde{e}_j$ on $M$. Then $\tilde{e}_k = F^j_k e_j$ for some $F^j_k \in C^\infty(U)$. Denoting by $F$ the matrix $F = (F^j_k)$ and following the above construction, we find that the local connection 1-form $\tilde{A}$ on $U$ with respect to $\tilde{x}^i$ and $\tilde{e}_j$ is$$\tilde{A}^j_k = (F^{-1})^j_\rho A^\rho_p F^p_k - \mathrm{d}((F^{-1})^j_p) F^p_k.$$Or, in matrix notation,$$\tilde{A} = F^{-1} \mathrm{d}F + F^{-1} A F - \mathrm{d}(F^{-1}) F,$$where $\mathrm{d}F$ is the matrix $(\mathrm{d}F^j_i)$.
+
+\textbf{Example (Euclidean connection).} Define the \textbf{Euclidean connection} $\overline \nabla$ by $\overline\nabla_vw=v(w^1)\partial_1+\cdots+v(w^n)\partial_n$. This means that in any local frame $\partial_i$, $\overline \nabla_j\partial_k = 0$.
+
+\textbf{Remark (Existence of connections).} All smooth manifolds with or without boundary admit a connection. It is a straightforward check to show that a finite convex combination of connections is a connection. Now consider a countable set of coordinate charts $\{(U_\alpha,\varphi_\alpha)\}_{\alpha}$ on $M$ and choose a \wref{partition of unity} $\{u_\alpha\colon M\to \mathbb{R}\}_{\alpha}$ subordinate to this open cover. Define $\nabla\coloneqq u_{\alpha}\nabla^{\alpha}$ where $\nabla^{\alpha}$ is the Euclidean connection $\overline\nabla$ on $U_{\alpha}$. For more details, see the proof of ((Lee18, Prop. 4.12)).
+\subsubsection*{Local expression of a connection}
+Fix a vector field $v\in\mathfrak{X}(M)$. For simplicity, we assume the vector bundle $p\colon E\to M$ is $TM$. For local coordinates $x^k$ on a chart $U\subset M$, write $\partial_i$ for the induced local frame on $TM$ and write $\nabla_j$ for $\nabla_{\partial_j}$, so that $\nabla_i$ is an $\mathbb{R}$-linear map $\Gamma(TM)\to\Gamma(TM)$, i.e., a linear map $\mathfrak{X}(M)\to \mathfrak{X}(M)$. By linearity $\nabla_i\partial_j=\Gamma_{ij}^k\partial_k$ for some $n^3$ smooth functions $\Gamma_{ij}^k\in C^{\infty}(M)$ ($1\leq i,j,k\leq \dim M=n$) called the \textbf{connection coefficients} of $\nabla$ with respect to the local frame $\{\partial_j\}$. Unsurprisingly, $\nabla$ is completely determined on $U$ by its connection coefficients because, by the defining properties of connections,$$\nabla_vw=\nabla_v(w^j\partial_j)=v(w^j)\partial_j+w^j\nabla_v\partial_j=v(w^j)\partial_j+w^jv^i\Gamma_{ij}^k\partial_k=(v(w^k)+w^jv^i\Gamma_{ij}^k)\partial_k.$$By setting $v=\partial_j$, where $\nabla_j u=\nabla_j u^i\,\partial_i$, we find$$\nabla_ju^i=\partial_ju^i+u^k\partial_j\Gamma_{jk}^i.$$
+\subsubsection*{Connections on general smooth fiber bundles}
+See [here](https://math.uchicago.edu/~may/REU2015/REUPapers/Sorce.pdf), §5 for a fantastic brief exposition.
+
+See also: 
+- \wref{linear connection 1-form} (next)
+- \wref{exterior covariant derivative}
+- \wref{covariant derivative}
+- \wref{vector fields on curves} (previous)
+- \wref{geodesic} (next)
+- \wref{torsion of a connection}
+- \wref{flat connection}
 
 \end{document}

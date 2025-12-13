@@ -1,0 +1,107 @@
+\documentclass{gwiki}
+
+\Title{2-Hilbert spaces give \texorpdfstring{$H^*$}{Hstar}-algebras}
+\Tags{unitary TQFTs project}
+
+% \Summary{}
+\newcommand{\A}{\mathrm{Sk}}
+\newcommand{\F}{\eF}
+\newcommand{\orev}{\overline}
+\newcommand{\fcj}{\widehat}
+\renewcommand{\U}{\eU}
+\newcommand{\undC}{\smash[b]{\text{$\underset{\smash{\raisebox{.275em}{$\scriptstyle\kern.1ex\rightarrow$}}}{\smash{\cC}}$}}}
+\begin{document}
+
+% \KeySources{K. Walker}}
+
+\NoteHeader
+
+\begin{restatable}{theoremalpha}{twoDimUnitaryCobordismHypothesis}
+\label{def:2D Unitary Cobordism Hypothesis}
+\begin{lst} 
+\item
+\label{2UTQFT->2Hilb}
+Given a 2D unitary TQFT $(\F,\U,z)$, the skein 1-category $\A(\pt)$ is a finite 2-Hilbert space whose
+\begin{itemize}
+\item dagger is induced by the $H$-homeomorphisms $X\times I\mapsto \orev X\times I$ given by $(x,t)\mapsto (x,1-t)$, and whose
+\item unitary trace is given by $\Tr^{\A(\pt)}_c(\phi\colon c\endto)\coloneqq \bkt{\id_x}{f}_{I,\fcj x\amalg x}$.
+\end{itemize}
+\item
+\label{2Hilb->2UTQFT}
+Conversely, given a 2-Hilbert space $(\cA,\Tr^\cA)$, the induced $(n+\e)$D TQFT is a $(n+1)$D unitary TQFT whose path integral is constructed from $\Tr^\cA$ via the unitary version of Walker's Theorem.
+\end{lst}
+\end{restatable}
+
+\begin{pf}
+\ref{2UTQFT->2Hilb}:
+Let $(\cF,\cU,z)$ be a 2D unitary TQFT. Then $\cA\coloneqq \A(\pt)$ is a dagger category by \cref{cylinder 1-categories are dagger}. For all $a,b\in\cA$ and $f,g\in\cA(x\to y)$, we define
+\[
+    \bkt{f}{g}_{x\to y}\coloneqq \bkt{ f }{ g }_{\pt\times I,y}=z_{S^{1}}(\overline f\bullet_y g).
+\]
+As these pairings are positive-definite by \ref{P}, for each $x\in\cA$ we get a faithful weight $\Tr_x^\cA\colon\End_{\cA}(x)\to\bbC$ given by 
+\[
+\Tr_x^\cA(f)\coloneqq \bkt{\mathrm{id}_x}{f}_{x\to x}.
+\]
+Moreover, for all $x,y\in\cA$, $f\in\cA(x\to y)$, and $g\in\cA(y\to x)$,
+\[
+\Tr_y^\cA(f\circ g)=\bkt{\mathrm{id}_y}{f\circ g}_{y\to y}=\bkt{g^\dag}{f}_{x\to y}=\bkt{\mathrm{id}_y}{g\circ f}_{x\to x}=\Tr_x^\cA(g\circ f),
+\]
+where we used \cref{dagger on cylinder 1-cat gives unitary trace} for the second and third equalities. Thus $\Tr^\cA$ is a unitary trace on $\cA$. 
+
+As $\cA$ is dagger, the endomorphism algebras $\End_\cA(x)$ are $*$-algebras with $*=\dag$. If $f\in\cA(x\to x)$ satisfies $f^\dag f=0$, then again by \cref{dagger on cylinder 1-cat gives unitary trace}, $\bkt{f^\dag f}{\mathrm{id}_x}_{x\to x}=\bkt{f}{f}=0$, and thus $f=0$ by \ref{P}. By the characterization of unitary algebras \cite[Part I, Ch. 2, §4]{UQSL}, this implies $\End_\cA(x)$ is unitary. It then follows from \cref{unitary implies finite semisimple Z} that the category $Z(\pt)$ of unitary $\A(\pt)$-representations equipped with the induced functor unitary trace $\Tr^{Z(\pt)}$ is finite unitary semisimple.
+
+\ref{2Hilb->2UTQFT}:
+Note that the following construction is essentially given in \cite{W21}. Let $(\cA,\Tr^\cA)$ be a 2-Hilbert space. As a dagger category, $\cA$ is a unitary category with strong duality \greyson{todo and ref}, and thus gives a $(1+\varepsilon)$D dagger TQFT $(\undC,\U_{\cC})$ by \greyson{cite construction}. To get a $(1+1)$D unitary TQFT, by the unitary version of Walker's Theorem \greyson{todo ref} it suffices to define a linear functional $\eval\colon \A(S^1)\to \bbC$ satisfying \ref{dagR} and \ref{P}. 
+% \eval\big(\bar{\psi}\,\big)=\overline{\eval(\psi)}$ for all $\psi\in \A(S^n)$, and (**P**) the induced sesquilinear pairing $\braket{a|b}_{c}\coloneqq \eval(\overline{a}\bullet_{c}b)$ is positive-definite for all string diagrams $c$ on $S^{n-1}$.
+For each string diagram $\phi\in\undC(S^{1})$, there is an object $a\in\cC$ such that $\phi$ is isotopic to a general-position string diagram $\phi_{a}\in\undC(S^{1})$ that is supported on a small disk ($\cong D^{1}$) in the sense that the rest of $S^{1}$ is labeled by $a$. Define
+\[
+    \eval(\phi)\coloneqq \Tr_{a}^{\cC}([\phi_{a}])
+\]
+where $a$ and $\phi_{a}$ are choices as above and where $[\phi_{a}]\in\cC(a\to a)$ denotes the morphism in  realized by the string diagram $\phi_{a}$ for some (any) choice of source and target (which in this case there are only two), and extend $\eval$ linearly to a map $\A(S^{1})\to\bbC$.
+
+We first prove that $\eval$ is well-defined. Suppose there is an object $b\in\cC$ and a string diagram $\phi_{b}\in\undC(S^{1})$. We claim $\Tr_{a}^{\cC}([\phi_{a}])=\Tr_{b}^{\cC}([\phi_{b}])$. Since the gluing map is surjective on general-position string diagrams \greyson{should be clear but maybe state/ref}, there are $x,x'\in \undC(S^{0})$ and $f,g,f',g'\in \A(D^{1};c)$ such that $\phi_{a}=\overline{f}\bullet_{x}g$ and $\phi_{b}=\overline{f'}\bullet_{x'} g'$ \greyson{what is '$c$' here?}.
+
+Then \cref{gluing-disks-to-spheres} shows that in the vector space $\bigoplus_{r\in \cC}\A(D^n;r)\otimes_{\bbC} \A(D^n;r)$, there is a finite linear combination $\xi$ of the form
+\[
+    \xi=\sum_i\left(p_{i}\otimes (\overline e_i\bullet_{z_i} q_{i})-( \overline p_{i}\bullet_{y_i} e_i)\otimes q_{i}\right),
+\]
+where $y_i,z_i\in \F(S^0)$, $p_i\in \A(D^1;y_i)$, $q_i\in \A(D^1;z_i)$, and $e_i\in \A(S^{0})(y_i\to z_i)$, such that $f'\otimes b'=f\otimes g+\xi$. Note that $y_i=y_{i1}\amalg y_{i2}$ and $z_i=z_{i1}\amalg z_{i2}$ for some $y_{i1},y_{i2},z_{i1},z_{i2}\in \cC$, and $e_i=(e_{i1}\amalg e_{i2})$ for some $e_{i1}\in \A(D^1;y_{i1}\amalg z_{i1})$, $e_{i2}\in \A(D^1;y_{i2}\amalg z_{i2})$. (See \cref{1dimFig1}.) 
+
+Thus, as morphisms in $\cC$, we have $e_{i1}\in \cC(y_{i1}\to z_{i1})$, $p_i\in \cC(y_{i2}\to y_{i1})$, $e_{i2}\in \cC(y_{i1}\to z_{i2})$, and $q_i\in\cC(z_{i2}\to z_{i1})$, so the string diagram $\overline p_i\bullet_{y_i}e_i$ realizes the morphism $e_{i1} p_i e_{i2}^\dag\in\cC(z_{i2}\to z_{i1})$ in $\cC$ while the string diagram $\overline e_i\bullet_{z_i}q_i$ realizes the morphism $e_{i1}^\dag q_i e_{i2}\in\cC(y_{i2}\to y_{i1})\in\cC(y_{i2}\to y_{i1})$. Thus 
+\begin{align*}
+    \eval(\xi)&=
+    \sum_i\left[\Tr_{y_{i2}}^{\cC}(p_{i}^\dag(\overline e_i\bullet_{z_i} q_{i}))-\Tr_{z_{i2}}^{\cC}((\overline p_{i}\bullet_{y_i} e_i)^\dag q_{i})\right]
+    \\&
+    =\sum_i
+    \left[\Tr_{y_{i2}}^{\cC}(p_{i}^\dag e_{i1}^\dag q_i e_{i2})-\Tr_{z_{i2}}^{\cC}( e_{i2} p_i^\dag e_{i1}^\dag q_{i})\right],
+\end{align*}
+which vanishes by \ref{dagTr1}. \greyson{TODO: bring over diagram from old version of this paper. Actually maybe it is wrong (eg do I need arrows, framings, etc?} It follows that
+\[
+    \Tr_{b}^{\cC}([\phi_{b}])=\eval(a'\bullet_{x'} b')=\eval(a\bullet_x b)+\eval(\xi)=\eval(a\bullet_x b)=\Tr_{a}^{\cC}([\phi_{a}]),
+\]
+so $\eval$ is well-defined.
+
+It remains to show \ref{dagR} and \ref{P}.
+
+To see \ref{P}, note that the induced inner product $\bkt{ - }{ - }_{D^1,c}\colon \bar{\A(D^{1};c)}\otimes _{\bbC}\A(D^{1};c)\to\bbC$ is given by \greyson{todo} for some (any) choice of splitting of $c$ into $c_{s}$ (``source'') and $c_{t}$ (``target''), so $\bkt{-}{-}_{D^1,c}$ is positive-definite by \ref{dagTr1}.
+
+To see \ref{dagR}, observe that for any $\psi\in \A(S^n)$ and any choice of general-position string diagram $\psi_a\in\undC(S^1)$ isotopic to $\psi$ described above, we have
+\[
+    \eval(\bar{\psi})
+    =
+    \Tr_{a}^{\cC}([\bar\psi_{a}])
+    =\bkt{1_a}{\bar\psi_a}_{a\to a}=
+    \bar{\bkt{\psi_a}{1_a}}_{a\to a}=\bar{\Tr_a^\cC([\psi_a])}
+    =
+    \bar{\eval(\psi)},
+\]
+\greyson{check bar's compatibility with local rlns} so (\ref{barR}) holds. Thus \ref{dagR} holds by \cref{dagR vs barR}.
+\end{pf}
+
+\References
+
+\SeeAlso{gluing formula for inner products}
+
+\Footer
+
+\end{document}

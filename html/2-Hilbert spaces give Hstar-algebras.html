@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2-Hilbert spaces give Hstar-algebras - GWiki</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
+    <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true,
+        macros: {
+        "cA": "\\mathcal{A}",
+        "bbA": "\\mathbb{A}",
+        "sfA": "\\mathsf{A}",
+        "fA": "\\mathfrak{A}",
+        "bA": "\\mathbf{A}",
+        "sA": "\\mathscr{A}",
+        "eA": "\\mathcal{A}",
+        "cB": "\\mathcal{B}",
+        "bbB": "\\mathbb{B}",
+        "sfB": "\\mathsf{B}",
+        "fB": "\\mathfrak{B}",
+        "bB": "\\mathbf{B}",
+        "sB": "\\mathscr{B}",
+        "eB": "\\mathcal{B}",
+        "cC": "\\mathcal{C}",
+        "bbC": "\\mathbb{C}",
+        "sfC": "\\mathsf{C}",
+        "fC": "\\mathfrak{C}",
+        "bC": "\\mathbf{C}",
+        "sC": "\\mathscr{C}",
+        "eC": "\\mathcal{C}",
+        "cD": "\\mathcal{D}",
+        "bbD": "\\mathbb{D}",
+        "sfD": "\\mathsf{D}",
+        "fD": "\\mathfrak{D}",
+        "bD": "\\mathbf{D}",
+        "sD": "\\mathscr{D}",
+        "eD": "\\mathcal{D}",
+        "cE": "\\mathcal{E}",
+        "bbE": "\\mathbb{E}",
+        "sfE": "\\mathsf{E}",
+        "fE": "\\mathfrak{E}",
+        "bE": "\\mathbf{E}",
+        "sE": "\\mathscr{E}",
+        "eE": "\\mathcal{E}",
+        "cF": "\\mathcal{F}",
+        "bbF": "\\mathbb{F}",
+        "sfF": "\\mathsf{F}",
+        "fF": "\\mathfrak{F}",
+        "bF": "\\mathbf{F}",
+        "sF": "\\mathscr{F}",
+        "eF": "\\mathcal{F}",
+        "cG": "\\mathcal{G}",
+        "bbG": "\\mathbb{G}",
+        "sfG": "\\mathsf{G}",
+        "fG": "\\mathfrak{G}",
+        "bG": "\\mathbf{G}",
+        "sG": "\\mathscr{G}",
+        "eG": "\\mathcal{G}",
+        "cH": "\\mathcal{H}",
+        "bbH": "\\mathbb{H}",
+        "sfH": "\\mathsf{H}",
+        "fH": "\\mathfrak{H}",
+        "bH": "\\mathbf{H}",
+        "sH": "\\mathscr{H}",
+        "eH": "\\mathcal{H}",
+        "cI": "\\mathcal{I}",
+        "bbI": "\\mathbb{I}",
+        "sfI": "\\mathsf{I}",
+        "fI": "\\mathfrak{I}",
+        "bI": "\\mathbf{I}",
+        "sI": "\\mathscr{I}",
+        "eI": "\\mathcal{I}",
+        "cJ": "\\mathcal{J}",
+        "bbJ": "\\mathbb{J}",
+        "sfJ": "\\mathsf{J}",
+        "fJ": "\\mathfrak{J}",
+        "bJ": "\\mathbf{J}",
+        "sJ": "\\mathscr{J}",
+        "eJ": "\\mathcal{J}",
+        "cK": "\\mathcal{K}",
+        "bbK": "\\mathbb{K}",
+        "sfK": "\\mathsf{K}",
+        "fK": "\\mathfrak{K}",
+        "bK": "\\mathbf{K}",
+        "sK": "\\mathscr{K}",
+        "eK": "\\mathcal{K}",
+        "cL": "\\mathcal{L}",
+        "bbL": "\\mathbb{L}",
+        "sfL": "\\mathsf{L}",
+        "fL": "\\mathfrak{L}",
+        "bL": "\\mathbf{L}",
+        "sL": "\\mathscr{L}",
+        "eL": "\\mathcal{L}",
+        "cM": "\\mathcal{M}",
+        "bbM": "\\mathbb{M}",
+        "sfM": "\\mathsf{M}",
+        "fM": "\\mathfrak{M}",
+        "bM": "\\mathbf{M}",
+        "sM": "\\mathscr{M}",
+        "eM": "\\mathcal{M}",
+        "cN": "\\mathcal{N}",
+        "bbN": "\\mathbb{N}",
+        "sfN": "\\mathsf{N}",
+        "fN": "\\mathfrak{N}",
+        "bN": "\\mathbf{N}",
+        "sN": "\\mathscr{N}",
+        "eN": "\\mathcal{N}",
+        "cO": "\\mathcal{O}",
+        "bbO": "\\mathbb{O}",
+        "sfO": "\\mathsf{O}",
+        "fO": "\\mathfrak{O}",
+        "bO": "\\mathbf{O}",
+        "sO": "\\mathscr{O}",
+        "eO": "\\mathcal{O}",
+        "cP": "\\mathcal{P}",
+        "bbP": "\\mathbb{P}",
+        "sfP": "\\mathsf{P}",
+        "fP": "\\mathfrak{P}",
+        "bP": "\\mathbf{P}",
+        "sP": "\\mathscr{P}",
+        "eP": "\\mathcal{P}",
+        "cQ": "\\mathcal{Q}",
+        "bbQ": "\\mathbb{Q}",
+        "sfQ": "\\mathsf{Q}",
+        "fQ": "\\mathfrak{Q}",
+        "bQ": "\\mathbf{Q}",
+        "sQ": "\\mathscr{Q}",
+        "eQ": "\\mathcal{Q}",
+        "cR": "\\mathcal{R}",
+        "bbR": "\\mathbb{R}",
+        "sfR": "\\mathsf{R}",
+        "fR": "\\mathfrak{R}",
+        "bR": "\\mathbf{R}",
+        "sR": "\\mathscr{R}",
+        "eR": "\\mathcal{R}",
+        "cS": "\\mathcal{S}",
+        "bbS": "\\mathbb{S}",
+        "sfS": "\\mathsf{S}",
+        "fS": "\\mathfrak{S}",
+        "bS": "\\mathbf{S}",
+        "sS": "\\mathscr{S}",
+        "eS": "\\mathcal{S}",
+        "cT": "\\mathcal{T}",
+        "bbT": "\\mathbb{T}",
+        "sfT": "\\mathsf{T}",
+        "fT": "\\mathfrak{T}",
+        "bT": "\\mathbf{T}",
+        "sT": "\\mathscr{T}",
+        "eT": "\\mathcal{T}",
+        "cU": "\\mathcal{U}",
+        "bbU": "\\mathbb{U}",
+        "sfU": "\\mathsf{U}",
+        "fU": "\\mathfrak{U}",
+        "bU": "\\mathbf{U}",
+        "sU": "\\mathscr{U}",
+        "eU": "\\mathcal{U}",
+        "cV": "\\mathcal{V}",
+        "bbV": "\\mathbb{V}",
+        "sfV": "\\mathsf{V}",
+        "fV": "\\mathfrak{V}",
+        "bV": "\\mathbf{V}",
+        "sV": "\\mathscr{V}",
+        "eV": "\\mathcal{V}",
+        "cW": "\\mathcal{W}",
+        "bbW": "\\mathbb{W}",
+        "sfW": "\\mathsf{W}",
+        "fW": "\\mathfrak{W}",
+        "bW": "\\mathbf{W}",
+        "sW": "\\mathscr{W}",
+        "eW": "\\mathcal{W}",
+        "cX": "\\mathcal{X}",
+        "bbX": "\\mathbb{X}",
+        "sfX": "\\mathsf{X}",
+        "fX": "\\mathfrak{X}",
+        "bX": "\\mathbf{X}",
+        "sX": "\\mathscr{X}",
+        "eX": "\\mathcal{X}",
+        "cY": "\\mathcal{Y}",
+        "bbY": "\\mathbb{Y}",
+        "sfY": "\\mathsf{Y}",
+        "fY": "\\mathfrak{Y}",
+        "bY": "\\mathbf{Y}",
+        "sY": "\\mathscr{Y}",
+        "eY": "\\mathcal{Y}",
+        "cZ": "\\mathcal{Z}",
+        "bbZ": "\\mathbb{Z}",
+        "sfZ": "\\mathsf{Z}",
+        "fZ": "\\mathfrak{Z}",
+        "bZ": "\\mathbf{Z}",
+        "sZ": "\\mathscr{Z}",
+        "eZ": "\\mathcal{Z}",
+        "fa": "\\mathfrak{a}",
+        "fb": "\\mathfrak{b}",
+        "fc": "\\mathfrak{c}",
+        "fd": "\\mathfrak{d}",
+        "fe": "\\mathfrak{e}",
+        "ff": "\\mathfrak{f}",
+        "fg": "\\mathfrak{g}",
+        "fh": "\\mathfrak{h}",
+        "fi": "\\mathfrak{i}",
+        "fj": "\\mathfrak{j}",
+        "fk": "\\mathfrak{k}",
+        "fl": "\\mathfrak{l}",
+        "fm": "\\mathfrak{m}",
+        "fn": "\\mathfrak{n}",
+        "fo": "\\mathfrak{o}",
+        "fp": "\\mathfrak{p}",
+        "fq": "\\mathfrak{q}",
+        "fr": "\\mathfrak{r}",
+        "fs": "\\mathfrak{s}",
+        "ft": "\\mathfrak{t}",
+        "fu": "\\mathfrak{u}",
+        "fv": "\\mathfrak{v}",
+        "fw": "\\mathfrak{w}",
+        "fx": "\\mathfrak{x}",
+        "fy": "\\mathfrak{y}",
+        "fz": "\\mathfrak{z}",
+        "bar": "\\overline",
+        "undC": "\\smash[b]{\\text{$\\underset{\\smash{\\raisebox{.275em}{$\\scriptstyle\\kern.1ex\\rightarrow$}}}{\\smash{\\cC}}$}}",
+        "Obj": "\\operatorname{Obj}",
+        "Hom": "\\operatorname{Hom}",
+        "Mor": "\\operatorname{Mor}",
+        "End": "\\operatorname{End}",
+        "Aut": "\\operatorname{Aut}",
+        "id": "\\mathrm{id}",
+        "pt": "\\mathrm{pt}",
+        "Tr": "\\operatorname{Tr}",
+        "eval": "\\operatorname{eval}",
+        "A": "\\mathrm{Sk}",
+        "F": "\\eF",
+        "U": "\\eU",
+        "orev": "\\overline",
+        "fcj": "\\widehat",
+        "e": "\\varepsilon",
+        "glu": "\\mathrm{gl}",
+        "greyson": ["\\bgroup\\color{violet}[[#1]]\\egroup", 1],
+        "todo": ["\\textbf{[[}\\textsl{#1}\\textbf{]]}", 1],
+        "bkt": ["\\left\\langle #1 \\middle| #2 \\right\\rangle", 2],
+        "pbkt": ["\\left( #1 \\middle| #2 \\right)", 2],
+        "abs": ["\\left| #1 \\right|", 1],
+        "norm": ["\\left\\| #1 \\right\\|", 1],
+        "set": ["\\left\\{ #1 \\right\\}", 1],
+        "bra": ["\\left\\langle #1 \\right|", 1],
+        "ket": ["\\left| #1 \\right\\rangle", 1],
+        "braket": ["\\left\\langle #1 \\middle| #2 \\right\\rangle", 2],
+        "Set": "\\mathbf{Set}",
+        "Grp": "\\mathbf{Grp}",
+        "Top": "\\mathbf{Top}",
+        "Vec": "\\mathbf{Vec}",
+        "Hilb": "\\mathbf{Hilb}",
+        "Sk": "\\operatorname{Sk}",
+        "colim": "\\operatorname{colim}",
+        "Ext": "\\operatorname{Ext}",
+        "Tor": "\\operatorname{Tor}",
+        "Spec": "\\operatorname{Spec}",
+        "im": "\\operatorname{im}",
+        "coker": "\\operatorname{coker}",
+        "coloneqq": "\\mathrel{\\vcenter{:}}=",
+        "coloneq": "\\mathrel{\\vcenter{:}}=",
+        "eqqcolon": "=\\mathrel{\\vcenter{:}}",
+        "endto": "\\to",
+        "to": "\\rightarrow",
+        "injto": "\\hookrightarrow",
+        "surjto": "\\twoheadrightarrow",
+        "longto": "\\longrightarrow",
+        "lto": "\\longrightarrow",
+        "mapsfrom": "\\mathrel{\\reflectbox{\\ensuremath{\\mapsto}}}",
+        "Ising": "\\mathsf{Ising}",
+        "a": "\\alpha",
+        "b": "\\beta",
+        "d": "\\delta",
+        "g": "\\gamma"
+        }
+      },
+      startup: {
+        typeset: true
+      }
+    };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
+</head>
+<body>
+    <div class="top-nav">
+        <div class="nav-left">
+            <a href="../index.html" class="nav-link">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                <span>Index</span>
+            </a>
+        </div>
+        <div class="nav-right">
+            <a href="../pdfs/2-Hilbert spaces give Hstar-algebras.pdf" class="nav-btn" title="View PDF">
+                <span>PDF</span>
+            </a>
+            <a href="obsidian://open?path=/Users/greysonwesley/Desktop/workflow/wiki/2-Hilbert spaces give Hstar-algebras.md" class="nav-btn" title="Edit in Obsidian">
+                <span>MD</span>
+            </a>
+        </div>
+    </div>
+    <div class="content-wrapper">
+    <h1>2-Hilbert spaces give Hstar-algebras</h1>
+    <div class="metadata">
+        <strong>Last modified:</strong> December 12, 2025 at 11:25 PM ET<br>
+        <strong>Created:</strong> December 11, 2025 at 11:11 PM ET<br>
+        <strong>Tags:</strong> unitary TQFTs project
+    </div>
+    <div class="content">
+        
+        <div class="env-box theoremalpha">
+<p><strong>Theoremalpha.</strong> <a id="def-2D-Unitary-Cobordism-Hypothesis" class="latex-label"></a></p>
+<ul>
+<li><a id="2UTQFT--gt-2Hilb" class="latex-label"></a>
+<p>Given a 2D unitary TQFT $(\F,\U,z)$, the skein 1-category $\A(\pt)$ is a finite 2-Hilbert space whose</p>
+
+<ul>
+<li></li>
+<li>dagger is induced by the $H$-homeomorphisms $X\times I\mapsto \orev X\times I$ given by $(x,t)\mapsto (x,1-t)$, and whose</li>
+<li>unitary trace is given by $\Tr^{\A(\pt)}_c(\phi\colon c\endto)\coloneqq \bkt{\id_x}{f}_{I,\fcj x\amalg x}$.</li>
+</ul>
+<p></li></p>
+<li><a id="2Hilb--gt-2UTQFT" class="latex-label"></a>
+<p>Conversely, given a 2-Hilbert space $(\cA,\Tr^\cA)$, the induced $(n+\e)$D TQFT is a $(n+1)$D unitary TQFT whose path integral is constructed from $\Tr^\cA$ via the unitary version of Walker’s Theorem.</li></p>
+</ul>
+</div>
+
+<div class="env-box proof">
+<p><strong>Proof.</strong> <a href="#2UTQFT--gt-2Hilb" class="latex-ref">2UTQFT-&gt;2Hilb</a>: Let $(\cF,\cU,z)$ be a 2D unitary TQFT. Then $\cA\coloneqq \A(\pt)$ is a dagger category by <a href="#cylinder-1-categories-are-dagger" class="latex-ref">cylinder 1-categories are dagger</a>. For all $a,b\in\cA$ and $f,g\in\cA(x\to y)$, we define \[ \bkt{f}{g}_{x\to y}\coloneqq \bkt{ f }{ g }_{\pt\times I,y}=z_{S^{1}}(\overline f\bullet_y g). \] As these pairings are positive-definite by <a href="#P" class="latex-ref">P</a>, for each $x\in\cA$ we get a faithful weight $\Tr_x^\cA\colon\End_{\cA}(x)\to\bbC$ given by \[ \Tr_x^\cA(f)\coloneqq \bkt{\mathrm{id}_x}{f}_{x\to x}. \] Moreover, for all $x,y\in\cA$, $f\in\cA(x\to y)$, and $g\in\cA(y\to x)$, \[ \Tr_y^\cA(f\circ g)=\bkt{\mathrm{id}_y}{f\circ g}_{y\to y}=\bkt{g^\dag}{f}_{x\to y}=\bkt{\mathrm{id}_y}{g\circ f}_{x\to x}=\Tr_x^\cA(g\circ f), \] where we used <a href="#dagger-on-cylinder-1-cat-gives-unitary-trace" class="latex-ref">dagger on cylinder 1-cat gives unitary trace</a> for the second and third equalities. Thus $\Tr^\cA$ is a unitary trace on $\cA$.</p>
+
+<p>As $\cA$ is dagger, the endomorphism algebras $\End_\cA(x)$ are $*$-algebras with $*=\dag$. If $f\in\cA(x\to x)$ satisfies $f^\dag f=0$, then again by <a href="#dagger-on-cylinder-1-cat-gives-unitary-trace" class="latex-ref">dagger on cylinder 1-cat gives unitary trace</a>, $\bkt{f^\dag f}{\mathrm{id}_x}_{x\to x}=\bkt{f}{f}=0$, and thus $f=0$ by <a href="#P" class="latex-ref">P</a>. By the characterization of unitary algebras \cite[Part I, Ch. 2, §4]{UQSL}, this implies $\End_\cA(x)$ is unitary. It then follows from <a href="#unitary-implies-finite-semisimple-Z" class="latex-ref">unitary implies finite semisimple Z</a> that the category $Z(\pt)$ of unitary $\A(\pt)$-representations equipped with the induced functor unitary trace $\Tr^{Z(\pt)}$ is finite unitary semisimple.</p>
+
+<p><a href="#2Hilb--gt-2UTQFT" class="latex-ref">2Hilb-&gt;2UTQFT</a>: Note that the following construction is essentially given in \cite{W21}. Let $(\cA,\Tr^\cA)$ be a 2-Hilbert space. As a dagger category, $\cA$ is a unitary category with strong duality <span style="color: #7f00ff;">[[todo and ref]]</span>, and thus gives a $(1+\varepsilon)$D dagger TQFT $(\undC,\U_{\cC})$ by <span style="color: #7f00ff;">[[cite construction]]</span>. To get a $(1+1)$D unitary TQFT, by the unitary version of Walker’s Theorem <span style="color: #7f00ff;">[[todo ref]]</span> it suffices to define a linear functional $\eval\colon \A(S^1)\to \bbC$ satisfying <a href="#dagR" class="latex-ref">dagR</a> and <a href="#P" class="latex-ref">P</a>.</p>
+
+<p>For each string diagram $\phi\in\undC(S^{1})$, there is an object $a\in\cC$ such that $\phi$ is isotopic to a general-position string diagram $\phi_{a}\in\undC(S^{1})$ that is supported on a small disk ($\cong D^{1}$) in the sense that the rest of $S^{1}$ is labeled by $a$. Define \[ \eval(\phi)\coloneqq \Tr_{a}^{\cC}([\phi_{a}]) \] where $a$ and $\phi_{a}$ are choices as above and where $[\phi_{a}]\in\cC(a\to a)$ denotes the morphism in  realized by the string diagram $\phi_{a}$ for some (any) choice of source and target (which in this case there are only two), and extend $\eval$ linearly to a map $\A(S^{1})\to\bbC$.</p>
+
+<p>We first prove that $\eval$ is well-defined. Suppose there is an object $b\in\cC$ and a string diagram $\phi_{b}\in\undC(S^{1})$. We claim $\Tr_{a}^{\cC}([\phi_{a}])=\Tr_{b}^{\cC}([\phi_{b}])$. Since the gluing map is surjective on general-position string diagrams <span style="color: #7f00ff;">[[should be clear but maybe state/ref]]</span>, there are $x,x'\in \undC(S^{0})$ and $f,g,f',g'\in \A(D^{1};c)$ such that $\phi_{a}=\overline{f}\bullet_{x}g$ and $\phi_{b}=\overline{f'}\bullet_{x'} g'$ <span style="color: #7f00ff;">[[what is ’$c$’ here?]]</span>.</p>
+
+<p>Then <a href="#gluing-disks-to-spheres" class="latex-ref">gluing-disks-to-spheres</a> shows that in the vector space $\bigoplus_{r\in \cC}\A(D^n;r)\otimes_{\bbC} \A(D^n;r)$, there is a finite linear combination $\xi$ of the form \[ \xi=\sum_i\left(p_{i}\otimes (\overline e_i\bullet_{z_i} q_{i})-( \overline p_{i}\bullet_{y_i} e_i)\otimes q_{i}\right), \] where $y_i,z_i\in \F(S^0)$, $p_i\in \A(D^1;y_i)$, $q_i\in \A(D^1;z_i)$, and $e_i\in \A(S^{0})(y_i\to z_i)$, such that $f'\otimes b'=f\otimes g+\xi$. Note that $y_i=y_{i1}\amalg y_{i2}$ and $z_i=z_{i1}\amalg z_{i2}$ for some $y_{i1},y_{i2},z_{i1},z_{i2}\in \cC$, and $e_i=(e_{i1}\amalg e_{i2})$ for some $e_{i1}\in \A(D^1;y_{i1}\amalg z_{i1})$, $e_{i2}\in \A(D^1;y_{i2}\amalg z_{i2})$. (See <a href="#1dimFig1" class="latex-ref">1dimFig1</a>.)</p>
+
+<p>Thus, as morphisms in $\cC$, we have $e_{i1}\in \cC(y_{i1}\to z_{i1})$, $p_i\in \cC(y_{i2}\to y_{i1})$, $e_{i2}\in \cC(y_{i1}\to z_{i2})$, and $q_i\in\cC(z_{i2}\to z_{i1})$, so the string diagram $\overline p_i\bullet_{y_i}e_i$ realizes the morphism $e_{i1} p_i e_{i2}^\dag\in\cC(z_{i2}\to z_{i1})$ in $\cC$ while the string diagram $\overline e_i\bullet_{z_i}q_i$ realizes the morphism $e_{i1}^\dag q_i e_{i2}\in\cC(y_{i2}\to y_{i1})\in\cC(y_{i2}\to y_{i1})$. Thus \begin{align*} \eval(\xi)&= \sum_i\left[\Tr_{y_{i2}}^{\cC}(p_{i}^\dag(\overline e_i\bullet_{z_i} q_{i}))-\Tr_{z_{i2}}^{\cC}((\overline p_{i}\bullet_{y_i} e_i)^\dag q_{i})\right] \\& =\sum_i \left[\Tr_{y_{i2}}^{\cC}(p_{i}^\dag e_{i1}^\dag q_i e_{i2})-\Tr_{z_{i2}}^{\cC}( e_{i2} p_i^\dag e_{i1}^\dag q_{i})\right], \end{align*} which vanishes by <a href="#dagTr1" class="latex-ref">dagTr1</a>. <span style="color: #7f00ff;">[[TODO: bring over diagram from old version of this paper. Actually maybe it is wrong (eg do I need arrows, framings, etc?]]</span> It follows that \[ \Tr_{b}^{\cC}([\phi_{b}])=\eval(a'\bullet_{x'} b')=\eval(a\bullet_x b)+\eval(\xi)=\eval(a\bullet_x b)=\Tr_{a}^{\cC}([\phi_{a}]), \] so $\eval$ is well-defined.</p>
+
+<p>It remains to show <a href="#dagR" class="latex-ref">dagR</a> and <a href="#P" class="latex-ref">P</a>.</p>
+
+<p>To see <a href="#P" class="latex-ref">P</a>, note that the induced inner product $\bkt{ - }{ - }_{D^1,c}\colon \bar{\A(D^{1};c)}\otimes _{\bbC}\A(D^{1};c)\to\bbC$ is given by <span style="color: #7f00ff;">[[todo]]</span> for some (any) choice of splitting of $c$ into $c_{s}$ (“source”) and $c_{t}$ (“target”), so $\bkt{-}{-}_{D^1,c}$ is positive-definite by <a href="#dagTr1" class="latex-ref">dagTr1</a>.</p>
+
+<p>To see <a href="#dagR" class="latex-ref">dagR</a>, observe that for any $\psi\in \A(S^n)$ and any choice of general-position string diagram $\psi_a\in\undC(S^1)$ isotopic to $\psi$ described above, we have \[ \eval(\bar{\psi}) = \Tr_{a}^{\cC}([\bar\psi_{a}]) =\bkt{1_a}{\bar\psi_a}_{a\to a}= \bar{\bkt{\psi_a}{1_a}}_{a\to a}=\bar{\Tr_a^\cC([\psi_a])} = \bar{\eval(\psi)}, \] <span style="color: #7f00ff;">[[check bar’s compatibility with local rlns]]</span> so (<a href="#barR" class="latex-ref">barR</a>) holds. Thus <a href="#dagR" class="latex-ref">dagR</a> holds by <a href="#dagR-vs-barR" class="latex-ref">dagR vs barR</a>.</p>
+</div>
+    </div>
+    </div>
+</body>
+</html>

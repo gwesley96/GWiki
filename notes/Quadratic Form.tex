@@ -1,12 +1,19 @@
 \documentclass{gwiki}
 \usepackage{gwiki-links}
 
-\Title{Quadratic Form}
-\Tags{stub}
+\Title{quadratic form}
+\Tags{}
 
 \begin{document}
 \NoteHeader
 
-This note is a placeholder for future content.
+For a $\mathbb{R}$-vector space $V$, a \textbf{quadratic form} on $V$ is a is a linear map $Q\colon V\to \mathbb{R}$ such that $Q(\lambda v)=\lambda^2v$ for all scalars $\lambda$ and $(v,w)\mapsto Q(v+w)-Q(v)-Q(w)$ is bilinear. Equivalently, a quadratic form on $V$ is a homogeneous polynomial of degree $2$ in $n\coloneqq \dim V$ variables, i.e., $Q(x)=\sum_{i,j=1}^na_{ij}x_ix_j$ for some $a_{ij}\in K$.
+
+Let $Q\colon V\to \mathbb{R}$ be a quadratic form. We call $Q$ \textbf{positive-semidefinite} (resp. \textbf{positive-definite}) if $Q(v)\geq 0$ (resp. if $Q(v)\geq 0$ with equality if and only if $v=0$). The conditions to call $Q$ \textbf{negative-semidefinite} and \textbf{negative-definite} should now be obvious. We call $Q$ \textbf{indefinite} if there are $v,v'\in V$ such that $Q(v)>0$ and $Q(v')<0$.
+
+#todo: signature of a quadratic form
+
+See also:
+- \wref{symmetric bilinear form}
 
 \end{document}

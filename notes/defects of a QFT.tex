@@ -2,11 +2,30 @@
 \usepackage{gwiki-links}
 
 \Title{defects of a QFT}
-\Tags{stub}
+\Tags{}
 
 \begin{document}
 \NoteHeader
 
-This note is a placeholder for future content.
+\textbf{Idea.} The following is from \wref{JF21HeisenbergQFT.pdf}. \textit{Consider choosing a vector space V and placing on R (considered just as an oriented manifold) some “beads” labeled by vectors in V . These “beads” can slide back and forth but cannot pass through each other. Further assume that the beads can “fuse” in a nuclear reaction. Imposing linearity in the labels, this “fusion” is an operation V ⊗ V → V . At microscopic scales, fusion isn’t really a discrete process: instead, when beads become very close to each other, they can become bonded and behave like a single particle. But suppose that all physics of beads and fusion is “topological” in the sense that it is independent of distances on R. Then the fusion operation V ⊗ V → V is associative. The “invisible bead” — no bead at all — is a unit for this fusion. So such a system is the same as an associative algebra structure on V . The beads are nothing but “local observables” drawn from the “algebra of observables” V . The theory of local observables for a general quantum field theory has been formulated in terms of factorization algebras in [CG16], and restricts to “beads on R” in the case of one-dimensional topological theories. More generally, consider dividing R into intervals separated by “point defects.” One can imagine a situation in which the different regions follow different physical laws: one might be filled with water, for example, and another air. Each defect might also have its own physics: perhaps there are waves that live only where water and air meet. Each region and each defect has its own vector space of observables. As observables move around, they can fuse, and we will require that the universe be topological. An observable in a region can move onto a defect, but not otherwise. There should be “invisible observables” that can be inserted at any point. These rules together comprise (1) an associative algebra assigned to each region, and (2) a pointed bimodule assigned to each defect. These are nothing but the objects and morphisms of Alg1(VectK).}
+
+
+\subsubsection*{Defects}
+(From \wref[Borcherd's QFT notes]{Borcherds QFT summary}:)As introduced in Lecture 31, there are more general “observables” or “operators” in a quantum field theory whose support is not a point, but rather a higher dimensional submanifold, or \wref[stratified submanifold]{stratified submanifold}. The general word for these are defects. In Chern–Simons theory, the interesting defects are 1-dimensional: so-called line defects. The support is a 1-dimensional submanifold, a curve in a 3-manifold.
+
+Just as the vector space of point defects in a topological field theory is computed as the value of the theory on the link of a point, so too the category of line defects at a point $x ∈ L ⊂ X$ on a curve in a 3-manifold is the value of the theory on the link of $L ⊂ X$ at $x$. If $L ⊂ X$ is normally framed, then this link can be identified as the standard circle S1, and the category of local line defects is the modular tensor category A = eZ(S1). One can specialize to X = S3, and then L ⊂ S3 is a knot or link. A bit more discussion is in §31.4. From correlation functions of line defects in the theories Z = Z(SU2,k) one recovers the Jones polynomial, which was Witten’s starting point [W3, A3, FK].
+
+\subsection*{Extended Operators and Defects}
+
+\subsubsection*{Extended Operators}
+In gauge theories, extended operators include Wilson line operators and 't Hooft line operators.
+
+Two examples of extended operators in gauge theories are Wilson line operators and ’t Hooft line operators.
+
+See also:
+- [Here](https://arxiv.org/pdf/1607.05747)
+- [Here](https://arxiv.org/pdf/1603.01171#page=18.45)
+- [Here](https://indico.in2p3.fr/event/32058/contributions/140322/attachments/85993/129097/Brunner.pdf)
+- \wref{WalkerSlidesDefectsUCLA2015.pdf}
 
 \end{document}

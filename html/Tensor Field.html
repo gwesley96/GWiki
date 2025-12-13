@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tensor Field - GWiki</title>
+    <title>tensor field - GWiki</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -11,70 +11,283 @@
     <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
     <script>
     window.MathJax = {
-        tex: {
-            inlineMath: [['$', '$']],
-            displayMath: [['\\[', '\\]']],
-            macros: {
-                // Category theory
-                cC: '\\mathcal{C}',
-                cD: '\\mathcal{D}',
-                cF: '\\mathcal{F}',
-                cG: '\\mathcal{G}',
-                cH: '\\mathcal{H}',
-                cL: '\\mathcal{L}',
-                cM: '\\mathcal{M}',
-                cP: '\\mathcal{P}',
-                cU: '\\mathcal{U}',
-                Obj: '\\operatorname{Obj}',
-                Hom: '\\operatorname{Hom}',
-                Mor: '\\operatorname{Mor}',
-                End: '\\operatorname{End}',
-                Aut: '\\operatorname{Aut}',
-                id: '\\mathrm{id}',
-
-                // Blackboard bold
-                bR: '\\mathbb{R}',
-                bC: '\\mathbb{C}',
-                bZ: '\\mathbb{Z}',
-                bN: '\\mathbb{N}',
-                bQ: '\\mathbb{Q}',
-                bbR: '\\mathbb{R}',
-                bbC: '\\mathbb{C}',
-                bbZ: '\\mathbb{Z}',
-                bbN: '\\mathbb{N}',
-                bbQ: '\\mathbb{Q}',
-
-                // Delimiters
-                bkt: ['\\langle #1 \\middle| #2 \\rangle', 2],
-                abs: ['\\left| #1 \\right|', 1],
-                norm: ['\\left\\| #1 \\right\\|', 1],
-
-                // Categories
-                Set: '\\mathbf{Set}',
-                Grp: '\\mathbf{Grp}',
-                Top: '\\mathbf{Top}',
-                Vec: '\\mathbf{Vec}',
-
-                // Operators
-                colim: '\\operatorname{colim}',
-                Ext: '\\operatorname{Ext}',
-                Tor: '\\operatorname{Tor}',
-                Spec: '\\operatorname{Spec}',
-                im: '\\operatorname{im}',
-                coker: '\\operatorname{coker}',
-                coloneqq: '\\mathrel{\\vcenter{:}}=',
-                coloneq: '\\mathrel{\\vcenter{:}}=',
-
-                // TikZ-like (limited in HTML)
-                to: '\\rightarrow',
-                injto: '\\hookrightarrow',
-                surjto: '\\twoheadrightarrow'
-            }
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true,
+        macros: {
+        "cA": "\\mathcal{A}",
+        "bbA": "\\mathbb{A}",
+        "sfA": "\\mathsf{A}",
+        "fA": "\\mathfrak{A}",
+        "bA": "\\mathbf{A}",
+        "sA": "\\mathscr{A}",
+        "eA": "\\mathcal{A}",
+        "cB": "\\mathcal{B}",
+        "bbB": "\\mathbb{B}",
+        "sfB": "\\mathsf{B}",
+        "fB": "\\mathfrak{B}",
+        "bB": "\\mathbf{B}",
+        "sB": "\\mathscr{B}",
+        "eB": "\\mathcal{B}",
+        "cC": "\\mathcal{C}",
+        "bbC": "\\mathbb{C}",
+        "sfC": "\\mathsf{C}",
+        "fC": "\\mathfrak{C}",
+        "bC": "\\mathbf{C}",
+        "sC": "\\mathscr{C}",
+        "eC": "\\mathcal{C}",
+        "cD": "\\mathcal{D}",
+        "bbD": "\\mathbb{D}",
+        "sfD": "\\mathsf{D}",
+        "fD": "\\mathfrak{D}",
+        "bD": "\\mathbf{D}",
+        "sD": "\\mathscr{D}",
+        "eD": "\\mathcal{D}",
+        "cE": "\\mathcal{E}",
+        "bbE": "\\mathbb{E}",
+        "sfE": "\\mathsf{E}",
+        "fE": "\\mathfrak{E}",
+        "bE": "\\mathbf{E}",
+        "sE": "\\mathscr{E}",
+        "eE": "\\mathcal{E}",
+        "cF": "\\mathcal{F}",
+        "bbF": "\\mathbb{F}",
+        "sfF": "\\mathsf{F}",
+        "fF": "\\mathfrak{F}",
+        "bF": "\\mathbf{F}",
+        "sF": "\\mathscr{F}",
+        "eF": "\\mathcal{F}",
+        "cG": "\\mathcal{G}",
+        "bbG": "\\mathbb{G}",
+        "sfG": "\\mathsf{G}",
+        "fG": "\\mathfrak{G}",
+        "bG": "\\mathbf{G}",
+        "sG": "\\mathscr{G}",
+        "eG": "\\mathcal{G}",
+        "cH": "\\mathcal{H}",
+        "bbH": "\\mathbb{H}",
+        "sfH": "\\mathsf{H}",
+        "fH": "\\mathfrak{H}",
+        "bH": "\\mathbf{H}",
+        "sH": "\\mathscr{H}",
+        "eH": "\\mathcal{H}",
+        "cI": "\\mathcal{I}",
+        "bbI": "\\mathbb{I}",
+        "sfI": "\\mathsf{I}",
+        "fI": "\\mathfrak{I}",
+        "bI": "\\mathbf{I}",
+        "sI": "\\mathscr{I}",
+        "eI": "\\mathcal{I}",
+        "cJ": "\\mathcal{J}",
+        "bbJ": "\\mathbb{J}",
+        "sfJ": "\\mathsf{J}",
+        "fJ": "\\mathfrak{J}",
+        "bJ": "\\mathbf{J}",
+        "sJ": "\\mathscr{J}",
+        "eJ": "\\mathcal{J}",
+        "cK": "\\mathcal{K}",
+        "bbK": "\\mathbb{K}",
+        "sfK": "\\mathsf{K}",
+        "fK": "\\mathfrak{K}",
+        "bK": "\\mathbf{K}",
+        "sK": "\\mathscr{K}",
+        "eK": "\\mathcal{K}",
+        "cL": "\\mathcal{L}",
+        "bbL": "\\mathbb{L}",
+        "sfL": "\\mathsf{L}",
+        "fL": "\\mathfrak{L}",
+        "bL": "\\mathbf{L}",
+        "sL": "\\mathscr{L}",
+        "eL": "\\mathcal{L}",
+        "cM": "\\mathcal{M}",
+        "bbM": "\\mathbb{M}",
+        "sfM": "\\mathsf{M}",
+        "fM": "\\mathfrak{M}",
+        "bM": "\\mathbf{M}",
+        "sM": "\\mathscr{M}",
+        "eM": "\\mathcal{M}",
+        "cN": "\\mathcal{N}",
+        "bbN": "\\mathbb{N}",
+        "sfN": "\\mathsf{N}",
+        "fN": "\\mathfrak{N}",
+        "bN": "\\mathbf{N}",
+        "sN": "\\mathscr{N}",
+        "eN": "\\mathcal{N}",
+        "cO": "\\mathcal{O}",
+        "bbO": "\\mathbb{O}",
+        "sfO": "\\mathsf{O}",
+        "fO": "\\mathfrak{O}",
+        "bO": "\\mathbf{O}",
+        "sO": "\\mathscr{O}",
+        "eO": "\\mathcal{O}",
+        "cP": "\\mathcal{P}",
+        "bbP": "\\mathbb{P}",
+        "sfP": "\\mathsf{P}",
+        "fP": "\\mathfrak{P}",
+        "bP": "\\mathbf{P}",
+        "sP": "\\mathscr{P}",
+        "eP": "\\mathcal{P}",
+        "cQ": "\\mathcal{Q}",
+        "bbQ": "\\mathbb{Q}",
+        "sfQ": "\\mathsf{Q}",
+        "fQ": "\\mathfrak{Q}",
+        "bQ": "\\mathbf{Q}",
+        "sQ": "\\mathscr{Q}",
+        "eQ": "\\mathcal{Q}",
+        "cR": "\\mathcal{R}",
+        "bbR": "\\mathbb{R}",
+        "sfR": "\\mathsf{R}",
+        "fR": "\\mathfrak{R}",
+        "bR": "\\mathbf{R}",
+        "sR": "\\mathscr{R}",
+        "eR": "\\mathcal{R}",
+        "cS": "\\mathcal{S}",
+        "bbS": "\\mathbb{S}",
+        "sfS": "\\mathsf{S}",
+        "fS": "\\mathfrak{S}",
+        "bS": "\\mathbf{S}",
+        "sS": "\\mathscr{S}",
+        "eS": "\\mathcal{S}",
+        "cT": "\\mathcal{T}",
+        "bbT": "\\mathbb{T}",
+        "sfT": "\\mathsf{T}",
+        "fT": "\\mathfrak{T}",
+        "bT": "\\mathbf{T}",
+        "sT": "\\mathscr{T}",
+        "eT": "\\mathcal{T}",
+        "cU": "\\mathcal{U}",
+        "bbU": "\\mathbb{U}",
+        "sfU": "\\mathsf{U}",
+        "fU": "\\mathfrak{U}",
+        "bU": "\\mathbf{U}",
+        "sU": "\\mathscr{U}",
+        "eU": "\\mathcal{U}",
+        "cV": "\\mathcal{V}",
+        "bbV": "\\mathbb{V}",
+        "sfV": "\\mathsf{V}",
+        "fV": "\\mathfrak{V}",
+        "bV": "\\mathbf{V}",
+        "sV": "\\mathscr{V}",
+        "eV": "\\mathcal{V}",
+        "cW": "\\mathcal{W}",
+        "bbW": "\\mathbb{W}",
+        "sfW": "\\mathsf{W}",
+        "fW": "\\mathfrak{W}",
+        "bW": "\\mathbf{W}",
+        "sW": "\\mathscr{W}",
+        "eW": "\\mathcal{W}",
+        "cX": "\\mathcal{X}",
+        "bbX": "\\mathbb{X}",
+        "sfX": "\\mathsf{X}",
+        "fX": "\\mathfrak{X}",
+        "bX": "\\mathbf{X}",
+        "sX": "\\mathscr{X}",
+        "eX": "\\mathcal{X}",
+        "cY": "\\mathcal{Y}",
+        "bbY": "\\mathbb{Y}",
+        "sfY": "\\mathsf{Y}",
+        "fY": "\\mathfrak{Y}",
+        "bY": "\\mathbf{Y}",
+        "sY": "\\mathscr{Y}",
+        "eY": "\\mathcal{Y}",
+        "cZ": "\\mathcal{Z}",
+        "bbZ": "\\mathbb{Z}",
+        "sfZ": "\\mathsf{Z}",
+        "fZ": "\\mathfrak{Z}",
+        "bZ": "\\mathbf{Z}",
+        "sZ": "\\mathscr{Z}",
+        "eZ": "\\mathcal{Z}",
+        "fa": "\\mathfrak{a}",
+        "fb": "\\mathfrak{b}",
+        "fc": "\\mathfrak{c}",
+        "fd": "\\mathfrak{d}",
+        "fe": "\\mathfrak{e}",
+        "ff": "\\mathfrak{f}",
+        "fg": "\\mathfrak{g}",
+        "fh": "\\mathfrak{h}",
+        "fi": "\\mathfrak{i}",
+        "fj": "\\mathfrak{j}",
+        "fk": "\\mathfrak{k}",
+        "fl": "\\mathfrak{l}",
+        "fm": "\\mathfrak{m}",
+        "fn": "\\mathfrak{n}",
+        "fo": "\\mathfrak{o}",
+        "fp": "\\mathfrak{p}",
+        "fq": "\\mathfrak{q}",
+        "fr": "\\mathfrak{r}",
+        "fs": "\\mathfrak{s}",
+        "ft": "\\mathfrak{t}",
+        "fu": "\\mathfrak{u}",
+        "fv": "\\mathfrak{v}",
+        "fw": "\\mathfrak{w}",
+        "fx": "\\mathfrak{x}",
+        "fy": "\\mathfrak{y}",
+        "fz": "\\mathfrak{z}",
+        "bar": "\\overline",
+        "undC": "\\underline{\\mathcal{C}}",
+        "Obj": "\\operatorname{Obj}",
+        "Hom": "\\operatorname{Hom}",
+        "Mor": "\\operatorname{Mor}",
+        "End": "\\operatorname{End}",
+        "Aut": "\\operatorname{Aut}",
+        "id": "\\mathrm{id}",
+        "pt": "\\mathrm{pt}",
+        "Tr": "\\operatorname{Tr}",
+        "eval": "\\operatorname{eval}",
+        "A": "\\operatorname{Sk}",
+        "F": "\\mathcal{F}",
+        "U": "\\mathcal{U}",
+        "orev": "\\overline",
+        "fcj": "\\widehat",
+        "e": "\\varepsilon",
+        "glu": "\\mathrm{gl}",
+        "greyson": ["\\bgroup\\color{violet}[[#1]]\\egroup", 1],
+        "todo": ["\\textbf{[[}\\textsl{#1}\\textbf{]]}", 1],
+        "bkt": ["\\left\\langle #1 \\middle| #2 \\right\\rangle", 2],
+        "pbkt": ["\\left( #1 \\middle| #2 \\right)", 2],
+        "abs": ["\\left| #1 \\right|", 1],
+        "norm": ["\\left\\| #1 \\right\\|", 1],
+        "set": ["\\left\\{ #1 \\right\\}", 1],
+        "bra": ["\\left\\langle #1 \\right|", 1],
+        "ket": ["\\left| #1 \\right\\rangle", 1],
+        "braket": ["\\left\\langle #1 \\middle| #2 \\right\\rangle", 2],
+        "Set": "\\mathbf{Set}",
+        "Grp": "\\mathbf{Grp}",
+        "Top": "\\mathbf{Top}",
+        "Vec": "\\mathbf{Vec}",
+        "Hilb": "\\mathbf{Hilb}",
+        "Sk": "\\operatorname{Sk}",
+        "colim": "\\operatorname{colim}",
+        "Ext": "\\operatorname{Ext}",
+        "Tor": "\\operatorname{Tor}",
+        "Spec": "\\operatorname{Spec}",
+        "im": "\\operatorname{im}",
+        "coker": "\\operatorname{coker}",
+        "coloneqq": "\\mathrel{\\vcenter{:}}=",
+        "coloneq": "\\mathrel{\\vcenter{:}}=",
+        "eqqcolon": "=\\mathrel{\\vcenter{:}}",
+        "endto": "\\to",
+        "to": "\\rightarrow",
+        "injto": "\\hookrightarrow",
+        "surjto": "\\twoheadrightarrow",
+        "longto": "\\longrightarrow",
+        "lto": "\\longrightarrow",
+        "mapsfrom": "\\mathrel{\\reflectbox{\\ensuremath{\\mapsto}}}",
+        "Ising": "\\mathsf{Ising}",
+        "a": "\\alpha",
+        "b": "\\beta",
+        "d": "\\delta",
+        "g": "\\gamma"
         }
+      },
+      startup: {
+        typeset: true
+      }
     };
     </script>
-    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
 </head>
 <body>
     <div class="top-nav">
@@ -90,21 +303,50 @@
             <a href="../pdfs/Tensor Field.pdf" class="nav-btn" title="View PDF">
                 <span>PDF</span>
             </a>
-            <a href="file:///Users/greysonwesley/Desktop/workflow/wiki/Tensor Field.md" class="nav-btn" title="Edit in Obsidian">
+            <a href="obsidian://open?path=/Users/greysonwesley/Desktop/workflow/wiki/Tensor Field.md" class="nav-btn" title="Edit in Obsidian">
                 <span>MD</span>
             </a>
         </div>
     </div>
     <div class="content-wrapper">
-    <h1>Tensor Field</h1>
+    <h1>tensor field</h1>
     <div class="metadata">
-        <strong>Last modified:</strong> December 11, 2025 at  7:52 PM ET<br>
-        <strong>Created:</strong> ?<br>
-        <strong>Tags:</strong> stub
+        <strong>Last modified:</strong> December 13, 2025 at  1:22 AM ET<br>
+        <strong>Created:</strong> August 09, 2025 at  9:23 PM ET<br>
     </div>
     <div class="content">
         
-        <p>This note is a placeholder for future content.</p>
+        <p>#article</p>
+<h4 id="tensors">Tensors </h4>
+<p>Here we follow <sup><a href="#ref-1">[1]</a></sup>. Let $V$ be a finite-dimensional $\mathbb{R}$-vector space, say of dimension $n$. A <strong>covariant $\ell$-tensor</strong> is a multilinear map $V^{\times \ell}\to \mathbb{R}$. A <strong>contravariant $k$-tensor</strong> is a multilinear map $(V^{*})^{\times k}\to\mathbb{R}$.</p>
+
+<p>A <strong>$k$-contravariant, $\ell$-covariant tensor</strong> (AKA <strong>mixed $(k,\ell)$-tensor</strong> or <strong>$(k,\ell)$-tensor</strong>) is a multilinear map $(V^*)^{\times k}\times V^{\ell}\to\mathbb{R}$, though we will also call multilinear maps whose arguments still consist of $k$ covectors and $\ell$ vectors, but not necessarily in the order given here; such an object is still called a tensor of type $(k,\ell)$. We write $\mathrm{T}^{\ell}(V)\coloneqq\set{\text{covariant \(\ell\)-tensors on \(V\)}}$ and $\mathrm{T}^{(k,\ell)}(V)\coloneqq\{(k,\ell)\text{-tensors on }V\}$. For $F\in \mathrm{T}^{(k,\ell)}(V)$ and $G\in\mathrm{T}^{(p,q)}(V)$, define $F\otimes G\in \mathrm{T}^{(k+p,\ell+q)}(V)$ by\[    (F\otimes G)(\omega^1,\dots,\omega^{k+p},v_1,\dots,v_{\ell+q})\coloneqq F(\omega^1,\dots,\omega^k,v_1,\dots,v_\ell)G(\omega^{k+1},\dots,\omega^{k+p},v_{\ell+1},\dots,v_{\ell+q}).\]If $e_i$ is a basis for $V$ and $\varepsilon^i$ is the associated <a href="dual basis.html">dual basis</a> for $V^*$, then the set\[\set{e_{i_1}\otimes\cdots\otimes e_{i_k}\otimes \varepsilon^{j_1}\otimes\cdots\otimes\varepsilon^{j_\ell}}{i_q,j_q\in \{1,\dots,n\}}\]is a basis for $\mathrm{T}^{(k,\ell)}(V)$. As multilinear maps, these are given by\[(e_{i_1}\otimes\cdots\otimes e_{i_k}\otimes \varepsilon^{j_1}\otimes\cdots\otimes\varepsilon^{j_\ell})(\varepsilon^{s_1},\dots,\varepsilon^{s_k},e_{r_1},\dots,e_{r_{\ell}})=\delta^{s_1}_{i_1}\cdots\delta_{i_k}^{s_k}\delta_{r_1}^{j_1}\cdots\delta_{j_{\ell}}^{r_{\ell}}.\]Thus $\dim\mathrm{T}^{(k,\ell)}(V)=n^{k+\ell}$, and every $(k,\ell)$-tensor $F$ can be written as\[F=F_{j_1\cdots j_\ell}^{i_1\cdots i_k} \,e_{i_1}\otimes\cdots \otimes e_{i_{k}}\otimes \varepsilon^{j_1}\cdots \varepsilon^{j_\ell}\]where $F_{j_1\cdots j_\ell}^{i_1\cdots i_k}=F(\varepsilon^{i_1},\dots,\varepsilon^{i_{k}},e_{j_1},\dots,e_{j_{\ell}})$.</p>
+
+<p><strong>Example.</strong> If the arguments of a $(k,\ell)$-tensor appear in a nonstandard order, then the horizontal positions of the indices in the component functions should reflect this. For example, if $A$ is a $(1,2)$-tensor with first argument a vector, second argument a covector, and third a vector, then its basis expression would be written\[A = A^i{}_j{}^k\, \varepsilon^i\otimes e_j\otimes \varepsilon^k\]where $A^i{}_j{}^k = A( e_i,\varepsilon^j,e_k)$.</p>
+
+<p>The <strong>contraction</strong> of a $(k,\ell)$-tensor $F$ on the pair $(i_p,j_q)$ where $i_p$ is a covariant (lower) index and $j_q$ is a contravariant (upper) index is a $(k-1,\ell-1)$-tensor obtained by taking the trace on indices, i.e., by replacing both with a dummy index $k$ and summing over $k$. For example, if we contract the above $(3,1)$-tensor $A$ on its first and second indices, we get the covariant 1-tensor $B$ with components $B_k=A_i{}^i{}_k$.</p>
+
+<h4 id="tensor-fields">Tensor fields</h4>
+<p>A $(k,\ell)$-<strong>tensor field</strong> is a <a href="section.html">section</a> of the so-called <strong>$(k,\ell)$-tensor bundle</strong>, i.e., of the vector bundle $T^k M \otimes T^\ell M$ over $M$.</p>
+
+<p><strong>Example.</strong> A $(0,2)$-tensor field is a map $M \to T^*M \otimes T^*M$, written in local coordinates $(x^i)$ as $f_{ij} \, \mathrm{d} x^i \otimes \mathrm{d} x^j$ for some $f_{ij} \in C^\infty(M)$.</p>
+
+
+<p>#unorganized , e.g., converting a covector (a 1-form, whose entries are indexed by subscripts) to a vector (a vector, whose entries are indexed by superscripts).</p>
+<div class="references">
+<h2>References</h2>
+<ol>
+<li id="ref-1">Lee18, pp. 393–5</li>
+</ol>
+</div>
+    </div>
+
+    <div class="linked-notes">
+        <h2>Linked Notes</h2>
+        <ul>
+            <li><a href="dual basis.html">dual basis</a></li>
+            <li><a href="section.html">section</a></li>
+        </ul>
     </div>
 
     <div class="backlinks">

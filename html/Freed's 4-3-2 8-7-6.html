@@ -11,70 +11,283 @@
     <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
     <script>
     window.MathJax = {
-        tex: {
-            inlineMath: [['$', '$']],
-            displayMath: [['\\[', '\\]']],
-            macros: {
-                // Category theory
-                cC: '\\mathcal{C}',
-                cD: '\\mathcal{D}',
-                cF: '\\mathcal{F}',
-                cG: '\\mathcal{G}',
-                cH: '\\mathcal{H}',
-                cL: '\\mathcal{L}',
-                cM: '\\mathcal{M}',
-                cP: '\\mathcal{P}',
-                cU: '\\mathcal{U}',
-                Obj: '\\operatorname{Obj}',
-                Hom: '\\operatorname{Hom}',
-                Mor: '\\operatorname{Mor}',
-                End: '\\operatorname{End}',
-                Aut: '\\operatorname{Aut}',
-                id: '\\mathrm{id}',
-
-                // Blackboard bold
-                bR: '\\mathbb{R}',
-                bC: '\\mathbb{C}',
-                bZ: '\\mathbb{Z}',
-                bN: '\\mathbb{N}',
-                bQ: '\\mathbb{Q}',
-                bbR: '\\mathbb{R}',
-                bbC: '\\mathbb{C}',
-                bbZ: '\\mathbb{Z}',
-                bbN: '\\mathbb{N}',
-                bbQ: '\\mathbb{Q}',
-
-                // Delimiters
-                bkt: ['\\langle #1 \\middle| #2 \\rangle', 2],
-                abs: ['\\left| #1 \\right|', 1],
-                norm: ['\\left\\| #1 \\right\\|', 1],
-
-                // Categories
-                Set: '\\mathbf{Set}',
-                Grp: '\\mathbf{Grp}',
-                Top: '\\mathbf{Top}',
-                Vec: '\\mathbf{Vec}',
-
-                // Operators
-                colim: '\\operatorname{colim}',
-                Ext: '\\operatorname{Ext}',
-                Tor: '\\operatorname{Tor}',
-                Spec: '\\operatorname{Spec}',
-                im: '\\operatorname{im}',
-                coker: '\\operatorname{coker}',
-                coloneqq: '\\mathrel{\\vcenter{:}}=',
-                coloneq: '\\mathrel{\\vcenter{:}}=',
-
-                // TikZ-like (limited in HTML)
-                to: '\\rightarrow',
-                injto: '\\hookrightarrow',
-                surjto: '\\twoheadrightarrow'
-            }
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true,
+        macros: {
+        "cA": "\\mathcal{A}",
+        "bbA": "\\mathbb{A}",
+        "sfA": "\\mathsf{A}",
+        "fA": "\\mathfrak{A}",
+        "bA": "\\mathbf{A}",
+        "sA": "\\mathscr{A}",
+        "eA": "\\mathcal{A}",
+        "cB": "\\mathcal{B}",
+        "bbB": "\\mathbb{B}",
+        "sfB": "\\mathsf{B}",
+        "fB": "\\mathfrak{B}",
+        "bB": "\\mathbf{B}",
+        "sB": "\\mathscr{B}",
+        "eB": "\\mathcal{B}",
+        "cC": "\\mathcal{C}",
+        "bbC": "\\mathbb{C}",
+        "sfC": "\\mathsf{C}",
+        "fC": "\\mathfrak{C}",
+        "bC": "\\mathbf{C}",
+        "sC": "\\mathscr{C}",
+        "eC": "\\mathcal{C}",
+        "cD": "\\mathcal{D}",
+        "bbD": "\\mathbb{D}",
+        "sfD": "\\mathsf{D}",
+        "fD": "\\mathfrak{D}",
+        "bD": "\\mathbf{D}",
+        "sD": "\\mathscr{D}",
+        "eD": "\\mathcal{D}",
+        "cE": "\\mathcal{E}",
+        "bbE": "\\mathbb{E}",
+        "sfE": "\\mathsf{E}",
+        "fE": "\\mathfrak{E}",
+        "bE": "\\mathbf{E}",
+        "sE": "\\mathscr{E}",
+        "eE": "\\mathcal{E}",
+        "cF": "\\mathcal{F}",
+        "bbF": "\\mathbb{F}",
+        "sfF": "\\mathsf{F}",
+        "fF": "\\mathfrak{F}",
+        "bF": "\\mathbf{F}",
+        "sF": "\\mathscr{F}",
+        "eF": "\\mathcal{F}",
+        "cG": "\\mathcal{G}",
+        "bbG": "\\mathbb{G}",
+        "sfG": "\\mathsf{G}",
+        "fG": "\\mathfrak{G}",
+        "bG": "\\mathbf{G}",
+        "sG": "\\mathscr{G}",
+        "eG": "\\mathcal{G}",
+        "cH": "\\mathcal{H}",
+        "bbH": "\\mathbb{H}",
+        "sfH": "\\mathsf{H}",
+        "fH": "\\mathfrak{H}",
+        "bH": "\\mathbf{H}",
+        "sH": "\\mathscr{H}",
+        "eH": "\\mathcal{H}",
+        "cI": "\\mathcal{I}",
+        "bbI": "\\mathbb{I}",
+        "sfI": "\\mathsf{I}",
+        "fI": "\\mathfrak{I}",
+        "bI": "\\mathbf{I}",
+        "sI": "\\mathscr{I}",
+        "eI": "\\mathcal{I}",
+        "cJ": "\\mathcal{J}",
+        "bbJ": "\\mathbb{J}",
+        "sfJ": "\\mathsf{J}",
+        "fJ": "\\mathfrak{J}",
+        "bJ": "\\mathbf{J}",
+        "sJ": "\\mathscr{J}",
+        "eJ": "\\mathcal{J}",
+        "cK": "\\mathcal{K}",
+        "bbK": "\\mathbb{K}",
+        "sfK": "\\mathsf{K}",
+        "fK": "\\mathfrak{K}",
+        "bK": "\\mathbf{K}",
+        "sK": "\\mathscr{K}",
+        "eK": "\\mathcal{K}",
+        "cL": "\\mathcal{L}",
+        "bbL": "\\mathbb{L}",
+        "sfL": "\\mathsf{L}",
+        "fL": "\\mathfrak{L}",
+        "bL": "\\mathbf{L}",
+        "sL": "\\mathscr{L}",
+        "eL": "\\mathcal{L}",
+        "cM": "\\mathcal{M}",
+        "bbM": "\\mathbb{M}",
+        "sfM": "\\mathsf{M}",
+        "fM": "\\mathfrak{M}",
+        "bM": "\\mathbf{M}",
+        "sM": "\\mathscr{M}",
+        "eM": "\\mathcal{M}",
+        "cN": "\\mathcal{N}",
+        "bbN": "\\mathbb{N}",
+        "sfN": "\\mathsf{N}",
+        "fN": "\\mathfrak{N}",
+        "bN": "\\mathbf{N}",
+        "sN": "\\mathscr{N}",
+        "eN": "\\mathcal{N}",
+        "cO": "\\mathcal{O}",
+        "bbO": "\\mathbb{O}",
+        "sfO": "\\mathsf{O}",
+        "fO": "\\mathfrak{O}",
+        "bO": "\\mathbf{O}",
+        "sO": "\\mathscr{O}",
+        "eO": "\\mathcal{O}",
+        "cP": "\\mathcal{P}",
+        "bbP": "\\mathbb{P}",
+        "sfP": "\\mathsf{P}",
+        "fP": "\\mathfrak{P}",
+        "bP": "\\mathbf{P}",
+        "sP": "\\mathscr{P}",
+        "eP": "\\mathcal{P}",
+        "cQ": "\\mathcal{Q}",
+        "bbQ": "\\mathbb{Q}",
+        "sfQ": "\\mathsf{Q}",
+        "fQ": "\\mathfrak{Q}",
+        "bQ": "\\mathbf{Q}",
+        "sQ": "\\mathscr{Q}",
+        "eQ": "\\mathcal{Q}",
+        "cR": "\\mathcal{R}",
+        "bbR": "\\mathbb{R}",
+        "sfR": "\\mathsf{R}",
+        "fR": "\\mathfrak{R}",
+        "bR": "\\mathbf{R}",
+        "sR": "\\mathscr{R}",
+        "eR": "\\mathcal{R}",
+        "cS": "\\mathcal{S}",
+        "bbS": "\\mathbb{S}",
+        "sfS": "\\mathsf{S}",
+        "fS": "\\mathfrak{S}",
+        "bS": "\\mathbf{S}",
+        "sS": "\\mathscr{S}",
+        "eS": "\\mathcal{S}",
+        "cT": "\\mathcal{T}",
+        "bbT": "\\mathbb{T}",
+        "sfT": "\\mathsf{T}",
+        "fT": "\\mathfrak{T}",
+        "bT": "\\mathbf{T}",
+        "sT": "\\mathscr{T}",
+        "eT": "\\mathcal{T}",
+        "cU": "\\mathcal{U}",
+        "bbU": "\\mathbb{U}",
+        "sfU": "\\mathsf{U}",
+        "fU": "\\mathfrak{U}",
+        "bU": "\\mathbf{U}",
+        "sU": "\\mathscr{U}",
+        "eU": "\\mathcal{U}",
+        "cV": "\\mathcal{V}",
+        "bbV": "\\mathbb{V}",
+        "sfV": "\\mathsf{V}",
+        "fV": "\\mathfrak{V}",
+        "bV": "\\mathbf{V}",
+        "sV": "\\mathscr{V}",
+        "eV": "\\mathcal{V}",
+        "cW": "\\mathcal{W}",
+        "bbW": "\\mathbb{W}",
+        "sfW": "\\mathsf{W}",
+        "fW": "\\mathfrak{W}",
+        "bW": "\\mathbf{W}",
+        "sW": "\\mathscr{W}",
+        "eW": "\\mathcal{W}",
+        "cX": "\\mathcal{X}",
+        "bbX": "\\mathbb{X}",
+        "sfX": "\\mathsf{X}",
+        "fX": "\\mathfrak{X}",
+        "bX": "\\mathbf{X}",
+        "sX": "\\mathscr{X}",
+        "eX": "\\mathcal{X}",
+        "cY": "\\mathcal{Y}",
+        "bbY": "\\mathbb{Y}",
+        "sfY": "\\mathsf{Y}",
+        "fY": "\\mathfrak{Y}",
+        "bY": "\\mathbf{Y}",
+        "sY": "\\mathscr{Y}",
+        "eY": "\\mathcal{Y}",
+        "cZ": "\\mathcal{Z}",
+        "bbZ": "\\mathbb{Z}",
+        "sfZ": "\\mathsf{Z}",
+        "fZ": "\\mathfrak{Z}",
+        "bZ": "\\mathbf{Z}",
+        "sZ": "\\mathscr{Z}",
+        "eZ": "\\mathcal{Z}",
+        "fa": "\\mathfrak{a}",
+        "fb": "\\mathfrak{b}",
+        "fc": "\\mathfrak{c}",
+        "fd": "\\mathfrak{d}",
+        "fe": "\\mathfrak{e}",
+        "ff": "\\mathfrak{f}",
+        "fg": "\\mathfrak{g}",
+        "fh": "\\mathfrak{h}",
+        "fi": "\\mathfrak{i}",
+        "fj": "\\mathfrak{j}",
+        "fk": "\\mathfrak{k}",
+        "fl": "\\mathfrak{l}",
+        "fm": "\\mathfrak{m}",
+        "fn": "\\mathfrak{n}",
+        "fo": "\\mathfrak{o}",
+        "fp": "\\mathfrak{p}",
+        "fq": "\\mathfrak{q}",
+        "fr": "\\mathfrak{r}",
+        "fs": "\\mathfrak{s}",
+        "ft": "\\mathfrak{t}",
+        "fu": "\\mathfrak{u}",
+        "fv": "\\mathfrak{v}",
+        "fw": "\\mathfrak{w}",
+        "fx": "\\mathfrak{x}",
+        "fy": "\\mathfrak{y}",
+        "fz": "\\mathfrak{z}",
+        "bar": "\\overline",
+        "undC": "\\underline{\\mathcal{C}}",
+        "Obj": "\\operatorname{Obj}",
+        "Hom": "\\operatorname{Hom}",
+        "Mor": "\\operatorname{Mor}",
+        "End": "\\operatorname{End}",
+        "Aut": "\\operatorname{Aut}",
+        "id": "\\mathrm{id}",
+        "pt": "\\mathrm{pt}",
+        "Tr": "\\operatorname{Tr}",
+        "eval": "\\operatorname{eval}",
+        "A": "\\operatorname{Sk}",
+        "F": "\\mathcal{F}",
+        "U": "\\mathcal{U}",
+        "orev": "\\overline",
+        "fcj": "\\widehat",
+        "e": "\\varepsilon",
+        "glu": "\\mathrm{gl}",
+        "greyson": "\\bgroup\\color{violet}[[#1]]\\egroup",
+        "todo": "\\textbf{[[}\\textsl{#1}\\textbf{]]}",
+        "bkt": "\\left\\langle #1 \\middle| #2 \\right\\rangle",
+        "pbkt": "\\left( #1 \\middle| #2 \\right)",
+        "abs": "\\left| #1 \\right|",
+        "norm": "\\left\\| #1 \\right\\|",
+        "set": "\\left\\{ #1 \\right\\}",
+        "bra": "\\left\\langle #1 \\right|",
+        "ket": "\\left| #1 \\right\\rangle",
+        "braket": "\\left\\langle #1 \\middle| #2 \\right\\rangle",
+        "Set": "\\mathbf{Set}",
+        "Grp": "\\mathbf{Grp}",
+        "Top": "\\mathbf{Top}",
+        "Vec": "\\mathbf{Vec}",
+        "Hilb": "\\mathbf{Hilb}",
+        "Sk": "\\operatorname{Sk}",
+        "colim": "\\operatorname{colim}",
+        "Ext": "\\operatorname{Ext}",
+        "Tor": "\\operatorname{Tor}",
+        "Spec": "\\operatorname{Spec}",
+        "im": "\\operatorname{im}",
+        "coker": "\\operatorname{coker}",
+        "coloneqq": "\\mathrel{\\vcenter{:}}=",
+        "coloneq": "\\mathrel{\\vcenter{:}}=",
+        "eqqcolon": "=\\mathrel{\\vcenter{:}}",
+        "endto": "\\to",
+        "to": "\\rightarrow",
+        "injto": "\\hookrightarrow",
+        "surjto": "\\twoheadrightarrow",
+        "longto": "\\longrightarrow",
+        "lto": "\\longrightarrow",
+        "mapsfrom": "\\mathrel{\\reflectbox{\\ensuremath{\\mapsto}}}",
+        "Ising": "\\mathsf{Ising}",
+        "a": "\\alpha",
+        "b": "\\beta",
+        "d": "\\delta",
+        "g": "\\gamma"
         }
+      },
+      startup: {
+        typeset: true
+      }
     };
     </script>
-    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
 </head>
 <body>
     <div class="top-nav">
@@ -99,30 +312,30 @@
     <h1>Freed's 4-3-2 8-7-6</h1>
     <div class="metadata">
         <strong>Last modified:</strong> December 11, 2025 at  6:12 PM ET<br>
-        <strong>Created:</strong> 2025-12-11<br>
+        <strong>Created:</strong> October 21, 2025 at  6:14 PM ET<br>
     </div>
     <div class="content">
         
         <p>The following contains material pulled from Dan Freed’s slides <a href="https://people.maths.ox.ac.uk/tillmann/ASPECTSfreed.pdf">here</a>. #AI-using-source</p>
-<h4>General Information</h4>
+<h4 id="general-information">General Information</h4>
 <ul>
 <li><strong>Title:</strong> 4-3-2-8-7-6</li>
 <li><strong>Author:</strong> Dan Freed</li>
 <li><strong>Collaborators:</strong> The work is joint with Constantin Teleman, builds on work with Mike Hopkins and Jacob Lurie, and is dedicated to Graeme Segal.</li>
 </ul>
-<h4>Foundational Concepts</h4>
+<h4 id="foundational-concepts">Foundational Concepts</h4>
 <ul>
 <li>"Great theorems are awesome; great definitions are transformational."</li>
 <li>Graeme Segal proposed a definition of 2D conformal field theory arising from joint work with Quillen.</li>
 </ul>
-<h4>Definitions of Quantum Field Theory</h4>
+<h4 id="definitions-of-quantum-field-theory">Definitions of Quantum Field Theory</h4>
 <ul>
 <li><strong>Segal’s Definition:</strong> A 2d conformal field theory is a homomorphism: $F\colon \text{Bord}_{\langle 1,2 \rangle}^{\text{conf}} \to \text{Vect}_{\mathbb{C}}^{\text{top}}$</li>
 <li><strong>Atiyah’s Definition:</strong> An nD topological quantum field theory (TQFT) is a homomorphism: $F\colon \text{Bord}_{\langle n-1,n \rangle}^{\mathcal{X}(n)} \to \text{Vect}$ where $\mathcal{X}(n)$ is an nD (topological) tangential structure.</li>
 <li>The bordism category $\text{Bord}_{\langle n-1,n \rangle}^{\mathrm{SO}}$ categorifies the classical bordism group $\Omega_{n-1}^{\mathrm{SO}}$.</li>
 <li>TQFTs categorify classical bordism invariants, for example, the <a href="signature of a manifold.html">signature map</a>: $\text{Sign}\colon \Omega_{4k}^{\mathrm{SO}} \to \mathbb{Z}$</li>
 </ul>
-<h4>Invertible and Extended Field Theories</h4>
+<h4 id="invertible-and-extended-field-theories">Invertible and Extended Field Theories</h4>
 <ul>
 <li>An invertible field theory $\alpha\colon \text{Bord}_{\langle n-1,n \rangle} \to \text{Vect}$ is one where $\alpha(M)$ is invertible for every manifold $M$.</li>
 <li>For a closed n-manifold $X$, $\alpha(X) \in \mathbb{C}^\times$.</li>
@@ -134,29 +347,29 @@
 <li><strong>Codomain:</strong> An arbitrary n-category (or $(\infty, n)$-category).</li>
 <li><strong>Example:</strong> For a finite group $G$, let $A = \text{Map}(G, \mathbb{C})$ under convolution. An extended version of 2d Dijkgraaf-Witten theory is a functor $\alpha\colon \text{Bord}_2 \to \text{Alg}$, with $\alpha(\text{pt}) = A$.</li>
 </ul>
-<h4>The Cobordism Hypothesis</h4>
+<h4 id="the-cobordism-hypothesis">The Cobordism Hypothesis</h4>
 <ul>
 <li>The Cobordism Hypothesis applies to fully extended topological theories $F\colon \text{Bord}_n^{\mathrm{SO}} \to \mathcal{C}$, where $\mathcal{C}$ is a symmetric monoidal $(\infty, n)$-category.</li>
-<li><strong>Hypothesis (Baez-Dolan-Hopkins-Lurie):</strong> The theory $F$ is fully determined by its value on a point, $F(\text{pt}_+)$. Any \textit{n-dualizable, $\mathrm{SO}_n$-invariant} object $c \in \mathcal{C}$ determines such a theory with $F(\text{pt}_+) = c$.</li>
+<li><strong>Hypothesis (Baez-Dolan-Hopkins-Lurie):</strong> The theory $F$ is fully determined by its value on a point, $F(\text{pt}_+)$. Any <em>n-dualizable, $\mathrm{SO}_n$-invariant</em> object $c \in \mathcal{C}$ determines such a theory with $F(\text{pt}_+) = c$.</li>
 <li><strong>n-dualizability:</strong> Data associated with Morse handles exists.</li>
 <li><strong>$\mathrm{SO}_n$-invariance:</strong> Extra data exists on the object $c$.</li>
 <li><strong>Example (n=2):</strong> An algebra $A$ in the Morita 2-category $\text{Alg}_k$ is 2-dualizable if it is finiteD and semisimple. The $\mathrm{SO}_2$-invariance data corresponds to a Frobenius structure (a nondegenerate trace).</li>
 </ul>
-<h4>Invertibility Criteria</h4>
+<h4 id="invertibility-criteria">Invertibility Criteria</h4>
 <ul>
 <li><strong>Theorem:</strong> For a theory $\alpha\colon \text{Bord}_n^{\mathrm{SO}} \to \mathcal{C}$, if either 1.  $\alpha(S^k)$ is invertible for some $k \le n/2$, or 2.  $\alpha(S^n)$ is invertible and $\alpha(S^p \times S^{n-1-p})$ is invertible for all $p$, then $\alpha$ is invertible.</li>
 <li>This is a localization theorem: inverting $\alpha(S^k)$ implies inverting every bordism.</li>
 <li><strong>Example (n=2, k=1):</strong> A theory $\alpha\colon \text{Bord}_2^{\mathrm{SO}} \to \text{Alg}_k$ defined by a 2-dualizable Frobenius algebra $A$ has $\alpha(S^1)$ equal to the center of $A$. The theory $\alpha$ is invertible if the center of $A$ is $k$.</li>
 </ul>
 
-<h4>Relative Quantum Field Theory</h4>
+<h4 id="relative-quantum-field-theory">Relative Quantum Field Theory</h4>
 <ul>
 <li>A quantum field theory $F$ is <strong>relative to</strong> an extended $(n+1)$D QFT $\alpha$ if it is a homomorphism $F\colon \mathbf{1} \to \tau_{\le n}\alpha$ or $\tilde{F}\colon \tau_{\le n}\alpha \to \mathbf{1}$.</li>
 <li>If $\alpha$ is invertible, $F$ is called an <strong>anomalous theory</strong> with anomaly $\alpha$.</li>
 <li>$F(X^n)$ takes values in a line (Lagrangian anomaly).</li>
 <li>$F(Y^{n-1})$ takes values in a gerbe (Hamiltonian anomaly).</li>
 </ul>
-<h4>Chern-Simons and Wess-Zumino-Witten (WZW) Theories</h4>
+<h4 id="chern-simons-and-wess-zumino-witten-wzw-theories">Chern-Simons and Wess-Zumino-Witten (WZW) Theories</h4>
 <ul>
 <li>A modular tensor category $A \in \text{Cat}_\mathbb{C}^{\otimes}$ defines a 4d invertible theory (the Crane-Yetter theory) $\alpha_A\colon \text{Bord}_4^{\mathrm{SO}} \to \text{Cat}_\mathbb{C}^{\otimes \beta}$.</li>
 <li>Chern-Simons theory ($F_A$) can be viewed as a 3d theory relative to this 4d theory.</li>
@@ -164,14 +377,14 @@
 <li>Chern-Simons can be defined as an absolute 3d theory on bordisms with a stable tangential structure called a $p_1$-structure.</li>
 <li>Chiral WZW theory is a relative 2d theory, which is a restatement of Segal’s weakly conformal CFT.</li>
 </ul>
-<h4>Theories for Tori and a Finite Path Integral</h4>
+<h4 id="theories-for-tori-and-a-finite-path-integral">Theories for Tori and a Finite Path Integral</h4>
 <ul>
 <li>For a torus $T = \Pi \otimes \mathbb{R}/\mathbb{Z}$, a class $\lambda \in H^4(BT; \mathbb{Z})$ corresponds to an even, symmetric, non-degenerate bihomomorphism $b\colon \Pi \times \Pi \to \mathbb{Z}$.</li>
 <li>This data defines a Pontrjagin self-dual finite abelian group $\pi$ with a quadratic function $q\colon \pi \to \mathbb{Q}/\mathbb{Z}$.</li>
 <li>The pair $(\pi, q)$ determines a homotopy class of maps $q\colon K(\pi, 2) \to K(\mathbb{Q}/\mathbb{Z}, 4)$.</li>
 <li>A <strong>finite path integral</strong> over $\pi$-gerbes gives a fully extended 4d theory $\alpha$. For a closed, oriented 4-manifold $X$, its value is given by a finite Gauss sum: $\alpha(X) = (\sqrt{\#F})^{\text{Euler } X} \mu^{(\text{sign } b)(\text{Sign } X)}$ where $\mu=e^{2\pi i/8}$.</li>
 </ul>
-<h4>From 4d to Higher Dimensions (Theory X)</h4>
+<h4 id="from-4d-to-higher-dimensions-theory-x">From 4d to Higher Dimensions (Theory X)</h4>
 <ul>
 <li>String theory arguments predict the existence of a 6d superconformal field theory, named <strong>Theory $\mathcal{X}$</strong>, analogous to chiral WZW.</li>
 <li>The same data $(\pi, q)$ that defines the 4-3-2 dimensional theories is expected to define theories in dimensions 8 and 7-8, starting from a homotopy map $q\colon K(\pi, 4) \to K(\mathbb{Q}/\mathbb{Z}, 8)$.</li>

@@ -1,12 +1,24 @@
 \documentclass{gwiki}
 \usepackage{gwiki-links}
 
-\Title{Terminal Object in an (∞,1)-Category}
-\Tags{stub}
+\Title{terminal object in an (∞,1)-category}
+\Tags{}
 
 \begin{document}
 \NoteHeader
 
-This note is a placeholder for future content.
+\textbf{\wref[Definition]{QuasicategoriesRezk.pdf#page=78&selection=4,0,6,28&color=yellow}.} A \textbf{terminal object} of an \wref{(∞,1)-category} $C$ is a vertex $y\in C_{0}$ such that every \wref[simplicial map]{simplex category} $f\colon \partial \Delta^{n}\to C$ with $f|_{\{n\}}=y$ extends to a simplicial map $\widetilde{f}\colon\Delta^{n}\to C$.
+
+\textbf{Remark.} Let's unpack the low-dimensional conditions in the definition of terminal object applied to $y\in C_{0}$. 
+- The condition for $n=1$ says that for every object $c$ in $C$, there is a 1-cell $f\colon c\to y$.
+- The condition for $n=2$ implies that for any two parallel maps $f, g \colon c \to y$ in $C$, we have $[f]=[g]$, i.e., $f$ and $g$ are homotopic. Thus there is at most one homotopy class of maps into $y$ from any object.
+
+\textbf{Remark.} If $C$ is the \wref[nerve]{nerve of a category} of an ordinary category, then the conditions for $n\geq 2$ are automatically satisfied. The condition for $n=1$ says that for any object $c$, the set of morphisms $\mathrm{Hom}(c,y)$ is nonempty and has a single element. This coincides with the usual notion of a terminal object.
+
+\textbf{\wref[Warning]{QuasicategoriesRezk.pdf#page=78&selection=353,0,394,39&color=red}.}
+
+See also:
+- \wref{initial object in an (∞,1)-category} $C$ (just a terminal object of $C^{\mathrm{op}}$)
+- \wref[31.6. Uniqueness of initial and terminal objects]{QuasicategoriesRezk.pdf#page=79&selection=99,0,101,42&color=yellow}
 
 \end{document}

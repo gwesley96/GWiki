@@ -1,12 +1,18 @@
 \documentclass{gwiki}
 \usepackage{gwiki-links}
 
-\Title{Linear Connection 1-Form}
-\Tags{stub}
+\Title{linear connection 1-form}
+\Tags{}
 
 \begin{document}
 \NoteHeader
 
-This note is a placeholder for future content.
+Let $\{e_{k}\}$ be a local frame of a smooth rank-$r$ vector bundle $\pi\colon E\to M$ and let $\nabla\colon \mathfrak{X}(M)\times \Gamma(E)\to \Gamma(E)$ be a \wref[connection]{linear connection in a vector bundle} in $E$. Then $\nabla_{(-)}e_{j}$ is a $C^{\infty}(M)$-linear map $\mathfrak{X}(M)\to \Gamma(E)$, and thus has local expression$$\nabla_{(-)}e_{j}=\Gamma^{k}{}_j(-)\,e_{k}$$for some smooth $\Gamma^{k}{}_{j}\colon \mathfrak{X}(M)\to\mathbb{R}$, i.e., for an $r\times r$ matrix of $1$-forms $\bigl[\omega^{k}{}_{j}\bigr]$. The entries $\omega^{k}{}_j$ are called the \textbf{connection 1-forms} of $\nabla$ with respect to the local frame $e_{k}$. The \textbf{connection coefficients} are then the $n^{3}$ smooth functions $\Gamma^{k}{}_{ij}\in C^{\infty}(M)$ where $\nabla_{i}e_{j}=\Gamma^{k}{}_{ij}\,e_{j}$, i.e., $\Gamma^{k}{}_{ij}\coloneqq \Gamma^{k}{}_{j}(\partial_i)$. Thus $\Gamma^{k}{}_{ij}$ is the $k$-th component of the difference between $e_{j}$ and its \wref{parallel transport} in the direction $\partial_{i}$.
+
+See also:
+- \wref{linear connection in a vector bundle} (previous)
+- \wref{curvature of a connection} (next)
+- This note is partly from my handwritten notes [here](https://web.goodnotes.com/s/ZO7rzwuxRmVRZpjST4Vzje#page-23).
+- \wref{principal connection 1-form}
 
 \end{document}
