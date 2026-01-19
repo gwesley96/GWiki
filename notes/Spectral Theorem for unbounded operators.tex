@@ -1,0 +1,25 @@
+\documentclass{gwiki}
+
+\Title{Spectral Theorem for unbounded operators}
+\Tags{}
+\providecommand{\gwikicreateddate}{July 24, 2025 at 9:32 pm ET}
+
+\begin{document}
+
+\NoteHeader
+\NoteNavigation
+
+\defn{\wref[Theorem 7.12]{HallQMforMathematicians.pdf#page=157\&selection=38,0,38,12}.} For a (possibly infinite-dimensional) \wref[separable]{separable Hilbert space} \wref{Hilbert space} $\cH$, there is a unique orthogonal-\wref{projection-valued measure} $\mu^{a}\colon \cB_{\operatorname{spec}(a)}\to P(\cH)$ on the \wref{Borel σ-algebra} of $\mathrm{spec}(a)$ such that $$a=\int_{\mathrm{spec}(a)}\lambda\,\rd\mu^{a}(\lambda),$$\wref[that is]{HallQMforMathematicians.pdf#page=155\&selection=14,0,14,16}, $a$ is the unique linear map from the space of bounded, measurable, complex-valued functions on $\cE$ into $B(\cH)$ with the property that $\langle a\eta|\xi\rangle = \int \lambda \, \rd\langle\mu^{a}(\lambda)\eta | \xi\rangle$ for all  $\eta,\xi \in \cH$.
+
+\defn{Application.} A \wref[unitary representation]{unitary representation of a group} $T$ of a group $G$ is irreducible if and only if its commuting algebra (operators $A$ such that $AT_g = T_gA$ for all $g \in G$) consists only of scalar multiples of the identity operator, i.e., $A = \lambda I$.
+
+See also:
+\begin{lst}
+  \item \wref[5.3.7. Lemma]{PedersenAnalysisNow.pdf#page=222\&selection=485,0,487,5}.
+\end{lst}
+
+\References
+
+\Footer
+
+\end{document}

@@ -1701,6 +1701,7 @@ def generate_macros(extra_macros=None):
     add("pr", r"\operatorname{pr}")
     add("dM", r"\mathcal{M}")
     add("dF", r"\mathcal{F}")
+    add("rd", r"\mathrm{d}")
     add("dA", r"\mathcal{A}")
     add("dB", r"\mathcal{B}")
     add("dC", r"\mathcal{C}")
@@ -2098,11 +2099,8 @@ def convert_to_html(tex_path, backlinks_map, title_map):
         return f'__SCRIPT_BLOCK_{len(script_blocks) - 1}__'
     body = re.sub(r'<script.*?>.*?</script>', stash_all_scripts, body, flags=re.DOTALL)
 
-    # 3. Escape HTML special characters in remaining text (including math)
-    body = body.replace('<', '&lt;').replace('>', '&gt;')
 
-    # 4. Convert \defn -> <strong>
-    body = replace_command_robust(body, r'\defn', '<strong>{}</strong>')
+
 
     # note_name already set at the top when extracting title from filename
     name = note_name
@@ -2196,12 +2194,21 @@ def convert_to_html(tex_path, backlinks_map, title_map):
 
     # Stash math: $$...$$, \[...\], \(...\), $...$
     # First convert $$...$$ to \[...\] (standardize display math)
+    # Stash math: $$...$$, \[...\], \(...\), $...$
+    # First convert $$...$$ to \[...\] (standardize display math)
     body = re.sub(r'\$\$(.*?)\$\$', r'\\[\1\\]', body, flags=re.DOTALL)
 
     body = re.sub(r'\\\[.*?\\\]', stash_math, body, flags=re.DOTALL)
     body = re.sub(r'\\\((.*?)\\\)', stash_math, body, flags=re.DOTALL)
     # Inline math $...$
+    # Inline math $...$
     body = re.sub(r'(?<!\\)\$[^$]+(?<!\\)\$', stash_math, body)
+
+    # 3. Escape HTML special characters in remaining text (including math if not stashed)
+    # CRITICAL: We must escape HTML < and > BEFORE generating HTML tags (links, etc.)
+    # but AFTER stashing math/tikz (which might contain < > that we don't want escaped inside stashed blocks).
+    # Since we stashed math and scripts above, we can now safely escape the body text.
+    body = body.replace('<', '&lt;').replace('>', '&gt;')
 
     # Convert PDF embeds: ![[file.pdf#page=1&rect=...]]
     def convert_pdf_embed(match):
@@ -2260,13 +2267,17 @@ def convert_to_html(tex_path, backlinks_map, title_map):
                     link = f'<a href="{item}.html">{item}</a>'
                 links.append(link)
             return f'<div class="prereq"><strong>Prerequisites:</strong> {", ".join(links)}</div>'
-        
-        return re.sub(r'\\prereq\{([^}]+)\}', replace, text, flags=re.DOTALL)
+        return re.sub(r'\\prereq\{([^}]+)\}', replace, text)
 
     body = convert_arxiv(body)
     body = convert_nlab(body)
     body = convert_prereq(body, title_map)
     body = strip_incoming_links(body)
+    
+    # Restore math blocks (since we escaped HTML earlier, we resolve math now)
+    for i, block in enumerate(math_blocks):
+        # Restore math block
+        body = body.replace(f'__MATH_BLOCK_{i}__', block)
     
     # DEBUG: Trace disappearing math
     debug_marker = "Integrating both sides from"
@@ -2284,7 +2295,11 @@ def convert_to_html(tex_path, backlinks_map, title_map):
     body = replace_command_robust(body, r'\textit', '<em>{}</em>')
     body = replace_command_robust(body, r'\texttt', '<code>{}</code>')
     body = replace_command_robust(body, r'\greyson', '<span style="color: #7f00ff;">[[{}]]</span>')
+    body = replace_command_robust(body, r'\greyson', '<span style="color: #7f00ff;">[[{}]]</span>')
     body = replace_command_robust(body, r'\todo', '<strong>[[<em>{}</em>]]</strong>')
+
+    # Convert \defn -> <strong> (Must be after escaping)
+    body = replace_command_robust(body, r'\defn', '<strong>{}</strong>')
     body = convert_specialchars(body)    # Handle \textbackslash etc.
     
     if debug_marker in body:

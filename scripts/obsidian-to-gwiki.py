@@ -7,6 +7,7 @@ Converts Obsidian markdown notes to GWiki LaTeX format
 import re
 import sys
 import os
+import subprocess
 from pathlib import Path
 
 def extract_frontmatter(content):
@@ -204,13 +205,6 @@ def convert_images(text):
     text = re.sub(r'!\[\[([^\]]+)\]\]', r'% Image: \1 (not migrated)', text)
     return text
 
-def clean_math(text):
-    """Clean up math mode transitions"""
-    # Remove extra spacing inside inline math: $ H $ -> $H$
-    text = re.sub(r'(?<!\\)\$\s+([^$]+?)\s+\$(?!\d)', r'$\1$', text)
-    text = re.sub(r'(?<!\\)\$\s+([^$]+?)\$(?!\d)', r'$\1$', text)
-    text = re.sub(r'(?<!\\)\$([^$]+?)\s+\$(?!\d)', r'$\1$', text)
-    return text
 
 def extract_title_from_filename(filename):
     """Extract title from filename"""
@@ -281,6 +275,7 @@ def convert_to_gwiki(obsidian_path, tags_to_use=None):
     
     # Protect math first
     body, math_tokens = protect_math(body)
+
     
     body = convert_images(body)
     body = convert_wikilinks(body)
@@ -293,7 +288,7 @@ def convert_to_gwiki(obsidian_path, tags_to_use=None):
     body = restore_math(body, math_tokens)
     
     # Clean math spacing (only inside trimming)
-    body = clean_math(body)
+    # body = clean_math(body)
     
     body = body.strip()
 
@@ -307,7 +302,7 @@ def convert_to_gwiki(obsidian_path, tags_to_use=None):
         gwiki_content += '\\Tags{}' + '\n'
         
     if created_date:
-        gwiki_content += f'\\newcommand{{\\gwikicreateddate}}{{{created_date}}}' + '\n'
+        gwiki_content += f'\\providecommand{{\\gwikicreateddate}}{{{created_date}}}' + '\n'
         
     if prev_note:
         # Handle [[link]] format if present
@@ -420,7 +415,7 @@ def clean_math(text):
     text = re.sub(r'(?<!\\)\$(\s+)?((?:\\.|[^$])+?)(\s+)?\$(?!\d)', r'$\2$', text)
     return text
 
-def migrate_note(obsidian_path, output_dir, tags=None, dry_run=False):
+def migrate_note(obsidian_path, output_dir, tags=None, dry_run=False, force=False):
     """Migrate a single note"""
     try:
         gwiki_content, title = convert_to_gwiki(obsidian_path, tags)
@@ -429,16 +424,9 @@ def migrate_note(obsidian_path, output_dir, tags=None, dry_run=False):
         output_filename = title + '.tex'
         output_path = Path(output_dir) / output_filename
 
-        # Check for noconvert marker in existing file
-        if output_path.exists():
-            try:
-                with open(output_path, 'r', encoding='utf-8') as f:
-                    existing_content = f.read()
-                if '% noconvert' in existing_content:
-                    print(f"• Skipped: {obsidian_path} -> {output_path} (marked % noconvert)")
-                    return output_path
-            except Exception as e:
-                print(f"Warning: Could not read existing file {output_path}: {e}")
+        if output_path.exists() and not force:
+            print(f"• Skipped: {obsidian_path} -> {output_path} (file exists)")
+            return output_path
 
         if dry_run:
             print(f"\n{'='*80}")
@@ -450,6 +438,35 @@ def migrate_note(obsidian_path, output_dir, tags=None, dry_run=False):
             with open(output_path, 'w', encoding='utf-8') as f:
                 f.write(gwiki_content)
             print(f"✓ Migrated: {obsidian_path} -> {output_path}")
+
+            # Build PDF and HTML
+            print(f"  Building PDF...")
+            build_pdf = subprocess.run(["bash", "scripts/build-note.sh", str(output_path), "build"], capture_output=True)
+            if build_pdf.returncode == 0:
+                 # Move result
+                 pdf_name = output_path.stem + ".pdf"
+                 built_pdf = Path("build") / pdf_name
+                 final_pdf = Path("pdfs") / pdf_name
+                 # Ensure pdfs dir exists
+                 Path("pdfs").mkdir(exist_ok=True)
+                 if built_pdf.exists():
+                     os.rename(built_pdf, final_pdf)
+                     print(f"  ✓ PDF built: pdfs/{pdf_name}")
+            else:
+                 print(f"  ✗ PDF build failed")
+
+            print(f"  Building HTML...")
+            html_name = output_path.stem + ".html"
+            html_path = Path("html") / html_name
+            # Ensure html dir exists
+            Path("html").mkdir(exist_ok=True)
+            
+            build_html = subprocess.run(["python3", "scripts/tex-to-html.py", str(output_path), str(html_path)], capture_output=True)
+            if build_html.returncode == 0:
+                 print(f"  ✓ HTML built: html/{html_name}")
+            else:
+                 print(f"  ✗ HTML build failed: {build_html.stderr.decode()[:200]}...")
+
             return output_path
 
     except Exception as e:
@@ -465,9 +482,11 @@ if __name__ == '__main__':
     parser.add_argument('-t', '--tags', help='Tags to add (comma-separated)')
     parser.add_argument('--dry-run', action='store_true', help='Preview without writing files')
 
+    parser.add_argument('-f', '--force', action='store_true', help='Force overwrite existing files')
+
     args = parser.parse_args()
 
     tags = args.tags.split(',') if args.tags else None
 
     for input_path in args.input:
-        migrate_note(input_path, args.output, tags, args.dry_run)
+        migrate_note(input_path, args.output, tags, args.dry_run, args.force)
